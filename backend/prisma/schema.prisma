@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+   provider = "postgresql"
+   url      = env("DATABASE_URL")
+}
+
+
+model session {
+   id              Int       @default(autoincrement()) @id
+   startTime       DateTime
+   endTime         DateTime?
+
+   user_actions    user_action[]
+}
+
+model user_action {
+   id              Int       @default(autoincrement()) @id
+   session_id      Int
+   time            DateTime
+   user_id         Int
+   action          String
+
+   session         session   @relation(fields: [session_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+   user            user      @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+
+model user {
+   id                   Int                   @id @default(autoincrement())
+   created_at           DateTime?             @default(now()) @db.Timestamptz(6)
+   sub                  String?               @unique(map: "users_sub_unique")
+   password             String?               // 4-digit pin-code for patients
+   type                 UserType
+
+   email                String?
+   firstname            String?
+   lastname             String?
+   alias                String?
+
+   user_actions         user_action[]
+}
+
+enum UserType {
+   admin
+   student
+}
