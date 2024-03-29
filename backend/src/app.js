@@ -9,6 +9,7 @@ import services from './services/index.js'
 import channels from './channels.js'
 import appHooks from './app-hooks.js'
 import transfer from './transfer.js'
+import middleware from './middleware/index.js'
 
 // `app` is a regular express application, enhanced with express-x features
 const app = expressX(config)
@@ -26,6 +27,9 @@ app.configure(services)
 
 // application hooks
 app.hooks(appHooks)
+
+// middleware
+app.hooks(middleware)
 
 // development only: serve static assets (reports, avatars)
 app.use('/static', express.static('./static'))
