@@ -6,8 +6,8 @@ export default function (app) {
 
 	// Configure Google OAuth Strategy
 	passport.use(new GoogleStrategy({
-			clientID: '35236017874-d9clkiq7q6etao4dahpdjl95a82o1r7i.apps.googleusercontent.com',
-			clientSecret: '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',
+			clientID: process.env.GOOGLE_ID,
+			clientSecret: process.env.GOOGLE_SECRET,
 			callbackURL: 'http://localhost:9500/auth/google/callback'
 		},
 		async (accessToken, refreshToken, profile, done) => {
