@@ -33,14 +33,16 @@
   "dependencies": {
     "@jcbuisson/express-x": "^2.1.2",
     "@prisma/client": "4.16.1",
+    "axios": "^1.6.8",
     "date-fns": "^2.30.0",
     "dotenv": "^16.3.1",
     "lodash": "^4.17.21",
     "nodemailer": "^6.9.13",
     "passport": "^0.7.0",
-    "passport-google-oauth20": "^2.0.0",
+    "passport-google-oidc": "^0.1.0",
     "passport-local": "^1.0.0",
     "prisma": "4.16.1",
+    "simple-oauth2": "^5.0.0",
     "winston": "^3.9.0"
   }
 }

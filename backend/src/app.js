@@ -29,7 +29,9 @@ app.configure(services)
 app.hooks(appHooks)
 
 // middleware
-app.hooks(middleware)
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
+app.configure(middleware)
 
 // development only: serve static assets (reports, avatars)
 app.use('/static', express.static('./static'))

@@ -31,14 +31,14 @@ model user_action {
 model user {
    id                   Int                   @id @default(autoincrement())
    created_at           DateTime?             @default(now()) @db.Timestamptz(6)
-   email                String?               @unique(map: "users_sub_unique")
+   email                String?               @unique(map: "user_sub_unique")
    password             String?               // 4-digit pin-code for patients
-   type                 UserType
+   type                 UserType              @default(student)
 
-   google_id            String?
-   display_name         String?
+   google_id            String?               @unique(map: "uses_google_id_unique")
    firstname            String?
    lastname             String?
+   picture              String?
 
    user_actions         user_action[]
 }

@@ -7,5 +7,15 @@ export default defineConfig({
    server: {
       port: 8000,
       open: true,
-   },
+      proxy: {
+         '^/infirmier-socket-io/.*': {
+            target: 'http://localhost:9500',
+            ws: true,
+            secure: false,
+            changeOrigin: true,
+         },
+         '^/auth/.*': 'http://localhost:9500',
+         '^/static/.*': 'http://localhost:9500',
+      }
+},
 })

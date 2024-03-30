@@ -5,7 +5,7 @@ module.exports = {
    DATABASE_URL: process.env.DATABASE_URL,
 
    WS_TRANSPORT: true,
-   WS_PATH: '/saveliver-socket-io/',
+   WS_PATH: '/infirmier-socket-io/',
 
    SESSION_EXPIRE_DELAY: 30 * 60*1000, // 30mn: delay of inactivity before expiration - see auth.extendSession
    AUTHCODE_EXPIRE_DELAY: 10 * 60*1000, // 10mn: expiration delay for authorization codes
