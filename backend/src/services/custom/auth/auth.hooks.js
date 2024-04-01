@@ -7,7 +7,7 @@ async function afterLogin(context) {
    const now = new Date()
    const sessionExpireDelay = context.app.get('config').SESSION_EXPIRE_DELAY
    const updatedExpirationDate = new Date(now.getTime() + sessionExpireDelay)
-   context.socket.data.expireAt = updatedExpirationDate
+   context.socket.data.expiresAt = updatedExpirationDate
    // add socket to "authenticated" channel
    context.app.joinChannel('authenticated', context.socket)
 }
@@ -24,7 +24,7 @@ function afterLogout(context) {
 }
 
 async function beforeGetTimeLeftBeforeExpiration(context) {
-   context.result = context.socket.data.expireAt
+   context.result = context.socket.data.expiresAt
 }
 
 export default {

@@ -16,7 +16,7 @@ async function extendSession(context) {
 
    // throws an error on expiration
    const now = new Date()
-   if (now > context.socket.data.expireAt) {
+   if (now > context.socket.data.expiresAt) {
       // clear connection data
       context.socket.data = {}
       // leave all rooms except socket#id
@@ -31,7 +31,7 @@ async function extendSession(context) {
    // compute new expiration time
    const sessionExpireDelay = context.app.get('config').SESSION_EXPIRE_DELAY
    const updatedExpirationDate = new Date(now.getTime() + sessionExpireDelay)
-   context.socket.data.expireAt = updatedExpirationDate
+   context.socket.data.expiresAt = updatedExpirationDate
 }
 
 

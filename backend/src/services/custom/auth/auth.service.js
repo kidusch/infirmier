@@ -24,6 +24,7 @@ export default function (app) {
          return 'ok'
       },
 
+      // see hooks
       setCnxUser: async (id) => {
          const prisma = app.get('prisma')
          const user = await prisma.user.findUnique({ where: { id }})

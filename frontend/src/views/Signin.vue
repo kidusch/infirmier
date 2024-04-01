@@ -19,6 +19,6 @@
 
 <script setup>
 const goGoogle = () => {
-   window.location.href = `/auth/google?socketId=${sessionStorage['expressx-cnx-id']}`
+   window.location.href = `/auth/google`
 }
 </script>

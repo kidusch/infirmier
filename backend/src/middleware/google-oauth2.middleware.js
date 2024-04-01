@@ -27,15 +27,14 @@ export default function (app) {
 		const authorizationUri = oauth2.authorizeURL({
 			redirect_uri: 'http://localhost:8000/auth/google/callback',
 			scope: 'openid profile email',
-			state: req.query.socketId,
+			state: { a: 123 },
 		})
 		res.redirect(authorizationUri)
 	})
 
 	// Handle callback from Google authentication
 	app.get('/auth/google/callback', async (req, res) => {
-		console.log('req.query', req.query)
-		const { code } = req.query
+		const { code, state } = req.query
 		const options = {
 			code,
 			redirect_uri: 'http://localhost:8000/auth/google/callback'
@@ -68,6 +67,7 @@ export default function (app) {
 				})
 				// console.log('new user', user)
 			}
+			// only students use Google authentication
 			res.redirect(`/student/${user.id}`)
 		} catch (error) {
 			console.error('Access Token Error', error.message)
