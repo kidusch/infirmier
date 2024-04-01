@@ -2,34 +2,36 @@
 import { debouncedFunction } from '#lib/utilities.mjs'
 
 
-// Extend socket.data.expireAt with SESSION_EXPIRE_DELAY and update `endTime` of associated session with current time
 async function extendSession(context) {
-   // server-side app.service call: no socket in context
-   if (!context.socket) return
-
    console.log('extendSession', context.socket.rooms, context.socket.data)
 
-   const sessionId = context.socket.data.sessionId
-   if (!sessionId) return // session is already expired
+   // do nothing if server-side app.service call
+   if (!context.socket) return
 
-   // exception: do not extend expiration for service 'auth' and method 'getTimeLeftBeforeExpiration'
+   // do nothing if no user is logged in
+   if (!context.socket.data.user) return
+
+   // do nothing for method 'getTimeLeftBeforeExpiration'
    if (context.methodName === 'getTimeLeftBeforeExpiration') return
+
+   // throws an error on expiration
+   const now = new Date()
+   if (now > context.socket.data.expireAt) {
+      // clear connection data
+      context.socket.data = {}
+      // leave all rooms except socket#id
+      const rooms = new Set(context.socket.rooms)
+      for (const room of rooms) {
+         if (room === context.socket.id) continue
+         context.socket.leave(room)
+      }
+      throw new Error('expired')
+   }
 
    // compute new expiration time
    const sessionExpireDelay = context.app.get('config').SESSION_EXPIRE_DELAY
-   const now = new Date()
    const updatedExpirationDate = new Date(now.getTime() + sessionExpireDelay)
    context.socket.data.expireAt = updatedExpirationDate
-
-   // update 'endTime' of session with 'now'
-   const prisma = context.app.get('prisma')
-   await prisma.session.update({
-      where: { id: sessionId },
-      data: {
-         endTime: now,
-      }
-   })
-
 }
 
 

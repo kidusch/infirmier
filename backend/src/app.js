@@ -1,6 +1,6 @@
 import express from 'express'
-import { expressX } from '@jcbuisson/express-x'
-// import { expressX } from './server.mjs'
+// import { expressX } from '@jcbuisson/express-x'
+import { expressX } from './server.mjs'
 import { PrismaClient } from '@prisma/client'
 import config from 'config'
 
@@ -41,5 +41,9 @@ app.configure(channels)
 
 // cnx transfer
 app.configure(transfer)
+
+app.createService('caca', {
+   chie: () => console.log('chie')
+})
 
 export default app

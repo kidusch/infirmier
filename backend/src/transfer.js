@@ -10,14 +10,14 @@ export default async function(app) {
    const roomCache = {}
    const dataCache = {}
 
-   app.addSocketDisconnectingListener((socket, reason) => {
+   app.addDisconnectingListener((socket, reason) => {
       console.log('onSocketDisconnecting', socket.id, reason)
       // put disconnecting socket data & rooms in caches
       roomCache[socket.id] = new Set(socket.rooms)
       dataCache[socket.id] = Object.assign({}, socket.data)
 })
 
-   app.addSocketConnectListener((socket) => {
+   app.addConnectListener((socket) => {
       console.log('onSocketConnect', socket.id)
    
       // when client ask for transfer from fromSocketId to toSocketId

@@ -1,11 +1,19 @@
 <template>
-  <h1 class="text-3xl font-bold underline">
-    Hello world!
-  </h1>
 
-  <a href="/auth/google"><img src="/src/assets/google_logo.svg" class="w-10"/></a>
+   <div class="absolute top-2 right-2">
+      <p class="text-sm text-white p-1">{{ VERSION }}</p>
+   </div>
+
+   <router-view></router-view>
+
+   <ReloadPWA></ReloadPWA>
 
 </template>
 
 <script setup>
+import ReloadPWA from '/src/ReloadPWA.vue'
+import { VERSION } from '/src/version'
+
+import app from '/src/client-app.js'
+
 </script>

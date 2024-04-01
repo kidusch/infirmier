@@ -23,16 +23,18 @@ export default function (app) {
 
 	// Redirect user to Google for authentication
 	app.get('/auth/google', (req, res) => {
+		console.log('query', req.query)
 		const authorizationUri = oauth2.authorizeURL({
 			redirect_uri: 'http://localhost:8000/auth/google/callback',
 			scope: 'openid profile email',
-			state: 'random_state'
+			state: req.query.socketId,
 		})
 		res.redirect(authorizationUri)
 	})
 
 	// Handle callback from Google authentication
 	app.get('/auth/google/callback', async (req, res) => {
+		console.log('req.query', req.query)
 		const { code } = req.query
 		const options = {
 			code,
@@ -48,11 +50,13 @@ export default function (app) {
 					Authorization: `Bearer ${token.token.access_token}`
 				}
 			})
-			console.log('data', response.data)
+			// console.log('data', response.data)
 			const { sub: google_id, name, given_name: firstname, family_name: lastname, picture, email } = response.data
 			const prisma = app.get('prisma')
 			let user = await prisma.user.findUnique({ where: { google_id } })
-			if (!user) {
+			if (user) {
+				// console.log('existing user', user)
+			} else {
 				user = await prisma.user.create({
 					data: {
 						google_id,
@@ -62,9 +66,9 @@ export default function (app) {
 						picture,
 					}
 				})
+				// console.log('new user', user)
 			}
-			console.log('user', user)
-			res.redirect(`/home/${user.id}`)
+			res.redirect(`/student/${user.id}`)
 		} catch (error) {
 			console.error('Access Token Error', error.message)
 			res.status(500).json('Authentication failed')

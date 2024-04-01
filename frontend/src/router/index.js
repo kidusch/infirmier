@@ -1,14 +1,40 @@
 
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '/src/views/Home.vue'
+import FrontPage from '/src/views/FrontPage.vue'
+import Signup from '/src/views/Signup.vue'
+import Signin from '/src/views/Signin.vue'
+import Student from '/src/views/Student.vue'
+import AfterGoogleSignup from '/src/views/AfterGoogleSignup.vue'
+
+import app from '/src/client-app.js'
 
 const routes = [
    {
-      name: 'home',
-      path: '/home/:userid',
-      component: Home,
+      path: '/',
+      component: FrontPage,
+   },
+   {
+      path: '/signup',
+      component: Signup,
+   },
+   {
+      path: '/signin',
+      component: Signin,
+   },
+   {
+      path: '/student/:userid',
+      component: Student,
       meta: { requiresAuth: true },
-   }
+      beforeEnter: (to, from) => {
+         app.service('auth').setCnxUser(parseInt(to.params.userid))
+         return true
+      },
+   },
+   {
+      path: '/after-google-signup/:userid',
+      component: AfterGoogleSignup,
+      meta: { requiresAuth: true },
+   },
 ]
 
 const router = createRouter({
@@ -24,11 +50,6 @@ router.beforeEach(async (to, from, next) => {
    }
 
    next()
-})
-
-
-router.afterEach(() => {
-   stateAppState.value.ready = "loaded"
 })
 
 export default router
