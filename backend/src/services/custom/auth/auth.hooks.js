@@ -1,8 +1,7 @@
 
-async function afterLogin(context) {
+async function afterAuthentication(context) {
    // add user to socket data
-   const user = context.result
-   context.socket.data.user = user
+   context.socket.data.user = Object.assign({}, context.result)
    // set expiration time
    const now = new Date()
    const sessionExpireDelay = context.app.get('config').SESSION_EXPIRE_DELAY
@@ -10,9 +9,11 @@ async function afterLogin(context) {
    context.socket.data.expiresAt = updatedExpirationDate
    // add socket to "authenticated" channel
    context.app.joinChannel('authenticated', context.socket)
+   // remove password field from result
+   delete context.result.password
 }
 
-function afterLogout(context) {
+function afterSignout(context) {
    // clear connection data
    context.socket.data = {}
    // leave all rooms except socket#id
@@ -23,17 +24,18 @@ function afterLogout(context) {
    }
 }
 
-async function beforeGetTimeLeftBeforeExpiration(context) {
+async function beforeGetExpirationTime(context) {
    context.result = context.socket.data.expiresAt
 }
 
 export default {
    before: {
-      getTimeLeftBeforeExpiration: [beforeGetTimeLeftBeforeExpiration],
+      getExpirationTime: [beforeGetExpirationTime],
    },
    after: {
-      localLogin: [afterLogin],
-      logout: [afterLogout],
-      setCnxUser: [afterLogin]
+      localSignin: [afterAuthentication],
+      localSignup: [afterAuthentication],
+      setCnxUser: [afterAuthentication],
+      signout: [afterSignout],
    },
 }

@@ -2,8 +2,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import FrontPage from '/src/views/FrontPage.vue'
-import Signup from '/src/views/Signup.vue'
-import Signin from '/src/views/Signin.vue'
 import Student from '/src/views/Student.vue'
 
 import { useSessionStorage } from '@vueuse/core'
@@ -20,17 +18,26 @@ const routes = [
    },
    {
       path: '/signup',
-      component: Signup,
+      component: () => import('/src/views/Signup.vue'),
+   },
+   {
+      path: '/local-signup',
+      component: () => import('/src/views/LocalSignup.vue'),
    },
    {
       path: '/signin',
-      component: Signin,
+      component: () => import('/src/views/Signin.vue'),
+   },
+   {
+      path: '/local-signin',
+      component: () => import('/src/views/LocalSignin.vue'),
    },
    {
       path: '/student/:userid',
       component: Student,
       meta: { requiresAuth: true },
       beforeEnter: async (to, from) => {
+         // set socket.data.user & socket.data.expiresAt, whether authentication was local or by Google
          const user_ = await app.service('auth').setCnxUser(parseInt(to.params.userid))
          // store user in session storage
          user.value = user_

@@ -6,7 +6,6 @@
 
 <script setup>
 import router from "/src/router"
-import app from '/src/client-app.js'
 
 function signin() {
    router.push('/signin')

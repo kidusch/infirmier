@@ -8,22 +8,12 @@ datasource db {
 }
 
 
-// model session {
-//    id              Int       @default(autoincrement()) @id
-//    startTime       DateTime
-//    endTime         DateTime?
-
-//    user_actions    user_action[]
-// }
-
 model user_action {
    id              Int       @default(autoincrement()) @id
-   // session_id      Int
    time            DateTime
    user_id         Int
    action          String
 
-   // session         session   @relation(fields: [session_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
    user            user      @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
@@ -36,8 +26,7 @@ model user {
    type                 UserType              @default(student)
 
    google_id            String?               @unique(map: "uses_google_id_unique")
-   firstname            String?
-   lastname             String?
+   name                 String?
    picture              String?
 
    user_actions         user_action[]

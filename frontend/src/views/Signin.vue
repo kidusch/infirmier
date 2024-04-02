@@ -10,15 +10,25 @@
    </div>
 
    <div>
-      <button class="btn btn-wide" @click="goGoogle">
+      <button class="btn btn-wide" @click="localSignin">
          Continuer avec un email @
       </button>
+   </div>
+
+   <div>
+      Pas encore de compte ? <RouterLink to="/signup" class="link">S'inscrire</RouterLink>
    </div>
 
 </template>
 
 <script setup>
+import router from "@/router"
+
 const goGoogle = () => {
    window.location.href = `/auth/google`
+}
+
+const localSignin = () => {
+   router.push('/local-signin')
 }
 </script>

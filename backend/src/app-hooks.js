@@ -1,9 +1,8 @@
 
-import { debouncedFunction } from '#lib/utilities.mjs'
 
-
+// DO NOT DEBOUNCE: throwing the error crashes the backend
 async function extendSession(context) {
-   console.log('extendSession', context.socket.rooms, context.socket.data)
+   // console.log('extendSession', context.socket.rooms, context.socket.data)
 
    // do nothing if server-side app.service call
    if (!context.socket) return
@@ -11,8 +10,8 @@ async function extendSession(context) {
    // do nothing if no user is logged in
    if (!context.socket.data.user) return
 
-   // do nothing for method 'getTimeLeftBeforeExpiration'
-   if (context.methodName === 'getTimeLeftBeforeExpiration') return
+   // do nothing for auth/getExpirationTime'
+   if (context.methodName === 'getExpirationTime') return
 
    // throws an error on expiration
    const now = new Date()
@@ -25,7 +24,7 @@ async function extendSession(context) {
          if (room === context.socket.id) continue
          context.socket.leave(room)
       }
-      throw new Error('expired')
+      // throw new Error('expired')
    }
 
    // compute new expiration time
@@ -37,5 +36,5 @@ async function extendSession(context) {
 
 export default {
    // after all service calls
-   after: [debouncedFunction(extendSession)],
+   after: [extendSession],
 }

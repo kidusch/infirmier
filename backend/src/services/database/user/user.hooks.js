@@ -1,21 +1,9 @@
 
-import { isNotExpired } from '@jcbuisson/express-x'
-import bcrypt from 'bcryptjs'
-
-
-// hash password of user record
-const hashPassword = (passwordField) => async (context) => {
-   const data = context.args[0]
-   if (data?.data[passwordField]) {
-      data.data[passwordField] = await bcrypt.hash(data.data[passwordField], 5)
-   }
-   return context
-}
-
+import { isNotExpired, protect, hashPassword } from '@jcbuisson/express-x'
 
 export default {
    before: {
-      all: [isNotExpired],
+      all: [isNotExpired, protect('password')],
 
       create: [hashPassword('password')],
       update: [hashPassword('password')],

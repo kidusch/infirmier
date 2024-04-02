@@ -50,7 +50,7 @@ export default function (app) {
 				}
 			})
 			// console.log('data', response.data)
-			const { sub: google_id, name, given_name: firstname, family_name: lastname, picture, email } = response.data
+			const { sub: google_id, name, picture, email } = response.data
 			const prisma = app.get('prisma')
 			let user = await prisma.user.findUnique({ where: { google_id } })
 			if (user) {
@@ -59,8 +59,7 @@ export default function (app) {
 				user = await prisma.user.create({
 					data: {
 						google_id,
-						firstname,
-						lastname,
+						name,
 						email,
 						picture,
 					}

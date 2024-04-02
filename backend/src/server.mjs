@@ -114,13 +114,14 @@ export function expressX(config) {
                         result,
                      })
                   } catch(err) {
-                     console.log('!!!!!!error', err.code, err)
+                     console.log('!!!!!!error', err)
                      app.log('verbose', err.stack)
                      socket.emit('client-response', {
                         uid,
                         error: {
                            code: err.code || 'unknown-error',
-                           message: err.stack,
+                           message: err.message,
+                           stack: err.stack,
                         }
                      })
                   }
@@ -140,8 +141,9 @@ export function expressX(config) {
                   uid,
                   error: {
                      code: err.code || 'unknown-error',
-                     message: err.stack,
-                  }
+                     message: err.message,
+                     stack: err.stack,
+            }
                })
             }
          } else {
@@ -173,8 +175,8 @@ export function expressX(config) {
             // put args into context
             context.args = args
 
-            // if a hook or the method throws an error, it will be caught by `socket.on('client-request'` (ws)
-            // or by express (http) and the client will get a rejected promise
+            // if a hook or the method throws an error, it will be caught by `socket.on('client-request'`
+            // and the client will get a rejected promise
 
             // call 'before' hooks, possibly modifying `context`
             const beforeAppHooks = appHooks?.before || []
