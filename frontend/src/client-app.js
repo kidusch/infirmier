@@ -1,6 +1,6 @@
 import { io } from "socket.io-client"
-import expressXClient from '@jcbuisson/express-x-client'
-// import expressXClient from './client.mjs'
+// import expressXClient from '@jcbuisson/express-x-client'
+import expressXClient from './client.mjs'
 
 
 const socket = io({
@@ -60,6 +60,10 @@ app.onConnect(async (socket) => {
    socket.on('cnx-transfer-ack', () => {
       console.log('ACKACK!!!')
    })
+})
+
+app.on('expired', () => {
+   alert('expired')
 })
 
 

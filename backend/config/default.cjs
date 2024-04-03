@@ -7,8 +7,7 @@ module.exports = {
    WS_TRANSPORT: true,
    WS_PATH: '/infirmier-socket-io/',
 
-   SESSION_EXPIRE_DELAY: 30 * 60*1000, // 30mn: delay of inactivity before expiration - see auth.extendSession
-   AUTHCODE_EXPIRE_DELAY: 10 * 60*1000, // 10mn: expiration delay for authorization codes
+   SESSION_EXPIRE_DELAY: parseInt(process.env.SESSION_EXPIRE_DELAY),
 
    DOMAIN: process.env.DOMAIN,
 

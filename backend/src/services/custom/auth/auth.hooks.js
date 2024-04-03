@@ -1,12 +1,18 @@
 
 async function afterAuthentication(context) {
-   // add user to socket data
-   context.socket.data.user = Object.assign({}, context.result)
-   // set expiration time
-   const now = new Date()
-   const sessionExpireDelay = context.app.get('config').SESSION_EXPIRE_DELAY
-   const updatedExpirationDate = new Date(now.getTime() + sessionExpireDelay)
-   context.socket.data.expiresAt = updatedExpirationDate
+   if (!context.socket.data.user) {
+      // add user to socket data
+      console.log('socket.data.user set by afterAuthentication')
+      context.socket.data.user = Object.assign({}, context.result)
+   }
+   if (!context.socket.data.expiresAt) {
+      // set expiration time
+      const now = new Date()
+      const sessionExpireDelay = context.app.get('config').SESSION_EXPIRE_DELAY
+      const updatedExpirationDate = new Date(now.getTime() + sessionExpireDelay)
+      console.log('socket.data.expiresAt set by afterAuthentication')
+      context.socket.data.expiresAt = updatedExpirationDate
+   }
    // add socket to "authenticated" channel
    context.app.joinChannel('authenticated', context.socket)
    // remove password field from result
@@ -24,18 +30,20 @@ function afterSignout(context) {
    }
 }
 
-async function beforeGetExpirationTime(context) {
+async function afterGetExpirationTime(context) {
+   console.log('context.socket.data', context.socket.data)
+   console.log('context.socket.rooms', context.socket.rooms)
    context.result = context.socket.data.expiresAt
 }
 
 export default {
    before: {
-      getExpirationTime: [beforeGetExpirationTime],
    },
    after: {
       localSignin: [afterAuthentication],
       localSignup: [afterAuthentication],
       setCnxUser: [afterAuthentication],
       signout: [afterSignout],
+      getExpirationTime: [afterGetExpirationTime],
    },
 }

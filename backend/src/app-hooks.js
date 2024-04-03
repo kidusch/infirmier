@@ -1,6 +1,6 @@
 
 
-// DO NOT DEBOUNCE: throwing the error crashes the backend
+// DO NOT DEBOUNCE: new Error('expired') is thrown outside the call scope
 async function extendSession(context) {
    // console.log('extendSession', context.socket.rooms, context.socket.data)
 
@@ -12,6 +12,7 @@ async function extendSession(context) {
 
    // do nothing for auth/getExpirationTime'
    if (context.methodName === 'getExpirationTime') return
+   if (context.methodName === 'setCnxUser') return
 
    // throws an error on expiration
    const now = new Date()
@@ -24,10 +25,14 @@ async function extendSession(context) {
          if (room === context.socket.id) continue
          context.socket.leave(room)
       }
+      // send an app event to the client (client reaction: logout)
+      context.app.sendAppEvent('authenticated', 'expired')
+      // // throw an error for the service call
       // throw new Error('expired')
    }
 
    // compute new expiration time
+   console.log('extend caused by', context.methodName)
    const sessionExpireDelay = context.app.get('config').SESSION_EXPIRE_DELAY
    const updatedExpirationDate = new Date(now.getTime() + sessionExpireDelay)
    context.socket.data.expiresAt = updatedExpirationDate

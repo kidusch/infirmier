@@ -35,8 +35,8 @@ export default async function(app) {
             }
             // copy data
             toSocket.data = dataCache[fromSocketId]
-            // console.log('data', toSocket.data)
-            // console.log('rooms', toSocket.rooms)
+            // console.log('cnx-transfer data', toSocket.data)
+            // console.log('cnx-transfer rooms', toSocket.rooms)
             // remove 'from' cache data
             delete roomCache[fromSocketId]
             delete dataCache[fromSocketId]

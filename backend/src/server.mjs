@@ -3,6 +3,8 @@ import { createServer } from "http"
 import { Server } from "socket.io"
 
 
+// UTILISER L'ACKNOWLEDGEMENT : https://socket.io/docs/v4/#acknowledgements
+
 export function expressX(config) {
 
    const services = {}

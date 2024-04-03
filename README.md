@@ -28,3 +28,7 @@ Elle est reprise (avec transfert) lors de la redirection vers /home/student/:use
 
 Il faut que dans les deux situations d'authentification (locale ou Google), socket.data.user et socket.data.expiresAt soient affecté
 Cela est réalisé avec une garde 'before' de vue-router sur la route /home/student/:userid, qui appelle un service auth/setCnxUser
+
+Lors d'un refresh/reload, deux phénomènes se produisent en même temps :
+- transfer de connexion (cnx-transfer, transfer.js)
+- appel du service auth/setCnxUser lors de la ré-exécution de la garde de /home/student/:userid

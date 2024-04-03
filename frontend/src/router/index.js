@@ -37,10 +37,10 @@ const routes = [
       component: Student,
       meta: { requiresAuth: true },
       beforeEnter: async (to, from) => {
-         // set socket.data.user & socket.data.expiresAt, whether authentication was local or by Google
-         const user_ = await app.service('auth').setCnxUser(parseInt(to.params.userid))
-         // store user in session storage
-         user.value = user_
+         // // set socket.data.user & socket.data.expiresAt, whether authentication was local or by Google
+         // const user_ = await app.service('auth').setCnxUser(parseInt(to.params.userid))
+         // // store user in session storage
+         // user.value = user_
          return true
       },
    },
