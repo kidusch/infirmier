@@ -15,23 +15,15 @@ const socket = io({
 
 const app = expressXClient(socket, { debug: true })
 
-// // triggers disconnection / reconnection
-// setTimeout(() => {
-//    if (socket.io.engine) {
-//      // close the low-level connection and trigger a reconnection
-//      socket.io.engine.close()
-//    }
-// }, 10000)
-
 
 function _getStorageSocketId() {
-   if (typeof sessionStorage !== 'undefined') return sessionStorage.getItem('expressx-cnx-id')
+   if (typeof sessionStorage !== 'undefined') return sessionStorage.getItem('cnxid')
    return nodeCnxId
 }
 
 function _setStorageSocketId(id) {
    if (typeof sessionStorage !== 'undefined') {
-      sessionStorage.setItem('expressx-cnx-id', id)
+      sessionStorage.setItem('cnxid', id)
    } else {
       nodeCnxId = id
    }

@@ -2,8 +2,12 @@
 import { AuthorizationCode } from 'simple-oauth2'
 import axios from 'axios'
 
+import { roomCache, dataCache } from '../transferData.mjs'
+
 
 export default function (app) {
+
+	const prisma = app.get('prisma')
 
 	// Google OAuth2 configuration
 	const googleConfig = {
@@ -21,20 +25,23 @@ export default function (app) {
 	// Initialize OAuth2 client
 	const oauth2 = new AuthorizationCode(googleConfig)
 
+
 	// Redirect user to Google for authentication
 	app.get('/auth/google', (req, res) => {
 		console.log('query', req.query)
 		const authorizationUri = oauth2.authorizeURL({
 			redirect_uri: 'http://localhost:8000/auth/google/callback',
 			scope: 'openid profile email',
-			state: { a: 123 },
+			state: req.query.cnxid,
 		})
 		res.redirect(authorizationUri)
 	})
 
+
 	// Handle callback from Google authentication
 	app.get('/auth/google/callback', async (req, res) => {
-		const { code, state } = req.query
+		const { code, state: cnxid } = req.query
+		console.log('cnxid', cnxid)
 		const options = {
 			code,
 			redirect_uri: 'http://localhost:8000/auth/google/callback'
@@ -51,7 +58,6 @@ export default function (app) {
 			})
 			// console.log('data', response.data)
 			const { sub: google_id, name, picture, email } = response.data
-			const prisma = app.get('prisma')
 			let user = await prisma.user.findUnique({ where: { google_id } })
 			if (user) {
 				// console.log('existing user', user)
@@ -66,7 +72,15 @@ export default function (app) {
 				})
 				// console.log('new user', user)
 			}
-			// only students use Google authentication
+			// Connection cnxid has been lost during Google auth and its data & rooms were saved in dataCache & roomCache
+			// Directly modify dataCache & roomCache of cnxid so that information will be transfered on reconnection
+			// set data.user
+			dataCache[cnxid].user = user
+			// set data.expiresAt
+			dataCache[cnxid].expiresAt = new Date((new Date()).getTime() + process.env.SESSION_EXPIRE_DELAY)
+			// add connection to channel 'authenticated'
+			roomCache[cnxid].add('authenticated')
+			// redirect to student home (only students use Google authentication)
 			res.redirect(`/student/${user.id}`)
 		} catch (error) {
 			console.error('Access Token Error', error.message)

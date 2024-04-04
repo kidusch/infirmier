@@ -25,7 +25,7 @@
 import router from "@/router"
 
 const goGoogle = () => {
-   window.location.href = `/auth/google`
+   window.location.href = `/auth/google?cnxid=${sessionStorage.cnxid}`
 }
 
 const localSignin = () => {

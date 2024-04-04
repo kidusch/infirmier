@@ -3,12 +3,15 @@
 // (when a new page is loaded or the current page is refreshed, all resources from the previous page are closed and freed by the browser, including websockets)
 // We want connection data and pub/sub rooms preserved after a page refresh / reload
 
+import { roomCache, dataCache } from './transferData.mjs'
+
+
 export default async function(app) {
 
    const io = app.get('io')
 
-   const roomCache = {}
-   const dataCache = {}
+   // const roomCache = {}
+   // const dataCache = {}
 
    app.addDisconnectingListener((socket, reason) => {
       console.log('onSocketDisconnecting', socket.id, reason)
@@ -23,6 +26,8 @@ export default async function(app) {
       // when client ask for transfer from fromSocketId to toSocketId
       socket.on('cnx-transfer', async (fromSocketId, toSocketId) => {
          app.log('verbose', `cnx-transfer from ${fromSocketId} to ${toSocketId}`)
+         console.log('dataCache', dataCache)
+         console.log('roomCache', roomCache)
          // copy connection room & data from 'fromSocketId' to 'toSocketId'
          const toSocket = io.sockets.sockets.get(toSocketId)
          // data & rooms of fromSocketId are taken from dataCache and roomCache, since socket no longer exists
@@ -40,6 +45,8 @@ export default async function(app) {
             // remove 'from' cache data
             delete roomCache[fromSocketId]
             delete dataCache[fromSocketId]
+            // send acknowlegment to toSocket
+            toSocket.emit('cnx-transfer-ack')
          } else {
             console.log(`*** CNX TRANSFER ERROR, ${fromSocketId} -> ${toSocketId}`)
          }

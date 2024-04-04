@@ -44,7 +44,9 @@ const password = ref()
 
 const validate = async () => {
    try {
-      await app.service('auth').localSignin(email.value, password.value)
+      const user = await app.service('auth').localSignin(email.value, password.value)
+      // store user in sessionStorage
+      sessionStorage.user = JSON.stringify(user)
    } catch(err) {
       console.log('signin error', err)
    }

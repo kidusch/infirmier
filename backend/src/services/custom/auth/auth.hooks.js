@@ -1,18 +1,12 @@
 
 async function afterAuthentication(context) {
-   if (!context.socket.data.user) {
-      // add user to socket data
-      console.log('socket.data.user set by afterAuthentication')
-      context.socket.data.user = Object.assign({}, context.result)
-   }
-   if (!context.socket.data.expiresAt) {
-      // set expiration time
-      const now = new Date()
-      const sessionExpireDelay = context.app.get('config').SESSION_EXPIRE_DELAY
-      const updatedExpirationDate = new Date(now.getTime() + sessionExpireDelay)
-      console.log('socket.data.expiresAt set by afterAuthentication')
-      context.socket.data.expiresAt = updatedExpirationDate
-   }
+   // set socket.data.user
+   console.log('socket.data.user set by afterAuthentication')
+   context.socket.data.user = Object.assign({}, context.result)
+   // set socket.data.expiresAt
+   const now = new Date()
+   console.log('socket.data.expiresAt set by afterAuthentication')
+   context.socket.data.expiresAt = new Date(now.getTime() + process.env.SESSION_EXPIRE_DELAY)
    // add socket to "authenticated" channel
    context.app.joinChannel('authenticated', context.socket)
    // remove password field from result
@@ -42,7 +36,7 @@ export default {
    after: {
       localSignin: [afterAuthentication],
       localSignup: [afterAuthentication],
-      setCnxUser: [afterAuthentication],
+      // setCnxUser: [afterAuthentication],
       signout: [afterSignout],
       getExpirationTime: [afterGetExpirationTime],
    },
