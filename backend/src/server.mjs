@@ -59,7 +59,6 @@ export function expressX(config) {
       } else {
          // new or unrecoverable connection
          // (page open, page refresh/reload)
-         socket.data.a = 123
       }
 
       app.log('verbose', `Client connected ${socket.id}`)

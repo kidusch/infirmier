@@ -42,8 +42,39 @@ app.configure(channels)
 // cnx transfer
 app.configure(transfer)
 
+
+// throw an error for a client service method call when socket.data.expiresAt is missing or overdue
+const isNotExpired = async (context) => {
+   // do nothing if its not a client call from a ws connexion
+   if (!context.socket) return
+   const expiresAt = context.socket.data.expiresAt
+   if (expiresAt) {
+      const expiresAtDate = new Date(expiresAt)
+      const now = new Date()
+      if (now > expiresAtDate) {
+         // expiration date is met: clear socket.data & throw exception
+         context.socket.data = {}
+         throw new Error('session-expired')
+      }
+   } else {
+      throw new Error('session-expired')
+   }
+}
+
+// throw an error for a client service method call when socket.data does not contain user
+const isAuthenticated = async (context) => {
+   // do nothing if its not a client call from a ws connexion
+   if (!context.socket) return
+   if (!context.socket.data.user) throw new Error('not-authenticated')
+}
+
 app.createService('caca', {
    chie: () => console.log('chie')
+})
+app.service('caca').hooks({
+   before: {
+      chie: [isAuthenticated, isNotExpired],
+   }
 })
 
 export default app

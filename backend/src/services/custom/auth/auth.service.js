@@ -54,8 +54,12 @@ export default function (app) {
       },
 
       // see hooks
-      getExpirationTime: async () => {
+      getCnxInfo: async () => {
          return 0
+      },
+
+      // Do nothing
+      checkAuthentication: async () => {
       }
    })
 

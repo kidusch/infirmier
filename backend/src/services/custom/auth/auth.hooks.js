@@ -1,4 +1,6 @@
 
+import { isAuthenticated, isNotExpired } from '@jcbuisson/express-x'
+
 async function afterAuthentication(context) {
    // set socket.data.user
    console.log('socket.data.user set by afterAuthentication')
@@ -32,12 +34,13 @@ async function afterGetExpirationTime(context) {
 
 export default {
    before: {
+      checkAuthentication: [isAuthenticated, isNotExpired],
    },
    after: {
       localSignin: [afterAuthentication],
       localSignup: [afterAuthentication],
       // setCnxUser: [afterAuthentication],
       signout: [afterSignout],
-      getExpirationTime: [afterGetExpirationTime],
+      getCnxInfo: [afterGetExpirationTime],
    },
 }
