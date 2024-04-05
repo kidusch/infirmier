@@ -24,10 +24,6 @@ export default function expressXClient(socket, options={}) {
 
    socket.on("connect", async () => {
       console.log("socket connected", socket.id)
-      // if (socketConnectionState.resolve) {
-      //    socketConnectionState.resolve('ok')
-      //    socketConnectionState.status = 'connected'
-      // }
       if (connectHandler) connectHandler(socket)
    })
 

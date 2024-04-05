@@ -1,6 +1,6 @@
 import express from 'express'
-// import { expressX } from '@jcbuisson/express-x'
-import { expressX } from './server.mjs'
+import { expressX } from '@jcbuisson/express-x'
+// import { expressX } from './server.mjs'
 import { PrismaClient } from '@prisma/client'
 import config from 'config'
 
@@ -11,7 +11,8 @@ import appHooks from './app-hooks.js'
 import transfer from './transfer.js'
 import middleware from './middleware/index.js'
 
-import { isAuthenticated, isNotExpired } from '#root/src/common-hooks.mjs'
+// import { isAuthenticated, isNotExpired } from '#root/src/common-hooks.mjs'
+import { isAuthenticated, isNotExpired } from '@jcbuisson/express-x'
 
 
 // `app` is a regular express application, enhanced with express-x features
