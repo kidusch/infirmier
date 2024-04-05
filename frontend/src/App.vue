@@ -13,14 +13,14 @@
    <ReloadPWA></ReloadPWA>
 
    <!-- EXPIRED MODAL -->
-   <div class="modal" :class="{'modal-open': showExpiredModal}">
+   <div class="modal" :class="{'modal-open': stateAppState.isExpired}">
       <div class="modal-box max-w-xl">
          <div class="text-large mt-2 mb-4 font-semibold">
             La session a expiré
          </div>
 
          <div class="modal-action">
-            <button class="btn btn-primary" @click="showExpiredModal = false">
+            <button class="btn btn-primary" @click="stateAppState.isExpired = false">
                OK
             </button>
          </div>
@@ -28,14 +28,14 @@
    </div>
 
    <!-- ERROR MODAL -->
-   <div class="modal" :class="{'modal-open': showUnknowErrorModal}">
+   <div class="modal" :class="{'modal-open': stateAppState.unexpectedError}">
       <div class="modal-box max-w-xl">
          <div class="text-large mt-2 mb-4 font-semibold">
             Une erreur inconnue est survenue
          </div>
 
          <div class="modal-action">
-            <button class="btn btn-primary" @click="showUnknowErrorModal = false">
+            <button class="btn btn-primary" @click="stateAppState.unexpectedError = false">
                OK
             </button>
          </div>
@@ -45,7 +45,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute} from 'vue-router'
 
 import app from '/src/client-app.js'
@@ -53,12 +53,14 @@ import router from "/src/router"
 import { VERSION } from '/src/version'
 
 import ReloadPWA from '/src/ReloadPWA.vue'
+import { useAppState } from '/src/use/useAppState'
 
 const route = useRoute()
+const { stateAppState } = useAppState()
+
 
 const showExpiredModal = ref(false)
 const showUnknowErrorModal = ref(false)
-
 
 async function getCnxInfo() {
    const time = await app.service('auth').getCnxInfo()
@@ -66,7 +68,11 @@ async function getCnxInfo() {
 }
 
 async function chie() {
-   await app.service('caca').chie()
+   try {
+      await app.service('caca').chie()
+   } catch(err) {
+      stateAppState.value.unexpectedError = true
+   }
 }
 
 
@@ -74,26 +80,38 @@ async function chie() {
 
 const PROBE_PERIOD = import.meta.env.VITE_PROBE_PERIOD
 
-// setInterval(async () => {
-//    if (route.meta.requiresAuth) {
-//       try {
-//          // calls a service which needs authentication
-//          await app.service('auth').checkAuthentication()
-//       } catch(err) {
-//          console.log('err', err.code, err.message)
-//          if (err.code === 'not-authenticated') {
-//             showExpiredModal.value = true
-//             // restart application
-//             await app.service('auth').signout()
-//             router.push('/')
-//          } else {
-//             showUnknowErrorModal.value = true
-//             // restart application
-//             await app.service('auth').signout()
-//             router.push('/')
-//          }
-//       }
-//    }
-// }, PROBE_PERIOD)
+setInterval(async () => {
+   if (route.meta.requiresAuth) {
+      try {
+         // calls a service which needs authentication
+         await app.service('auth').checkAuthentication()
+      } catch(err) {
+         console.log('err', err.code, err.message)
+         if (err.code === 'not-authenticated') {
+            stateAppState.value.isExpired = true
+         } else {
+            stateAppState.value.unexpectedError = true
+         }
+      }
+   }
+}, PROBE_PERIOD)
+
+
+// restart application when isExpired is detected, either by probe or by an application call
+watch(() => stateAppState.value.isExpired, (value) => {
+   if (value) {
+      app.service('auth').signout()
+      router.push('/')
+   }
+})
+
+// restart application when unexpectedError is detected
+watch(() => stateAppState.value.unexpectedError, (value) => {
+   console.log('value err')
+   if (value) {
+      app.service('auth').signout()
+      router.push('/')
+   }
+})
 
 </script>

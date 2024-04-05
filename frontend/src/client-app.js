@@ -2,7 +2,10 @@ import { io } from "socket.io-client"
 // import expressXClient from '@jcbuisson/express-x-client'
 import expressXClient from './client.mjs'
 
-import router from "/src/router"
+// import router from "/src/router"
+import { useAppState } from '/src/use/useAppState'
+
+const { stateAppState } = useAppState()
 
 
 const socket = io({
@@ -31,6 +34,10 @@ function _setStorageSocketId(id) {
    }
 }
 
+app.onConnectError((socket, err) => {
+   console.log('CNX ERROR!!!', socket.id, err.code)
+})
+
 app.onConnect(async (socket) => {
    const socketId = socket.id
    console.log('connect', socketId)
@@ -56,10 +63,8 @@ app.onConnect(async (socket) => {
    })
 
    socket.on('expired', async () => {
-      console.log('EXPIRED!!!!!!')
-      await app.service('auth').signout()
-      router.push('/')
-
+      console.log("server app-hook sent 'expired' event")
+      stateAppState.value.isExpired = true
    })
 })
 

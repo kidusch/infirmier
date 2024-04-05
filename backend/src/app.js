@@ -48,7 +48,10 @@ app.configure(transfer)
 
 
 app.createService('caca', {
-   chie: () => console.log('chie')
+   chie: () => {
+      console.log('chie')
+      throw new Error('aa')
+   }
 })
 app.service('caca').hooks({
    before: {

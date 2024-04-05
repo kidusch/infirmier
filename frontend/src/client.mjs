@@ -31,13 +31,9 @@ export default function expressXClient(socket, options={}) {
       if (connectHandler) connectHandler(socket)
    })
 
-   socket.on("connect_error", async () => {
+   socket.on("connect_error", async (err) => {
       console.log("socket connection error", socket.id)
-      // if (socketConnectionState.reject) {
-      //    socketConnectionState.reject(err)
-      //    socketConnectionState.status = 'error'
-      // }
-      if (connectErrorHandler) connectErrorHandler(socket)
+      if (connectErrorHandler) connectErrorHandler(socket, err)
    })
 
    socket.on("disconnect", async () => {

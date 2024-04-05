@@ -1,6 +1,4 @@
 
-
-// DO NOT DEBOUNCE, otherwise new Error('expired') is thrown outside the call scope
 async function extendSession(context) {
    // do nothing if not ws client call
    if (!context.socket) return
@@ -33,7 +31,6 @@ async function extendSession(context) {
       context.socket.data.expiresAt = updatedExpirationDate
    }
 }
-
 
 export default {
    // Before all service calls
