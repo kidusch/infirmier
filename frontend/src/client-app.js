@@ -2,6 +2,8 @@ import { io } from "socket.io-client"
 // import expressXClient from '@jcbuisson/express-x-client'
 import expressXClient from './client.mjs'
 
+import router from "/src/router"
+
 
 const socket = io({
    path: '/infirmier-socket-io/',
@@ -52,11 +54,13 @@ app.onConnect(async (socket) => {
    socket.on('cnx-transfer-ack', () => {
       console.log('ACKACK!!!')
    })
-})
 
-app.on('expired', () => {
-   alert('expired')
-})
+   socket.on('expired', async () => {
+      console.log('EXPIRED!!!!!!')
+      await app.service('auth').signout()
+      router.push('/')
 
+   })
+})
 
 export default app

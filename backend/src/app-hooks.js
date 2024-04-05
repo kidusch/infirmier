@@ -1,6 +1,6 @@
 
 
-// DO NOT DEBOUNCE: new Error('expired') is thrown outside the call scope
+// DO NOT DEBOUNCE, otherwise new Error('expired') is thrown outside the call scope
 async function extendSession(context) {
    // do nothing if not ws client call
    if (!context.socket) return
@@ -10,6 +10,7 @@ async function extendSession(context) {
 
    // do nothing for auth/getCnxInfo'
    if (context.methodName === 'getCnxInfo') return
+   if (context.methodName === 'checkAuthentication') return
 
    const now = new Date()
    if (now > context.socket.data.expiresAt) {
@@ -36,6 +37,6 @@ async function extendSession(context) {
 
 export default {
    // Before all service calls
-   // Must be done before and not after, otherwise the isNotExpired throws an error and this hook is never run
+   // Must be done before and not after, otherwise this hook is never run in case of error
    before: [extendSession],
 }

@@ -1,5 +1,7 @@
 
-import { isAuthenticated, isNotExpired } from '@jcbuisson/express-x'
+// import { isAuthenticated, isNotExpired } from '@jcbuisson/express-x'
+import { isAuthenticated, isNotExpired } from '#root/src/common-hooks.mjs'
+
 
 async function afterAuthentication(context) {
    // set socket.data.user
