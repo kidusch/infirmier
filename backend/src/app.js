@@ -11,8 +11,8 @@ import appHooks from './app-hooks.js'
 import transfer from './transfer.js'
 import middleware from './middleware/index.js'
 
-// import { isAuthenticated, isNotExpired } from '#root/src/common-hooks.mjs'
-import { isAuthenticated, isNotExpired } from '@jcbuisson/express-x'
+import { isAuthenticated, isNotExpired, extendExpiration } from '#root/src/common-hooks.mjs'
+// import { isAuthenticated, isNotExpired, extendExpiration } from '@jcbuisson/express-x'
 
 
 // `app` is a regular express application, enhanced with express-x features
@@ -51,12 +51,15 @@ app.configure(transfer)
 app.createService('caca', {
    chie: () => {
       console.log('chie')
-      throw new Error('aa')
+      // throw new Error('aa')
    }
 })
 app.service('caca').hooks({
    before: {
       chie: [isAuthenticated, isNotExpired],
+   },
+   after: {
+      all: [extendExpiration],
    }
 })
 

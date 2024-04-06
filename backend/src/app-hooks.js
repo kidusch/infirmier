@@ -1,7 +1,7 @@
 
 import config from '#config'
 
-async function extendSession(context) {
+async function extendExpiration(context) {
    // do nothing if not ws client call
    if (!context.socket) return
 
@@ -35,5 +35,5 @@ async function extendSession(context) {
 export default {
    // Before all service calls
    // Must be done before and not after, otherwise this hook is never run in case of error
-   before: [extendSession],
+   before: [extendExpiration],
 }

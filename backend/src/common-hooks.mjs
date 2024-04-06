@@ -1,4 +1,42 @@
 
+import bcrypt from 'bcryptjs'
+
+import config from '#config'
+
+
+/*
+ * Add a timestamp property of name `field` with current time as value
+*/
+export const addTimestamp = (field) => async (context) => {
+   context.result[field] = (new Date()).toISOString()
+   return context
+}
+
+/*
+ * Hash password of the property `field`
+*/
+export const hashPassword = (passwordField) => async (context) => {
+   const user = context.result
+   user[passwordField] = await bcrypt.hash(user[passwordField], 5)
+   return context
+}
+
+/*
+ * Remove `field` from `context.result`
+*/
+export function protect(field) {
+   return async (context) => {
+      if (Array.isArray(context.result)) {
+         for (const value of context.result) {
+            delete value[field]
+         }
+      } else {
+         delete context.result[field]
+      }
+      return (context)
+   }
+}
+
 class NotAuthenticatedError extends Error {
    constructor(message) {
       super(message)
@@ -42,6 +80,10 @@ export const isAuthenticated = async (context) => {
    if (!context.socket.data.user) throw new NotAuthenticatedError('no user in socket.data')
 }
 
-export const extendSession = async (context) => {
+/*
+ * Extend value of socket.data.expiresAt
+*/
+export const extendExpiration = async (context) => {
+   const now = new Date()
    context.socket.data.expiresAt = new Date(now.getTime() + config.SESSION_EXPIRE_DELAY)
 }
