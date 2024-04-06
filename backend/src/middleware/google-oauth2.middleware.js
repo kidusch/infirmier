@@ -1,7 +1,7 @@
 
 import { AuthorizationCode } from 'simple-oauth2'
 import axios from 'axios'
-import config from 'config'
+import config from '#config'
 
 import { roomCache, dataCache } from '../transferData.mjs'
 
@@ -73,7 +73,7 @@ export default function (app) {
 				})
 				// console.log('new user', user)
 			}
-			// Connection has been lost during Google auth and its data & rooms were saved in dataCache & roomCache under the key `cnxid` on disconnection
+			// cnxid has been diconnected during Google auth and its data & rooms were saved in dataCache & roomCache under the key `cnxid`
 			// Directly modify dataCache & roomCache of cnxid so that information will be transfered on reconnection
 			// set data.user
 			dataCache[cnxid].user = user
@@ -82,6 +82,7 @@ export default function (app) {
 			// add connection to channel 'authenticated'
 			roomCache[cnxid].add('authenticated')
 			// redirect to student home (only students use Google authentication)
+			// this will lead to a connection transfer from cnxid
 			res.redirect(`/student/${user.id}`)
 		} catch (error) {
 			console.error('Access Token Error', error.message)

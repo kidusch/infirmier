@@ -16,7 +16,7 @@
    </div>
 
    <div>
-      Vous avez déjà un compte ? <RouterLink to="/signin" class="link">Connexion</RouterLink>
+      Vous avez déjà un compte ? <RouterLink to="/login" class="link">Connexion</RouterLink>
    </div>
 
 </template>

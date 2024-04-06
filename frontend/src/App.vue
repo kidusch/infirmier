@@ -20,7 +20,7 @@
          </div>
 
          <div class="modal-action">
-            <button class="btn btn-primary" @click="stateAppState.isExpired = false">
+            <button class="btn btn-primary" @click="restartApp">
                OK
             </button>
          </div>
@@ -35,7 +35,7 @@
          </div>
 
          <div class="modal-action">
-            <button class="btn btn-primary" @click="stateAppState.unexpectedError = false">
+            <button class="btn btn-primary" @click="restartApp">
                OK
             </button>
          </div>
@@ -59,8 +59,12 @@ const route = useRoute()
 const { stateAppState } = useAppState()
 
 
-const showExpiredModal = ref(false)
-const showUnknowErrorModal = ref(false)
+const restartApp = async () => {
+   stateAppState.value.isExpired = false
+   stateAppState.value.unexpectedError = false
+   await app.service('auth').logout()
+   router.push('/')
+}
 
 async function getCnxInfo() {
    const time = await app.service('auth').getCnxInfo()
@@ -84,7 +88,7 @@ setInterval(async () => {
    if (route.meta.requiresAuth) {
       try {
          // calls a service which needs authentication
-         await app.service('auth').checkAuthentication()
+         await app.service('auth').ping()
       } catch(err) {
          console.log('err', err.code, err.message)
          if (err.code === 'not-authenticated') {
@@ -95,23 +99,5 @@ setInterval(async () => {
       }
    }
 }, PROBE_PERIOD)
-
-
-// restart application when isExpired is detected, either by probe or by an application call
-watch(() => stateAppState.value.isExpired, (value) => {
-   if (value) {
-      app.service('auth').signout()
-      router.push('/')
-   }
-})
-
-// restart application when unexpectedError is detected
-watch(() => stateAppState.value.unexpectedError, (value) => {
-   console.log('value err')
-   if (value) {
-      app.service('auth').signout()
-      router.push('/')
-   }
-})
 
 </script>

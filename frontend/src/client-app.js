@@ -2,7 +2,6 @@ import { io } from "socket.io-client"
 // import expressXClient from '@jcbuisson/express-x-client'
 import expressXClient from './client.mjs'
 
-// import router from "/src/router"
 import { useAppState } from '/src/use/useAppState'
 
 const { stateAppState } = useAppState()
@@ -52,8 +51,6 @@ app.onConnect(async (socket) => {
       _setStorageSocketId(socketId)
 
    } else {
-      // it's a first load/connection: ask the server to create a database session record
-      await socket.emit('start-session')
       // set connection id
       _setStorageSocketId(socketId)
    }

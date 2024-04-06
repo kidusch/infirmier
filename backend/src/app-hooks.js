@@ -1,4 +1,6 @@
 
+import config from '#config'
+
 async function extendSession(context) {
    // do nothing if not ws client call
    if (!context.socket) return
@@ -8,7 +10,7 @@ async function extendSession(context) {
 
    // do nothing for auth/getCnxInfo'
    if (context.methodName === 'getCnxInfo') return
-   if (context.methodName === 'checkAuthentication') return
+   if (context.methodName === 'ping') return
 
    const now = new Date()
    if (now > context.socket.data.expiresAt) {
@@ -26,9 +28,7 @@ async function extendSession(context) {
    } else {
       // compute new expiration time
       console.log('extend caused by', context.methodName)
-      const sessionExpireDelay = context.app.get('config').SESSION_EXPIRE_DELAY
-      const updatedExpirationDate = new Date(now.getTime() + sessionExpireDelay)
-      context.socket.data.expiresAt = updatedExpirationDate
+      context.socket.data.expiresAt = new Date(now.getTime() + config.SESSION_EXPIRE_DELAY)
    }
 }
 

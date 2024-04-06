@@ -14,12 +14,22 @@ export const isNotExpired = async (context) => {
       const expiresAtDate = new Date(expiresAt)
       const now = new Date()
       if (now > expiresAtDate) {
-         // expiration date is met: clear socket.data & throw exception
+         // expiration date is met
+         // clear socket.data
          context.socket.data = {}
+         // leave all rooms except socket#id
+         const rooms = new Set(context.socket.rooms)
+         for (const room of rooms) {
+            if (room === context.socket.id) continue
+            context.socket.leave(room)
+         }
+         // send an event to the client (typical client handling: logout)
+         context.socket.emit('expired')
+         // throw exception
          throw new NotAuthenticatedError("Session expired")
       }
    } else {
-      throw new NotAuthenticatedError("no expiresAt in socket.data")
+      throw new NotAuthenticatedError("No expiresAt in socket.data")
    }
 }
 
@@ -30,4 +40,8 @@ export const isAuthenticated = async (context) => {
    // do nothing if it's not a client call from a ws connexion
    if (!context.socket) return
    if (!context.socket.data.user) throw new NotAuthenticatedError('no user in socket.data')
+}
+
+export const extendSession = async (context) => {
+   context.socket.data.expiresAt = new Date(now.getTime() + config.SESSION_EXPIRE_DELAY)
 }

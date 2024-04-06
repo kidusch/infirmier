@@ -1,7 +1,8 @@
 {
   "imports": {
     "#root/*": "./*",
-    "#lib/*": "./src/lib/*"
+    "#lib/*": "./src/lib/*",
+    "#config": "./config/index.mjs"
   },
   "name": "infirmier",
   "version": "1.0.0",

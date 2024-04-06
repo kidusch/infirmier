@@ -41,15 +41,8 @@ export default function (app) {
          return createdUser
       },
 
-      // // see hooks
-      // setCnxUser: async (id) => {
-      //    const prisma = app.get('prisma')
-      //    const user = await prisma.user.findUnique({ where: { id }})
-      //    return user
-      // },
-
       // see hooks
-      signout: async () => {
+      logout: async () => {
          return 'ok'
       },
 
@@ -58,8 +51,8 @@ export default function (app) {
          return 0
       },
 
-      // Do nothing
-      checkAuthentication: async () => {
+      // Do nothing - see hooks
+      ping: async () => {
       }
    })
 

@@ -1,5 +1,6 @@
 
-module.exports = {
+export default {
+   
    PORT: process.env.PORT,
    LOGS_DIR: process.env.LOGS_DIR,
    DATABASE_URL: process.env.DATABASE_URL,

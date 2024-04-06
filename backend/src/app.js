@@ -2,7 +2,7 @@ import express from 'express'
 import { expressX } from '@jcbuisson/express-x'
 // import { expressX } from './server.mjs'
 import { PrismaClient } from '@prisma/client'
-import config from 'config'
+import config from '#config'
 
 import logging from './logging/index.js'
 import services from './services/index.js'
@@ -29,8 +29,8 @@ app.configure(logging)
 // services
 app.configure(services)
 
-// application hooks
-app.hooks(appHooks)
+// // application hooks
+// app.hooks(appHooks)
 
 // middleware
 app.use(express.urlencoded({ extended: true }))

@@ -19,11 +19,11 @@ const routes = [
       component: () => import('/src/views/LocalSignup.vue'),
    },
    {
-      path: '/signin',
+      path: '/login',
       component: () => import('/src/views/Signin.vue'),
    },
    {
-      path: '/local-signin',
+      path: '/local-login',
       component: () => import('/src/views/LocalSignin.vue'),
    },
    {

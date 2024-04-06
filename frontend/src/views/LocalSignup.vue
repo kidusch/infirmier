@@ -14,7 +14,7 @@
    <button class="block btn btn-primary" @click="validate">Valider</button>
 
    <div>
-      Vous avez déjà un compte ? <RouterLink to="/signin" class="link">connexion</RouterLink>
+      Vous avez déjà un compte ? <RouterLink to="/login" class="link">connexion</RouterLink>
    </div>
 
 </template>

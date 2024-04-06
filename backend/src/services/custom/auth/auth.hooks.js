@@ -1,6 +1,8 @@
 
-import { isAuthenticated, isNotExpired } from '@jcbuisson/express-x'
-// import { isAuthenticated, isNotExpired } from '#root/src/common-hooks.mjs'
+import config from '#config'
+
+// import { isAuthenticated, isNotExpired } from '@jcbuisson/express-x'
+import { isAuthenticated, isNotExpired } from '#root/src/common-hooks.mjs'
 
 
 async function afterAuthentication(context) {
@@ -10,7 +12,7 @@ async function afterAuthentication(context) {
    // set socket.data.expiresAt
    const now = new Date()
    console.log('socket.data.expiresAt set by afterAuthentication')
-   context.socket.data.expiresAt = new Date(now.getTime() + process.env.SESSION_EXPIRE_DELAY)
+   context.socket.data.expiresAt = new Date(now.getTime() + config.SESSION_EXPIRE_DELAY)
    // add socket to "authenticated" channel
    context.app.joinChannel('authenticated', context.socket)
    // remove password field from result
@@ -28,7 +30,7 @@ function afterSignout(context) {
    }
 }
 
-async function afterGetExpirationTime(context) {
+async function afterGetCnxInfo(context) {
    console.log('context.socket.data', context.socket.data)
    console.log('context.socket.rooms', context.socket.rooms)
    context.result = context.socket.data.expiresAt
@@ -36,13 +38,12 @@ async function afterGetExpirationTime(context) {
 
 export default {
    before: {
-      checkAuthentication: [isAuthenticated, isNotExpired],
+      ping: [isAuthenticated, isNotExpired],
    },
    after: {
       localSignin: [afterAuthentication],
       localSignup: [afterAuthentication],
-      // setCnxUser: [afterAuthentication],
-      signout: [afterSignout],
-      getCnxInfo: [afterGetExpirationTime],
+      logout: [afterSignout],
+      getCnxInfo: [afterGetCnxInfo],
    },
 }

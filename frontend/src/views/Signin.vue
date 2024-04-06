@@ -29,6 +29,6 @@ const goGoogle = () => {
 }
 
 const localSignin = () => {
-   router.push('/local-signin')
+   router.push('/local-login')
 }
 </script>
