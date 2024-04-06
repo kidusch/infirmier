@@ -1,6 +1,9 @@
 
-// import { isAuthenticated, isNotExpired, extendExpiration, protect, hashPassword } from '@jcbuisson/express-x'
-import { isAuthenticated, isNotExpired, extendExpiration, protect, hashPassword } from '#root/src/common-hooks.mjs'
+import { isAuthenticated, isNotExpired, extendExpiration, protect, hashPassword } from '@jcbuisson/express-x'
+// import { isAuthenticated, isNotExpired, extendExpiration, protect, hashPassword } from '#root/src/common-hooks.mjs'
+
+import config from '#config'
+
 
 export default {
    before: {
@@ -10,6 +13,6 @@ export default {
       update: [hashPassword('password')],
    },
    after: {
-      all: [extendExpiration],
+      all: [extendExpiration(config.SESSION_EXPIRE_DELAY)],
    }
 }

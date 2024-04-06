@@ -31,7 +31,7 @@
    <div class="modal" :class="{'modal-open': stateAppState.unexpectedError}">
       <div class="modal-box max-w-xl">
          <div class="text-large mt-2 mb-4 font-semibold">
-            Une erreur inconnue est survenue
+            Une erreur est survenue
          </div>
 
          <div class="modal-action">

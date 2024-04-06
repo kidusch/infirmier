@@ -7,12 +7,11 @@ import config from '#config'
 import logging from './logging/index.js'
 import services from './services/index.js'
 import channels from './channels.js'
-import appHooks from './app-hooks.js'
 import transfer from './transfer.js'
 import middleware from './middleware/index.js'
 
-import { isAuthenticated, isNotExpired, extendExpiration } from '#root/src/common-hooks.mjs'
-// import { isAuthenticated, isNotExpired, extendExpiration } from '@jcbuisson/express-x'
+import { isAuthenticated, isNotExpired, extendExpiration } from '@jcbuisson/express-x'
+// import { isAuthenticated, isNotExpired, extendExpiration } from '#root/src/common-hooks.mjs'
 
 
 // `app` is a regular express application, enhanced with express-x features
@@ -28,9 +27,6 @@ app.configure(logging)
 
 // services
 app.configure(services)
-
-// // application hooks
-// app.hooks(appHooks)
 
 // middleware
 app.use(express.urlencoded({ extended: true }))
@@ -59,7 +55,7 @@ app.service('caca').hooks({
       chie: [isAuthenticated, isNotExpired],
    },
    after: {
-      all: [extendExpiration],
+      all: [extendExpiration(30000)],
    }
 })
 

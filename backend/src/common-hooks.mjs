@@ -1,9 +1,6 @@
 
 import bcrypt from 'bcryptjs'
 
-import config from '#config'
-
-
 /*
  * Add a timestamp property of name `field` with current time as value
 */
@@ -81,9 +78,9 @@ export const isAuthenticated = async (context) => {
 }
 
 /*
- * Extend value of socket.data.expiresAt
+ * Extend value of socket.data.expiresAt of `duration` milliseconds
 */
-export const extendExpiration = async (context) => {
+export const extendExpiration = (duration) => async (context) => {
    const now = new Date()
-   context.socket.data.expiresAt = new Date(now.getTime() + config.SESSION_EXPIRE_DELAY)
+   context.socket.data.expiresAt = new Date(now.getTime() + duration)
 }
