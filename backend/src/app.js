@@ -10,8 +10,8 @@ import channels from './channels.js'
 import transfer from './transfer.js'
 import middleware from './middleware/index.js'
 
-import { isAuthenticated, isNotExpired, extendExpiration } from '@jcbuisson/express-x'
-// import { isAuthenticated, isNotExpired, extendExpiration } from '#root/src/common-hooks.mjs'
+import { isAuthenticated, isNotExpired, extendExpiration, EXError } from '@jcbuisson/express-x'
+// import { isAuthenticated, isNotExpired, extendExpiration, EXError } from '#root/src/server.mjs'
 
 
 // `app` is a regular express application, enhanced with express-x features
@@ -47,7 +47,7 @@ app.configure(transfer)
 app.createService('caca', {
    chie: () => {
       console.log('chie')
-      // throw new Error('aa')
+      // throw new EXError('wrong-credentials', "Wrong credendials")
    }
 })
 app.service('caca').hooks({

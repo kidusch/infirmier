@@ -37,7 +37,10 @@
 import { ref } from 'vue'
 
 import app from '/src/client-app.js'
+import router from '/src/router'
+import { useAppState } from '/src/use/useAppState'
 
+const { stateAppState } = useAppState()
 
 const email = ref()
 const password = ref()
@@ -47,8 +50,11 @@ const validate = async () => {
       const user = await app.service('auth').localSignin(email.value, password.value)
       // store user in sessionStorage
       sessionStorage.user = JSON.stringify(user)
+      // go home
+      router.push(`/student/${user.id}`)
    } catch(err) {
       console.log('login error', err)
+      stateAppState.value.unexpectedError = true
    }
 }
 </script>

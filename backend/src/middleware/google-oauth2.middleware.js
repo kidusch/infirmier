@@ -42,7 +42,7 @@ export default function (app) {
 	// Handle callback from Google authentication
 	app.get('/auth/google/callback', async (req, res) => {
 		const { code, state: cnxid } = req.query
-		console.log('cnxid', cnxid)
+		// console.log('cnxid', cnxid)
 		const options = {
 			code,
 			redirect_uri: 'http://localhost:8000/auth/google/callback'
@@ -51,7 +51,7 @@ export default function (app) {
 			const result = await oauth2.getToken(options)
 			const { token } = oauth2.createToken(result)
 			// Use token to retrieve user information from Google API
-			console.log('token', token)
+			// console.log('token', token)
 			const response = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
 				headers: {
 					Authorization: `Bearer ${token.token.access_token}`

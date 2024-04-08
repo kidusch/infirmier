@@ -45,18 +45,17 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
 import { useRoute} from 'vue-router'
+import { useRegisterSW } from 'virtual:pwa-register/vue'
 
 import app from '/src/client-app.js'
 import router from "/src/router"
 import { VERSION } from '/src/version'
 
-import ReloadPWA from '/src/ReloadPWA.vue'
 import { useAppState } from '/src/use/useAppState'
 
-const route = useRoute()
 const { stateAppState } = useAppState()
+const route = useRoute()
 
 
 const restartApp = async () => {
@@ -99,5 +98,26 @@ setInterval(async () => {
       }
    }
 }, PROBE_PERIOD)
+
+
+/////////////////      AUTOMATIC VERSION UPDATE     ////////////////
+
+const { offlineReady, needRefresh, updateServiceWorker } = useRegisterSW({
+   immediate: true,
+   onRegistered(r) {
+      console.log(`SW onRegistered: ${r}`)
+      r && setInterval(async() => {
+         console.log('Checking for sw update')
+         await r.update()
+         console.log('needRefresh', needRefresh.value)
+         if (needRefresh.value) {
+            // update app
+            console.log('updating app..!')
+            updateServiceWorker()
+         }
+
+      }, 20000 /* check every 20s */)
+   },
+})
 
 </script>

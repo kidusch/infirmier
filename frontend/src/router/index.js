@@ -15,6 +15,16 @@ const routes = [
       component: () => import('/src/views/Signup.vue'),
    },
    {
+      path: '/signup-confirm/:token',
+      component: () => import('/src/views/SignupConfirm.vue'),
+      props: true
+   },
+   {
+      path: '/set-password/:token',
+      component: () => import('/src/views/SetPassword.vue'),
+      props: true
+   },
+   {
       path: '/local-signup',
       component: () => import('/src/views/LocalSignup.vue'),
    },
@@ -23,7 +33,7 @@ const routes = [
       component: () => import('/src/views/Signin.vue'),
    },
    {
-      path: '/local-login',
+      path: '/local-signin',
       component: () => import('/src/views/LocalSignin.vue'),
    },
    {

@@ -20,11 +20,7 @@ MSD manuals : https://www.msdmanuals.com
 
 ## Choix techniques
 
-Dès que la connexion est établie, le client stocke socket.id dans sessionStorage
-transfer.js permet de rétablir socket.data et socket.rooms en cas de reload de la page et lors de l'authentification Google.
+### Authentification
 
-Lors de l'authentification Google, la connexion est perdue.
-Elle est reprise (avec transfert) lors de la redirection vers /home/student/:userid
-
-Il faut que dans les deux situations d'authentification (locale ou Google), socket.data.user et socket.data.expiresAt soient affectés
+Voir documentation/doc/auth_workflow.svg
 
