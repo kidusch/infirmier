@@ -9,16 +9,16 @@ const initialState = () => {
    }
 }
 
-const stateAppState = useSessionStorage('state-app-state', initialState())
+const appState = useSessionStorage('app-state', initialState())
 
 const resetUseAppState = () => {
-   stateAppState.value = initialState()
+   appState.value = initialState()
 }
 
 
 export function useAppState() {
    return {
       resetUseAppState,
-      stateAppState,
+      appState,
    }
 }

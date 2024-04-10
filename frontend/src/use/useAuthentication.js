@@ -2,10 +2,10 @@ import { useSessionStorage } from '@vueuse/core'
 
 import app from '/src/client-app.js'
 
-// import { useUsers } from '/src/use/useUsers'
+import { useUser } from '/src/use/useUser'
 import { useAppState } from '/src/use/useAppState'
 
-// const { resetUseUsers } = useUsers()
+const { resetUseUser } = useUser()
 const { resetUseAppState } = useAppState()
 
 
@@ -17,20 +17,20 @@ const initialState = () => {
    }
 }
 
-const stateAuthentication = useSessionStorage('state-authentication', initialState())
+const authenticationState = useSessionStorage('authentication-state', initialState())
 
 const resetUseAuthentication = () => {
-   stateAuthentication.value = initialState()
+   authenticationState.value = initialState()
 }
 
 function clearSessionStorage() {
    resetUseAuthentication()
-   // resetUseUsers()
+   resetUseUser()
    resetUseAppState()
 }
 
 function isAuthenticated() {
-   return !!stateAuthentication.value.user
+   return !!authenticationState.value.user
 }
 
 
@@ -39,20 +39,28 @@ function isAuthenticated() {
 // throws an error 'wrong-credentials' is wrong email / password
 async function localSignin(email, password) {
    const user = await app.service('auth').localSignin(email, password)
-   stateAuthentication.value.user = user
-   return user
+   authenticationState.value.user = user
+   await app.service('user_action').create({ data: {
+      user_id: user.id,
+      action: 'login',
+   }})
+return user
 }
 
-async function logout() {
+async function logout(user) {
    await app.service('auth').logout()
-   clearSessionStorage()
+   // await app.service('user_action').create({ data: {
+   //    user_id: user.id,
+   //    action: 'login',
+   // }})
+clearSessionStorage()
 }
 
 
 export function useAuthentication() {
    return {
       resetUseAuthentication,
-      stateAuthentication,
+      authenticationState,
       isAuthenticated,
       localSignin,
       logout,

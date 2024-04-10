@@ -24,3 +24,11 @@ MSD manuals : https://www.msdmanuals.com
 
 Voir documentation/doc/auth_workflow.svg
 
+
+### Pas de sessions
+
+Ça complique inutilement ; sur les mobiles une session peut durer plusieurs jours.
+
+Les événements sont datés et relatifs à l'utilisateur après authentification.
+Les sessions pourront être déterminées après-coup en regroupant les événements.
+
