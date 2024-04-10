@@ -1,18 +1,18 @@
 
 import config from '#config'
 
-import { isAuthenticated, isNotExpired } from '@jcbuisson/express-x'
-// import { isAuthenticated, isNotExpired } from '#root/src/server.mjs'
+import { isAuthenticated, isNotExpired, extendExpiration } from '@jcbuisson/express-x'
+// import { isAuthenticated, isNotExpired, extendExpiration } from '#root/src/server.mjs'
 
 
 async function afterAuthentication(context) {
    // set socket.data.user
-   console.log('socket.data.user set by afterAuthentication')
    context.socket.data.user = Object.assign({}, context.result)
+   console.log('socket.data.user set by afterAuthentication')
    // set socket.data.expiresAt
    const now = new Date()
-   console.log('socket.data.expiresAt set by afterAuthentication')
    context.socket.data.expiresAt = new Date(now.getTime() + config.SESSION_EXPIRE_DELAY)
+   console.log('socket.data.expiresAt set by afterAuthentication', context.socket.data.expiresAt)
    // add socket to "authenticated" channel
    context.app.joinChannel('authenticated', context.socket)
    // remove password field from result
@@ -41,8 +41,8 @@ export default {
       ping: [isAuthenticated, isNotExpired],
    },
    after: {
-      localSignin: [afterAuthentication],
-      localSignup: [afterAuthentication],
+      localSignin: [afterAuthentication, extendExpiration(config.SESSION_EXPIRE_DELAY)],
+      localSignup: [afterAuthentication, extendExpiration(config.SESSION_EXPIRE_DELAY)],
       logout: [afterSignout],
       getCnxInfo: [afterGetCnxInfo],
    },
