@@ -4,7 +4,7 @@ import expressXClient from './client.mjs'
 
 import { useAppState } from '/src/use/useAppState'
 
-const { stateAppState } = useAppState()
+const { appState } = useAppState()
 
 
 const socket = io({
@@ -61,7 +61,7 @@ app.onConnect(async (socket) => {
 
    socket.on('expired', async () => {
       console.log("server app-hook sent 'expired' event")
-      stateAppState.value.isExpired = true
+      appState.value.isExpired = true
    })
 })
 

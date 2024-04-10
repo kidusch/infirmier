@@ -41,7 +41,7 @@ import router from '/src/router'
 import { useAppState } from '/src/use/useAppState'
 import { useAuthentication } from '/src/use/useAuthentication'
 
-const { stateAppState } = useAppState()
+const { appState } = useAppState()
 const { localSignin } = useAuthentication()
 
 const email = ref()
@@ -59,7 +59,7 @@ const validate = async () => {
       if (err.code === 'wrong-credentials') {
          errorMessage.value = "wrong credentials"
       } else {
-         stateAppState.value.unexpectedError = true
+         appState.value.unexpectedError = true
       }
    }
 }

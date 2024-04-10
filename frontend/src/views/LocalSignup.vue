@@ -37,7 +37,7 @@ import { useAppState } from '/src/use/useAppState'
 
 import Spinner from '/src/components/Spinner.vue'
 
-const { stateAppState } = useAppState()
+const { appState } = useAppState()
 
 const email = ref()
 const name = ref()
@@ -53,7 +53,7 @@ const validate = async () => {
       if (err.code === 'email-already-used') {
          alert("Cet email est déjà utilisé")
       } else {
-         stateAppState.value.unexpectedError = true
+         appState.value.unexpectedError = true
       }
       console.log('signup error', err)
    } finally {

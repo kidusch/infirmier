@@ -22,7 +22,7 @@ import router from '/src/router'
 import app from '/src/client-app.js'
 import { useAppState } from '/src/use/useAppState'
 
-const { stateAppState } = useAppState()
+const { appState } = useAppState()
 
 const props = defineProps({
    token: {
@@ -45,7 +45,7 @@ const validate = async () => {
       router.push('/local-signin')
    } catch(err) {
       console.log('err', err)
-      stateAppState.value.unexpectedError = true
+      appState.value.unexpectedError = true
    }
 }
 </script>

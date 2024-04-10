@@ -13,7 +13,7 @@
    <ReloadPWA></ReloadPWA>
 
    <!-- EXPIRED MODAL -->
-   <div class="modal" :class="{'modal-open': stateAppState.isExpired}">
+   <div class="modal" :class="{'modal-open': appState.isExpired}">
       <div class="modal-box max-w-xl">
          <div class="text-large mt-2 mb-4 font-semibold">
             La session a expiré
@@ -28,7 +28,7 @@
    </div>
 
    <!-- ERROR MODAL -->
-   <div class="modal" :class="{'modal-open': stateAppState.unexpectedError}">
+   <div class="modal" :class="{'modal-open': appState.unexpectedError}">
       <div class="modal-box max-w-xl">
          <div class="text-large mt-2 mb-4 font-semibold">
             Une erreur est survenue
@@ -54,13 +54,13 @@ import { VERSION } from '/src/version'
 
 import { useAppState } from '/src/use/useAppState'
 
-const { stateAppState } = useAppState()
+const { appState } = useAppState()
 const route = useRoute()
 
 
 const restartApp = async () => {
-   stateAppState.value.isExpired = false
-   stateAppState.value.unexpectedError = false
+   appState.value.isExpired = false
+   appState.value.unexpectedError = false
    await app.service('auth').logout()
    router.push('/')
 }
@@ -74,7 +74,7 @@ async function chie() {
    try {
       await app.service('caca').chie()
    } catch(err) {
-      stateAppState.value.unexpectedError = true
+      appState.value.unexpectedError = true
    }
 }
 
@@ -91,9 +91,9 @@ setInterval(async () => {
       } catch(err) {
          console.log('err', err.code, err.message)
          if (err.code === 'not-authenticated') {
-            stateAppState.value.isExpired = true
+            appState.value.isExpired = true
          } else {
-            stateAppState.value.unexpectedError = true
+            appState.value.unexpectedError = true
          }
       }
    }

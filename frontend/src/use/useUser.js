@@ -15,7 +15,7 @@ const initialState = () => {
  
 const userState = useSessionStorage('user-state', {})
 
-const resetUseUsers = () => {
+const resetUseUser = () => {
     userState.value = initialState()
 }
 
@@ -38,9 +38,9 @@ const getUser = async (id) => {
 }
 
 
-export const useUsers = () => {
+export const useUser = () => {
     return {
-        resetUseUsers,
+        resetUseUser,
         getUser,
     }
 }
