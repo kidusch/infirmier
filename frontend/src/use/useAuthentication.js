@@ -29,14 +29,14 @@ function clearSessionStorage() {
    resetUseAppState()
 }
 
-function isAuthenticated() {
-   return !!authenticationState.value.user
+function getAuthenticatedUser() {
+   return authenticationState.value.user
 }
 
 
 ////////////////////////           LOGIN / LOGOUT            ////////////////////////
 
-// throws an error 'wrong-credentials' is wrong email / password
+// throws an error 'wrong-credentials' if wrong email / password
 async function localSignin(email, password) {
    const user = await app.service('auth').localSignin(email, password)
    authenticationState.value.user = user
@@ -47,13 +47,13 @@ async function localSignin(email, password) {
 return user
 }
 
-async function logout(user) {
+async function logout() {
+   await app.service('user_action').create({ data: {
+      user_id: authenticationState.value.user.id,
+      action: 'logout',
+   }})
    await app.service('auth').logout()
-   // await app.service('user_action').create({ data: {
-   //    user_id: user.id,
-   //    action: 'login',
-   // }})
-clearSessionStorage()
+   clearSessionStorage()
 }
 
 
@@ -61,7 +61,7 @@ export function useAuthentication() {
    return {
       resetUseAuthentication,
       authenticationState,
-      isAuthenticated,
+      getAuthenticatedUser,
       localSignin,
       logout,
    }
