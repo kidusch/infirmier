@@ -57,10 +57,12 @@ export default function (app) {
             password = await bcrypt.hash(password, 5)
             const user = await prisma.user.update({
                where: { id: payload.userid },
-               data: { password },
+               data: {
+                  accept_cgu: true,
+                  password
+               },
             })
             delete user.password
-            console.log('userx', user)
             return user
          } catch(err) {
             if (err.code === 'jwt-error') {

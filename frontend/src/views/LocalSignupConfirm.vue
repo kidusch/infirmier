@@ -19,9 +19,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, createApp } from 'vue'
 
 import router from '/src/router'
+
 
 const props = defineProps({
    token: {

@@ -5,23 +5,28 @@
    <div class="form-control">
       <label class="label cursor-pointer">
          <span class="label-text">J'accepte ces conditions</span> 
-         <input type="radio" name="radio-10" class="radio checked:bg-green-500" :checked="accept === true" />
+         <input type="radio" name="radio-10" class="radio checked:bg-green-500" :checked="accept === true" @click="accept = true" />
       </label>
       </div>
       <div class="form-control">
       <label class="label cursor-pointer">
          <span class="label-text">Je refuse ces conditions</span> 
-         <input type="radio" name="radio-10" class="radio checked:bg-red-500" :checked="accept === false" />
+         <input type="radio" name="radio-10" class="radio checked:bg-red-500" :checked="accept === false" @click="accept = false" />
       </label>
    </div>
 
-   <button class="block btn btn-primary" @click="validate">Valider</button>
+   <button class="block btn btn-primary" :disabled="accept === undefined" @click="validate">Valider</button>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 
 import router from '/src/router'
+import app from '/src/client-app.js'
+import { useAppState } from '/src/use/useAppState'
+
+const { appState } = useAppState()
+
 
 const props = defineProps({
    userid: {
@@ -32,7 +37,19 @@ const props = defineProps({
 
 const accept = ref()
 
-const validate = () => {
-   router.push(`/student/${props.userid}`)
+const validate = async () => {
+   try {
+      await app.service('user').update({
+         where: { id: parseInt(props.userid) },
+         data: { accept_cgu: accept.value }
+      })
+      if (accept.value) {
+         router.push(`/student/${props.userid}`)
+      } else {
+         router.push(`/`)
+      }
+   } catch(err) {
+      appState.value.unexpectedError = true
+   }
 }
 </script>
