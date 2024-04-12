@@ -24,7 +24,9 @@
 <script setup>
 import router from "@/router"
 
-const goGoogle = () => window.location.href = "/auth/google"
+const goGoogle = () => {
+   window.location.href = `/auth/google?cnxid=${sessionStorage.cnxid}`
+}
 
 const localSignup = () => {
    router.push('/local-signup')

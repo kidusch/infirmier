@@ -2,7 +2,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import FrontPage from '/src/views/FrontPage.vue'
-import Student from '/src/views/Student.vue'
 
 
 const routes = [
@@ -15,8 +14,13 @@ const routes = [
       component: () => import('/src/views/Signup.vue'),
    },
    {
-      path: '/signup-confirm/:token',
-      component: () => import('/src/views/SignupConfirm.vue'),
+      path: '/local-signup-confirm/:token',
+      component: () => import('/src/views/LocalSignupConfirm.vue'),
+      props: true
+   },
+   {
+      path: '/google-signup-confirm/:userid',
+      component: () => import('/src/views/GoogleSignupConfirm.vue'),
       props: true
    },
    {
@@ -38,8 +42,11 @@ const routes = [
    },
    {
       path: '/student/:userid',
-      component: Student,
+      component: () => import('/src/views/Student.vue'),
       meta: { requiresAuth: true },
+      props: route => ({
+         userid: parseInt(route.params.userid),
+      }),
    },
 ]
 

@@ -6,6 +6,7 @@ const initialState = () => {
    return {
       isExpired: false,
       unexpectedError: false,
+      inGoogleAuth: false,
    }
 }
 

@@ -24,6 +24,7 @@ model user {
    email                String?               @unique(map: "user_sub_unique")
    password             String?               // 4-digit pin-code for patients
    type                 UserType              @default(student)
+   accept_cgu           Boolean?
 
    google_id            String?               @unique(map: "uses_google_id_unique")
    name                 String?

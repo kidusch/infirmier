@@ -1,5 +1,3 @@
-import { computed, ref } from "vue"
-
 import { useSessionStorage } from '@vueuse/core'
 
 import app from '/src/client-app.js'
@@ -8,15 +6,15 @@ import app from '/src/client-app.js'
 // state backed in SessionStorage
 
 const initialState = () => {
-    return {
-       userCache: null,
-    }
- }
+   return {
+      userCache: {},
+   }
+}
  
-const userState = useSessionStorage('user-state', {})
+const userState = useSessionStorage('user-state', initialState())
 
 const resetUseUser = () => {
-    userState.value = initialState()
+   userState.value = initialState()
 }
 
 
@@ -27,20 +25,19 @@ app.service('user').on('create', user => {
 
 
 const getUser = async (id) => {
-    const user = userState.value.userCache[id]
-    if (user) return user
-    const promise = app.service('user').findUnique({ where: { id }})
-    promise
-    .then(user => {
-        userState.value.userCache[id] = user
-    })
-    return promise
+   const user = userState.value.userCache[id]
+   if (user) return user
+   const promise = app.service('user').findUnique({ where: { id }})
+   promise.then(user => {
+      userState.value.userCache[id] = user
+   })
+   return promise
 }
 
 
 export const useUser = () => {
-    return {
-        resetUseUser,
-        getUser,
-    }
+   return {
+      resetUseUser,
+      getUser,
+   }
 }

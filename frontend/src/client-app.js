@@ -55,9 +55,14 @@ app.onConnect(async (socket) => {
       _setStorageSocketId(socketId)
    }
 
-   socket.on('cnx-transfer-ack', () => {
-      console.log('ACKACK!!!')
-   })
+   socket.on('cnx-transfer-ack', async (fromSocketId, toSocketId) => {
+      console.log('ACKACK!!!', fromSocketId, toSocketId)
+
+      // const user = await getUser(props.userid)
+      // setAuthenticatedUser(user)
+      // await addUserAction('login')
+      // router.push(`/student/${user.id}`)
+      })
 
    socket.on('expired', async () => {
       console.log("server app-hook sent 'expired' event")

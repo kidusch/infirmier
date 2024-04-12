@@ -46,7 +46,7 @@ export default async function(app) {
             delete roomCache[fromSocketId]
             delete dataCache[fromSocketId]
             // send acknowlegment to toSocket
-            toSocket.emit('cnx-transfer-ack')
+            toSocket.emit('cnx-transfer-ack', fromSocketId, toSocketId)
          } else {
             console.log(`*** CNX TRANSFER ERROR, ${fromSocketId} -> ${toSocketId}`)
          }

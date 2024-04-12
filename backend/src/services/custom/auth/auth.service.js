@@ -41,7 +41,7 @@ export default function (app) {
             from: 'buisson@enseeiht.fr',
             to: email,
             subject: "Création compte Journal de bord Infirmier",
-            text: `Cliquez <a href="${config.CLIENT_URL}/signup-confirm/${token}">sur ce lien</a> pour confirmer votre inscription`,
+            text: `Cliquez <a href="${config.CLIENT_URL}/local-signup-confirm/${token}">sur ce lien</a> pour confirmer votre inscription`,
          })
          return createdUser
       },

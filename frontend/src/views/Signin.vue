@@ -22,9 +22,13 @@
 </template>
 
 <script setup>
-import router from "@/router"
+import router from "/src/router"
+import { useAppState } from '/src/use/useAppState'
+
+const { appState } = useAppState()
 
 const goGoogle = () => {
+   appState.value.inGoogleAuth = true
    window.location.href = `/auth/google?cnxid=${sessionStorage.cnxid}`
 }
 

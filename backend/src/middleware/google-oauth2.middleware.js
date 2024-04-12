@@ -51,18 +51,20 @@ export default function (app) {
 			const result = await oauth2.getToken(options)
 			const { token } = oauth2.createToken(result)
 			// Use token to retrieve user information from Google API
-			// console.log('token', token)
+			console.log('token', token)
 			const response = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
 				headers: {
 					Authorization: `Bearer ${token.token.access_token}`
 				}
 			})
-			// console.log('data', response.data)
+			console.log('data', response.data)
 			const { sub: google_id, name, picture, email } = response.data
+			let isUserCreated = false
 			let user = await prisma.user.findUnique({ where: { google_id } })
 			if (user) {
 				// console.log('existing user', user)
 			} else {
+				isUserCreated = true
 				user = await prisma.user.create({
 					data: {
 						google_id,
@@ -83,7 +85,11 @@ export default function (app) {
 			roomCache[cnxid].add('authenticated')
 			// redirect to student home (only students use Google authentication)
 			// this will lead to a connection transfer from cnxid
-			res.redirect(`/student/${user.id}`)
+			if (isUserCreated) {
+				res.redirect(`/google-signup-confirm/${user.id}`)
+			} else {
+				res.redirect(`/student/${user.id}`)
+			}
 		} catch (error) {
 			console.error('Access Token Error', error.message)
 			res.status(500).json('Authentication failed')
