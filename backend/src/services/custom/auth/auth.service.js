@@ -73,6 +73,21 @@ export default function (app) {
          }
       },
 
+      forgottenPassword: async (email) => {
+         console.log('forgottenPassword', email)
+         // check existence of a user with `email`
+         const user = await prisma.user.findUnique({ where: { email }})
+         if (!user) return
+         // send reset password email
+         const token = jwt.sign({ userid: user.id }, config.SECRET)
+         await app.service('mail').send({
+            from: 'buisson@enseeiht.fr',
+            to: email,
+            subject: "Journal de bord Infirmier, réinitialisation du mot de passe",
+            text: `Cliquez <a href="${config.CLIENT_URL}/set-password/${token}">sur ce lien</a> pour réinitialiser votre mot de passe`,
+         })
+      },
+
       // see hooks
       getCnxInfo: async () => {
          return 0

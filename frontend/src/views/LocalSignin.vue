@@ -31,7 +31,6 @@
       Vous n'avez pas de compte ? <RouterLink to="/signup" class="link">Inscrivez-vous</RouterLink>
    </div>
 
-
 </template>
 
 <script setup>

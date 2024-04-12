@@ -42,6 +42,8 @@
       </div>
    </div>
 
+   <Spinner v-if="appState.isWaiting"></Spinner>
+
 </template>
 
 <script setup>
@@ -53,6 +55,9 @@ import router from "/src/router"
 import { VERSION } from '/src/version'
 
 import { useAppState } from '/src/use/useAppState'
+
+import Spinner from '/src/components/Spinner.vue'
+
 
 const { appState } = useAppState()
 const route = useRoute()

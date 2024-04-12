@@ -41,6 +41,10 @@ const routes = [
       component: () => import('/src/views/LocalSignin.vue'),
    },
    {
+      path: '/forgotten-password',
+      component: () => import('/src/views/ForgottenPassword.vue'),
+   },
+   {
       path: '/student/:userid',
       component: () => import('/src/views/Student.vue'),
       meta: { requiresAuth: true },
