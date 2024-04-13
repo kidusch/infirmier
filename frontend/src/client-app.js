@@ -2,9 +2,7 @@ import { io } from "socket.io-client"
 // import expressXClient from '@jcbuisson/express-x-client'
 import expressXClient from './client.mjs'
 
-import { useAppState } from '/src/use/useAppState'
-
-const { appState } = useAppState()
+import { appState } from '/src/use/useAppState'
 
 
 const socket = io({

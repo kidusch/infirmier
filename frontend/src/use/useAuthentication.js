@@ -2,24 +2,19 @@ import { useSessionStorage } from '@vueuse/core'
 
 import app from '/src/client-app.js'
 
-import { useUser } from '/src/use/useUser'
-import { useAppState } from '/src/use/useAppState'
-
-const { resetUseUser } = useUser()
-const { resetUseAppState } = useAppState()
+import { resetUseUser } from '/src/use/useUser'
+import { resetUseAppState } from '/src/use/useAppState'
 
 
 // state backed in SessionStorage
 
-const initialState = () => {
-   return {
-      user: null,
-   }
-}
+const initialState = () => ({
+   user: null,
+})
 
 const authenticationState = useSessionStorage('authentication-state', initialState())
 
-const resetUseAuthentication = () => {
+export const resetUseAuthentication = () => {
    authenticationState.value = initialState()
 }
 
@@ -29,11 +24,11 @@ function clearSessionStorage() {
    resetUseAppState()
 }
 
-function setAuthenticatedUser(user) {
+export function setAuthenticatedUser(user) {
    authenticationState.value.user = user
 }
 
-function getAuthenticatedUser() {
+export function getAuthenticatedUser() {
    return authenticationState.value.user
 }
 
@@ -41,35 +36,22 @@ function getAuthenticatedUser() {
 ////////////////////////           LOGIN / LOGOUT            ////////////////////////
 
 // throws an error 'wrong-credentials' if wrong email / password
-async function localSignin(email, password) {
+export async function localSignin(email, password) {
    const user = await app.service('auth').localSignin(email, password)
    setAuthenticatedUser(user)
    await addUserAction('login')
    return user
 }
 
-async function logout() {
+export async function logout() {
    await addUserAction('logout')
    await app.service('auth').logout()
    clearSessionStorage()
 }
 
-async function addUserAction(action) {
+export async function addUserAction(action) {
    await app.service('user_action').create({ data: {
       user_id: authenticationState.value.user.id,
       action,
    }})
-}
-
-
-export function useAuthentication() {
-   return {
-      resetUseAuthentication,
-      authenticationState,
-      getAuthenticatedUser,
-      setAuthenticatedUser,
-      localSignin,
-      logout,
-      addUserAction,
-   }
 }

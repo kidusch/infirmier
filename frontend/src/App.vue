@@ -54,12 +54,11 @@ import app from '/src/client-app.js'
 import router from "/src/router"
 import { VERSION } from '/src/version'
 
-import { useAppState } from '/src/use/useAppState'
+import { appState } from '/src/use/useAppState'
 
 import Spinner from '/src/components/Spinner.vue'
 
 
-const { appState } = useAppState()
 const route = useRoute()
 
 

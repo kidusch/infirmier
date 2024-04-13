@@ -16,12 +16,10 @@
 import { ref } from 'vue'
 
 import router from '/src/router'
-import { useAppState } from '/src/use/useAppState'
+import { appState } from '/src/use/useAppState'
 import app from '/src/client-app.js'
 import { testEmail } from '/src/lib/utilities.mjs'
 
-
-const { appState } = useAppState()
 
 const email = ref()
 const errorMessage = ref('')

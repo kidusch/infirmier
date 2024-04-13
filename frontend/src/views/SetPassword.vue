@@ -20,9 +20,8 @@ import { onMounted, ref } from 'vue'
 
 import router from '/src/router'
 import app from '/src/client-app.js'
-import { useAppState } from '/src/use/useAppState'
+import { appState } from '/src/use/useAppState'
 
-const { appState } = useAppState()
 
 const props = defineProps({
    token: {

@@ -33,11 +33,9 @@ import { ref } from 'vue'
 
 import app from '/src/client-app.js'
 import { testEmail } from '/src/lib/utilities.mjs'
-import { useAppState } from '/src/use/useAppState'
+import { appState } from '/src/use/useAppState'
 
 import Spinner from '/src/components/Spinner.vue'
-
-const { appState } = useAppState()
 
 const email = ref()
 const name = ref()

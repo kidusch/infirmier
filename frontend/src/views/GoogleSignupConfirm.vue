@@ -23,9 +23,7 @@ import { ref, onMounted } from 'vue'
 
 import router from '/src/router'
 import app from '/src/client-app.js'
-import { useAppState } from '/src/use/useAppState'
-
-const { appState } = useAppState()
+import { appState } from '/src/use/useAppState'
 
 
 const props = defineProps({

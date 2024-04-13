@@ -2,24 +2,14 @@
 import { useSessionStorage } from '@vueuse/core'
 
 // state backed in SessionStorage
-const initialState = () => {
-   return {
-      isExpired: false,
-      unexpectedError: false,
-      isWaiting: false,
-   }
-}
+const initialState = () => ({
+   isExpired: false,
+   unexpectedError: false,
+   isWaiting: false,
+})
 
-const appState = useSessionStorage('app-state', initialState())
+export const appState = useSessionStorage('app-state', initialState())
 
-const resetUseAppState = () => {
+export const resetUseAppState = () => {
    appState.value = initialState()
-}
-
-
-export function useAppState() {
-   return {
-      resetUseAppState,
-      appState,
-   }
 }

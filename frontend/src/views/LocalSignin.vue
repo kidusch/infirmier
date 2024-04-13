@@ -37,11 +37,9 @@
 import { ref } from 'vue'
 
 import router from '/src/router'
-import { useAppState } from '/src/use/useAppState'
-import { useAuthentication } from '/src/use/useAuthentication'
+import { appState } from '/src/use/useAppState'
+import { localSignin } from '/src/use/useAuthentication'
 
-const { appState } = useAppState()
-const { localSignin } = useAuthentication()
 
 const email = ref()
 const password = ref()

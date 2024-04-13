@@ -6,13 +6,11 @@
 <script setup>
 import { onMounted } from 'vue'
 
-import { useAuthentication } from '/src/use/useAuthentication'
-import { useUser } from '/src/use/useUser'
+import { setAuthenticatedUser, logout } from '/src/use/useAuthentication'
+import { getUser } from '/src/use/useUser'
 
 import router from '/src/router'
 
-const { setAuthenticatedUser, logout } = useAuthentication()
-const { getUser } = useUser()
 
 const props = defineProps({
    userid: {
