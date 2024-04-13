@@ -7,7 +7,6 @@ import { resetUseAppState } from '/src/use/useAppState'
 
 
 // state backed in SessionStorage
-
 const initialState = () => ({
    user: null,
 })
@@ -18,7 +17,7 @@ export const resetUseAuthentication = () => {
    authenticationState.value = initialState()
 }
 
-function clearSessionStorage() {
+export function clearSessionStorage() {
    resetUseAuthentication()
    resetUseUser()
    resetUseAppState()

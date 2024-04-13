@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "@cypress/vue": "^6.0.0",
+    "cypress": "^13.7.3"
+  }
+}
