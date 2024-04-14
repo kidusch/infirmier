@@ -1,12 +1,11 @@
 <template>
 
    <div class="absolute top-2 right-2">
-      <p class="text-sm text-white p-1">{{ VERSION }}</p>
+      <p class="text-sm text-gray-600 p-1">{{ VERSION }}</p>
    </div>
-   {{  route.path }} - {{  }}
 
-   <button class="block btn btn-primary" @click="getCnxInfo">Infos</button>
-   <button class="block btn btn-primary" @click="chie">Chie</button>
+   <button class="block link" @click="getCnxInfo">Infos</button>
+   <button class="block link" @click="chie">Chie</button>
 
    <router-view></router-view>
 

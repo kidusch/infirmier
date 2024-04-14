@@ -44,6 +44,14 @@ const routes = [
       path: '/forgotten-password',
       component: () => import('/src/views/ForgottenPassword.vue'),
    },
+
+   {
+      path: '/admin-ue',
+      component: () => import('/src/views/AdminUE.vue'),
+   },
+
+
+
    {
       path: '/student/:userid',
       component: () => import('/src/views/Student.vue'),

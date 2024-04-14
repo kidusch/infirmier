@@ -1,5 +1,10 @@
 # Journal de bord infirmier
 
+## Parsing
+https://github.com/kach/nearley
+https://omrelli.ug/nearley-playground/
+
+
 ## Client
 
 Nom : Fantone

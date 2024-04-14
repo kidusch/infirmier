@@ -1,6 +1,7 @@
 <template>
-   <button class="block btn btn-primary" @click="signout">Logout</button>
-   <h1>Student</h1>
+   <button class="block link" @click="signout">Logout</button>
+
+   <h1 class="text-xl font-semibold">Student</h1>
 </template>
 
 <script setup>
