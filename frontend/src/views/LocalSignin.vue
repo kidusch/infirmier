@@ -50,7 +50,7 @@ const validate = async () => {
    try {
       const user = await localSignin(email.value, password.value)
       // go home
-      router.push(`/student/${user.id}`)
+      router.push(`/home/${user.id}`)
    } catch(err) {
       console.log('login error', err)
       if (err.code === 'wrong-credentials') {

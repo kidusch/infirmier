@@ -45,20 +45,31 @@ const routes = [
       component: () => import('/src/views/ForgottenPassword.vue'),
    },
 
-   {
-      path: '/admin-ue',
-      component: () => import('/src/views/AdminUE.vue'),
-   },
-
-
 
    {
-      path: '/student/:userid',
-      component: () => import('/src/views/Student.vue'),
+      path: '/home/:userid',
+      component: () => import('/src/views/Home.vue'),
       meta: { requiresAuth: true },
       props: route => ({
          userid: parseInt(route.params.userid),
       }),
+      children: [
+         {
+            path: 'admin-ue',
+            component: () => import('/src/views/AdminUE.vue'),
+         },
+         {
+            path: 'student',
+            component: () => import('/src/views/Student.vue'),
+         },
+      ],
+   },
+
+
+   {
+      path: '/admin-ue',
+      meta: { requiresAuth: true },
+      component: () => import('/src/views/AdminUE.vue'),
    },
 ]
 

@@ -1,5 +1,4 @@
 <template>
-   <button class="block link" @click="signout">Logout</button>
    <h1 class="text-xl font-semibold">Unités d'enseignement</h1>
 
    <div class="flex">
@@ -15,9 +14,7 @@
 import { ref } from 'vue'
 import { mdiPlus } from '@mdi/js'
 
-import { logout } from '/src/use/useAuthentication'
 import app from '/src/client-app.js'
-import router from '/src/router'
 
 const newTitle = ref()
 
@@ -33,10 +30,5 @@ const createUE = async () => {
          rank,
       }
    })
-}
-
-const signout = async () => {
-   await logout()
-   router.push(`/`)
 }
 </script>

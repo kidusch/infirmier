@@ -42,7 +42,7 @@ const validate = async () => {
          data: { accept_cgu: accept.value }
       })
       if (accept.value) {
-         router.push(`/student/${props.userid}`)
+         router.push(`/home/${props.userid}`)
       } else {
          router.push(`/`)
       }
