@@ -2,6 +2,7 @@
    <li class="flex">
       <textarea v-model="ue.name" class="textarea textarea-bordered" placeholder="Titre" :disabled="disabled"></textarea>
       <span class="link m-2" @click="disabled = false">edit</span>
+      <span class="link m-2" @click="remove">delete</span>
       <span class="link m-2" @click="up" v-if="!isFirst">up</span>
       <span class="link m-2" @click="down" v-if="!isLast">down</span>
    </li>
@@ -21,7 +22,7 @@ const props = defineProps({
    },
 })
 
-const emit = defineEmits(['update'])
+const emit = defineEmits(['update', 'remove'])
 
 const ue = computed(() => props.ueList[props.index])
 const isFirst = computed(() => (props.index === 0))
@@ -36,6 +37,7 @@ const up = () => {
    ue.value.rank = prevRank
    emit('update')
 }
+
 const down = () => {
    const nextUE = props.ueList[props.index + 1]
    const nextRank = nextUE.rank
@@ -43,4 +45,6 @@ const down = () => {
    ue.value.rank = nextRank
    emit('update')
 }
+
+const remove = () => emit('remove')
 </script>

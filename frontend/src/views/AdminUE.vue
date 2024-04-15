@@ -2,7 +2,7 @@
    <h1 class="text-xl font-semibold">Unités d'enseignement</h1>
 
    <ul v-for="ue, index in ueList">
-      <UEItem :index="index" :ueList="ueList" @update="updateList"></UEItem>
+      <UEItem :index="index" :ueList="ueList" @update="updateList" @remove="remove(ue.id)"></UEItem>
    </ul>
 
    <div class="flex">
@@ -18,7 +18,7 @@
 import { ref, onMounted } from 'vue'
 import { mdiPlus } from '@mdi/js'
 
-import { createUE, getUEList } from '/src/use/useUE'
+import { createUE, removeUE, getUEList } from '/src/use/useUE'
 import UEItem from '/src/components/UEItem.vue'
 
 const ueList = ref([])
@@ -36,6 +36,12 @@ const newTitle = ref()
 
 const addUE = async () => {
    await createUE(newTitle.value)
+   await updateList()
+   newTitle.value = ''
+}
+
+const remove = async (id) => {
+   await removeUE(id)
    await updateList()
 }
 </script>

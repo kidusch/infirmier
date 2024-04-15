@@ -51,6 +51,11 @@ export const createUE = async (name) => {
    return ue
 }
 
+export const removeUE = async (id) => {
+   await app.service('ue').delete({ where: { id }})
+   delete ueState.value.ueCache[id]
+}
+
 export const getUEList = async () => {
    if (!ueState.value.isListReady) {
       const list = await app.service('ue').findMany()
