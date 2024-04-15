@@ -1,0 +1,69 @@
+import { useSessionStorage } from '@vueuse/core'
+
+import app from '/src/client-app.js'
+
+
+// state backed in SessionStorage
+const initialState = () => ({
+   subUECache: {},
+   isListReady: {},
+})
+ 
+const subUEState = useSessionStorage('sub-ue-state', initialState())
+
+export const resetUseSubUE = () => {
+   subUEState.value = initialState()
+}
+
+
+app.service('sub_ue').on('create', subUE => {
+   console.log('SUB_UE EVENT created', subUE)
+   subUEState.value.subUECache[subUE.id] = subUE
+})
+
+
+export const getSubUE = async (id) => {
+   const ue = subUEState.value.subUECache[id]
+   if (ue) return ue
+   const promise = app.service('ue').findUnique({ where: { id }})
+   promise.then(ue => {
+      subUEState.value.subUECache[id] = ue
+   })
+   return promise
+}
+
+export const createSubUE = async (ue_id, name) => {
+   // get highest rank
+   const result = await app.service('sub_ue').aggregate({
+      _max: { rank: true }
+   })
+   const highestRank = result._max.rank
+   const rank = highestRank ? highestRank + 1 : 1
+   // create ue with this rank
+   const subUE = await app.service('sub_ue').create({
+      data: {
+         name,
+         rank,
+         ue_id,
+      }
+   })
+   // update cache
+   subUEState.value.subUECache[subUE.id] = subUE
+   return subUE
+}
+
+export const removeSubUE = async (id) => {
+   await app.service('sub_ue').delete({ where: { id }})
+   delete subUEState.value.subUECache[id]
+}
+
+export const getSubUEList = async (ueid) => {
+   if (!subUEState.value.isListReady[ueid]) {
+      const list = await app.service('sub_ue').findMany()
+      for (const subUE of list) {
+         subUEState.value.subUECache[subUE.id] = subUE
+      }
+      subUEState.value.isListReady[ueid] = true
+   }
+   return Object.values(subUEState.value.subUECache).filter(subUE => subUE.ue_id === ueid)
+}

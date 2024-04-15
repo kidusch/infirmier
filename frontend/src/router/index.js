@@ -59,6 +59,13 @@ const routes = [
             component: () => import('/src/views/AdminUE.vue'),
          },
          {
+            path: 'admin-sub-ue/:ueid',
+            component: () => import('/src/views/AdminSubUE.vue'),
+            props: route => ({
+               ueid: parseInt(route.params.ueid),
+            }),
+               },
+         {
             path: 'student',
             component: () => import('/src/views/Student.vue'),
          },

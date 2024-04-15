@@ -2,7 +2,7 @@
    <h1 class="text-xl font-semibold">Unités d'enseignement</h1>
 
    <ul v-for="ue, index in ueList">
-      <UEItem :index="index" :ueList="ueList" @update="updateList" @remove="remove(ue.id)"></UEItem>
+      <UEItem :index="index" :ueList="ueList" @update="updateList" @remove="remove(ue.id)" @select="select(ue.id)"></UEItem>
    </ul>
 
    <div class="flex">
@@ -20,6 +20,7 @@ import { mdiPlus } from '@mdi/js'
 
 import { createUE, removeUE, getUEList } from '/src/use/useUE'
 import UEItem from '/src/components/UEItem.vue'
+import router from "/src/router"
 
 const ueList = ref([])
 
@@ -29,7 +30,7 @@ onMounted(async () => {
 
 async function updateList() {
    const unorderedList = await getUEList()
-   ueList.value = unorderedList.sort((ue1, ue2) => ue1.rank - ue2.rank)
+   ueList.value = unorderedList.sort((e1, e2) => e1.rank - e2.rank)
 }
 
 const newTitle = ref()
@@ -43,5 +44,10 @@ const addUE = async () => {
 const remove = async (id) => {
    await removeUE(id)
    await updateList()
+}
+
+const select = (id) => {
+   console.log('select')
+   router.push(`admin-sub-ue/${id}`)
 }
 </script>

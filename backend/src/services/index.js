@@ -3,6 +3,7 @@
 import userService from './database/user/user.service.js'
 import userActionService from './database/user_action/user_action.service.js'
 import ueService from './database/ue/ue.service.js'
+import subUEService from './database/sub_ue/sub_ue.service.js'
 
 // custom services
 import mailService from './custom/mail/mail.service.js'
@@ -14,6 +15,7 @@ export default function (app) {
    app.configure(userService)
    app.configure(userActionService)
    app.configure(ueService)
+   app.configure(subUEService)
 
    // add custom services
    app.configure(mailService)

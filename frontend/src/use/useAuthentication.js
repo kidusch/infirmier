@@ -2,8 +2,10 @@ import { useSessionStorage } from '@vueuse/core'
 
 import app from '/src/client-app.js'
 
-import { resetUseUser } from '/src/use/useUser'
 import { resetUseAppState } from '/src/use/useAppState'
+import { resetUseUser } from '/src/use/useUser'
+import { resetUseUE } from '/src/use/useUE'
+import { resetUseSubUE } from '/src/use/useSubUE'
 
 
 // state backed in SessionStorage
@@ -19,8 +21,10 @@ export const resetUseAuthentication = () => {
 
 export function clearSessionStorage() {
    resetUseAuthentication()
-   resetUseUser()
    resetUseAppState()
+   resetUseUser()
+   resetUseUE()
+   resetUseSubUE()
 }
 
 export function setAuthenticatedUser(user) {
