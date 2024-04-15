@@ -4,9 +4,9 @@ import app from '/src/client-app.js'
 
 
 // state backed in SessionStorage
-
 const initialState = () => ({
    ueCache: {},
+   isListReady: false,
 })
  
 const ueState = useSessionStorage('ue-state', initialState())
@@ -32,3 +32,32 @@ export const getUE = async (id) => {
    return promise
 }
 
+export const createUE = async (name) => {
+   // get highest rank
+   const result = await app.service('ue').aggregate({
+      _max: { rank: true }
+   })
+   const highestRank = result._max.rank
+   const rank = highestRank ? highestRank + 1 : 1
+   // create ue with this rank
+   const ue = await app.service('ue').create({
+      data: {
+         name,
+         rank,
+      }
+   })
+   // update cache
+   ueState.value.ueCache[ue.id] = ue
+   return ue
+}
+
+export const getUEList = async () => {
+   if (!ueState.value.isListReady) {
+      const list = await app.service('ue').findMany()
+      for (const ue of list) {
+         ueState.value.ueCache[ue.id] = ue
+      }
+      ueState.value.isListReady = true
+   }
+   return Object.values(ueState.value.ueCache)
+}

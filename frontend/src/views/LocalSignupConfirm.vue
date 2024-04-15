@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, createApp } from 'vue'
+import { ref, onMounted } from 'vue'
 
 import router from '/src/router'
 
