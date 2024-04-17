@@ -6,6 +6,7 @@ import { resetUseAppState } from '/src/use/useAppState'
 import { resetUseUser } from '/src/use/useUser'
 import { resetUseUE } from '/src/use/useUE'
 import { resetUseSubUE } from '/src/use/useSubUE'
+import { resetUseTopic } from '/src/use/useTopic'
 
 
 // state backed in SessionStorage
@@ -25,6 +26,7 @@ export function clearSessionStorage() {
    resetUseUser()
    resetUseUE()
    resetUseSubUE()
+   resetUseTopic()
 }
 
 export function setAuthenticatedUser(user) {

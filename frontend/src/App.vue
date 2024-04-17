@@ -54,6 +54,7 @@ import router from "/src/router"
 import { VERSION } from '/src/version'
 
 import { appState } from '/src/use/useAppState'
+import { clearSessionStorage } from '/src/use/useAuthentication'
 
 import Spinner from '/src/components/Spinner.vue'
 
@@ -64,6 +65,7 @@ const route = useRoute()
 const restartApp = async () => {
    appState.value.isExpired = false
    appState.value.unexpectedError = false
+   clearSessionStorage()
    await app.service('auth').logout()
    router.push('/')
 }

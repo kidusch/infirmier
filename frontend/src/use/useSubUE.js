@@ -25,7 +25,7 @@ app.service('sub_ue').on('create', subUE => {
 export const getSubUE = async (id) => {
    const ue = subUEState.value.subUECache[id]
    if (ue) return ue
-   const promise = app.service('ue').findUnique({ where: { id }})
+   const promise = app.service('sub_ue').findUnique({ where: { id }})
    promise.then(ue => {
       subUEState.value.subUECache[id] = ue
    })
@@ -35,6 +35,7 @@ export const getSubUE = async (id) => {
 export const createSubUE = async (ue_id, name) => {
    // get highest rank
    const result = await app.service('sub_ue').aggregate({
+      where: { ue_id },
       _max: { rank: true }
    })
    const highestRank = result._max.rank
@@ -52,18 +53,30 @@ export const createSubUE = async (ue_id, name) => {
    return subUE
 }
 
+export const updateSubUE = async (id, data) => {
+   const sub_ue = await app.service('sub_ue').update({
+      where: { id },
+      data,
+   })
+   // update cache
+   subUEState.value.subUECache[sub_ue.id] = sub_ue
+   return sub_ue
+}
+
 export const removeSubUE = async (id) => {
    await app.service('sub_ue').delete({ where: { id }})
    delete subUEState.value.subUECache[id]
 }
 
-export const getSubUEList = async (ueid) => {
-   if (!subUEState.value.isListReady[ueid]) {
-      const list = await app.service('sub_ue').findMany()
+export const getSubUEList = async (ue_id) => {
+   if (!subUEState.value.isListReady[ue_id]) {
+      const list = await app.service('sub_ue').findMany({
+         where: { ue_id }
+      })
       for (const subUE of list) {
          subUEState.value.subUECache[subUE.id] = subUE
       }
-      subUEState.value.isListReady[ueid] = true
+      subUEState.value.isListReady[ue_id] = true
    }
-   return Object.values(subUEState.value.subUECache).filter(subUE => subUE.ue_id === ueid)
+   return Object.values(subUEState.value.subUECache).filter(subUE => subUE.ue_id === ue_id)
 }

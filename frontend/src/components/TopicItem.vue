@@ -1,6 +1,6 @@
 <template>
    <li class="flex">
-      <textarea :value="ue.name" @input="debouncedInput" class="textarea textarea-bordered" placeholder="Titre" :disabled="disabled"></textarea>
+      <textarea :value="topic.name" @input="debouncedInput" class="textarea textarea-bordered" placeholder="Titre" :disabled="disabled"></textarea>
       <span class="link m-2" @click="disabled = false">edit</span>
       <span class="link m-2" @click="remove">delete</span>
       <span class="link m-2" @click="up" v-if="!isFirst">up</span>
@@ -18,33 +18,33 @@ const props = defineProps({
       type: Number,
       required: true
    },
-   ueList: {
+   topicList: {
       type: Array,
       required: true
    },
 })
 
-const emit = defineEmits(['update', 'remove', 'select', 'edit'])
+const emit = defineEmits(['update', 'remove', 'select'])
 
-const ue = computed(() => props.ueList[props.index])
+const topic = computed(() => props.topicList[props.index])
 const isFirst = computed(() => (props.index === 0))
-const isLast = computed(() => (props.index === (props.ueList.length - 1)))
+const isLast = computed(() => (props.index === (props.topicList.length - 1)))
 
 const disabled = ref(true)
 
 const up = () => {
-   const prevUE = props.ueList[props.index - 1]
+   const prevUE = props.topicList[props.index - 1]
    const prevRank = prevUE.rank
-   prevUE.rank = ue.value.rank
-   ue.value.rank = prevRank
+   prevUE.rank = topic.value.rank
+   topic.value.rank = prevRank
    emit('update')
 }
 
 const down = () => {
-   const nextUE = props.ueList[props.index + 1]
+   const nextUE = props.topicList[props.index + 1]
    const nextRank = nextUE.rank
-   nextUE.rank = ue.value.rank
-   ue.value.rank = nextRank
+   nextUE.rank = topic.value.rank
+   topic.value.rank = nextRank
    emit('update')
 }
 

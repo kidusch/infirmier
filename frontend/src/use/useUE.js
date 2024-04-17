@@ -51,6 +51,16 @@ export const createUE = async (name) => {
    return ue
 }
 
+export const updateUE = async (id, data) => {
+   const ue = await app.service('ue').update({
+      where: { id },
+      data,
+   })
+   // update cache
+   ueState.value.ueCache[ue.id] = ue
+   return ue
+}
+
 export const removeUE = async (id) => {
    await app.service('ue').delete({ where: { id }})
    delete ueState.value.ueCache[id]
