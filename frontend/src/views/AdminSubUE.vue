@@ -65,6 +65,6 @@ const remove = async (id) => {
 }
 
 const select = (id) => {
-   router.push(`/home/${getAuthenticatedUser().id}/admin-topic/${id}`)
+   router.push(`/home/${getAuthenticatedUser().id}/admin-topics/${id}`)
 }
 </script>

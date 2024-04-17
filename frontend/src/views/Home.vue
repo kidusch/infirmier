@@ -1,8 +1,6 @@
 <template>
    <button class="block link" @click="signout">Logout</button>
 
-   <h1 class="text-xl font-semibold">HOME</h1>
-
    <router-view></router-view>
 
 </template>
