@@ -56,25 +56,32 @@ const routes = [
       children: [
          {
             path: 'admin-ue',
-            component: () => import('/src/views/AdminUE.vue'),
+            component: () => import('/src/views/admin/AdminUE.vue'),
          },
          {
             path: 'admin-sub-ue/:ue_id',
-            component: () => import('/src/views/AdminSubUE.vue'),
+            component: () => import('/src/views/admin/AdminSubUE.vue'),
             props: route => ({
                ue_id: parseInt(route.params.ue_id),
             }),
          },
          {
             path: 'admin-topics/:sub_ue_id',
-            component: () => import('/src/views/AdminTopics.vue'),
+            component: () => import('/src/views/admin/AdminTopics.vue'),
             props: route => ({
                sub_ue_id: parseInt(route.params.sub_ue_id),
             }),
          },
          {
             path: 'admin-topic/:topic_id',
-            component: () => import('/src/views/AdminTopic.vue'),
+            component: () => import('/src/views/admin/AdminTopic.vue'),
+            props: route => ({
+               topic_id: parseInt(route.params.topic_id),
+            }),
+         },
+         {
+            path: 'admin-course/:topic_id',
+            component: () => import('/src/views/admin/AdminCourse.vue'),
             props: route => ({
                topic_id: parseInt(route.params.topic_id),
             }),
@@ -88,11 +95,11 @@ const routes = [
    },
 
 
-   {
-      path: '/admin-ue',
-      meta: { requiresAuth: true },
-      component: () => import('/src/views/AdminUE.vue'),
-   },
+   // {
+   //    path: '/admin-ue',
+   //    meta: { requiresAuth: true },
+   //    component: () => import('/src/views/admin/AdminUE.vue'),
+   // },
 ]
 
 const router = createRouter({

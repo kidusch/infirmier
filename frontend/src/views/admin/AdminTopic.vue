@@ -1,6 +1,13 @@
 <template>
    <h1 class="text-xl font-semibold">{{ topic && topic.name }}</h1>
 
+   <div>
+      <p class="inline">Cours</p>
+      <span class="link m-2" @click="select">select</span>
+   </div>
+
+   <hr/>
+
    <!-- <ul v-for="topic, index in topicList">
       <TopicItem :index="index" :topicList="topicList" @update="updateList" @edit="(text) => edit(topic.id, text)" @remove="remove(topic.id)" @select="select(topic.id)"></TopicItem>
    </ul>
@@ -19,8 +26,8 @@ import { ref, onMounted } from 'vue'
 import { mdiPlus } from '@mdi/js'
 
 import { getTopic } from '/src/use/useTopic'
-// import { createTopic, updateTopic, removeTopic, getTopicList } from '/src/use/useTopic'
-// import TopicItem from '/src/components/TopicItem.vue'
+import { getAuthenticatedUser } from '/src/use/useAuthentication'
+import router from "/src/router"
 
 const props = defineProps({
    topic_id: {
@@ -34,7 +41,7 @@ const topic = ref()
 
 onMounted(async () => {
    topic.value = await getTopic(props.topic_id)
-   await updateList()
+   // await updateList()
 })
 
 // async function updateList() {
@@ -58,7 +65,8 @@ onMounted(async () => {
 //    await removeTopic(id)
 //    await updateList()
 // }
-// const select = (id) => {
-//    router.push(`/home/${getAuthenticatedUser().id}/admin-topic/${id}`)
-// }
+
+const select = (id) => {
+   router.push(`/home/${getAuthenticatedUser().id}/admin-course/${props.topic_id}`)
+}
 </script>
