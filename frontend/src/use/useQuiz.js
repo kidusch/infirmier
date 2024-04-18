@@ -46,7 +46,6 @@ export const createQuiz = async (topic_id) => {
          rank,
          topic_id,
          title: '',
-         content: '',
       }
    })
    // update cache

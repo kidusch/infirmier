@@ -87,10 +87,10 @@ const routes = [
             }),
          },
          {
-            path: 'admin-quiz/:topic_id',
+            path: 'admin-quiz/:quiz_id',
             component: () => import('/src/views/admin/AdminQuiz.vue'),
             props: route => ({
-               topic_id: parseInt(route.params.topic_id),
+               quiz_id: parseInt(route.params.quiz_id),
             }),
          },
          {
