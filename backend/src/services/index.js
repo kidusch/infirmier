@@ -8,6 +8,7 @@ import topicService from './database/topic/topic.service.js'
 import cardService from './database/card/card.service.js'
 import caseStudyService from './database/case-study/case-study.service.js'
 import quizService from './database/quiz/quiz.service.js'
+import quizChoiceService from './database/quiz_choice/quiz_choice.service.js'
 
 // custom services
 import mailService from './custom/mail/mail.service.js'
@@ -24,6 +25,7 @@ export default function (app) {
    app.configure(cardService)
    app.configure(caseStudyService)
    app.configure(quizService)
+   app.configure(quizChoiceService)
 
    // add custom services
    app.configure(mailService)

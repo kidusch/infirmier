@@ -94,6 +94,13 @@ const routes = [
             }),
          },
          {
+            path: 'admin-quiz-choice/:quiz_choice_id',
+            component: () => import('/src/views/admin/AdminQuizChoice.vue'),
+            props: route => ({
+               quiz_choice_id: parseInt(route.params.quiz_choice_id),
+            }),
+         },
+         {
             path: 'admin-card/:card_id',
             component: () => import('/src/views/admin/AdminCard.vue'),
             props: route => ({

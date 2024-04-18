@@ -1,6 +1,6 @@
 <template>
    <li class="flex">
-      <span>{{ element.title }}</span>
+      <span>{{ element[field] }}</span>
       <span class="link m-2" @click="remove">delete</span>
       <span class="link m-2" @click="up" v-if="!isFirst">up</span>
       <span class="link m-2" @click="down" v-if="!isLast">down</span>
@@ -9,9 +9,13 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps({
+   field: {
+      type: String,
+      default: 'title'
+   },
    index: {
       type: Number,
       required: true
@@ -27,8 +31,6 @@ const emit = defineEmits(['update', 'remove', 'select'])
 const element = computed(() => props.list[props.index])
 const isFirst = computed(() => (props.index === 0))
 const isLast = computed(() => (props.index === (props.list.length - 1)))
-
-const disabled = ref(true)
 
 const up = () => {
    const prev = props.list[props.index - 1]

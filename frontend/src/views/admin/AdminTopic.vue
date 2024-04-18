@@ -12,36 +12,36 @@
 
    <h1 class="text-xl font-semibold">Fiches de révision</h1>
    <ul v-for="card, index in cardList">
-      <TitleListItem
+      <ListItem
          :index="index" :list="cardList"
          @update="updateCardList"
          @remove="deleteCard(card.id)"
          @select="selectCard(card.id)"
-      ></TitleListItem>
+      ></ListItem>
    </ul>
    <button class="btn btn-primary" @click="addCard">Ajouter une fiche</button>
 
 
    <h1 class="text-xl font-semibold">Quiz</h1>
    <ul v-for="quiz, index in quizList">
-      <TitleListItem
+      <ListItem
          :index="index" :list="quizList"
          @update="updateQuizList"
          @remove="deleteQuiz(quiz.id)"
          @select="selectQuiz(quiz.id)"
-      ></TitleListItem>
+      ></ListItem>
    </ul>
    <button class="btn btn-primary" @click="addQuiz">Ajouter un Quiz</button>
 
 
    <h1 class="text-xl font-semibold">Études de cas</h1>
    <ul v-for="caseStudy, index in caseStudyList">
-      <TitleListItem
+      <ListItem
          :index="index" :list="caseStudyList"
          @update="updateCaseStudyList"
          @remove="deleteCaseStudy(caseStudy.id)"
          @select="selectCaseStudy(caseStudy.id)"
-      ></TitleListItem>
+      ></ListItem>
    </ul>
    <button class="btn btn-primary" @click="addCaseStudy">Ajouter une étude de cas</button>
    
@@ -57,7 +57,7 @@ import { getCaseStudyList, createCaseStudy, removeCaseStudy } from '/src/use/use
 import { getAuthenticatedUser } from '/src/use/useAuthentication'
 import router from '/src/router'
 
-import TitleListItem from '/src/components/TitleListItem.vue'
+import ListItem from '/src/components/ListItem.vue'
 
 const props = defineProps({
    topic_id: {
