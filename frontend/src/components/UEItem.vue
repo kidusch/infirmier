@@ -33,17 +33,17 @@ const isLast = computed(() => (props.index === (props.ueList.length - 1)))
 const disabled = ref(true)
 
 const up = () => {
-   const prevUE = props.ueList[props.index - 1]
-   const prevRank = prevUE.rank
-   prevUE.rank = ue.value.rank
+   const prev = props.ueList[props.index - 1]
+   const prevRank = prev.rank
+   prev.rank = ue.value.rank
    ue.value.rank = prevRank
    emit('update')
 }
 
 const down = () => {
-   const nextUE = props.ueList[props.index + 1]
-   const nextRank = nextUE.rank
-   nextUE.rank = ue.value.rank
+   const next = props.ueList[props.index + 1]
+   const nextRank = next.rank
+   next.rank = ue.value.rank
    ue.value.rank = nextRank
    emit('update')
 }

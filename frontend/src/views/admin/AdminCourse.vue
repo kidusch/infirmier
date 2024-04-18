@@ -1,6 +1,8 @@
 <template>
    <h1 class="text-xl font-semibold">{{ topic && topic.name }}</h1>
 
+   <div class="link m-2" @click="back">back</div>
+
    <h1 class="text-xl font-semibold">Cours</h1>
    <div>
       <textarea placeholder="Contenu du cours"
@@ -19,6 +21,7 @@ import { ref, onMounted } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
 import { getTopic, updateTopic } from '/src/use/useTopic'
+import router from '/src/router'
 
 const props = defineProps({
    topic_id: {
@@ -42,5 +45,9 @@ const disabled = ref(true)
 
 const preview = () => {
    console.log('preview')
+}
+
+const back = () => {
+   router.back()
 }
 </script>

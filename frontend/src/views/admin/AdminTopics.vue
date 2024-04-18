@@ -1,6 +1,8 @@
 <template>
    <h1 class="text-xl font-semibold">Matières</h1>
 
+   <div class="link m-2" @click="back">back</div>
+
    <h1 class="text-xl font-semibold">{{ sub_ue && sub_ue.name }}</h1>
 
    <ul v-for="topic, index in topicList">
@@ -8,7 +10,7 @@
    </ul>
 
    <div class="flex">
-      <textarea v-model="title" class="textarea textarea-bordered" placeholder="Titre"></textarea>
+      <textarea v-model="title" class="textarea textarea-bordered" placeholder="Titre nouvelle matière"></textarea>
       <button class="btn btn-circle" @click="addTopic">
          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="mdiPlus" /></svg>
       </button>
@@ -23,7 +25,7 @@ import { mdiPlus } from '@mdi/js'
 import { getSubUE } from '/src/use/useSubUE'
 import { createTopic, updateTopic, removeTopic, getTopicList } from '/src/use/useTopic'
 import { getAuthenticatedUser } from '/src/use/useAuthentication'
-import router from "/src/router"
+import router from '/src/router'
 
 import TopicItem from '/src/components/TopicItem.vue'
 
@@ -65,5 +67,9 @@ const remove = async (id) => {
 }
 const select = (id) => {
    router.push(`/home/${getAuthenticatedUser().id}/admin-topic/${id}`)
+}
+
+const back = () => {
+   router.back()
 }
 </script>

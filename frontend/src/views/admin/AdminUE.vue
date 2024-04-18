@@ -6,7 +6,7 @@
    </ul>
 
    <div class="flex">
-      <textarea v-model="title" class="textarea textarea-bordered" placeholder="Titre"></textarea>
+      <textarea v-model="title" class="textarea textarea-bordered" placeholder="Titre nouvelle UE"></textarea>
       <button class="btn btn-circle" @click="addUE">
          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="mdiPlus" /></svg>
       </button>

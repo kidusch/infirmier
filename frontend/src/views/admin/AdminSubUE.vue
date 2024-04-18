@@ -1,6 +1,8 @@
 <template>
    <h1 class="text-xl font-semibold">Sous-unités d'enseignement</h1>
 
+   <div class="link m-2" @click="back">back</div>
+
    <h1 class="text-xl font-semibold">{{ ue && ue.name }}</h1>
 
    <ul v-for="subUE, index in subUEList">
@@ -8,7 +10,7 @@
    </ul>
 
    <div class="flex">
-      <textarea v-model="title" class="textarea textarea-bordered" placeholder="Titre"></textarea>
+      <textarea v-model="title" class="textarea textarea-bordered" placeholder="Titre nouvelle sous-UE"></textarea>
       <button class="btn btn-circle" @click="addSubUE">
          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="mdiPlus" /></svg>
       </button>
@@ -66,5 +68,9 @@ const remove = async (id) => {
 
 const select = (id) => {
    router.push(`/home/${getAuthenticatedUser().id}/admin-topics/${id}`)
+}
+
+const back = () => {
+   router.back()
 }
 </script>

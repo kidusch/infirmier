@@ -14,6 +14,15 @@
       ></textarea>
       <span class="link m-2" @click="disabledTitle = !disabledTitle">edit</span>
    </div>
+
+   <div>
+      <textarea placeholder="Question"
+         :value="quiz ? quiz.question : ''"
+         @input="debouncedInputQuestion" class="textarea textarea-bordered"
+         :disabled="disabledQuestion"
+      ></textarea>
+      <span class="link m-2" @click="disabledQuestion = !disabledQuestion">edit</span>
+   </div>
       
 </template>
 
@@ -43,6 +52,13 @@ const onInputTitle = async (ev) => {
 const debouncedInputTitle = useDebounceFn(onInputTitle, 500)
 
 const disabledTitle = ref(true)
+
+const onInputQuestion = async (ev) => {
+   await updateQuiz(props.quiz_id, { question: ev.target.value })
+}
+const debouncedInputQuestion = useDebounceFn(onInputQuestion, 500)
+
+const disabledQuestion = ref(true)
 
 const back = () => {
    router.back()
