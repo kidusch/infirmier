@@ -49,8 +49,16 @@ export async function localSignin(email, password) {
 }
 
 export async function logout() {
-   await addUserAction('logout')
-   await app.service('auth').logout()
+   try {
+      await addUserAction('logout')
+   } catch(err) {
+      console.log('err', err)
+   }
+   try {
+      await app.service('auth').logout()
+   } catch(err) {
+      console.log('err', err)
+   }
    clearSessionStorage()
 }
 

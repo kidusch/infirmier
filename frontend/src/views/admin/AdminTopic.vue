@@ -3,31 +3,59 @@
 
    <div>
       <p class="inline">Cours</p>
-      <span class="link m-2" @click="select">select</span>
+      <span class="link m-2" @click="adminCourse">select</span>
    </div>
 
    <hr/>
 
-   <!-- <ul v-for="topic, index in topicList">
-      <TopicItem :index="index" :topicList="topicList" @update="updateList" @edit="(text) => edit(topic.id, text)" @remove="remove(topic.id)" @select="select(topic.id)"></TopicItem>
+   <h1 class="text-xl font-semibold">Fiches de révision</h1>
+   <ul v-for="card, index in cardList">
+      <TitleListItem
+         :index="index" :list="cardList"
+         @update="updateCardList"
+         @remove="deleteCard(card.id)"
+         @select="selectCard(card.id)"
+      ></TitleListItem>
    </ul>
+   <button class="btn btn-primary" @click="addCard">Ajouter une fiche</button>
 
-   <div class="flex">
-      <textarea v-model="title" class="textarea textarea-bordered" placeholder="Titre"></textarea>
-      <button class="btn btn-circle" @click="addTopic">
-         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="mdiPlus" /></svg>
-      </button>
-   </div> -->
+
+   <h1 class="text-xl font-semibold">Quiz</h1>
+   <ul v-for="quiz, index in quizList">
+      <TitleListItem
+         :index="index" :list="quizList"
+         @update="updateQuizList"
+         @remove="deleteQuiz(quiz.id)"
+         @select="selectQuiz(quiz.id)"
+      ></TitleListItem>
+   </ul>
+   <button class="btn btn-primary" @click="addQuiz">Ajouter un Quiz</button>
+
+
+   <h1 class="text-xl font-semibold">Études de cas</h1>
+   <ul v-for="caseStudy, index in caseStudyList">
+      <TitleListItem
+         :index="index" :list="caseStudyList"
+         @update="updateCaseStudyList"
+         @remove="deleteCaseStudy(caseStudy.id)"
+         @select="selectCaseStudy(caseStudy.id)"
+      ></TitleListItem>
+   </ul>
+   <button class="btn btn-primary" @click="addCaseStudy">Ajouter une étude de cas</button>
    
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { mdiPlus } from '@mdi/js'
 
 import { getTopic } from '/src/use/useTopic'
+import { getCardList, createCard, removeCard } from '/src/use/useCard'
+import { getQuizList, createQuiz, removeQuiz } from '/src/use/useQuiz'
+import { getCaseStudyList, createCaseStudy, removeCaseStudy } from '/src/use/useCaseStudy'
 import { getAuthenticatedUser } from '/src/use/useAuthentication'
-import router from "/src/router"
+import router from '/src/router'
+
+import TitleListItem from '/src/components/TitleListItem.vue'
 
 const props = defineProps({
    topic_id: {
@@ -37,36 +65,80 @@ const props = defineProps({
 })
 
 const topic = ref()
-// const topicList = ref([])
+const cardList = ref([])
+const quizList = ref([])
+const caseStudyList = ref([])
 
 onMounted(async () => {
    topic.value = await getTopic(props.topic_id)
-   // await updateList()
+   await updateCardList()
+   await updateQuizList()
+   await updateCaseStudyList()
 })
 
-// async function updateList() {
-//    const unorderedList = await getTopicList(props.sub_ue_id)
-//    topicList.value = unorderedList.sort((e1, e2) => e1.rank - e2.rank)
-// }
-
-// const title = ref()
-
-// const addTopic = async () => {
-//    await createTopic(props.sub_ue_id, title.value)
-//    await updateList()
-//    title.value = ''
-// }
-
-// const edit = async (topic_id, name) => {
-//    await updateTopic(topic_id, { name })
-// }
-
-// const remove = async (id) => {
-//    await removeTopic(id)
-//    await updateList()
-// }
-
-const select = (id) => {
+const adminCourse = () => {
    router.push(`/home/${getAuthenticatedUser().id}/admin-course/${props.topic_id}`)
+}
+
+async function updateCardList() {
+   const unorderedList = await getCardList(props.topic_id)
+   cardList.value = unorderedList.sort((e1, e2) => e1.rank - e2.rank)
+}
+
+const selectCard = (id) => {
+   router.push(`/home/${getAuthenticatedUser().id}/admin-card/${id}`)
+}
+
+const addCard = async () => {
+   const card = await createCard(props.topic_id)
+   await updateCardList()
+   selectCard(card.id)
+}
+
+const deleteCard = async (id) => {
+   await removeCard(id)
+   await updateCardList()
+}
+
+
+async function updateQuizList() {
+   const unorderedList = await getQuizList(props.topic_id)
+   quizList.value = unorderedList.sort((e1, e2) => e1.rank - e2.rank)
+}
+
+const selectQuiz = (id) => {
+   router.push(`/home/${getAuthenticatedUser().id}/admin-quiz/${id}`)
+}
+
+const addQuiz = async () => {
+   const quiz = await createQuiz(props.topic_id)
+   await updateQuizList()
+   selectQuiz(quiz.id)
+}
+
+const deleteQuiz = async (id) => {
+   await removeQuiz(id)
+   await updateQuizList()
+}
+
+
+async function updateCaseStudyList() {
+   const unorderedList = await getCaseStudyList(props.topic_id)
+   caseStudyList.value = unorderedList.sort((e1, e2) => e1.rank - e2.rank)
+}
+
+const selectCaseStudy = (id) => {
+   router.push(`/home/${getAuthenticatedUser().id}/admin-case-study/${id}`)
+}
+
+const addCaseStudy = async () => {
+   const caseStudy = await createCaseStudy(props.topic_id)
+   await updateCaseStudyList()
+   selectCaseStudy(caseStudy.id)
+}
+
+const deleteCaseStudy = async (id) => {
+   await removeCaseStudy(id)
+   await updateCaseStudyList()
 }
 </script>

@@ -2,14 +2,14 @@
    <h1 class="text-xl font-semibold">{{ topic && topic.name }}</h1>
 
    <h1 class="text-xl font-semibold">Cours</h1>
-
    <div>
       <textarea placeholder="Contenu du cours"
          :value="topic ? topic.course_content : ''"
          @input="debouncedInput" class="textarea textarea-bordered"
-         :disabled="false"
+         :disabled="disabled"
       ></textarea>
-      <span class="link m-2" @click="select">edit</span>
+      <span class="link m-2" @click="disabled = false">edit</span>
+      <span class="link m-2" @click="preview">preview</span>
    </div>
    
 </template>
@@ -37,4 +37,10 @@ const onInput = async (ev) => {
    await updateTopic(props.topic_id, { course_content: ev.target.value })
 }
 const debouncedInput = useDebounceFn(onInput, 500)
+
+const disabled = ref(true)
+
+const preview = () => {
+   console.log('preview')
+}
 </script>
