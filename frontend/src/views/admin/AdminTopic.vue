@@ -14,7 +14,7 @@
    <ul v-for="card, index in cardList">
       <ListItem
          :index="index" :list="cardList"
-         @update="updateCardList"
+         @update="(e1, e2) => updateCards(e1, e2)"
          @remove="deleteCard(card.id)"
          @select="selectCard(card.id)"
       ></ListItem>
@@ -26,7 +26,7 @@
    <ul v-for="quiz, index in quizList">
       <ListItem
          :index="index" :list="quizList"
-         @update="updateQuizList"
+         @update="(e1, e2) => updateQuizs(e1, e2)"
          @remove="deleteQuiz(quiz.id)"
          @select="selectQuiz(quiz.id)"
       ></ListItem>
@@ -38,7 +38,7 @@
    <ul v-for="caseStudy, index in caseStudyList">
       <ListItem
          :index="index" :list="caseStudyList"
-         @update="updateCaseStudyList"
+         @update="(e1, e2) => updateCaseStudies(e1, e2)"
          @remove="deleteCaseStudy(caseStudy.id)"
          @select="selectCaseStudy(caseStudy.id)"
       ></ListItem>
@@ -51,9 +51,9 @@
 import { ref, onMounted } from 'vue'
 
 import { getTopic } from '/src/use/useTopic'
-import { getCardList, createCard, removeCard } from '/src/use/useCard'
-import { getQuizList, createQuiz, removeQuiz } from '/src/use/useQuiz'
-import { getCaseStudyList, createCaseStudy, removeCaseStudy } from '/src/use/useCaseStudy'
+import { getCardList, createCard, updateCard, removeCard } from '/src/use/useCard'
+import { getQuizList, createQuiz, updateQuiz, removeQuiz } from '/src/use/useQuiz'
+import { getCaseStudyList, createCaseStudy, updateCaseStudy, removeCaseStudy } from '/src/use/useCaseStudy'
 import { getAuthenticatedUser } from '/src/use/useAuthentication'
 import router from '/src/router'
 
@@ -87,6 +87,12 @@ async function updateCardList() {
    cardList.value = unorderedList.sort((e1, e2) => e1.rank - e2.rank)
 }
 
+async function updateCards(e1, e2) {
+   await updateCard(e1.id, { rank: e1.rank })
+   await updateCard(e2.id, { rank: e2.rank })
+   updateCardList()
+}
+
 const selectCard = (id) => {
    router.push(`/home/${getAuthenticatedUser().id}/admin-card/${id}`)
 }
@@ -108,6 +114,12 @@ async function updateQuizList() {
    quizList.value = unorderedList.sort((e1, e2) => e1.rank - e2.rank)
 }
 
+async function updateQuizs(e1, e2) {
+   await updateQuiz(e1.id, { rank: e1.rank })
+   await updateQuiz(e2.id, { rank: e2.rank })
+   updateQuizList()
+}
+
 const selectQuiz = (id) => {
    router.push(`/home/${getAuthenticatedUser().id}/admin-quiz/${id}`)
 }
@@ -127,6 +139,12 @@ const deleteQuiz = async (id) => {
 async function updateCaseStudyList() {
    const unorderedList = await getCaseStudyList(props.topic_id)
    caseStudyList.value = unorderedList.sort((e1, e2) => e1.rank - e2.rank)
+}
+
+async function updateCaseStudies(e1, e2) {
+   await updateCaseStudy(e1.id, { rank: e1.rank })
+   await updateCaseStudy(e2.id, { rank: e2.rank })
+   updateCaseStudyList()
 }
 
 const selectCaseStudy = (id) => {

@@ -2,8 +2,12 @@
    <h1 class="text-xl font-semibold">Unités d'enseignement</h1>
 
    <ul v-for="ue, index in ueList">
-      <!-- <UEItem :index="index" :ueList="ueList" @update="updateList" @edit="(text) => edit(ue.id, text)" @remove="remove(ue.id)" @select="select(ue.id)"></UEItem> -->
-      <EditableListItem field="name" :index="index" :list="ueList" @update="updateList" @edit="(text) => edit(ue.id, text)" @remove="remove(ue.id)" @select="select(ue.id)"></EditableListItem>
+      <EditableListItem
+         field="name" :index="index" :list="ueList"
+         @update="(ue1, ue2) => update(ue1, ue2)"
+         @edit="(text) => edit(ue.id, text)" @remove="remove(ue.id)"
+         @select="select(ue.id)"
+      ></EditableListItem>
    </ul>
 
    <div class="flex">
@@ -23,7 +27,6 @@ import { createUE, updateUE, removeUE, getUEList } from '/src/use/useUE'
 import { getAuthenticatedUser } from '/src/use/useAuthentication'
 import router from "/src/router"
 
-// import UEItem from '/src/components/UEItem.vue'
 import EditableListItem from '/src/components/EditableListItem.vue'
 
 
@@ -36,6 +39,12 @@ onMounted(async () => {
 async function updateList() {
    const unorderedList = await getUEList()
    ueList.value = unorderedList.sort((e1, e2) => e1.rank - e2.rank)
+}
+
+async function update(e1, e2) {
+   await updateUE(e1.id, { rank: e1.rank })
+   await updateUE(e2.id, { rank: e2.rank })
+   updateList()
 }
 
 const title = ref()

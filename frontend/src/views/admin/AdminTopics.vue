@@ -6,8 +6,13 @@
    <h1 class="text-xl font-semibold">{{ sub_ue && sub_ue.name }}</h1>
 
    <ul v-for="topic, index in topicList">
-      <!-- <TopicItem :index="index" :topicList="topicList" @update="updateList" @edit="(text) => edit(topic.id, text)" @remove="remove(topic.id)" @select="select(topic.id)"></TopicItem> -->
-      <EditableListItem field="name" :index="index" :list="topicList" @update="updateList" @edit="(text) => edit(topic.id, text)" @remove="remove(topic.id)" @select="select(topic.id)"></EditableListItem>
+      <EditableListItem
+         field="name" :index="index" :list="topicList"
+         @update="(ue1, ue2) => update(ue1, ue2)"
+         @edit="(text) => edit(topic.id, text)"
+         @remove="remove(topic.id)"
+         @select="select(topic.id)"
+      ></EditableListItem>
    </ul>
 
    <div class="flex">
@@ -28,7 +33,6 @@ import { createTopic, updateTopic, removeTopic, getTopicList } from '/src/use/us
 import { getAuthenticatedUser } from '/src/use/useAuthentication'
 import router from '/src/router'
 
-// import TopicItem from '/src/components/TopicItem.vue'
 import EditableListItem from '/src/components/EditableListItem.vue'
 
 const props = defineProps({
@@ -49,6 +53,12 @@ onMounted(async () => {
 async function updateList() {
    const unorderedList = await getTopicList(props.sub_ue_id)
    topicList.value = unorderedList.sort((e1, e2) => e1.rank - e2.rank)
+}
+
+async function update(e1, e2) {
+   await updateTopic(e1.id, { rank: e1.rank })
+   await updateTopic(e2.id, { rank: e2.rank })
+   updateList()
 }
 
 const title = ref()

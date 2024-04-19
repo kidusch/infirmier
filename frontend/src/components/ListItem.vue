@@ -37,7 +37,7 @@ const up = () => {
    const prevRank = prev.rank
    prev.rank = element.value.rank
    element.value.rank = prevRank
-   emit('update')
+   emit('update', element.value, prev)
 }
 
 const down = () => {
@@ -45,7 +45,7 @@ const down = () => {
    const nextRank = next.rank
    next.rank = element.value.rank
    element.value.rank = nextRank
-   emit('update')
+   emit('update', element.value, next)
 }
 
 const remove = () => emit('remove')
