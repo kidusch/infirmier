@@ -11,6 +11,16 @@
 
    <h1 class="text-lg font-semibold">{{ quizChoice && quizChoice.title }}</h1>
 
+   <div>
+      <h1 class="text-xl font-semibold">Texte du choix</h1>
+      <textarea placeholder="Texte"
+         :value="quizChoice ? quizChoice.text : ''"
+         @input="debouncedInputText" class="textarea textarea-bordered"
+         :disabled="disabledText"
+      ></textarea>
+      <span class="link m-2" @click="disabledText = !disabledText">edit</span>
+   </div>
+
 </template>
 
 <script setup>
@@ -19,7 +29,7 @@ import { useDebounceFn } from '@vueuse/core'
 
 import { getTopic } from '/src/use/useTopic'
 import { getQuiz } from '/src/use/useQuiz'
-import { getQuizChoice } from '/src/use/useQuizChoice'
+import { getQuizChoice, updateQuizChoice } from '/src/use/useQuizChoice'
 import router from '/src/router'
 
 const props = defineProps({
@@ -46,6 +56,14 @@ onMounted(async () => {
    quiz.value = await getQuiz(props.quiz_id)
    quizChoice.value = await getQuizChoice(props.quiz_choice_id)
 })
+
+const onInputText = async (ev) => {
+   await updateQuizChoice(props.quiz_choice_id, { text: ev.target.value })
+}
+const debouncedInputText = useDebounceFn(onInputText, 500)
+
+const disabledText = ref(true)
+
 
 const back = () => {
    router.back()
