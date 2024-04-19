@@ -1,7 +1,7 @@
 <template>
-   <h1 class="text-xl font-semibold">{{ topic && topic.name }}</h1>
-
    <div class="link m-2" @click="back">back</div>
+
+   <h1 class="text-xl font-semibold">{{ topic && topic.name }}</h1>
 
    <div>
       <p class="inline">Cours</p>

@@ -1,10 +1,10 @@
 <template>
+   <div class="link m-2" @click="back">back</div>
+   <div class="link m-2" @click="preview">preview</div>
+
    <h1 class="text-xl font-semibold">{{ topic && topic.name }}</h1>
 
    <h1 class="text-gray-500">QCM</h1>
-
-   <div class="link m-2" @click="back">back</div>
-   <div class="link m-2" @click="preview">preview</div>
 
    <div>
       <h1 class="text-xl font-semibold">Titre</h1>
@@ -95,8 +95,8 @@ async function updateChoiceList() {
    quizChoiceList.value = unorderedList.sort((e1, e2) => e1.rank - e2.rank)
 }
 
-const selectChoice = (id) => {
-   router.push(`/home/${getAuthenticatedUser().id}/admin-quiz-choice/${id}`)
+const selectChoice = (quiz_choice_id) => {
+   router.push(`/home/${getAuthenticatedUser().id}/admin-quiz-choice/${props.topic_id}/${props.quiz_id}/${quiz_choice_id}`)
 }
 
 const addChoice = async () => {
