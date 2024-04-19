@@ -1,6 +1,6 @@
 <template>
    <li class="flex">
-      <textarea :value="ue.name" @input="debouncedInput" class="textarea textarea-bordered" placeholder="Titre" :disabled="disabled"></textarea>
+      <textarea :value="element[field]" @input="debouncedInput" class="textarea textarea-bordered" placeholder="Titre" :disabled="disabled"></textarea>
       <span class="link m-2" @click="disabled = false">edit</span>
       <span class="link m-2" @click="remove">delete</span>
       <span class="link m-2" @click="up" v-if="!isFirst">up</span>
@@ -10,50 +10,46 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { useDebounceFn } from '@vueuse/core'
+import { computed } from 'vue'
 
 const props = defineProps({
+   field: {
+      type: String,
+      required: true
+   },
    index: {
       type: Number,
       required: true
    },
-   ueList: {
+   list: {
       type: Array,
       required: true
    },
 })
 
-const emit = defineEmits(['update', 'remove', 'select', 'edit'])
+const emit = defineEmits(['update', 'remove', 'select'])
 
-const ue = computed(() => props.ueList[props.index])
+const element = computed(() => props.list[props.index])
 const isFirst = computed(() => (props.index === 0))
-const isLast = computed(() => (props.index === (props.ueList.length - 1)))
-
-const disabled = ref(true)
+const isLast = computed(() => (props.index === (props.list.length - 1)))
 
 const up = () => {
-   const prev = props.ueList[props.index - 1]
+   const prev = props.list[props.index - 1]
    const prevRank = prev.rank
-   prev.rank = ue.value.rank
-   ue.value.rank = prevRank
+   prev.rank = element.value.rank
+   element.value.rank = prevRank
    emit('update')
 }
 
 const down = () => {
-   const next = props.ueList[props.index + 1]
+   const next = props.list[props.index + 1]
    const nextRank = next.rank
-   next.rank = ue.value.rank
-   ue.value.rank = nextRank
+   next.rank = element.value.rank
+   element.value.rank = nextRank
    emit('update')
 }
 
 const remove = () => emit('remove')
 
 const select = () => emit('select')
-
-const onInput = (ev) => {
-   emit('edit', ev.target.value)
-}
-const debouncedInput = useDebounceFn(onInput, 500)
 </script>

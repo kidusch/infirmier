@@ -6,7 +6,8 @@
    <h1 class="text-xl font-semibold">{{ ue && ue.name }}</h1>
 
    <ul v-for="subUE, index in subUEList">
-      <SubUEItem :index="index" :subUEList="subUEList" @update="updateList" @edit="(text) => edit(subUE.id, text)" @remove="remove(subUE.id)" @select="select(subUE.id)"></SubUEItem>
+      <!-- <SubUEItem :index="index" :subUEList="subUEList" @update="updateList" @edit="(text) => edit(subUE.id, text)" @remove="remove(subUE.id)" @select="select(subUE.id)"></SubUEItem> -->
+      <EditableListItem field="name" :index="index" :list="subUEList" @update="updateList" @edit="(text) => edit(subUE.id, text)" @remove="remove(subUE.id)" @select="select(subUE.id)"></EditableListItem>
    </ul>
 
    <div class="flex">
@@ -27,7 +28,8 @@ import { createSubUE, updateSubUE, removeSubUE, getSubUEList } from '/src/use/us
 import { getAuthenticatedUser } from '/src/use/useAuthentication'
 import router from "/src/router"
 
-import SubUEItem from '/src/components/SubUEItem.vue'
+// import SubUEItem from '/src/components/SubUEItem.vue'
+import EditableListItem from '/src/components/EditableListItem.vue'
 
 const props = defineProps({
    ue_id: {

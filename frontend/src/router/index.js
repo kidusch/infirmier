@@ -9,40 +9,41 @@ const routes = [
       path: '/',
       component: FrontPage,
    },
+
    {
       path: '/signup',
-      component: () => import('/src/views/Signup.vue'),
+      component: () => import('/src/views/auth/Signup.vue'),
    },
    {
       path: '/local-signup-confirm/:token',
-      component: () => import('/src/views/LocalSignupConfirm.vue'),
+      component: () => import('/src/views/auth/LocalSignupConfirm.vue'),
       props: true
    },
    {
       path: '/google-signup-confirm/:userid',
-      component: () => import('/src/views/GoogleSignupConfirm.vue'),
+      component: () => import('/src/views/auth/GoogleSignupConfirm.vue'),
       props: true
    },
    {
       path: '/set-password/:token',
-      component: () => import('/src/views/SetPassword.vue'),
+      component: () => import('/src/views/auth/SetPassword.vue'),
       props: true
    },
    {
       path: '/local-signup',
-      component: () => import('/src/views/LocalSignup.vue'),
+      component: () => import('/src/views/auth/LocalSignup.vue'),
    },
    {
       path: '/login',
-      component: () => import('/src/views/Signin.vue'),
+      component: () => import('/src/views/auth/Signin.vue'),
    },
    {
       path: '/local-signin',
-      component: () => import('/src/views/LocalSignin.vue'),
+      component: () => import('/src/views/auth/LocalSignin.vue'),
    },
    {
       path: '/forgotten-password',
-      component: () => import('/src/views/ForgottenPassword.vue'),
+      component: () => import('/src/views/auth/ForgottenPassword.vue'),
    },
 
 

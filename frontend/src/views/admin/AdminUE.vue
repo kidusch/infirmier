@@ -2,7 +2,8 @@
    <h1 class="text-xl font-semibold">Unités d'enseignement</h1>
 
    <ul v-for="ue, index in ueList">
-      <UEItem :index="index" :ueList="ueList" @update="updateList" @edit="(text) => edit(ue.id, text)" @remove="remove(ue.id)" @select="select(ue.id)"></UEItem>
+      <!-- <UEItem :index="index" :ueList="ueList" @update="updateList" @edit="(text) => edit(ue.id, text)" @remove="remove(ue.id)" @select="select(ue.id)"></UEItem> -->
+      <EditableListItem field="name" :index="index" :list="ueList" @update="updateList" @edit="(text) => edit(ue.id, text)" @remove="remove(ue.id)" @select="select(ue.id)"></EditableListItem>
    </ul>
 
    <div class="flex">
@@ -22,7 +23,8 @@ import { createUE, updateUE, removeUE, getUEList } from '/src/use/useUE'
 import { getAuthenticatedUser } from '/src/use/useAuthentication'
 import router from "/src/router"
 
-import UEItem from '/src/components/UEItem.vue'
+// import UEItem from '/src/components/UEItem.vue'
+import EditableListItem from '/src/components/EditableListItem.vue'
 
 
 const ueList = ref([])
