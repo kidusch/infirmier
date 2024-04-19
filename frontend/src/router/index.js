@@ -88,9 +88,10 @@ const routes = [
             }),
          },
          {
-            path: 'admin-quiz/:quiz_id',
+            path: 'admin-quiz/:topic_id/:quiz_id',
             component: () => import('/src/views/admin/AdminQuiz.vue'),
             props: route => ({
+               topic_id: parseInt(route.params.topic_id),
                quiz_id: parseInt(route.params.quiz_id),
             }),
          },
@@ -102,16 +103,18 @@ const routes = [
             }),
          },
          {
-            path: 'admin-card/:card_id',
+            path: 'admin-card/:topic_id/:card_id',
             component: () => import('/src/views/admin/AdminCard.vue'),
             props: route => ({
+               topic_id: parseInt(route.params.topic_id),
                card_id: parseInt(route.params.card_id),
             }),
          },
          {
-            path: 'admin-case-study/:case_study_id',
+            path: 'admin-case-study/:topic_id/:case_study_id',
             component: () => import('/src/views/admin/AdminCaseStudy.vue'),
             props: route => ({
+               topic_id: parseInt(route.params.topic_id),
                case_study_id: parseInt(route.params.case_study_id),
             }),
          },

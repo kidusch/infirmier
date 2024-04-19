@@ -93,8 +93,8 @@ async function updateCards(e1, e2) {
    updateCardList()
 }
 
-const selectCard = (id) => {
-   router.push(`/home/${getAuthenticatedUser().id}/admin-card/${id}`)
+const selectCard = (card_id) => {
+   router.push(`/home/${getAuthenticatedUser().id}/admin-card/${props.topic_id}/${card_id}`)
 }
 
 const addCard = async () => {
@@ -120,8 +120,8 @@ async function updateQuizs(e1, e2) {
    updateQuizList()
 }
 
-const selectQuiz = (id) => {
-   router.push(`/home/${getAuthenticatedUser().id}/admin-quiz/${id}`)
+const selectQuiz = (quiz_id) => {
+   router.push(`/home/${getAuthenticatedUser().id}/admin-quiz/${props.topic_id}/${quiz_id}`)
 }
 
 const addQuiz = async () => {
@@ -147,8 +147,8 @@ async function updateCaseStudies(e1, e2) {
    updateCaseStudyList()
 }
 
-const selectCaseStudy = (id) => {
-   router.push(`/home/${getAuthenticatedUser().id}/admin-case-study/${id}`)
+const selectCaseStudy = (case_study_id) => {
+   router.push(`/home/${getAuthenticatedUser().id}/admin-case-study/${props.topic_id}/${case_study_id}`)
 }
 
 const addCaseStudy = async () => {

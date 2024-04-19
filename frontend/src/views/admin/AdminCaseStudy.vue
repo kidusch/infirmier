@@ -1,7 +1,7 @@
 <template>
-   <h1 class="text-xl font-semibold">{{ caseStudy && caseStudy.title }}</h1>
+   <h1 class="text-xl font-semibold">{{ topic && topic.name }}</h1>
 
-   <h1 class="text-xl font-semibold">Cas d'étude</h1>
+   <h1 class="text-gray-500">Étude de cas</h1>
 
    <div class="link m-2" @click="back">back</div>
    <div class="link m-2" @click="preview">preview</div>
@@ -30,19 +30,26 @@
 import { ref, onMounted } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
+import { getTopic } from '/src/use/useTopic'
 import { getCaseStudy, updateCaseStudy } from '/src/use/useCaseStudy'
 import router from '/src/router'
 
 const props = defineProps({
+   topic_id: {
+      type: Number,
+      required: true
+   },
    case_study_id: {
       type: Number,
       required: true
    },
 })
 
+const topic = ref()
 const caseStudy = ref()
 
 onMounted(async () => {
+   topic.value = await getTopic(props.topic_id)
    caseStudy.value = await getCaseStudy(props.case_study_id)
 })
 

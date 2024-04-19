@@ -1,7 +1,7 @@
 <template>
-   <h1 class="text-xl font-semibold">{{ card && card.title }}</h1>
+   <h1 class="text-xl font-semibold">{{ topic && topic.name }}</h1>
 
-   <h1 class="text-xl font-semibold">Fiche de révision</h1>
+   <h1 class="text-gray-500">Fiche de révision</h1>
 
    <div class="link m-2" @click="back">back</div>
    <div class="link m-2" @click="preview">preview</div>
@@ -30,19 +30,26 @@
 import { ref, onMounted } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
+import { getTopic } from '/src/use/useTopic'
 import { getCard, updateCard } from '/src/use/useCard'
 import router from '/src/router'
 
 const props = defineProps({
+   topic_id: {
+      type: Number,
+      required: true
+   },
    card_id: {
       type: Number,
       required: true
    },
 })
 
+const topic = ref()
 const card = ref()
 
 onMounted(async () => {
+   topic.value = await getTopic(props.topic_id)
    card.value = await getCard(props.card_id)
 })
 
