@@ -48,6 +48,8 @@ export const createQuizChoice = async (quiz_id) => {
          text: '',
          answer: false,
          comment: '',
+         positive_points: 0,
+         negative_points: 0,
       }
    })
    // update cache
