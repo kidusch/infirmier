@@ -24,58 +24,61 @@
       Vous avez déjà un compte ? <RouterLink to="/login" class="link">connexion</RouterLink>
    </div> -->
 
-   <div class="container max-w-lg py-4 flex flex-col h-svh">
+   <div class="container max-w-lg py-4 flex flex-col h-screen">
 
       <!-- Logo -->
       <header class="w-full flex justify-center">
-         <img class="w-60 h-60 lg:w-80 lg:h-80" src="/src/assets/logo.png" alt="logo">
+         <img class="w-80 h-80" src="/src/assets/logo.png" alt="logo">
       </header>
 
       <section class="flex-1 flex flex-col justify-between">
 
          <!-- Headings -->
-         <section class="h-1/4 flex flex-col">
+         <section class="h-1/4 lg:h-auto flex flex-col">
             <h1>
-               Inscription au
+                  Inscription au
             </h1>
             <h1 class="text-primary">
-               Journal de bord Infirmier
+                  Journal de bord Infirmier
             </h1>
          </section>
 
          <!-- Login Options -->
-         <main class="flex flex-col gap-2 my-8 h-1/4">
+         <div class="flex flex-col my-8 lg:my-4 h-1/4 lg:h-2/4 gap-16 lg:gap-">
 
-            <button class="secondary-btn" @click="goGoogle">
-               <img src="/src/assets/google.svg" alt="google">
-               <span>
-                  Continuer avec Google
-               </span>
-            </button>
+            <div class="flex flex-col gap-6">
+               <div class="flex flex-col">
+                  <label for="emailInput">
+                     Email
+                  </label>
+                  <input class="standard-input" placeholder="Entrer email" type="email">
+               </div>
 
-            <div class="flex gap-2 items-center justify-center">
-               <span class="h-px w-1/4 bg-black/20"></span>
-               <p>ou</p>
-               <span class="h-px w-1/4 bg-black/20"></span>
+               <div class="flex flex-col">
+                  <label for="nameInput">
+                     Nom ou pseudo
+                  </label>
+                  <input class="standard-input" placeholder="Entrer nom ou pseudo" type="text">
+               </div>
             </div>
 
-            <button class="secondary-btn bg-secondary" @click="localSignup">
-               <img src="/src/assets/email.svg" alt="email">
-               <span>
-                  Continuer avec un Email
-               </span>
-            </button>
-         </main>
+
+            <div class="justify-center flex">
+               <button type="submit" class="primary-btn" @click="validate" :disabled="false">
+                  S’incrire
+               </button>
+            </div>
+
+         </div>
 
          <!-- footer -->
          <footer class="flex-1 flex flex-col justify-end h-full py-2">
             <h4 class="text-center">
-               Pas encore de compte? <button class="text-primary" @click="localSignin">S’inscrire</button>
+               Vous avez déjà un compte? <button class="text-primary" @click="login">Connexion</button>
             </h4>
          </footer>
 
       </section>
-
    </div>
 
    <Spinner v-if="isWaiting"></Spinner>
@@ -88,6 +91,7 @@ import { ref } from 'vue'
 import app from '/src/client-app.js'
 import { testEmail } from '/src/lib/utilities.mjs'
 import { appState } from '/src/use/useAppState'
+import router from "/src/router"
 
 import Spinner from '/src/components/Spinner.vue'
 
@@ -111,5 +115,9 @@ const validate = async () => {
    } finally {
       isWaiting.value = false
    }
+}
+
+const login = () => {
+   router.push('/login')
 }
 </script>
