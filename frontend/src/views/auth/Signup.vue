@@ -46,7 +46,7 @@
          <!-- footer -->
          <footer class="flex-1 flex flex-col justify-end h-full py-2">
             <h4 class="text-center">
-               Pas encore de compte? <button class="text-primary" @click="login">S’inscrire</button>
+               Vous avez déjà un compte? <button class="text-primary" @click="login">Connexion</button>
             </h4>
          </footer>
 

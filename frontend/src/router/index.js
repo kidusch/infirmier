@@ -35,12 +35,12 @@ const routes = [
    },
    {
       path: '/login',
-      component: () => import('/src/views/auth/Signin.vue'),
-   },
-   {
-      path: '/local-signin',
       component: () => import('/src/views/auth/LocalSignin.vue'),
    },
+   // {
+   //    path: '/local-signin',
+   //    component: () => import('/src/views/auth/LocalSignin.vue'),
+   // },
    {
       path: '/forgotten-password',
       component: () => import('/src/views/auth/ForgottenPassword.vue'),

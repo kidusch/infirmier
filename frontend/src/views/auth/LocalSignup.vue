@@ -64,7 +64,7 @@
 
 
             <div class="justify-center flex">
-               <button type="submit" class="primary-btn" @click="validate" :disabled="false">
+               <button class="primary-btn" @click="validate" :disabled="false">
                   S’incrire
                </button>
             </div>

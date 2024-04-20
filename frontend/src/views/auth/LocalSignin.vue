@@ -68,7 +68,7 @@
 
 
             <div class="justify-center flex">
-               <button type="submit" class="primary-btn" @click="validate">
+               <button class="primary-btn" @click="validate">
                   Connexion
                </button>
             </div>
