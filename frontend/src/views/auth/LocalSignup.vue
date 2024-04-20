@@ -105,6 +105,7 @@ const validate = async () => {
    try {
       isWaiting.value = true
       await app.service('auth', { timeout: 60000 }).localSignup(email.value, name.value)
+      alert("Merci ! Regardez dans votre boite mail, un message de confirmation vient de vous être envoyé")
    } catch(err) {
       if (err.code === 'email-already-used') {
          alert("Cet email est déjà utilisé")

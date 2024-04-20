@@ -41,7 +41,7 @@ const validate = async () => {
    try {
       const user = await app.service('auth').setPassword(props.token, password.value)
       console.log('user', user)
-      router.push('/local-signin')
+      router.push('/login')
    } catch(err) {
       console.log('err', err)
       appState.value.unexpectedError = true
