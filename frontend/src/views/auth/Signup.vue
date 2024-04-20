@@ -1,24 +1,5 @@
 <template>
    
-   <!-- <h1>S'inscrire au Journal de Bord Infirmier</h1>
-
-   <div>
-      <button class="btn btn-wide" @click="goGoogle">
-         <img src="/src/assets/google_logo.svg" class="w-6"/>
-         Continuer avec Google
-      </button>
-   </div>
-
-   <div>
-      <button class="btn btn-wide" @click="localSignup">
-         Continuer avec un email @
-      </button>
-   </div>
-
-   <div>
-      Vous avez déjà un compte ? <RouterLink to="/login" class="link">Connexion</RouterLink>
-   </div>
- -->
    <div class="container max-w-lg py-4 flex flex-col h-svh">
 
       <!-- Logo -->
@@ -50,7 +31,7 @@
 
             <div class="flex gap-2 items-center justify-center">
                <span class="h-px w-1/4 bg-black/20"></span>
-               <p>ou</p>
+               <p>or</p>
                <span class="h-px w-1/4 bg-black/20"></span>
             </div>
 
@@ -65,13 +46,29 @@
          <!-- footer -->
          <footer class="flex-1 flex flex-col justify-end h-full py-2">
             <h4 class="text-center">
-               Pas encore de compte? <button class="text-primary">S’inscrire</button>
+               Pas encore de compte? <button class="text-primary"  @click="login">S’inscrire</button>
             </h4>
          </footer>
 
       </section>
-
    </div>
+
+   <!-- <div>
+      <button class="btn btn-wide" @click="goGoogle">
+         <img src="/src/assets/google_logo.svg" class="w-6"/>
+         Continuer avec Google
+      </button>
+   </div>
+
+   <div>
+      <button class="btn btn-wide" @click="localSignup">
+         Continuer avec un email @
+      </button>
+   </div>
+
+   <div>
+      Vous avez déjà un compte ? <RouterLink to="/login" class="link">Connexion</RouterLink>
+   </div> -->
 
 </template>
 
@@ -84,5 +81,9 @@ const goGoogle = () => {
 
 const localSignup = () => {
    router.push('/local-signup')
+}
+
+const login = () => {
+   router.push('/login')
 }
 </script>
