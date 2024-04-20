@@ -51,14 +51,14 @@
                   <label for="emailInput">
                      Email
                   </label>
-                  <input class="standard-input" placeholder="Entrer email" type="email">
+                  <input v-model="email" class="standard-input" placeholder="Entrer email" type="email">
                </div>
 
                <div class="flex flex-col">
                   <label for="nameInput">
                      Nom ou pseudo
                   </label>
-                  <input class="standard-input" placeholder="Entrer nom ou pseudo" type="text">
+                  <input v-model="name" class="standard-input" placeholder="Entrer nom ou pseudo" type="text">
                </div>
             </div>
 
