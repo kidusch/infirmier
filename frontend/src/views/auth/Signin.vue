@@ -63,7 +63,10 @@
                      Mot de passe
                   </label>
                   <input v-model="password" class="standard-input" placeholder="Entrer mot de passe" type="password">
+
+                  <RouterLink to="/forgotten-password" class="link">Mot de passe oublié</RouterLink>
                </div>
+            
             </div>
 
 
@@ -74,13 +77,6 @@
             </div>
 
          </div>
-
-         <div>
-            <RouterLink to="/forgotten-password" class="link">Mot de passe oublié</RouterLink>
-         </div>
-
-         <hr/>
-
          <button class="secondary-btn" @click="goGoogle">
             <img src="/src/assets/google.svg" alt="google">
             <span>

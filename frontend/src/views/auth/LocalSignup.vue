@@ -94,6 +94,7 @@ import { appState } from '/src/use/useAppState'
 import router from "/src/router"
 
 import Spinner from '/src/components/Spinner.vue'
+import SetPassword from './SetPassword.vue'
 
 const email = ref()
 const name = ref()
@@ -102,6 +103,10 @@ const isWaiting = ref(false)
 
 
 const validate = async () => {
+   if (!email.value || !name.value) {
+      alert("Il faut saisir un email et un nom")
+      return
+   }
    try {
       isWaiting.value = true
       await app.service('auth', { timeout: 60000 }).localSignup(email.value, name.value)
