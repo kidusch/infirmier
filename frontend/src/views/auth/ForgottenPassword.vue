@@ -1,5 +1,5 @@
 <template>
-   <h1>Mot de passe oublié ?</h1>
+   <!-- <h1>Mot de passe oublié ?</h1>
 
    <p>Entrez votre email ; si vous avez un compte associé, un email de modification de mot de passe vous sera envoyé</p>
 
@@ -9,7 +9,47 @@
    </label>
    <p class="text-red-600">{{ errorMessage }}</p>
 
-   <button class="block btn btn-primary" @click="validate">Valider</button>
+   <button class="block btn btn-primary" @click="validate">Valider</button> -->
+
+   <div class="container max-w-lg py-4 flex flex-col h-screen">
+
+      <header class="w-full flex justify-center">
+         <img class="w-80 h-80" src="/src/assets/logo.png" alt="logo">
+      </header>
+
+      <section class="flex-1 flex flex-col justify-between">
+
+         <section class="h-1/4 lg:h-auto flex flex-col">
+            <h1 class="text-primary">
+               Mot de passe oublié
+            </h1>
+         </section>
+
+         <div class="flex flex-col my-8 lg:my-4 h-1/4 lg:h-2/4 gap-16 lg:gap-">
+
+            <p>
+               Entrez votre email ; si vous avez un compte associé, un email de modification de mot de passe vous sera envoyé.
+            </p>
+
+            <div class="flex flex-col gap-6">
+               <div class="flex flex-col">
+                  <label for="emailInput">
+                     Email
+                  </label>
+                  <input v-model="email" class="standard-input" placeholder="Entrer email" type="email">
+               </div>
+            </div>
+
+
+            <div class="justify-center flex">
+               <button class="primary-btn" @click="validate">
+                  Valider
+               </button>
+            </div>
+
+         </div>
+      </section>
+   </div>
 </template>
 
 <script setup>
@@ -22,14 +62,17 @@ import { testEmail } from '/src/lib/utilities.mjs'
 
 
 const email = ref()
-const errorMessage = ref('')
 
 
 const validate = async () => {
-   errorMessage.value = ''
+   if (!testEmail(email.value)) {
+      alert("L'email est incorrect")
+      return
+   }
    try {
       appState.value.isWaiting = true
       await app.service('auth').forgottenPassword(email.value)
+      alert("Merci. Un email de confirmation vient de vous être envoyé.")
       // go home
       router.push(`/`)
    } catch(err) {
