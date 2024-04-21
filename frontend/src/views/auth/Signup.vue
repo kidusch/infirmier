@@ -31,7 +31,7 @@
 
             <div class="flex gap-2 items-center justify-center">
                <span class="h-px w-1/4 bg-black/20"></span>
-               <p>or</p>
+               <p>ou</p>
                <span class="h-px w-1/4 bg-black/20"></span>
             </div>
 
@@ -52,24 +52,6 @@
 
       </section>
    </div>
-
-   <!-- <div>
-      <button class="btn btn-wide" @click="goGoogle">
-         <img src="/src/assets/google_logo.svg" class="w-6"/>
-         Continuer avec Google
-      </button>
-   </div>
-
-   <div>
-      <button class="btn btn-wide" @click="localSignup">
-         Continuer avec un email @
-      </button>
-   </div>
-
-   <div>
-      Vous avez déjà un compte ? <RouterLink to="/login" class="link">Connexion</RouterLink>
-   </div> -->
-
 </template>
 
 <script setup>
