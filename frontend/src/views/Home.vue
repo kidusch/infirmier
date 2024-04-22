@@ -1,5 +1,4 @@
 <template>
-   <!-- <button class="block link" @click="signout">Logout</button> -->
 
    <div class="py-4 flex flex-col h-screen">
 
@@ -84,12 +83,8 @@
 
       </nav>
 
+      <router-view></router-view>
 
-      <main class="flex-1 container max-w-7xl">
-
-         <router-view></router-view>
-
-      </main>
    </div>
 
 </template>
@@ -132,13 +127,13 @@ function toggleSideMenu() {
       sidebarMenuArea.value.style.left = '-100%'
       setTimeout(() => {
          sidebarMenu.value.style.display = 'none'
-      }, 100);
+      }, 100)
       sidebarMenuOpen = false
    } else {
       sidebarMenu.value.style.display = 'flex'
       setTimeout(() => {
          sidebarMenuArea.value.style.left = 0
-      }, 100);
+      }, 100)
       sidebarMenuOpen = true
    }
 }
