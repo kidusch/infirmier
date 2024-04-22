@@ -118,18 +118,11 @@ const routes = [
          },
          
          {
-            path: 'student',
-            component: () => import('/src/views/Student.vue'),
+            path: 'student-ue',
+            component: () => import('/src/views/student/StudentUE.vue'),
          },
       ],
    },
-
-
-   // {
-   //    path: '/admin-ue',
-   //    meta: { requiresAuth: true },
-   //    component: () => import('/src/views/admin/AdminUE.vue'),
-   // },
 ]
 
 const router = createRouter({
