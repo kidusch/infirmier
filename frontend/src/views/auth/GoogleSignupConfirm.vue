@@ -37,12 +37,16 @@ const accept = ref()
 
 const validate = async () => {
    try {
-      await app.service('user').update({
+      const user = await app.service('user').update({
          where: { id: parseInt(props.userid) },
          data: { accept_cgu: accept.value }
       })
       if (accept.value) {
-         router.push(`/home/${props.userid}`)
+         if (user.admin) {
+            router.push(`/home/${user.id}/admin-ue`)
+         } else {
+            router.push(`/home/${user.id}/student`)
+         }
       } else {
          router.push(`/`)
       }

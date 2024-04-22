@@ -107,6 +107,10 @@ const validate = async () => {
       alert("Il faut saisir un email et un nom")
       return
    }
+   if (!testEmail(email.value)) {
+      alert("L'email est incorrect")
+      return
+   }
    try {
       isWaiting.value = true
       await app.service('auth', { timeout: 60000 }).localSignup(email.value, name.value)

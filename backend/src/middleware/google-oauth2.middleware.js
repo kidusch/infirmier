@@ -97,7 +97,12 @@ export default function (app) {
 			if (isUserCreated) {
 				res.redirect(`/google-signup-confirm/${user.id}`)
 			} else {
-				res.redirect(`/home/${user.id}`)
+				if (user.admin) {
+					res.redirect(`/home/${user.id}/admin-ue`)
+				} else {
+					res.redirect(`/home/${user.id}/student`)
+				}
+	
 			}
 		} catch (error) {
 			console.error('Access Token Error', error.message)
