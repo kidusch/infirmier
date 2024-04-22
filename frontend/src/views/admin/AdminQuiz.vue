@@ -91,8 +91,7 @@ const debouncedInputQuestion = useDebounceFn(onInputQuestion, 500)
 const disabledQuestion = ref(true)
 
 async function updateChoiceList() {
-   const unorderedList = await getQuizChoiceList(props.quiz_id)
-   quizChoiceList.value = unorderedList.sort((e1, e2) => e1.rank - e2.rank)
+   quizChoiceList.value = await getQuizChoiceList(props.quiz_id)
 }
 
 const selectChoice = (quiz_choice_id) => {

@@ -79,5 +79,5 @@ export const getQuizList = async (topic_id) => {
       }
       quizState.value.isListReady[topic_id] = true
    }
-   return Object.values(quizState.value.quizCache).filter(quiz => quiz.topic_id === topic_id)
+   return Object.values(quizState.value.quizCache).filter(quiz => quiz.topic_id === topic_id).sort((e1, e2) => e1.rank - e2.rank)
 }

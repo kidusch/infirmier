@@ -78,5 +78,5 @@ export const getSubUEList = async (ue_id) => {
       }
       subUEState.value.isListReady[ue_id] = true
    }
-   return Object.values(subUEState.value.subUECache).filter(subUE => subUE.ue_id === ue_id)
+   return Object.values(subUEState.value.subUECache).filter(subUE => subUE.ue_id === ue_id).sort((e1, e2) => e1.rank - e2.rank)
 }

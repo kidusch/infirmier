@@ -83,8 +83,7 @@ const adminCourse = () => {
 }
 
 async function updateCardList() {
-   const unorderedList = await getCardList(props.topic_id)
-   cardList.value = unorderedList.sort((e1, e2) => e1.rank - e2.rank)
+   cardList.value= await getCardList(props.topic_id)
 }
 
 async function updateCards(e1, e2) {
@@ -110,8 +109,7 @@ const deleteCard = async (id) => {
 
 
 async function updateQuizList() {
-   const unorderedList = await getQuizList(props.topic_id)
-   quizList.value = unorderedList.sort((e1, e2) => e1.rank - e2.rank)
+   quizList.value = await getQuizList(props.topic_id)
 }
 
 async function updateQuizs(e1, e2) {
@@ -137,8 +135,7 @@ const deleteQuiz = async (id) => {
 
 
 async function updateCaseStudyList() {
-   const unorderedList = await getCaseStudyList(props.topic_id)
-   caseStudyList.value = unorderedList.sort((e1, e2) => e1.rank - e2.rank)
+   caseStudyList.value = await getCaseStudyList(props.topic_id)
 }
 
 async function updateCaseStudies(e1, e2) {

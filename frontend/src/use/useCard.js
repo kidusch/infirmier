@@ -79,5 +79,5 @@ export const getCardList = async (topic_id) => {
       }
       cardState.value.isListReady[topic_id] = true
    }
-   return Object.values(cardState.value.cardCache).filter(card => card.topic_id === topic_id)
+   return Object.values(cardState.value.cardCache).filter(card => card.topic_id === topic_id).sort((e1, e2) => e1.rank - e2.rank)
 }

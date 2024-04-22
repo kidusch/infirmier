@@ -51,8 +51,7 @@ onMounted(async () => {
 })
 
 async function updateList() {
-   const unorderedList = await getSubUEList(props.ue_id)
-   subUEList.value = unorderedList.sort((e1, e2) => e1.rank - e2.rank)
+   subUEList.value = await getSubUEList(props.ue_id)
 }
 
 async function update(e1, e2) {

@@ -78,5 +78,5 @@ export const getTopicList = async (sub_ue_id) => {
       }
       topicState.value.isListReady[sub_ue_id] = true
    }
-   return Object.values(topicState.value.topicCache).filter(topic => topic.sub_ue_id === sub_ue_id)
+   return Object.values(topicState.value.topicCache).filter(topic => topic.sub_ue_id === sub_ue_id).sort((e1, e2) => e1.rank - e2.rank)
 }

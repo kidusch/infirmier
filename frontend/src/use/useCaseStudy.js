@@ -79,5 +79,5 @@ export const getCaseStudyList = async (topic_id) => {
       }
       caseStudyState.value.isListReady[topic_id] = true
    }
-   return Object.values(caseStudyState.value.caseStudyCache).filter(caseStudy => caseStudy.topic_id === topic_id)
+   return Object.values(caseStudyState.value.caseStudyCache).filter(caseStudy => caseStudy.topic_id === topic_id).sort((e1, e2) => e1.rank - e2.rank)
 }

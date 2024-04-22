@@ -74,5 +74,5 @@ export const getUEList = async () => {
       }
       ueState.value.isListReady = true
    }
-   return Object.values(ueState.value.ueCache)
+   return Object.values(ueState.value.ueCache).sort((e1, e2) => e1.rank - e2.rank)
 }

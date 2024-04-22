@@ -82,5 +82,5 @@ export const getQuizChoiceList = async (quiz_id) => {
       }
       quizChoiceState.value.isListReady[quiz_id] = true
    }
-   return Object.values(quizChoiceState.value.quizChoiceCache).filter(quizChoice => quizChoice.quiz_id === quiz_id)
+   return Object.values(quizChoiceState.value.quizChoiceCache).filter(quizChoice => quizChoice.quiz_id === quiz_id).sort((e1, e2) => e1.rank - e2.rank)
 }

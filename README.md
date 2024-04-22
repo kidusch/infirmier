@@ -1,5 +1,11 @@
 # Journal de bord infirmier
 
+## BUGS
+
+- quand la session a expiré et qu'on clique sur 'logout', on tourne en rond
+
+
+
 ## Parsing
 https://github.com/kach/nearley
 https://omrelli.ug/nearley-playground/
