@@ -121,6 +121,13 @@ const routes = [
             path: 'student-ue',
             component: () => import('/src/views/student/StudentUE.vue'),
          },
+         {
+            path: 'student-sub-ue/:sub_ue_id',
+            component: () => import('/src/views/student/StudentSubUE.vue'),
+            props: route => ({
+               sub_ue_id: parseInt(route.params.sub_ue_id),
+            }),
+         },
       ],
    },
 ]
