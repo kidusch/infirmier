@@ -71,7 +71,7 @@ const validate = async () => {
    }
    try {
       appState.value.isWaiting = true
-      await app.service('auth').forgottenPassword(email.value)
+      await app.service('auth', { timeout: 60000 }).forgottenPassword(email.value)
       alert("Merci. Un email de confirmation vient de vous être envoyé.")
       // go home
       router.push(`/`)
