@@ -109,7 +109,6 @@ onMounted(async () => {
    const user = await getUser(props.userid)
    setAuthenticatedUser(user)
 
-   console.log('mounted', user)
    if (user.admin) {
       router.push(`/home/${user.id}/admin-ue`)
    } else {

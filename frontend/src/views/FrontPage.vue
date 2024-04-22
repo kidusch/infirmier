@@ -9,10 +9,10 @@
       <nav class="lg:border-b lg:pb-2">
 
          <main class="flex w-full justify-between items-center container max-w-7xl">
-            <button onclick="toggleSideMenu()">
+            <!-- <button onclick="toggleSideMenu()">
                <img class="w-6" src="/src/assets/menu.svg" alt="menu">
             </button>
-
+ -->
             <a class="flex items-center gap-4 lg:flex-1 lg:px-12" href="#">
                <img class="h-12" src="/src/assets/logo.svg" alt="Logo">
                <h3 class="max-lg:hidden">Journal de bord infirmier</h3>

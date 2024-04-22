@@ -95,7 +95,11 @@ export default function (app) {
 
       // Do nothing - see hooks
       ping: async () => {
-      }
+      },
+
+      // Do nothing - see hooks
+      checkAndExtend: async () => {
+      },
    })
 
    app.service('auth').hooks(hooks)

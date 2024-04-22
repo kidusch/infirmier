@@ -1,14 +1,14 @@
 <template>
     <main class="flex-1 container max-w-7xl">
 
-      <!-- Header -->
-      <header class="py-4">
-         <h3 class="lg:opacity-50">
-            SUBUE
-         </h3>
-      </header>
+        <!-- Header -->
+        <header class="chapter-card my-6">
+            <p>
+                UE 2.1 - Biologie fondamentale / Molécules constitutives du vivant
+            </p>
+        </header>
 
-      <!-- Main content -> courses list -->
+        <!-- Main content -> courses list -->
       <main class="flex flex-col gap-6 pb-6">
          
          <!-- <div class="bg-accent p-5 gap-3 flex flex-col rounded-3xl" v-for="ue in ueList">

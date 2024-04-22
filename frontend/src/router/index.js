@@ -1,6 +1,9 @@
 
 import { createRouter, createWebHistory } from 'vue-router'
 
+import app from '/src/client-app.js'
+import { appState } from '/src/use/useAppState'
+
 import FrontPage from '/src/views/FrontPage.vue'
 
 
@@ -142,6 +145,17 @@ router.beforeEach(async (to, from, next) => {
    console.log('from', from.path, 'to', to.path)
 
    if (to.meta.requiresAuth) {
+      try {
+         // checks authentication + extends session at each route change
+         await app.service('auth').checkAndExtend()
+      } catch(err) {
+         console.log('err', err.code, err.message)
+         if (err.code === 'not-authenticated') {
+            appState.value.isExpired = true
+         } else {
+            appState.value.unexpectedError = true
+         }
+      }
    }
 
    next()

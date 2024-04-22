@@ -45,5 +45,6 @@ export default {
       localSignup: [afterAuthentication, extendExpiration(config.SESSION_EXPIRE_DELAY)],
       logout: [afterSignout],
       getCnxInfo: [afterGetCnxInfo],
+      checkAndExtend: [extendExpiration(config.SESSION_EXPIRE_DELAY)],
    },
 }
