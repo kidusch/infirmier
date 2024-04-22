@@ -5,7 +5,8 @@
       <EditableListItem
          field="name" :index="index" :list="ueList"
          @update="(ue1, ue2) => update(ue1, ue2)"
-         @edit="(text) => edit(ue.id, text)" @remove="remove(ue.id)"
+         @edit="(text) => edit(ue.id, text)"
+         @remove="remove(ue.id)"
          @select="select(ue.id)"
       ></EditableListItem>
    </ul>

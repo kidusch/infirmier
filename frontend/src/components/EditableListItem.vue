@@ -11,6 +11,7 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useDebounceFn } from '@vueuse/core'
 
 const props = defineProps({
    field: {
@@ -52,4 +53,10 @@ const down = () => {
 const remove = () => emit('remove')
 
 const select = () => emit('select')
+
+const onInput = async (ev) => {
+   emit('edit', ev.target.value)
+}
+const debouncedInput = useDebounceFn(onInput, 500)
+
 </script>
