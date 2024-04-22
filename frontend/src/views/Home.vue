@@ -10,10 +10,10 @@
                <img class="w-6" src="/src/assets/menu.svg" alt="menu">
             </button>
 
-            <a class="flex items-center gap-4 lg:flex-1 lg:px-12" href="#">
+            <router-link class="flex items-center gap-4 lg:flex-1 lg:px-12" :to="`/home/${userid}/student-ue`">
                <img class="h-12" src="/src/assets/logo.svg" alt="Logo">
                <h3 class="max-lg:hidden">Journal de bord infirmier</h3>
-            </a>
+            </router-link>
 
             <button @click="signout">
                <img class="w-6" src="/src/assets/logout.svg" alt="logout.svg">
