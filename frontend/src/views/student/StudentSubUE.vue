@@ -1,31 +1,35 @@
 <template>
     <main class="flex-1 container max-w-7xl">
 
-        <!-- Header -->
-        <header class="chapter-card my-6">
-            <p>
-                UE 2.1 - Biologie fondamentale / Molécules constitutives du vivant
-            </p>
-        </header>
+      <!-- Header -->
+      <header class="chapter-card my-6">
+         <p>
+            <router-link class="cursor-pointer hover:underline" :to="`/home/${authUser?.id}/student-ue`">{{ ue && ue.name }}</router-link> / <span class="font-semibold">{{ subUE && subUE.name }}</span>
+         </p>
+      </header>
 
-        <!-- Main content -> courses list -->
+      <!-- Header -->
+      <header class="py-2">
+         <h3 class="lg:opacity-50">
+            {{ subUE && subUE.name }}
+         </h3>
+      </header>
+
+      <!-- Main content -> courses list -->
       <main class="flex flex-col gap-6 pb-6">
          
-         <!-- <div class="bg-accent p-5 gap-3 flex flex-col rounded-3xl" v-for="ue in ueList">
-            <h2 class="font-semibold">
-               {{ ue.name }}
-            </h2>
+         <div class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
             <div class="progress-list">
-               <template v-for="subUE in subUEList[ue.id]">
-                  <div class="progress-item cursor-pointer" @click="select(subUE)">
+               <template v-for="topic in topicList">
+                  <div class="progress-item cursor-pointer" @click="">
                      <img src="/src/assets/progress-bar-0.svg">
                      <p>
-                        {{ subUE.name }}
+                        {{ topic?.name }}
                      </p>
                   </div>
                </template>
             </div>
-         </div> -->
+         </div>
 
       </main>
 
@@ -35,10 +39,33 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-onMounted(async () => {
+import { getUE } from '/src/use/useUE'
+import { getSubUE } from '/src/use/useSubUE'
+import { getTopicList } from '/src/use/useTopic'
+import { getAuthenticatedUser } from '/src/use/useAuthentication'
+import router from "/src/router"
+
+const props = defineProps({
+   ue_id: {
+      type: Number,
+      required: true
+   },
+   sub_ue_id: {
+      type: Number,
+      required: true
+   },
 })
 
-// const select = (subUE) => {
-//    router.push(`/home/${getAuthenticatedUser().id}/student-sub-ue/${subUE.id}`)
-// }
+const ue = ref()
+const subUE = ref()
+const authUser = ref()
+const topicList = ref([])
+
+onMounted(async () => {
+   ue.value = await getUE(props.ue_id)
+   subUE.value = await getSubUE(props.sub_ue_id)
+   authUser.value = getAuthenticatedUser()
+   topicList.value = await getTopicList(props.sub_ue_id)
+})
+
 </script>

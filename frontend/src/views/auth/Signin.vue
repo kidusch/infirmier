@@ -7,7 +7,7 @@
 
       <section class="flex-1 flex flex-col justify-between">
 
-         <section class="h-1/4 lg:h-auto flex flex-col">
+         <section class="h-1/6 lg:h-auto flex flex-col">
             <h1>
                Connexion au
             </h1>
@@ -16,7 +16,7 @@
             </h1>
          </section>
 
-         <div class="flex flex-col my-8 lg:my-4 h-1/4 lg:h-2/4 gap-16 lg:gap-">
+         <div class="flex flex-col">
 
             <div class="flex flex-col gap-6">
                <div class="flex flex-col">
@@ -36,21 +36,24 @@
                </div>
             </div>
 
-            <div class="justify-center flex">
+            <div class="justify-center flex my-8">
                <button class="primary-btn" @click="validate">
                   Connexion
                </button>
             </div>
 
          </div>
-         <button class="secondary-btn" @click="goGoogle">
-            <img src="/src/assets/google.svg" alt="google">
-            <span>
-               Continuer avec Google
-            </span>
-         </button>
+         
+         <div class="flex flex-col">
+            <button class="secondary-btn" @click="goGoogle">
+               <img src="/src/assets/google.svg" alt="google">
+               <span>
+                  Continuer avec Google
+               </span>
+            </button>
+         </div>
 
-         <footer class="flex-1 flex flex-col justify-end h-full py-2">
+         <footer>
             <h4 class="text-center">
                Vous n'avez pas de compte ? <button class="text-primary" @click="goSignup">Inscrivez-vous</button>
             </h4>

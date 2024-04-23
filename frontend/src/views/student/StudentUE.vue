@@ -17,7 +17,7 @@
             </h2>
             <div class="progress-list">
                <template v-for="subUE in subUEList[ue.id]">
-                  <div class="progress-item cursor-pointer" @click="select(subUE)">
+                  <div class="progress-item cursor-pointer" @click="select(ue, subUE)">
                      <img src="/src/assets/progress-bar-0.svg">
                      <p>
                         {{ subUE.name }}
@@ -51,7 +51,7 @@ onMounted(async () => {
    }
 })
 
-const select = (subUE) => {
-   router.push(`/home/${getAuthenticatedUser().id}/student-sub-ue/${subUE.id}`)
+const select = (ue, subUE) => {
+   router.push(`/home/${getAuthenticatedUser().id}/student-sub-ue/${ue.id}/${subUE.id}`)
 }
 </script>
