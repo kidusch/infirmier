@@ -11,7 +11,7 @@
       <!-- Header -->
       <header class="py-2">
          <h3 class="lg:opacity-50">
-            {{ subUE && subUE.name }}
+            {{ subUE?.name }}
          </h3>
       </header>
 
@@ -21,7 +21,7 @@
          <div class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
             <div class="progress-list">
                <template v-for="topic in topicList">
-                  <div class="progress-item cursor-pointer" @click="">
+                  <div class="progress-item cursor-pointer" @click="selectTopic(topic)">
                      <img src="/src/assets/progress-bar-0.svg">
                      <p>
                         {{ topic?.name }}
@@ -68,4 +68,7 @@ onMounted(async () => {
    topicList.value = await getTopicList(props.sub_ue_id)
 })
 
+const selectTopic = (topic) => {
+   router.push(`/home/${getAuthenticatedUser().id}/student-topic/${ue.value.id}/${subUE.value.id}/${topic.id}`)
+}
 </script>
