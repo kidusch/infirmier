@@ -60,13 +60,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, createApp } from 'vue'
 
 import { getUE } from '/src/use/useUE'
 import { getSubUE } from '/src/use/useSubUE'
 import { getTopic } from '/src/use/useTopic'
+import { getTheUserTopic, updateUserTopic } from '/src/use/useUserTopic'
 import { getAuthenticatedUser } from '/src/use/useAuthentication'
-import router from "/src/router"
 
 const props = defineProps({
    ue_id: {
@@ -86,18 +86,22 @@ const props = defineProps({
 const ue = ref()
 const subUE = ref()
 const topic = ref([])
+const userTopic = ref()
 const authUser = ref()
 
 const done = ref(true)
 
 onMounted(async () => {
+   authUser.value = getAuthenticatedUser()
    ue.value = await getUE(props.ue_id)
    subUE.value = await getSubUE(props.sub_ue_id)
    topic.value = await getTopic(props.topic_id)
-   authUser.value = getAuthenticatedUser()
+   userTopic.value = await getTheUserTopic(authUser.value.id, props.topic_id)
 })
 
-const onDoneClick = () => {
+const onDoneClick = async () => {
    done.value = !done.value
+   const updatedUserTopic = await updateUserTopic(userTopic.value.id, { done: done.value })
+   console.log('updatedUserTopic', updatedUserTopic)
 }
 </script>

@@ -36,12 +36,12 @@ export default defineConfig(({ command, mode }) => {
                background_color: "#ffffff",
                icons: [
                   {
-                     src: "img/icons/logo-dallee-192x192.png",
+                     src: "img/icons/logo-192x192.png",
                      sizes: "192x192",
                      type: "image/png",
                   },
                   {
-                     src: "img/icons/logo-dallee-512x512.png",
+                     src: "img/icons/logo-512x512.png",
                      sizes: "512x512",
                      type: "image/png",
                   },
