@@ -92,6 +92,7 @@ const validate = async () => {
 }
 
 const goGoogle = () => {
+   appState.value.isWaiting = true
    window.location.href = `/auth/google?cnxid=${sessionStorage.cnxid}`
 }
 

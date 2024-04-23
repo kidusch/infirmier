@@ -81,8 +81,6 @@
       </section>
    </div>
 
-   <Spinner v-if="isWaiting"></Spinner>
-
 </template>
 
 <script setup>
@@ -99,8 +97,6 @@ import SetPassword from './SetPassword.vue'
 const email = ref()
 const name = ref()
 
-const isWaiting = ref(false)
-
 
 const validate = async () => {
    if (!email.value || !name.value) {
@@ -112,7 +108,7 @@ const validate = async () => {
       return
    }
    try {
-      isWaiting.value = true
+      appState.value.isWaiting = true
       await app.service('auth', { timeout: 60000 }).localSignup(email.value, name.value)
       alert("Merci ! Regardez dans votre boite mail, un message de confirmation vient de vous être envoyé")
    } catch(err) {
@@ -123,7 +119,7 @@ const validate = async () => {
       }
       console.log('signup error', err)
    } finally {
-      isWaiting.value = false
+      appState.value.isWaiting = false
    }
 }
 
