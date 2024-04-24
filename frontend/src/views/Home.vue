@@ -40,12 +40,12 @@
 
                <div class="py-8 mx-4 flex-1 flex flex-col gap-2">
 
-                  <a href="courses.html" class="flex gap-4 items-center w-full p-3 rounded-lg bg-primary">
+                  <router-link to="/" class="flex gap-4 items-center w-full p-3 rounded-lg bg-primary">
                      <img class="w-5" src="/src/assets/courses-activate.svg" alt="courses">
                      <p class="font-medium text-white">
                         Cours
                      </p>
-                  </a>
+                  </router-link>
 
                   <a href="revisions.html" class="flex gap-4 items-center w-full p-3 rounded-lg opacity-50 ">
                      <img class="w-5" src="/src/assets/revisions.svg" alt="revisions">

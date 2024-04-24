@@ -4,7 +4,9 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p>
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${authUser?.id}/student-ue`">{{ ue && ue.name }}</router-link> / <span class="font-semibold">{{ subUE && subUE.name }}</span>
+            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/student-ue`">{{ ue?.name }}</router-link>
+            /
+            <span class="font-semibold">{{ subUE?.name }}</span>
          </p>
       </header>
 
@@ -46,10 +48,13 @@ import { getUE } from '/src/use/useUE'
 import { getSubUE } from '/src/use/useSubUE'
 import { getTopicList } from '/src/use/useTopic'
 import { getTheUserTopic } from '/src/use/useUserTopic'
-import { getAuthenticatedUser } from '/src/use/useAuthentication'
 import router from "/src/router"
 
 const props = defineProps({
+   userid: {
+      type: Number,
+      required: true
+   },
    ue_id: {
       type: Number,
       required: true
@@ -62,23 +67,21 @@ const props = defineProps({
 
 const ue = ref()
 const subUE = ref()
-const authUser = ref()
 const topicList = ref([])
 const topicProgressDict = ref({})
 
 onMounted(async () => {
-   console.log('onMounted StudentSubUE')
+   console.log('onMounted StudentSubUE', props.userid)
    ue.value = await getUE(props.ue_id)
    subUE.value = await getSubUE(props.sub_ue_id)
-   authUser.value = getAuthenticatedUser()
    topicList.value = await getTopicList(props.sub_ue_id)
    for (const topic of topicList.value) {
-      const user_topic = await getTheUserTopic(authUser.value.id, topic.id)
+      const user_topic = await getTheUserTopic(props.userid, topic.id)
       topicProgressDict.value[topic.id] = user_topic.done ? 100 : 0
    }
 })
 
 const selectTopic = (topic) => {
-   router.push(`/home/${getAuthenticatedUser().id}/student-topic/${ue.value.id}/${subUE.value.id}/${topic.id}`)
+   router.push(`/home/${props.userid}/student-topic/${ue.value.id}/${subUE.value.id}/${topic.id}`)
 }
 </script>

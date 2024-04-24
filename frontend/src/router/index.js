@@ -123,11 +123,15 @@ const routes = [
          {
             path: 'student-ue',
             component: () => import('/src/views/student/StudentUE.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+            }),
          },
          {
             path: 'student-sub-ue/:ue_id/:sub_ue_id',
             component: () => import('/src/views/student/StudentSubUE.vue'),
             props: route => ({
+               userid: parseInt(route.params.userid),
                ue_id: parseInt(route.params.ue_id),
                sub_ue_id: parseInt(route.params.sub_ue_id),
             }),
@@ -136,6 +140,7 @@ const routes = [
             path: 'student-topic/:ue_id/:sub_ue_id/:topic_id',
             component: () => import('/src/views/student/StudentTopic.vue'),
             props: route => ({
+               userid: parseInt(route.params.userid),
                ue_id: parseInt(route.params.ue_id),
                sub_ue_id: parseInt(route.params.sub_ue_id),
                topic_id: parseInt(route.params.topic_id),

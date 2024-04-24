@@ -4,9 +4,9 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p class="leading-loose">
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${authUser?.id}/student-ue`">{{ ue && ue.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/student-ue`">{{ ue?.name }}</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${authUser?.id}/student-sub-ue/${ue?.id}/${subUE?.id}`">{{ subUE && subUE.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/student-sub-ue/${ue?.id}/${subUE?.id}`">{{ subUE?.name }}</router-link>
             /
             <span class="font-semibold">{{ topic?.name }}</span>
          </p>
@@ -66,9 +66,12 @@ import { getUE } from '/src/use/useUE'
 import { getSubUE } from '/src/use/useSubUE'
 import { getTopic } from '/src/use/useTopic'
 import { getTheUserTopic, updateUserTopic } from '/src/use/useUserTopic'
-import { getAuthenticatedUser } from '/src/use/useAuthentication'
 
 const props = defineProps({
+   userid: {
+      type: Number,
+      required: true
+   },
    ue_id: {
       type: Number,
       required: true
@@ -87,16 +90,14 @@ const ue = ref()
 const subUE = ref()
 const topic = ref([])
 const userTopic = ref()
-const authUser = ref()
 
 const done = ref(true)
 
 onMounted(async () => {
-   authUser.value = getAuthenticatedUser()
    ue.value = await getUE(props.ue_id)
    subUE.value = await getSubUE(props.sub_ue_id)
    topic.value = await getTopic(props.topic_id)
-   userTopic.value = await getTheUserTopic(authUser.value.id, props.topic_id)
+   userTopic.value = await getTheUserTopic(props.userid, props.topic_id)
    done.value = userTopic.value.done
 })
 

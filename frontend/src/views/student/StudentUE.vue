@@ -42,19 +42,24 @@ import { getUEList } from '/src/use/useUE'
 import { getSubUEList } from '/src/use/useSubUE'
 import { getTopicList } from '/src/use/useTopic'
 import { getTheUserTopic } from '/src/use/useUserTopic'
-import { getAuthenticatedUser } from '/src/use/useAuthentication'
+// import { getAuthenticatedUser } from '/src/use/useAuthentication'
 import router from "/src/router"
 
 import 'jcb-radial'
 
 
-const authUser = ref()
 const ueList = ref([])
 const subUEListDict = ref({})
 const subUEProgressDict = ref({})
 
+const props = defineProps({
+   userid: {
+      type: Number,
+      required: true
+   },
+})
+
 onMounted(async () => {
-   authUser.value = getAuthenticatedUser()
    ueList.value = await getUEList()
    for (const ue of ueList.value) {
       subUEListDict.value[ue.id] = await getSubUEList(ue.id)
@@ -63,7 +68,7 @@ onMounted(async () => {
          let sum = 0
          const topicList = await getTopicList(subUE.id)
          for (const topic of topicList) {
-            const user_topic = await getTheUserTopic(authUser.value.id, topic.id)
+            const user_topic = await getTheUserTopic(props.userid, topic.id)
             sum += (user_topic.done ? 100 : 0)
             count += 1
          }
@@ -73,8 +78,6 @@ onMounted(async () => {
 })
 
 const select = (ue, subUE) => {
-   router.push(`/home/${getAuthenticatedUser().id}/student-sub-ue/${ue.id}/${subUE.id}`)
+   router.push(`/home/${props.userid}/student-sub-ue/${ue.id}/${subUE.id}`)
 }
-
-const value = ref(25)
 </script>
