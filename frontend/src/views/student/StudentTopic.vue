@@ -97,6 +97,7 @@ onMounted(async () => {
    subUE.value = await getSubUE(props.sub_ue_id)
    topic.value = await getTopic(props.topic_id)
    userTopic.value = await getTheUserTopic(authUser.value.id, props.topic_id)
+   done.value = userTopic.value.done
 })
 
 const onDoneClick = async () => {

@@ -13,6 +13,7 @@
     "@mdi/js": "^7.4.47",
     "@vueuse/core": "^10.9.0",
     "date-fns": "^3.6.0",
+    "jcb-radial": "^1.0.1",
     "socket.io-client": "^4.7.5",
     "vite-plugin-pwa": "^0.16.4",
     "vite-plugin-top-level-await": "^1.4.1",

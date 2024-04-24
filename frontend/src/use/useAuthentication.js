@@ -11,6 +11,7 @@ import { resetUseCard } from '/src/use/useCard'
 import { resetUseCaseStudy } from '/src/use/useCaseStudy'
 import { resetUseQuiz } from '/src/use/useQuiz'
 import { resetUseQuizChoice } from '/src/use/useQuizChoice'
+import { resetUseUserTopic } from '/src/use/useUserTopic'
 
 
 // state backed in SessionStorage
@@ -35,6 +36,7 @@ export function clearSessionStorage() {
    resetUseCaseStudy()
    resetUseQuiz()
    resetUseQuizChoice()
+   resetUseUserTopic()
 }
 
 export function setAuthenticatedUser(user) {

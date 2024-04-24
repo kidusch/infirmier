@@ -22,7 +22,10 @@
             <div class="progress-list">
                <template v-for="topic in topicList">
                   <div class="progress-item cursor-pointer" @click="selectTopic(topic)">
-                     <img src="/src/assets/progress-bar-0.svg">
+                     <!-- <img src="/src/assets/progress-bar-0.svg"> -->
+                     <div class="w-14">
+                        <jcb-radial :value="topicProgressDict[topic.id]"></jcb-radial>
+                     </div>
                      <p>
                         {{ topic?.name }}
                      </p>
@@ -42,6 +45,7 @@ import { ref, onMounted } from 'vue'
 import { getUE } from '/src/use/useUE'
 import { getSubUE } from '/src/use/useSubUE'
 import { getTopicList } from '/src/use/useTopic'
+import { getTheUserTopic } from '/src/use/useUserTopic'
 import { getAuthenticatedUser } from '/src/use/useAuthentication'
 import router from "/src/router"
 
@@ -60,12 +64,18 @@ const ue = ref()
 const subUE = ref()
 const authUser = ref()
 const topicList = ref([])
+const topicProgressDict = ref({})
 
 onMounted(async () => {
+   console.log('onMounted StudentSubUE')
    ue.value = await getUE(props.ue_id)
    subUE.value = await getSubUE(props.sub_ue_id)
    authUser.value = getAuthenticatedUser()
    topicList.value = await getTopicList(props.sub_ue_id)
+   for (const topic of topicList.value) {
+      const user_topic = await getTheUserTopic(authUser.value.id, topic.id)
+      topicProgressDict.value[topic.id] = user_topic.done ? 100 : 0
+   }
 })
 
 const selectTopic = (topic) => {

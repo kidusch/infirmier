@@ -21,45 +21,22 @@ app.service('user_topic').on('create', (userTopic) => {
    userTopicState.value.userTopicCache[userTopic.id] = userTopic
 })
 
-
-// export const getUserTopic = async (id) => {
-//    const userTopic = userTopicState.value.userTopicCache[id]
-//    if (userTopic) return userTopic
-//    const promise = app.service('user_topic').findUnique({ where: { id }})
-//    promise.then(userTopic => {
-//       userTopicState.value.userTopicCache[id] = userTopic
-//    })
-//    return promise
-// }
-
-// 1:1 relationship user : user_topic
+// get or create the unique user_topic associated to (user_id, topic_id)
 export const getTheUserTopic = async (user_id, topic_id) => {
-   const isReady = userTopicState.value.theUserTopicReady[user_id]
-   if (isReady) return Object.values(userTopicState.value.userTopicCache).find(userTopic => userTopic.user_id === user_id)
-   // get or create
-   const promise = app.service('user_topic').upsert({
-      where: { user_id },
-      update: {},
-      create: { user_id, topic_id },
+   const isReady = userTopicState.value.theUserTopicReady[user_id + ':' + topic_id]
+   if (isReady) return Object.values(userTopicState.value.userTopicCache).find(userTopic => userTopic.user_id === user_id && userTopic.topic_id === topic_id)
+   let [userTopic] = await app.service('user_topic').findMany({
+      where: { user_id, topic_id },
    })
-   promise.then(userTopic => {
-      userTopicState.value.userTopicCache[userTopic.id] = userTopic
-      userTopicState.value.theUserTopicReady[user_id] = true
-   })
-   return promise
+   if (!userTopic) {
+      userTopic = await app.service('user_topic').create({
+         data: { user_id, topic_id },
+      })
+   }
+   userTopicState.value.userTopicCache[userTopic.id] = userTopic
+   userTopicState.value.theUserTopicReady[user_id + ':' + topic_id] = true
+   return userTopic
 }
-
-// export const createUserTopic = async (user_id, topic_id) => {
-//    const userTopic = await app.service('user_topic').create({
-//       data: {
-//          user_id,
-//          topic_id,
-//       }
-//    })
-//    // update cache
-//    userTopicState.value.userTopicCache[userTopic.id] = userTopic
-//    return userTopic
-// }
 
 export const updateUserTopic = async (id, data) => {
    const userTopic = await app.service('user_topic').update({
@@ -70,8 +47,3 @@ export const updateUserTopic = async (id, data) => {
    userTopicState.value.userTopicCache[userTopic.id] = userTopic
    return userTopic
 }
-
-// export const removeUserTopic = async (id) => {
-//    await app.service('user_topic').delete({ where: { id }})
-//    delete userTopicState.value.userTopicCache[id]
-// }

@@ -24,7 +24,8 @@ Impasse du plan 1
 1730 Ecuvillens
 Suisse
 
-# Références utiles
+
+## Références utiles
 
 MSD manuals : https://www.msdmanuals.com
 
