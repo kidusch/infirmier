@@ -43,9 +43,9 @@ export function setAuthenticatedUser(user) {
    authenticationState.value.user = user
 }
 
-export function getAuthenticatedUser() {
-   return authenticationState.value.user
-}
+// export function getAuthenticatedUser() {
+//    return authenticationState.value.user
+// }
 
 
 ////////////////////////           LOGIN / LOGOUT            ////////////////////////

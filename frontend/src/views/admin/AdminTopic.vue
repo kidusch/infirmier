@@ -54,12 +54,15 @@ import { getTopic } from '/src/use/useTopic'
 import { getCardList, createCard, updateCard, removeCard } from '/src/use/useCard'
 import { getQuizList, createQuiz, updateQuiz, removeQuiz } from '/src/use/useQuiz'
 import { getCaseStudyList, createCaseStudy, updateCaseStudy, removeCaseStudy } from '/src/use/useCaseStudy'
-import { getAuthenticatedUser } from '/src/use/useAuthentication'
 import router from '/src/router'
 
 import ListItem from '/src/components/ListItem.vue'
 
 const props = defineProps({
+   userid: {
+      type: Number,
+      required: true
+   },
    topic_id: {
       type: Number,
       required: true
@@ -79,7 +82,7 @@ onMounted(async () => {
 })
 
 const adminCourse = () => {
-   router.push(`/home/${getAuthenticatedUser().id}/admin-course/${props.topic_id}`)
+   router.push(`/home/${props.userid}/admin-course/${props.topic_id}`)
 }
 
 async function updateCardList() {
@@ -93,7 +96,7 @@ async function updateCards(e1, e2) {
 }
 
 const selectCard = (card_id) => {
-   router.push(`/home/${getAuthenticatedUser().id}/admin-card/${props.topic_id}/${card_id}`)
+   router.push(`/home/${props.userid}/admin-card/${props.topic_id}/${card_id}`)
 }
 
 const addCard = async () => {
@@ -119,7 +122,7 @@ async function updateQuizs(e1, e2) {
 }
 
 const selectQuiz = (quiz_id) => {
-   router.push(`/home/${getAuthenticatedUser().id}/admin-quiz/${props.topic_id}/${quiz_id}`)
+   router.push(`/home/${props.userid}/admin-quiz/${props.topic_id}/${quiz_id}`)
 }
 
 const addQuiz = async () => {
@@ -145,7 +148,7 @@ async function updateCaseStudies(e1, e2) {
 }
 
 const selectCaseStudy = (case_study_id) => {
-   router.push(`/home/${getAuthenticatedUser().id}/admin-case-study/${props.topic_id}/${case_study_id}`)
+   router.push(`/home/${props.userid}/admin-case-study/${props.topic_id}/${case_study_id}`)
 }
 
 const addCaseStudy = async () => {

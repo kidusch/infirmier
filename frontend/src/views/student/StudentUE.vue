@@ -42,7 +42,6 @@ import { getUEList } from '/src/use/useUE'
 import { getSubUEList } from '/src/use/useSubUE'
 import { getTopicList } from '/src/use/useTopic'
 import { getTheUserTopic } from '/src/use/useUserTopic'
-// import { getAuthenticatedUser } from '/src/use/useAuthentication'
 import router from "/src/router"
 
 import 'jcb-radial'

@@ -38,21 +38,72 @@
 
       </section>
 
-      <!-- Main content -> courses list -->
-      <main class="flex flex-col gap-6 pb-6">
+      <!-- Course content -->
+      <main ccclass="flex flex-col gap-6 pb-6">
          
-         <!-- <div class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
-            <div class="progress-list">
-               <template v-for="topic in topicList">
-                  <div class="progress-item cursor-pointer" @click="">
-                     <img src="/src/assets/progress-bar-0.svg">
-                     <p>
-                        {{ topic?.name }}
-                     </p>
+         <h3 class="pb-2">
+               Généralités sur la cellule
+         </h3>
+
+         <p class="text-black/70">
+               Les cellules sont les plus petites unités structurelles et fonctionnelles de l'organisme. Elles mesurent
+               de 1 à 100 microns de diamètre.
+               <br class="py-1">
+               C'est la plus petite unité capable de:
+            <ul class="text-black/70 py-1">
+               <li class="flex">
+                  <div class="h-1 w-1 rounded-full bg-black lg:mt-2 mt-1.5 mr-1.5">
+
                   </div>
-               </template>
-            </div>
-         </div> -->
+                  <p class="w-11/12">
+                     Synthétiser l’ensemble de ses constituants en utilisant des éléments du milieu extérieur
+                  </p>
+               </li>
+               <li class="flex">
+                  <div class="h-1 w-1 rounded-full bg-black lg:mt-2 mt-1.5 mr-1.5">
+
+                  </div>
+                  <p class="w-11/12">
+                     Croître
+                  </p>
+               </li>
+               <li class="flex">
+                  <div class="h-1 w-1 rounded-full bg-black lg:mt-2 mt-1.5 mr-1.5">
+
+                  </div>
+                  <p class="w-11/12">
+                     Se multiplier
+                  </p>
+               </li>
+            </ul>
+         </p>
+
+         <div class="w-full flex justify-center">
+               <img class="sm:max-w-md" src="/src/assets/anatomy-diagram.png" alt="anatomy-diagram">
+         </div>
+
+         <p class="text-black/70">
+               On distingue:
+            <ul class="text-black/70 py-1">
+               <li class="flex">
+                  <div class="h-1 w-1 rounded-full bg-black lg:mt-2 mt-1.5 mr-1.5">
+
+                  </div>
+                  <p class="w-11/12">
+                     Cellule procaryote = dépourvue de noyau, limitée par une membrane pl unicellulaire (ex:
+                     bactéries)
+                  </p>
+               </li>
+               <li class="flex">
+                  <div class="h-1 w-1 rounded-full bg-black lg:mt-2 mt-1.5 mr-1.5">
+
+                  </div>
+                  <p class="w-11/12">
+                     Cellule eucaryote = véritable novαι
+                  </p>
+               </li>
+            </ul>
+         </p>
 
       </main>
 
@@ -106,4 +157,15 @@ const onDoneClick = async () => {
    const updatedUserTopic = await updateUserTopic(userTopic.value.id, { done: done.value })
    console.log('updatedUserTopic', updatedUserTopic)
 }
+
+const text = `
+# Généralités sur la cellule
+
+Le système nerveux est constitué de deux parties : le [système nerveux central](lexique: systeme-nerveux-central) et le
+[système nerveux périphérique](lexique: systeme-nerveux-peripherique)
+
+[](image: cns/cellule.png)
+- ***Axone*** : fibre nerveuse longue et mince
+- ***Dendrites*** : branches des [cellules](lexique: cellules) nerveuses
+`
 </script>

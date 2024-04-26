@@ -57,11 +57,15 @@ const routes = [
          {
             path: 'admin-ue',
             component: () => import('/src/views/admin/AdminUE.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+            }),
          },
          {
             path: 'admin-sub-ue/:ue_id',
             component: () => import('/src/views/admin/AdminSubUE.vue'),
             props: route => ({
+               userid: parseInt(route.params.userid),
                ue_id: parseInt(route.params.ue_id),
             }),
          },
@@ -69,6 +73,7 @@ const routes = [
             path: 'admin-topics/:sub_ue_id',
             component: () => import('/src/views/admin/AdminTopics.vue'),
             props: route => ({
+               userid: parseInt(route.params.userid),
                sub_ue_id: parseInt(route.params.sub_ue_id),
             }),
          },
@@ -76,6 +81,7 @@ const routes = [
             path: 'admin-topic/:topic_id',
             component: () => import('/src/views/admin/AdminTopic.vue'),
             props: route => ({
+               userid: parseInt(route.params.userid),
                topic_id: parseInt(route.params.topic_id),
             }),
          },
@@ -83,6 +89,7 @@ const routes = [
             path: 'admin-course/:topic_id',
             component: () => import('/src/views/admin/AdminCourse.vue'),
             props: route => ({
+               userid: parseInt(route.params.userid),
                topic_id: parseInt(route.params.topic_id),
             }),
          },
@@ -90,6 +97,7 @@ const routes = [
             path: 'admin-quiz/:topic_id/:quiz_id',
             component: () => import('/src/views/admin/AdminQuiz.vue'),
             props: route => ({
+               userid: parseInt(route.params.userid),
                topic_id: parseInt(route.params.topic_id),
                quiz_id: parseInt(route.params.quiz_id),
             }),
@@ -98,6 +106,7 @@ const routes = [
             path: 'admin-quiz-choice/:topic_id/:quiz_id/:quiz_choice_id',
             component: () => import('/src/views/admin/AdminQuizChoice.vue'),
             props: route => ({
+               userid: parseInt(route.params.userid),
                topic_id: parseInt(route.params.topic_id),
                quiz_id: parseInt(route.params.quiz_id),
                quiz_choice_id: parseInt(route.params.quiz_choice_id),
@@ -107,6 +116,7 @@ const routes = [
             path: 'admin-card/:topic_id/:card_id',
             component: () => import('/src/views/admin/AdminCard.vue'),
             props: route => ({
+               userid: parseInt(route.params.userid),
                topic_id: parseInt(route.params.topic_id),
                card_id: parseInt(route.params.card_id),
             }),
@@ -115,6 +125,7 @@ const routes = [
             path: 'admin-case-study/:topic_id/:case_study_id',
             component: () => import('/src/views/admin/AdminCaseStudy.vue'),
             props: route => ({
+               userid: parseInt(route.params.userid),
                topic_id: parseInt(route.params.topic_id),
                case_study_id: parseInt(route.params.case_study_id),
             }),

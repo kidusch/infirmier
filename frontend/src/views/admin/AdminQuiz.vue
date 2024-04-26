@@ -49,13 +49,16 @@ import { useDebounceFn } from '@vueuse/core'
 import { getTopic } from '/src/use/useTopic'
 import { getQuiz, updateQuiz } from '/src/use/useQuiz'
 import { getQuizChoiceList, createQuizChoice, removeQuizChoice } from '/src/use/useQuizChoice'
-import { getAuthenticatedUser } from '/src/use/useAuthentication'
 import router from '/src/router'
 
 import ListItem from '/src/components/ListItem.vue'
 
 
 const props = defineProps({
+   userid: {
+      type: Number,
+      required: true
+   },
    topic_id: {
       type: Number,
       required: true
@@ -95,7 +98,7 @@ async function updateChoiceList() {
 }
 
 const selectChoice = (quiz_choice_id) => {
-   router.push(`/home/${getAuthenticatedUser().id}/admin-quiz-choice/${props.topic_id}/${props.quiz_id}/${quiz_choice_id}`)
+   router.push(`/home/${props.userid}/admin-quiz-choice/${props.topic_id}/${props.quiz_id}/${quiz_choice_id}`)
 }
 
 const addChoice = async () => {

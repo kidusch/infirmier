@@ -25,11 +25,16 @@ import { ref, onMounted } from 'vue'
 import { mdiPlus } from '@mdi/js'
 
 import { createUE, updateUE, removeUE, getUEList } from '/src/use/useUE'
-import { getAuthenticatedUser } from '/src/use/useAuthentication'
 import router from "/src/router"
 
 import EditableListItem from '/src/components/EditableListItem.vue'
 
+const props = defineProps({
+   userid: {
+      type: Number,
+      required: true
+   },
+})
 
 const ueList = ref([])
 
@@ -67,6 +72,6 @@ const remove = async (id) => {
 }
 
 const select = (id) => {
-   router.push(`/home/${getAuthenticatedUser().id}/admin-sub-ue/${id}`)
+   router.push(`/home/${props.userid}/admin-sub-ue/${id}`)
 }
 </script>
