@@ -5,6 +5,7 @@ const empty = function (d) { return []; }
 const emptyStr = function (d) { return ""; }
 %}
 
+
 rows              -> row
                    | rows newline row                {% appendItem(0,2) %}
 
@@ -26,3 +27,8 @@ title -> "#":+ text
 
 newline           -> "\r" "\n"                       {% empty %}
                    | "\r" | "\n"                     {% empty %}
+				   
+unquoted_field    -> null                            {% emptyStr %}
+                   | unquoted_field char             {% appendItemChar(0,1) %}
+
+char              -> [^\n\r",]                       {% id %}
