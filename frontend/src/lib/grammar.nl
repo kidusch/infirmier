@@ -1,37 +1,42 @@
-@{%
-const appendItem = function (a, b) { return function (d) { return d[a].concat([d[b]]); } }
-const appendItemChar = function (a, b) { return function (d) { return d[a].concat(d[b]); } }
-const empty = function (d) { return []; }
-const emptyStr = function (d) { return ""; }
-%}
 
 
-lines              -> line
-                   | lines newline line                {% appendItem(0,2) %}
+line
+  = title / li
 
-line               -> "#":+ " " parts
-                   | "-" " ":+ parts
-				   | parts
-				   
-parts -> part | part " ":+ parts	 
+title
+  = cat:"#"+ ([ ]+) text:words
+  { return { type: 'title', cat: cat.length, text } }
 
-				   
-part -> special | emphasis | text
-
-
-text -> [^\n\r*\[\]\(\) ]:+
-
-type -> "image" | "3d-model"
-
-special -> "[" text "]{" type ":" text "}"
-
-emphasis -> "***" text "***"
+li
+  = "-" ([ ]+) text:words
+  { return { type: 'li', text } }
 
 
-newline           -> "\r" "\n"                       {% empty %}
-                   | "\r" | "\n"                     {% empty %}
-				   
-unquoted_field    -> null                            {% emptyStr %}
-                   | unquoted_field char             {% appendItemChar(0,1) %}
+words
+  = text:[^\n\r\[\]\{\}]+
+  { return text.join('') }
 
-char              -> [^\n\r",]                       {% id %}
+
+
+Word
+  = chars:[a-zA-Z0-9_]+
+     { return { 'name': chars.join("") }; }
+
+
+_ "whitespace"
+  = ( whiteSpace / lineTerminator / lineComment )*
+     { return []; }
+
+whiteSpace 
+  = [\t\v\f \u00A0\uFEFF] 
+
+lineTerminator 
+  = [\n\r] 
+
+lineComment 
+  = "//" (!lineTerminator anyCharacter)* 
+  / "#" (!lineTerminator anyCharacter)* 
+
+anyCharacter 
+  = . 
+
