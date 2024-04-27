@@ -6,24 +6,27 @@ const emptyStr = function (d) { return ""; }
 %}
 
 
-rows              -> row
-                   | rows newline row                {% appendItem(0,2) %}
+lines              -> line
+                   | lines newline line                {% appendItem(0,2) %}
 
-row               -> part
-                   | row " ":+ part                   {% appendItem(0,2) %}
+line               -> "#":+ " " parts
+                   | "-" " ":+ parts
+				   | parts
 				   
+parts -> part | part " ":+ parts	 
+
 				   
-part -> special | emphasis | title | text
+part -> special | emphasis | text
+
 
 text -> [^\n\r*\[\]\(\) ]:+
 
 type -> "image" | "3d-model"
 
-special -> "[" text "](" type ":" text ")"
+special -> "[" text "]{" type ":" text "}"
 
 emphasis -> "***" text "***"
 
-title -> "#":+ text
 
 newline           -> "\r" "\n"                       {% empty %}
                    | "\r" | "\n"                     {% empty %}
