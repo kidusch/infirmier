@@ -4,7 +4,7 @@
 
 lines
    = lineTerminator* car:line cdr:(lineTerminator* line)* lineTerminator*
-   { return [car, ...cdr.map(x => x[1])] }
+   { return [...car.flat(), ...cdr.map(x => x[1]).flat()] }
 
 
 line
@@ -12,15 +12,13 @@ line
 
 title
   = cat:"#"+ ([ ]+) text:words
-  { return { type: 'title', cat: cat.length, text } }
+  { return [{ type: 'title', cat: cat.length, text }] }
 
 li
   = "-" ([ ]+) content:part+
-  { return { type: 'li', content } }
+  { return [{ type: 'li', content }] }
 
-parts
-  = list:part+
-  { return list.length === 1 ? list[0] : list }
+parts = list:part+
 
 part = emphasized_text / plain_text / special
 
@@ -29,14 +27,14 @@ plain_text
   { return { type: 'plain_text', text } }
 
 emphasized_text
-  = "***" text:words "***"
+  = "{" text:words "}"
   { return { type: 'emphasized_text', text } }
 
 special
   = "[" text:words "]{" type " " ref:words "}"
   { return { type: 'special', text, ref } }
 
-type = "link" / "image" / "3D-model"
+type = "link" / "lexique" / "image" / "3D-model"
 
 words
   = text:[^\n\r\[\]\{\}*]+
