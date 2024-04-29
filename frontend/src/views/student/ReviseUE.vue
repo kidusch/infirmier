@@ -4,7 +4,7 @@
       <!-- Header -->
       <header class="py-4">
          <h3 class="lg:opacity-50">
-            Bilan des cours
+            Révisions des cours
          </h3>
       </header>
 

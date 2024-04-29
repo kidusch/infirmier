@@ -40,19 +40,19 @@
 
                <div class="py-8 mx-4 flex-1 flex flex-col gap-2">
 
-                  <router-link to="/" class="flex gap-4 items-center w-full p-3 rounded-lg bg-primary">
+                  <router-link :to="`/home/${user?.id}/study-ue`" class="flex gap-4 items-center w-full p-3 rounded-lg bg-primary">
                      <img class="w-5" src="/src/assets/courses-activate.svg" alt="courses">
                      <p class="font-medium text-white">
                         Cours
                      </p>
                   </router-link>
 
-                  <a href="revisions.html" class="flex gap-4 items-center w-full p-3 rounded-lg opacity-50 ">
+                  <router-link :to="`/home/${user?.id}/revise-ue`" class="flex gap-4 items-center w-full p-3 rounded-lg opacity-50 ">
                      <img class="w-5" src="/src/assets/revisions.svg" alt="revisions">
                      <p class="font-medium">
                         Révisions
                      </p>
-                  </a>
+                  </router-link>
 
                   <a href="anatomy.html" class="flex gap-4 items-center w-full p-3 rounded-lg opacity-50 ">
                      <img class="w-5" src="/src/assets/anatomy.svg" alt="anatomy">
@@ -105,14 +105,16 @@ const props = defineProps({
    },
 })
 
-onMounted(async () => {
-   const user = await getUser(props.userid)
-   setAuthenticatedUser(user)
+const user = ref()
 
-   if (user.admin) {
-      router.push(`/home/${user.id}/admin-ue`)
+onMounted(async () => {
+   user.value = await getUser(props.userid)
+   setAuthenticatedUser(user.value)
+
+   if (user.value.admin) {
+      router.push(`/home/${user.value.id}/admin-ue`)
    } else {
-      router.push(`/home/${user.id}/study-ue`)
+      router.push(`/home/${user.value.id}/study-ue`)
    }
 })
 

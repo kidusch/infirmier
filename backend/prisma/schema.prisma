@@ -22,8 +22,9 @@ model user {
    picture               String?
 
    user_actions          user_action[]
-   user_topics           user_topic[]
+   user_topics           user_topic[]      // actually a 1:1 relationship
    user_text_annotations user_text_annotation[]
+   user_cards            user_card[]       // actually a 1:1 relationship
 }
 
 enum UserType {
@@ -65,7 +66,7 @@ model topic {
    case_studies          case_study[]
    quizes                quiz[]
    user_text_annotations user_text_annotation[]
-   user_topics           user_topic[]
+   user_topics           user_topic[]      // actually a 1:1 relationship
 }
 
 
@@ -78,6 +79,7 @@ model card {
    content               String
 
    topic                 topic             @relation(fields: [topic_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+   user_cards            user_card[]       // actually a 1:1 relationship
 }
 
 model case_study {
@@ -151,4 +153,17 @@ model user_text_annotation {
 
    user                  user               @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
    topic                 topic              @relation(fields: [topic_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+
+model user_card {
+   id                    Int               @default(autoincrement()) @id
+   time                  DateTime          @default(now()) @db.Timestamptz(6)
+   user_id               Int               
+   card_id               Int
+   done                  Boolean           @default(false)
+
+   user                  user              @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+   card                  card              @relation(fields: [card_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+   @@unique([user_id, card_id])
 }
