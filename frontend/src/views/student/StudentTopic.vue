@@ -39,7 +39,21 @@
       </section>
 
       <!-- Course content -->
-      <main ccclass="flex flex-col gap-6 pb-6">
+      <main class="flex flex-col gap-6 pb-6">
+         <template v-for="part in parts">
+            <template v-if="part.type === 'title'">
+               <AnnotatedBlock type="title-block" :text="part.text"></AnnotatedBlock>
+            </template>
+            <template v-if="part.type === 'break'">
+               <br/>
+            </template>
+            <template v-if="part.type === 'plain_text'">
+               <AnnotatedBlock type="span" :text="part.text"></AnnotatedBlock>
+            </template>
+         </template>
+      </main>
+
+      <!-- <main class="flex flex-col gap-6 pb-6">
          
          <h3 class="pb-2">
                Généralités sur la cellule
@@ -105,7 +119,7 @@
             </ul>
          </p>
 
-      </main>
+      </main> -->
 
    </main>
 </template>
@@ -117,6 +131,10 @@ import { getUE } from '/src/use/useUE'
 import { getSubUE } from '/src/use/useSubUE'
 import { getTopic } from '/src/use/useTopic'
 import { getTheUserTopic, updateUserTopic } from '/src/use/useUserTopic'
+
+import parser from '/src/lib/grammar.js'
+import AnnotatedBlock from '/src/components/AnnotatedBlock.vue'
+
 
 const props = defineProps({
    userid: {
@@ -141,6 +159,7 @@ const ue = ref()
 const subUE = ref()
 const topic = ref([])
 const userTopic = ref()
+const parts = ref('')
 
 const done = ref(true)
 
@@ -150,6 +169,9 @@ onMounted(async () => {
    topic.value = await getTopic(props.topic_id)
    userTopic.value = await getTheUserTopic(props.userid, props.topic_id)
    done.value = userTopic.value.done
+
+   parts.value = parser.parse(topic.value.course_content)
+   console.log('parts', parts.value)
 })
 
 const onDoneClick = async () => {

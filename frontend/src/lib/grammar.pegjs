@@ -1,14 +1,20 @@
 
 /* https://shamansir.github.io/pegjs-fn/ */
 
+main = lineTerminator* list:lines lineTerminator*
+  { return list }
 
 lines
-   = lineTerminator* car:line cdr:(lineTerminator* line)* lineTerminator*
-   { return [...car.flat(), ...cdr.map(x => x[1]).flat()] }
+   = car:line cdr:line*
+   { return [...car.flat(), ...cdr.flat()] }
 
 
 line
-  = title / li / parts
+  = title / li / parts / empty_line
+
+empty_line
+  = lineTerminator+
+  { return [{ type: 'break' }] }
 
 title
   = cat:"#"+ ([ ]+) text:words
@@ -43,5 +49,3 @@ words
 
 lineTerminator 
   = [\n\r] 
-
-
