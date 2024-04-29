@@ -46,7 +46,7 @@ const validate = async () => {
          // if (user.admin) {
          //    router.push(`/home/${user.id}/admin-ue`)
          // } else {
-         //    router.push(`/home/${user.id}/student-ue`)
+         //    router.push(`/home/${user.id}/study-ue`)
          // }
       } else {
          router.push(`/`)

@@ -77,6 +77,6 @@ onMounted(async () => {
 })
 
 const select = (ue, subUE) => {
-   router.push(`/home/${props.userid}/student-sub-ue/${ue.id}/${subUE.id}`)
+   router.push(`/home/${props.userid}/study-sub-ue/${ue.id}/${subUE.id}`)
 }
 </script>

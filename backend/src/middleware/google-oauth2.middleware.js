@@ -101,7 +101,7 @@ export default function (app) {
 				// if (user.admin) {
 				// 	res.redirect(`/home/${user.id}/admin-ue`)
 				// } else {
-				// 	res.redirect(`/home/${user.id}/student-ue`)
+				// 	res.redirect(`/home/${user.id}/study-ue`)
 				// }	
 			}
 		} catch (error) {

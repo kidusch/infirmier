@@ -4,7 +4,7 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p>
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/student-ue`">{{ ue?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/study-ue`">{{ ue?.name }}</router-link>
             /
             <span class="font-semibold">{{ subUE?.name }}</span>
          </p>
@@ -82,6 +82,6 @@ onMounted(async () => {
 })
 
 const selectTopic = (topic) => {
-   router.push(`/home/${props.userid}/student-topic/${ue.value.id}/${subUE.value.id}/${topic.id}`)
+   router.push(`/home/${props.userid}/study-topic/${ue.value.id}/${subUE.value.id}/${topic.id}`)
 }
 </script>

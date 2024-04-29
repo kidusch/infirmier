@@ -10,7 +10,7 @@
                <img class="w-6" src="/src/assets/menu.svg" alt="menu">
             </button>
 
-            <router-link class="flex items-center gap-4 lg:flex-1 lg:px-12" :to="`/home/${userid}/student-ue`">
+            <router-link class="flex items-center gap-4 lg:flex-1 lg:px-12" :to="`/home/${userid}/study-ue`">
                <img class="h-12" src="/src/assets/logo.svg" alt="Logo">
                <h3 class="max-lg:hidden">Journal de bord infirmier</h3>
             </router-link>
@@ -112,7 +112,7 @@ onMounted(async () => {
    if (user.admin) {
       router.push(`/home/${user.id}/admin-ue`)
    } else {
-      router.push(`/home/${user.id}/student-ue`)
+      router.push(`/home/${user.id}/study-ue`)
    }
 })
 

@@ -132,15 +132,15 @@ const routes = [
          },
          
          {
-            path: 'student-ue',
-            component: () => import('/src/views/student/StudentUE.vue'),
+            path: 'study-ue',
+            component: () => import('/src/views/student/StudyUE.vue'),
             props: route => ({
                userid: parseInt(route.params.userid),
             }),
          },
          {
-            path: 'student-sub-ue/:ue_id/:sub_ue_id',
-            component: () => import('/src/views/student/StudentSubUE.vue'),
+            path: 'study-sub-ue/:ue_id/:sub_ue_id',
+            component: () => import('/src/views/student/StudySubUE.vue'),
             props: route => ({
                userid: parseInt(route.params.userid),
                ue_id: parseInt(route.params.ue_id),
@@ -148,8 +148,35 @@ const routes = [
             }),
          },
          {
-            path: 'student-topic/:ue_id/:sub_ue_id/:topic_id',
-            component: () => import('/src/views/student/StudentTopic.vue'),
+            path: 'study-topic/:ue_id/:sub_ue_id/:topic_id',
+            component: () => import('/src/views/student/StudyTopic.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+               ue_id: parseInt(route.params.ue_id),
+               sub_ue_id: parseInt(route.params.sub_ue_id),
+               topic_id: parseInt(route.params.topic_id),
+            }),
+         },
+         
+         {
+            path: 'revise-ue',
+            component: () => import('/src/views/student/ReviseUE.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+            }),
+         },
+         {
+            path: 'revise-sub-ue/:ue_id/:sub_ue_id',
+            component: () => import('/src/views/student/ReviseSubUE.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+               ue_id: parseInt(route.params.ue_id),
+               sub_ue_id: parseInt(route.params.sub_ue_id),
+            }),
+         },
+         {
+            path: 'revise-topic/:ue_id/:sub_ue_id/:topic_id',
+            component: () => import('/src/views/student/ReviseTopic.vue'),
             props: route => ({
                userid: parseInt(route.params.userid),
                ue_id: parseInt(route.params.ue_id),

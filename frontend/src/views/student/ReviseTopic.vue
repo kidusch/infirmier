@@ -4,9 +4,9 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p class="leading-loose">
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/student-ue`">{{ ue?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/study-ue`">{{ ue?.name }}</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/student-sub-ue/${ue?.id}/${subUE?.id}`">{{ subUE?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/study-sub-ue/${ue?.id}/${subUE?.id}`">{{ subUE?.name }}</router-link>
             /
             <span class="font-semibold">{{ topic?.name }}</span>
          </p>
@@ -39,7 +39,7 @@
       </section>
 
       <!-- Course content -->
-      <main class="flex flex-col gap-6 pb-6">
+      <main class="">
          <template v-for="part in parts">
             <template v-if="part.type === 'title'">
                <AnnotatedBlock type="title-block" :text="part.text"></AnnotatedBlock>
@@ -49,6 +49,9 @@
             </template>
             <template v-if="part.type === 'plain_text'">
                <AnnotatedBlock type="span" :text="part.text"></AnnotatedBlock>
+            </template>
+            <template v-if="part.type === 'emphasized_text'">
+               <AnnotatedBlock type="bold-span" :text="part.text"></AnnotatedBlock>
             </template>
          </template>
       </main>
