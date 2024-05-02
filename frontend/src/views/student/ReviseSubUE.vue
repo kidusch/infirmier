@@ -106,6 +106,6 @@ onMounted(async () => {
 })
 
 const selectTopic = (topic) => {
-   router.push(`/home/${props.userid}/revise-topic/${ue.value.id}/${subUE.value.id}/${topic.id}`)
+   router.push(`/home/${props.userid}/revise-topic/${props.ue_id}/${props.sub_ue_id}/${topic.id}`)
 }
 </script>

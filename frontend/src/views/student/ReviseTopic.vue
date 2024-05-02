@@ -6,7 +6,7 @@
          <p class="leading-loose">
             <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-ue`">{{ ue?.name }}</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-sub-ue/${ue?.id}/${subUE?.id}`">{{ subUE?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-sub-ue/${ue_id}/${sub_ue_id}`">{{ subUE?.name }}</router-link>
             /
             <span class="font-semibold">{{ topic?.name }}</span>
          </p>
@@ -135,14 +135,14 @@ onMounted(async () => {
 })
 
 const selectCard = (card) => {
-   router.push(`/home/${props.userid}/revise-card/${ue.value.id}/${subUE.value.id}/${card.id}`)
+   router.push(`/home/${props.userid}/revise-card/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${card.id}`)
 }
 
 const selectQuiz = (quiz) => {
-   router.push(`/home/${props.userid}/revise-quiz/${ue.value.id}/${subUE.value.id}/${quiz.id}`)
+   router.push(`/home/${props.userid}/revise-quiz/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${quiz.id}`)
 }
 
 const selectCaseStudy = (caseStudy) => {
-   router.push(`/home/${props.userid}/revise-case-study/${ue.value.id}/${subUE.value.id}/${caseStudy.id}`)
+   router.push(`/home/${props.userid}/revise-case-study/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${caseStudy.id}`)
 }
 </script>
