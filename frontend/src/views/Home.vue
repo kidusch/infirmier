@@ -1,5 +1,4 @@
 <template>
-
    <div class="py-4 flex flex-col h-screen">
 
       <!-- navbar -->
@@ -40,27 +39,14 @@
 
                <div class="py-8 mx-4 flex-1 flex flex-col gap-2">
 
-                  <router-link :to="`/home/${user?.id}/study-ue`" class="flex gap-4 items-center w-full p-3 rounded-lg bg-primary">
-                     <img class="w-5" src="/src/assets/courses-activate.svg" alt="courses">
-                     <p class="font-medium text-white">
-                        Cours
-                     </p>
-                  </router-link>
-
-                  <router-link :to="`/home/${user?.id}/revise-ue`" class="flex gap-4 items-center w-full p-3 rounded-lg opacity-50 ">
-                     <img class="w-5" src="/src/assets/revisions.svg" alt="revisions">
-                     <p class="font-medium">
-                        Révisions
-                     </p>
-                  </router-link>
-
-                  <a href="anatomy.html" class="flex gap-4 items-center w-full p-3 rounded-lg opacity-50 ">
-                     <img class="w-5" src="/src/assets/anatomy.svg" alt="anatomy">
-                     <p class="font-medium">
-                        Anatomie
-                     </p>
-                  </a>
-
+                  <template v-for="item in menuItems">
+                     <div @click="selectItem(item)" class="cursor-pointer flex gap-4 items-center w-full p-3 rounded-lg" :class="{'bg-primary': isCurrentItem(item), 'opacity-50': !isCurrentItem(item)}">
+                        <img class="w-5" :src="item.img" alt="courses">
+                        <p class="font-medium" :class="{ 'text-white': isCurrentItem(item)}">
+                           {{ item.label }}
+                        </p>
+                     </div>
+                  </template>
                </div>
 
 
@@ -80,19 +66,18 @@
             </div>
 
          </aside>
-
       </nav>
 
       <router-view></router-view>
 
    </div>
-
 </template>
 
 <script setup>
 import { onMounted, ref } from 'vue'
+import { useRoute} from 'vue-router'
 
-import { setAuthenticatedUser, logout } from '/src/use/useAuthentication'
+import { logout } from '/src/use/useAuthentication'
 import { getUser } from '/src/use/useUser'
 
 import router from '/src/router'
@@ -106,17 +91,59 @@ const props = defineProps({
 })
 
 const user = ref()
+const menuItems = ref([])
+const route = useRoute()
+
 
 onMounted(async () => {
    user.value = await getUser(props.userid)
-   setAuthenticatedUser(user.value)
 
    if (user.value.admin) {
-      router.push(`/home/${user.value.id}/admin-ue`)
+      menuItems.value = [
+         {
+            label: "Inscription",
+            path: "/",
+            img: "",
+            active: /admin/,
+         },
+         {
+            label: "Cours",
+            path: "/admin-ue",
+            img: "",
+            active: /admin/,
+         },
+      ]
+      router.push(`/home/${props.userid}/admin-ue`)
    } else {
-      router.push(`/home/${user.value.id}/study-ue`)
+      menuItems.value = [
+         {
+            label: "Cours",
+            path: `/home/${props.userid}/study-ue`,
+            img: "/src/assets/courses-activate.svg",
+            active: /study/,
+         },
+         {
+            label: "Révisions",
+            path: `/home/${props.userid}/revise-ue`,
+            img: "/src/assets/revisions.svg",
+            active: /revise/,
+         },
+      ]
+      router.push(`/home/${props.userid}/study-ue`)
    }
 })
+
+const selectItem = (item) => {
+   console.log('route', route)
+   toggleSideMenu()
+   router.push(item.path)
+}
+
+const isCurrentItem = (item) => {
+   console.log(route.path, item.path, item.active.test(route.path))
+   // return (route.path.startsWith(item.path))
+   return item.active.test(route.path)
+}
 
 const sidebarMenu = ref(null)
 const sidebarMenuArea = ref(null)

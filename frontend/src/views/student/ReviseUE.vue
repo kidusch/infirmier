@@ -41,7 +41,12 @@ import { ref, onMounted } from 'vue'
 import { getUEList } from '/src/use/useUE'
 import { getSubUEList } from '/src/use/useSubUE'
 import { getTopicList } from '/src/use/useTopic'
-import { getTheUserTopic } from '/src/use/useUserTopic'
+import { getCardList } from '/src/use/useCard'
+import { getQuizList } from '/src/use/useQuiz'
+import { getCaseStudyList } from '/src/use/useCaseStudy'
+import { getTheUserCard } from '/src/use/useUserCard'
+import { getTheUserQuiz } from '/src/use/useUserQuiz'
+import { getTheUserCaseStudy } from '/src/use/useUserCaseStudy'
 import router from "/src/router"
 
 import 'jcb-radial'
@@ -67,11 +72,26 @@ onMounted(async () => {
          let sum = 0
          const topicList = await getTopicList(subUE.id)
          for (const topic of topicList) {
-            const user_topic = await getTheUserTopic(props.userid, topic.id)
-            sum += (user_topic.done ? 100 : 0)
-            count += 1
+            const cardList = await getCardList(topic.id)
+            const quizList = await getQuizList(topic.id)
+            const caseStudyList = await getCaseStudyList(topic.id)
+            for (const card of cardList) {
+               const userCard = await getTheUserCard(props.userid, card.id)
+               count += 1
+               sum += (userCard.done ? 100 : 0)
+            }
+            for (const quiz of quizList) {
+               const userQuiz = await getTheUserQuiz(props.userid, quiz.id)
+               count += 1
+               sum += (userQuiz.done ? 1 : 0)
+            }
+            for (const caseStudy of caseStudyList) {
+               const userCaseStudy = await getTheUserCaseStudy(props.userid, caseStudy.id)
+               count += 1
+               sum += (userCaseStudy.done ? 1 : 0)
+            }
          }
-         subUEProgressDict.value[subUE.id] = count === 0 ? 0 : sum / count
+         subUEProgressDict.value[subUE.id] = count === 0 ? 0 : Math.round(sum / count)
       }
    }
 })

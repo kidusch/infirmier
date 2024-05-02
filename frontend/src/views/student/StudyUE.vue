@@ -71,7 +71,7 @@ onMounted(async () => {
             sum += (user_topic.done ? 100 : 0)
             count += 1
          }
-         subUEProgressDict.value[subUE.id] = count === 0 ? 0 : sum / count
+         subUEProgressDict.value[subUE.id] = count === 0 ? 0 : Math.round(sum / count)
       }
    }
 })

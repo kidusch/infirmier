@@ -74,5 +74,5 @@ export default defineConfig(({ command, mode }) => {
             '^/static/.*': 'http://localhost:9500',
          }
       },
-      }
+   }
 })
