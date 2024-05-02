@@ -21,20 +21,20 @@ app.service('user_case_study').on('create', (userCaseStudy) => {
    userCaseStudyState.value.userCaseStudyCache[userCaseStudy.id] = userCaseStudy
 })
 
-// get or create the unique user_case_study associated to (user_id, caseStudy_id)
-export const getTheUserCaseStudy = async (user_id, caseStudy_id) => {
-   const isReady = userCaseStudyState.value.theUserCaseStudyReady[user_id + ':' + caseStudy_id]
-   if (isReady) return Object.values(userCaseStudyState.value.userCaseStudyCache).find(userCaseStudy => userCaseStudy.user_id === user_id && userCaseStudy.caseStudy_id === caseStudy_id)
+// get or create the unique user_case_study associated to (user_id, case_study_id)
+export const getTheUserCaseStudy = async (user_id, case_study_id) => {
+   const isReady = userCaseStudyState.value.theUserCaseStudyReady[user_id + ':' + case_study_id]
+   if (isReady) return Object.values(userCaseStudyState.value.userCaseStudyCache).find(userCaseStudy => userCaseStudy.user_id === user_id && userCaseStudy.case_study_id === case_study_id)
    let [userCaseStudy] = await app.service('user_case_study').findMany({
-      where: { user_id, caseStudy_id },
+      where: { user_id, case_study_id },
    })
    if (!userCaseStudy) {
       userCaseStudy = await app.service('user_case_study').create({
-         data: { user_id, caseStudy_id },
+         data: { user_id, case_study_id },
       })
    }
    userCaseStudyState.value.userCaseStudyCache[userCaseStudy.id] = userCaseStudy
-   userCaseStudyState.value.theUserCaseStudyReady[user_id + ':' + caseStudy_id] = true
+   userCaseStudyState.value.theUserCaseStudyReady[user_id + ':' + case_study_id] = true
    return userCaseStudy
 }
 
