@@ -4,7 +4,7 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p>
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/study-ue`">{{ ue?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-ue`">{{ ue?.name }}</router-link>
             /
             <span class="font-semibold">{{ subUE?.name }}</span>
          </p>
@@ -47,7 +47,12 @@ import { ref, onMounted } from 'vue'
 import { getUE } from '/src/use/useUE'
 import { getSubUE } from '/src/use/useSubUE'
 import { getTopicList } from '/src/use/useTopic'
-import { getTheUserTopic } from '/src/use/useUserTopic'
+import { getCardList } from '/src/use/useCard'
+import { getQuizList } from '/src/use/useQuiz'
+import { getCaseStudyList } from '/src/use/useCaseStudy'
+import { getTheUserCard } from '/src/use/useUserCard'
+import { getTheUserQuiz } from '/src/use/useUserQuiz'
+import { getTheUserCaseStudy } from '/src/use/useUserCaseStudy'
 import router from "/src/router"
 
 const props = defineProps({
@@ -76,12 +81,31 @@ onMounted(async () => {
    subUE.value = await getSubUE(props.sub_ue_id)
    topicList.value = await getTopicList(props.sub_ue_id)
    for (const topic of topicList.value) {
-      const user_topic = await getTheUserTopic(props.userid, topic.id)
-      topicProgressDict.value[topic.id] = user_topic.done ? 100 : 0
+      let count = 0
+      let sum = 0
+      const cardList = await getCardList(topic.id)
+      const quizList = await getQuizList(topic.id)
+      const caseStudyList = await getCaseStudyList(topic.id)
+      for (const card of cardList) {
+         const userCard = await getTheUserCard(props.userid, card.id)
+         count += 1
+         sum += (userCard.done ? 100 : 0)
+      }
+      for (const quiz of quizList) {
+         const userQuiz = await getTheUserQuiz(props.userid, quiz.id)
+         count += 1
+         sum += (userQuiz.done ? 1 : 0)
+      }
+      for (const caseStudy of caseStudyList) {
+         const userCaseStudy = await getTheUserCaseStudy(props.userid, caseStudy.id)
+         count += 1
+         sum += (userCaseStudy.done ? 1 : 0)
+      }
+      topicProgressDict.value[topic.id] = count === 0 ? 0 : Math.round(sum / count)
    }
 })
 
 const selectTopic = (topic) => {
-   router.push(`/home/${props.userid}/study-topic/${ue.value.id}/${subUE.value.id}/${topic.id}`)
+   router.push(`/home/${props.userid}/revise-topic/${ue.value.id}/${subUE.value.id}/${topic.id}`)
 }
 </script>
