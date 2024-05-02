@@ -25,36 +25,36 @@
          <div class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
             <div class="progress-list">
                <template v-for="card in cardList">
-                  <div class="progress-item cursor-pointer" @click="">
+                  <div class="progress-item cursor-pointer" @click="selectCard(card)">
                      <div class="w-14">
                         {{ userCardDict[card.id]?.done ? "✔️": "" }}
                      </div>
                      <p>
-                        {{ card?.title }}
+                        Fiche : {{ card?.title }}
                      </p>
                   </div>
                </template>
             </div>
             <div class="progress-list">
                <template v-for="quiz in quizList">
-                  <div class="progress-item cursor-pointer" @click="">
+                  <div class="progress-item cursor-pointer" @click="selectQuiz(quiz)">
                      <div class="w-14">
                         {{ userQuizDict[quiz.id]?.done ? "✔️": "" }}
                      </div>
                      <p>
-                        {{ quiz?.title }}
+                        QCM : {{ quiz?.title }}
                      </p>
                   </div>
                </template>
             </div>
             <div class="progress-list">
                <template v-for="caseStudy in caseStudyList">
-                  <div class="progress-item cursor-pointer" @click="">
+                  <div class="progress-item cursor-pointer" @click="selectCaseStudy(caseStudy)">
                      <div class="w-14">
                         {{ userCaseStudyDict[caseStudy.id]?.done ? "✔️": "" }}
                      </div>
                      <p>
-                        {{ caseStudy?.title }}
+                        Étude de cas : {{ caseStudy?.title }}
                      </p>
                   </div>
                </template>
@@ -67,7 +67,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, createApp } from 'vue'
+import { ref, onMounted } from 'vue'
 
 import { getUE } from '/src/use/useUE'
 import { getSubUE } from '/src/use/useSubUE'
@@ -78,6 +78,7 @@ import { getCaseStudyList } from '/src/use/useCaseStudy'
 import { getTheUserCard } from '/src/use/useUserCard'
 import { getTheUserQuiz } from '/src/use/useUserQuiz'
 import { getTheUserCaseStudy } from '/src/use/useUserCaseStudy'
+import router from "/src/router"
 
 
 const props = defineProps({
@@ -132,4 +133,16 @@ onMounted(async () => {
       userCaseStudyDict.value[caseStudy.id] = userCaseStudy
    }
 })
+
+const selectCard = (card) => {
+   router.push(`/home/${props.userid}/revise-card/${ue.value.id}/${subUE.value.id}/${card.id}`)
+}
+
+const selectQuiz = (quiz) => {
+   router.push(`/home/${props.userid}/revise-quiz/${ue.value.id}/${subUE.value.id}/${quiz.id}`)
+}
+
+const selectCaseStudy = (caseStudy) => {
+   router.push(`/home/${props.userid}/revise-case-study/${ue.value.id}/${subUE.value.id}/${caseStudy.id}`)
+}
 </script>
