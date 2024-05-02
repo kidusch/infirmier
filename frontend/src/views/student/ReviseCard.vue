@@ -17,7 +17,7 @@
       <!-- Header -->
       <header class="py-2">
          <h3 class="lg:opacity-50">
-            {{ card?.title }}
+            Fiche de révision
          </h3>
       </header>
 
@@ -29,13 +29,13 @@
 
             <input type="checkbox" value="" class="sr-only peer" checked>
             <div
-               class="relative w-11 h-6 bg-gray-200 rounded-full peer   peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#76EE59]">
+               class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#76EE59]">
             </div>
 
          </label>
 
          <button>
-            <img class="h-5" src="./assets/courses.svg" alt="course">
+            <img class="h-5" src="/src/assets/courses.svg" alt="course">
          </button>
 
       </section>
@@ -45,9 +45,8 @@
       <main class="my-6 relative flex justify-center">
 
          <div class="bg-accent-darker py-4 px-6 rounded-3xl lg:w-full max-lg:max-w-xl z-30 relative">
-            <h2 class="py-2 text-center">Fiche de révision</h2>
             <h4 class="py-2">
-               Type des cellules
+               {{ card?.title }}
             </h4>
             <p>
                Cellules Eucaryotes:
