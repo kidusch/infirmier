@@ -56,74 +56,6 @@
          </template>
       </main>
 
-      <!-- <main class="flex flex-col gap-6 pb-6">
-         
-         <h3 class="pb-2">
-               Généralités sur la cellule
-         </h3>
-
-         <p class="text-black/70">
-               Les cellules sont les plus petites unités structurelles et fonctionnelles de l'organisme. Elles mesurent
-               de 1 à 100 microns de diamètre.
-               <br class="py-1">
-               C'est la plus petite unité capable de:
-            <ul class="text-black/70 py-1">
-               <li class="flex">
-                  <div class="h-1 w-1 rounded-full bg-black lg:mt-2 mt-1.5 mr-1.5">
-
-                  </div>
-                  <p class="w-11/12">
-                     Synthétiser l’ensemble de ses constituants en utilisant des éléments du milieu extérieur
-                  </p>
-               </li>
-               <li class="flex">
-                  <div class="h-1 w-1 rounded-full bg-black lg:mt-2 mt-1.5 mr-1.5">
-
-                  </div>
-                  <p class="w-11/12">
-                     Croître
-                  </p>
-               </li>
-               <li class="flex">
-                  <div class="h-1 w-1 rounded-full bg-black lg:mt-2 mt-1.5 mr-1.5">
-
-                  </div>
-                  <p class="w-11/12">
-                     Se multiplier
-                  </p>
-               </li>
-            </ul>
-         </p>
-
-         <div class="w-full flex justify-center">
-               <img class="sm:max-w-md" src="/src/assets/anatomy-diagram.png" alt="anatomy-diagram">
-         </div>
-
-         <p class="text-black/70">
-               On distingue:
-            <ul class="text-black/70 py-1">
-               <li class="flex">
-                  <div class="h-1 w-1 rounded-full bg-black lg:mt-2 mt-1.5 mr-1.5">
-
-                  </div>
-                  <p class="w-11/12">
-                     Cellule procaryote = dépourvue de noyau, limitée par une membrane pl unicellulaire (ex:
-                     bactéries)
-                  </p>
-               </li>
-               <li class="flex">
-                  <div class="h-1 w-1 rounded-full bg-black lg:mt-2 mt-1.5 mr-1.5">
-
-                  </div>
-                  <p class="w-11/12">
-                     Cellule eucaryote = véritable novαι
-                  </p>
-               </li>
-            </ul>
-         </p>
-
-      </main> -->
-
    </main>
 </template>
 
@@ -163,7 +95,6 @@ const subUE = ref()
 const topic = ref([])
 const userTopic = ref()
 const parts = ref('')
-
 const done = ref(true)
 
 onMounted(async () => {
@@ -174,7 +105,7 @@ onMounted(async () => {
    done.value = userTopic.value.done
 
    parts.value = parser.parse(topic.value.course_content)
-   console.log('parts', parts.value)
+   // console.log('parts', parts.value)
 })
 
 const onDoneClick = async () => {

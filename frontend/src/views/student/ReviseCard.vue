@@ -27,7 +27,7 @@
          <label class="inline-flex gap-3 items-center cursor-pointer">
             <p class="font-semibold text-black">Acquis</p>
 
-            <input type="checkbox" value="" class="sr-only peer" checked>
+            <input type="checkbox" class="sr-only peer" :checked="done" @input="onDoneClick">
             <div
                class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#76EE59]">
             </div>
@@ -48,66 +48,22 @@
             <h4 class="py-2">
                {{ card?.title }}
             </h4>
-            <p>
-               Cellules Eucaryotes:
-            </p>
-            <ul class="pb-2">
-               <li class="flex">
-                     <div class="h-1 w-1 rounded-full bg-black lg:mt-2 mt-1.5 mr-1.5">
-                     </div>
-                     <p class="w-11/12">
-                        Présence d'un noyau délimité par une membrane nucléaire.
-                     </p>
-               </li>
-               <li class="flex">
-                     <div class="h-1 w-1 rounded-full bg-black lg:mt-2 mt-1.5 mr-1.5">
 
-                     </div>
-                     <p class="w-11/12">
-                        Possèdent des organites membranaires comme les mitochondries, le réticulum endoplasmique,
-                        l'appareil de Golgi, etc.
-                     </p>
-               </li>
-               <li class="flex">
-                     <div class="h-1 w-1 rounded-full bg-black lg:mt-2 mt-1.5 mr-1.5">
+            <template v-for="part in parts">
+               <template v-if="part.type === 'title'">
+                  <AnnotatedBlock type="title-block" :text="part.text"></AnnotatedBlock>
+               </template>
+               <template v-if="part.type === 'break'">
+                  <br/>
+               </template>
+               <template v-if="part.type === 'plain_text'">
+                  <AnnotatedBlock type="span" :text="part.text"></AnnotatedBlock>
+               </template>
+               <template v-if="part.type === 'emphasized_text'">
+                  <AnnotatedBlock type="bold-span" :text="part.text"></AnnotatedBlock>
+               </template>
+            </template>
 
-                     </div>
-                     <p class="w-11/12">
-                        Plus complexes et plus grandes que les cellules procaryotes.
-                     </p>
-               </li>
-            </ul>
-
-            <p>
-               Cellules Eucaryotes:
-            </p>
-            <ul>
-               <li class="flex">
-                     <div class="h-1 w-1 rounded-full bg-black lg:mt-2 mt-1.5 mr-1.5">
-
-                     </div>
-                     <p class="w-11/12">
-                        Présence d'un noyau délimité par une membrane nucléaire.
-                     </p>
-               </li>
-               <li class="flex">
-                     <div class="h-1 w-1 rounded-full bg-black lg:mt-2 mt-1.5 mr-1.5">
-
-                     </div>
-                     <p class="w-11/12">
-                        Possèdent des organites membranaires comme les mitochondries, le réticulum endoplasmique,
-                        l'appareil de Golgi, etc.
-                     </p>
-               </li>
-               <li class="flex">
-                     <div class="h-1 w-1 rounded-full bg-black lg:mt-2 mt-1.5 mr-1.5">
-
-                     </div>
-                     <p class="w-11/12">
-                        Plus complexes et plus grandes que les cellules procaryotes.
-                     </p>
-               </li>
-            </ul>
          </div>
 
          <div
@@ -122,7 +78,7 @@
 
          <section class="py-6 w-full flex flex-col justify-end flex-1 items-center">
             <button class="primary-btn px-12">
-               continuer...
+               Retour
             </button>
          </section>
 
@@ -136,7 +92,11 @@ import { getUE } from '/src/use/useUE'
 import { getSubUE } from '/src/use/useSubUE'
 import { getTopic } from '/src/use/useTopic'
 import { getCard } from '/src/use/useCard'
+import { getTheUserCard, updateUserCard } from '/src/use/useUserCard'
 import router from "/src/router"
+
+import parser from '/src/lib/grammar.js'
+import AnnotatedBlock from '/src/components/AnnotatedBlock.vue'
 
 
 const props = defineProps({
@@ -166,6 +126,10 @@ const ue = ref()
 const subUE = ref()
 const topic = ref([])
 const card = ref([])
+const userCard = ref([])
+
+const parts = ref('')
+const done = ref(true)
 
 
 onMounted(async () => {
@@ -173,5 +137,17 @@ onMounted(async () => {
    subUE.value = await getSubUE(props.sub_ue_id)
    topic.value = await getTopic(props.topic_id)
    card.value = await getCard(props.card_id)
+
+   parts.value = parser.parse(card.value.content)
+   console.log('parts', parts.value)
+
+   userCard.value = await getTheUserCard(props.userid, props.card_id)
+   done.value = userCard.value.done
 })
+
+const onDoneClick = async () => {
+   done.value = !done.value
+   const updatedUserTopic = await updateUserCard(userCard.value.id, { done: done.value })
+   console.log('updatedUserTopic', updatedUserTopic)
+}
 </script>
