@@ -44,7 +44,7 @@ import { getTopicList } from '/src/use/useTopic'
 import { getTheUserTopic } from '/src/use/useUserTopic'
 import router from "/src/router"
 
-import 'jcb-radial'
+// import 'jcb-radial'
 
 
 const ueList = ref([])

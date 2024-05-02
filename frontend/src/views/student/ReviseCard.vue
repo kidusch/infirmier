@@ -77,7 +77,7 @@
          </main>
 
          <section class="py-6 w-full flex flex-col justify-end flex-1 items-center">
-            <button class="primary-btn px-12">
+            <button class="primary-btn px-12" @click="back">
                Retour
             </button>
          </section>
@@ -138,8 +138,12 @@ onMounted(async () => {
    topic.value = await getTopic(props.topic_id)
    card.value = await getCard(props.card_id)
 
-   parts.value = parser.parse(card.value.content)
-   console.log('parts', parts.value)
+   try {
+      parts.value = parser.parse(card.value.content)
+      console.log('parts', parts.value)
+   } catch(err) {
+      parts.value = ''
+   }
 
    userCard.value = await getTheUserCard(props.userid, props.card_id)
    done.value = userCard.value.done
@@ -150,4 +154,6 @@ const onDoneClick = async () => {
    const updatedUserTopic = await updateUserCard(userCard.value.id, { done: done.value })
    console.log('updatedUserTopic', updatedUserTopic)
 }
+
+const back = () => router.back()
 </script>

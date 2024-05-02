@@ -104,8 +104,12 @@ onMounted(async () => {
    userTopic.value = await getTheUserTopic(props.userid, props.topic_id)
    done.value = userTopic.value.done
 
-   parts.value = parser.parse(topic.value.course_content)
-   // console.log('parts', parts.value)
+   try {
+      parts.value = parser.parse(topic.value.course_content)
+      console.log('parts', parts.value)
+   } catch(err) {
+      parts.value = ''
+   }
 })
 
 const onDoneClick = async () => {
@@ -113,15 +117,4 @@ const onDoneClick = async () => {
    const updatedUserTopic = await updateUserTopic(userTopic.value.id, { done: done.value })
    console.log('updatedUserTopic', updatedUserTopic)
 }
-
-const text = `
-# Généralités sur la cellule
-
-Le système nerveux est constitué de deux parties : le [système nerveux central](lexique: systeme-nerveux-central) et le
-[système nerveux périphérique](lexique: systeme-nerveux-peripherique)
-
-[](image: cns/cellule.png)
-- ***Axone*** : fibre nerveuse longue et mince
-- ***Dendrites*** : branches des [cellules](lexique: cellules) nerveuses
-`
 </script>

@@ -24,7 +24,6 @@
             <div class="progress-list">
                <template v-for="topic in topicList">
                   <div class="progress-item cursor-pointer" @click="selectTopic(topic)">
-                     <!-- <img src="/src/assets/progress-bar-0.svg"> -->
                      <div class="w-14">
                         <jcb-radial :value="topicProgressDict[topic.id]"></jcb-radial>
                      </div>

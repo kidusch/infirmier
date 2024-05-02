@@ -49,7 +49,7 @@ import { getTheUserQuiz } from '/src/use/useUserQuiz'
 import { getTheUserCaseStudy } from '/src/use/useUserCaseStudy'
 import router from "/src/router"
 
-import 'jcb-radial'
+// import 'jcb-radial'
 
 
 const ueList = ref([])
