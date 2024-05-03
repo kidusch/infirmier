@@ -10,7 +10,7 @@
             /
             <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-topic/${ue_id}/${sub_ue_id}/${topic_id}`">{{ topic?.name }}</router-link>
             /
-            <span class="font-semibold">{{ quiz?.name }}</span>
+            <span class="font-semibold">{{ quiz?.title }}</span>
          </p>
       </header>
 
@@ -34,31 +34,131 @@
 
          </label>
 
-         <button>
+         <button @click="gotoStudy">
             <img class="h-5" src="/src/assets/courses.svg" alt="course">
          </button>
 
       </section>
 
 
-      <!-- Revision Card -->
-      <main class="my-6 relative flex justify-center">
-
-         <div class="bg-accent-darker py-4 px-6 rounded-3xl lg:w-full max-lg:max-w-xl z-30 relative">
-            <h4 class="py-2">
-               {{ quiz?.title }}
+        <!-- Main content -->
+        <main class="py-4 w-full">
+            <h4 class="py-2 font-semibold text-center">
+                Quelle Caracteristique distingue une cellule
+                eucaryote d’une cellule procaryote ?
             </h4>
+            <p class="text-center">(selectionnez toutes les reponses correctes)</p>
+
+            <!-- MCQ / QCM -->
+            <form>
+
+                <div>
+                    <div class="py-5">
+                        <div class="flex items-baseline pb-1.5">
+                            <label for="default-radio-1" class="font-normal me-2 w-6">
+                                <p class="text-sm text-black">
+                                    Oui
+                                </p>
+                            </label>
+
+                            <input id="default-radio-1" type="radio" value="" name="mcq-1" class="w-4 h-4 ">
+                            <label for="default-radio-1" class="font-normal ms-2">
+                                <p class="text-sm max-sm:text-xs text-black">
+                                    A - Presence d’un noyau delimite par une
+                                </p>
+                            </label>
+                        </div>
+                        <div class="flex items-baseline">
+                            <label for="default-radio-2" class="font-normal me-2 w-6">
+                                <p class="text-sm text-black">
+                                    non
+                                </p>
+                            </label>
+
+                            <input checked id="default-radio-2" type="radio" value="" name="mcq-1" class="w-4 h-4  ">
+                            <label for="default-radio-2" class="font-normal ms-2">
+                                <p class="text-sm max-sm:text-xs text-black">
+                                    membrane
+                                </p>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="">
+                        <div class="flex items-baseline pb-1.5">
+                            <label for="default-radio-3" class="font-normal me-2 w-6">
+                                <p class="text-sm text-black">
+                                    Oui
+                                </p>
+                            </label>
+
+                            <input id="default-radio-3" type="radio" value="" name="mcq-2" class="w-4 h-4 ">
+                            <label for="default-radio-3" class="font-normal ms-2">
+                                <p class="text-sm max-sm:text-xs text-black">
+                                    A - Presence d’un noyau delimite par une
+                                </p>
+                            </label>
+                        </div>
+                        <div class="flex items-baseline">
+                            <label for="default-radio-4" class="font-normal me-2 w-6">
+                                <p class="text-sm text-black">
+                                    non
+                                </p>
+                            </label>
+
+                            <input checked id="default-radio-4" type="radio" value="" name="mcq-2" class="w-4 h-4  ">
+                            <label for="default-radio-4" class="font-normal ms-2">
+                                <p class="text-sm max-sm:text-xs text-black">
+                                    membrane
+                                </p>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="py-5">
+                        <div class="flex items-baseline pb-1.5">
+                            <label for="default-radio-1" class="font-normal me-2 w-6">
+                                <p class="text-sm text-black">
+                                    Oui
+                                </p>
+                            </label>
+
+                            <input id="default-radio-1" type="radio" value="" name="mcq-3" class="w-4 h-4 ">
+                            <label for="default-radio-1" class="font-normal ms-2">
+                                <p class="text-sm max-sm:text-xs text-black">
+                                    A - Presence d’un noyau delimite par une
+                                </p>
+                            </label>
+                        </div>
+                        <div class="flex items-baseline">
+                            <label for="default-radio-2" class="font-normal me-2 w-6">
+                                <p class="text-sm text-black">
+                                    non
+                                </p>
+                            </label>
+
+                            <input checked id="default-radio-2" type="radio" value="" name="mcq-3" class="w-4 h-4  ">
+                            <label for="default-radio-2" class="font-normal ms-2">
+                                <p class="text-sm max-sm:text-xs text-black">
+                                    membrane
+                                </p>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
 
 
-         </div>
+            </form>
+        </main>
 
-         <section class="py-6 w-full flex flex-col justify-end flex-1 items-center">
-            <button class="primary-btn px-12" @click="back">
-               Retour
+        <footer class="flex-1 flex flex-col justify-end pb-8">
+            <button class="primary-btn px-4">
+                Verifier mes responses
             </button>
-         </section>
+        </footer>
 
-      </main>
+   </main>
 </template>
 
 <script setup>
@@ -119,5 +219,7 @@ const onDoneClick = async () => {
    await updateUserQuiz(userQuiz.value.id, { done: done.value })
 }
 
-const back = () => router.back()
+const gotoStudy = () => {
+   router.push(`/home/${props.userid}/study-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
+}
 </script>

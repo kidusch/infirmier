@@ -10,7 +10,7 @@
             /
             <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-topic/${ue_id}/${sub_ue_id}/${topic_id}`">{{ topic?.name }}</router-link>
             /
-            <span class="font-semibold">{{ card?.name }}</span>
+            <span class="font-semibold">{{ card?.title }}</span>
          </p>
       </header>
 
@@ -34,7 +34,7 @@
 
          </label>
 
-         <button>
+         <button @click="gotoStudy">
             <img class="h-5" src="/src/assets/courses.svg" alt="course">
          </button>
 
@@ -155,4 +155,8 @@ const onDoneClick = async () => {
 }
 
 const back = () => router.back()
+
+const gotoStudy = () => {
+   router.push(`/home/${props.userid}/study-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
+}
 </script>

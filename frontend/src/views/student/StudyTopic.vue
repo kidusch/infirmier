@@ -32,9 +32,9 @@
 
          </label>
 
-         <router-link to="/">
+         <button @click="gotoRevise">
             <img class="h-5" src="/src/assets/courses.svg" alt="course">
-         </router-link>
+         </button>
 
       </section>
 
@@ -69,6 +69,8 @@ import { getTheUserTopic, updateUserTopic } from '/src/use/useUserTopic'
 
 import parser from '/src/lib/grammar.js'
 import AnnotatedBlock from '/src/components/AnnotatedBlock.vue'
+
+import router from "/src/router"
 
 
 const props = defineProps({
@@ -116,5 +118,9 @@ const onDoneClick = async () => {
    done.value = !done.value
    const updatedUserTopic = await updateUserTopic(userTopic.value.id, { done: done.value })
    console.log('updatedUserTopic', updatedUserTopic)
+}
+
+const gotoRevise = () => {
+   router.push(`/home/${props.userid}/revise-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
 }
 </script>
