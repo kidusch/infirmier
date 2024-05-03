@@ -4,6 +4,8 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p class="leading-loose">
+            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-ue`">Révisions</router-link>
+            /
             <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-ue`">{{ ue?.name }}</router-link>
             /
             <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-sub-ue/${ue_id}/${sub_ue_id}`">{{ subUE?.name }}</router-link>
@@ -14,7 +16,7 @@
 
       <!-- Header -->
       <header class="py-2">
-         <h3 class="lg:opacity-50 flex items-center">
+         <h3 class="opacity-50 flex items-center">
             {{ topic?.name }}
             <div class="ml-2 w-14">
                <jcb-radial :value="progress"></jcb-radial>

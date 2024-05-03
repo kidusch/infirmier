@@ -12,6 +12,7 @@ import userActionService from './database/user_action/user_action.service.js'
 import userTopicService from './database/user_topic/user_topic.service.js'
 import userCardService from './database/user_card/user_card.service.js'
 import userQuizService from './database/user_quiz/user_quiz.service.js'
+import userQuizChoiceService from './database/user_quiz_choice/user_quiz_choice.service.js'
 import userCaseStudyService from './database/user_case_study/user_case_study.service.js'
 
 // custom services
@@ -33,6 +34,7 @@ export default function (app) {
    app.configure(userTopicService)
    app.configure(userCardService)
    app.configure(userQuizService)
+   app.configure(userQuizChoiceService)
    app.configure(userCaseStudyService)
 
    // add custom services

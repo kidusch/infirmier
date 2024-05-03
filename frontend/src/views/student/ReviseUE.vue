@@ -3,9 +3,9 @@
 
       <!-- Header -->
       <header class="py-4">
-         <h3 class="lg:opacity-50">
-            Révisions des cours
-         </h3>
+         <h2 class="opacity-50">
+            Révisions
+         </h2>
       </header>
 
       <!-- Main content -> courses list -->

@@ -4,6 +4,8 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p class="leading-loose">
+            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-ue`">Révisions</router-link>
+            /
             <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-ue`">{{ ue?.name }}</router-link>
             /
             <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-sub-ue/${ue_id}/${sub_ue_id}`">{{ subUE?.name }}</router-link>
@@ -16,7 +18,7 @@
 
       <!-- Header -->
       <header class="py-2">
-         <h3 class="lg:opacity-50">
+         <h3 class="opacity-50">
             QCM
          </h3>
       </header>
@@ -43,118 +45,50 @@
 
         <!-- Main content -->
         <main class="py-4 w-full">
-            <h4 class="py-2 font-semibold text-center">
-                Quelle Caracteristique distingue une cellule
-                eucaryote d’une cellule procaryote ?
+            <h4 class="py-2 font-semibold">
+               {{ quiz.question }}
             </h4>
-            <p class="text-center">(selectionnez toutes les reponses correctes)</p>
+            <p class="opacity-50">(Sélectionnez toutes les réponses correctes)</p>
 
             <!-- MCQ / QCM -->
-            <form>
+            
+            <div v-for="choice, index in quizChoiceList">
+               <div class="py-5 flex items-center">
+                  <div>
+                     <div class="flex items-center pb-1.5">
+                        <label class="font-normal me-2 w-6">
+                           <p class="text-sm text-black">
+                              Oui
+                           </p>
+                        </label>
 
-                <div>
-                    <div class="py-5">
-                        <div class="flex items-baseline pb-1.5">
-                            <label for="default-radio-1" class="font-normal me-2 w-6">
-                                <p class="text-sm text-black">
-                                    Oui
-                                </p>
-                            </label>
+                        <input type="checkbox" :checked="answersDict[choice.id] === true" @click="setAnswer(choice.id, true)" class="checkbox checkbox-primary" />
 
-                            <input id="default-radio-1" type="radio" value="" name="mcq-1" class="w-4 h-4 ">
-                            <label for="default-radio-1" class="font-normal ms-2">
-                                <p class="text-sm max-sm:text-xs text-black">
-                                    A - Presence d’un noyau delimite par une
-                                </p>
-                            </label>
-                        </div>
-                        <div class="flex items-baseline">
-                            <label for="default-radio-2" class="font-normal me-2 w-6">
-                                <p class="text-sm text-black">
-                                    non
-                                </p>
-                            </label>
+                     </div>
+                     <div class="flex items-center">
+                        <label class="font-normal me-2 w-6">
+                           <p class="text-sm text-black">
+                              Non
+                           </p>
+                        </label>
 
-                            <input checked id="default-radio-2" type="radio" value="" name="mcq-1" class="w-4 h-4  ">
-                            <label for="default-radio-2" class="font-normal ms-2">
-                                <p class="text-sm max-sm:text-xs text-black">
-                                    membrane
-                                </p>
-                            </label>
-                        </div>
-                    </div>
+                        <input type="checkbox" :checked="answersDict[choice.id] === false" @click="setAnswer(choice.id, false)" class="checkbox checkbox-primary" />
+                     </div>
+                  </div>
+                  <label class="font-normal ml-4">
+                     <p class="text-sm max-sm:text-xs text-black">
+                        {{ "ABCDEFGHIJK".charAt(index) }} - {{ choice.text }}
+                     </p>
+                  </label>
 
-                    <div class="">
-                        <div class="flex items-baseline pb-1.5">
-                            <label for="default-radio-3" class="font-normal me-2 w-6">
-                                <p class="text-sm text-black">
-                                    Oui
-                                </p>
-                            </label>
-
-                            <input id="default-radio-3" type="radio" value="" name="mcq-2" class="w-4 h-4 ">
-                            <label for="default-radio-3" class="font-normal ms-2">
-                                <p class="text-sm max-sm:text-xs text-black">
-                                    A - Presence d’un noyau delimite par une
-                                </p>
-                            </label>
-                        </div>
-                        <div class="flex items-baseline">
-                            <label for="default-radio-4" class="font-normal me-2 w-6">
-                                <p class="text-sm text-black">
-                                    non
-                                </p>
-                            </label>
-
-                            <input checked id="default-radio-4" type="radio" value="" name="mcq-2" class="w-4 h-4  ">
-                            <label for="default-radio-4" class="font-normal ms-2">
-                                <p class="text-sm max-sm:text-xs text-black">
-                                    membrane
-                                </p>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="py-5">
-                        <div class="flex items-baseline pb-1.5">
-                            <label for="default-radio-1" class="font-normal me-2 w-6">
-                                <p class="text-sm text-black">
-                                    Oui
-                                </p>
-                            </label>
-
-                            <input id="default-radio-1" type="radio" value="" name="mcq-3" class="w-4 h-4 ">
-                            <label for="default-radio-1" class="font-normal ms-2">
-                                <p class="text-sm max-sm:text-xs text-black">
-                                    A - Presence d’un noyau delimite par une
-                                </p>
-                            </label>
-                        </div>
-                        <div class="flex items-baseline">
-                            <label for="default-radio-2" class="font-normal me-2 w-6">
-                                <p class="text-sm text-black">
-                                    non
-                                </p>
-                            </label>
-
-                            <input checked id="default-radio-2" type="radio" value="" name="mcq-3" class="w-4 h-4  ">
-                            <label for="default-radio-2" class="font-normal ms-2">
-                                <p class="text-sm max-sm:text-xs text-black">
-                                    membrane
-                                </p>
-                            </label>
-                        </div>
-                    </div>
-
-                </div>
-
-
-            </form>
+               </div>
+            </div>
+            
         </main>
 
         <footer class="flex-1 flex flex-col justify-end pb-8">
             <button class="primary-btn px-4">
-                Verifier mes responses
+               Vérifier mes réponses
             </button>
         </footer>
 
@@ -169,6 +103,9 @@ import { getSubUE } from '/src/use/useSubUE'
 import { getTopic } from '/src/use/useTopic'
 import { getQuiz } from '/src/use/useQuiz'
 import { getTheUserQuiz, updateUserQuiz } from '/src/use/useUserQuiz'
+import { getQuizChoiceList } from '/src/use/useQuizChoice'
+import { getTheUserQuizChoice, updateUserQuizChoice } from '/src/use/useUserQuizChoice'
+
 import router from "/src/router"
 
 
@@ -200,8 +137,10 @@ const subUE = ref()
 const topic = ref([])
 const quiz = ref([])
 const userQuiz = ref([])
+const quizChoiceList = ref([])
 
 const done = ref(true)
+const answersDict = ref({})
 
 
 onMounted(async () => {
@@ -209,6 +148,11 @@ onMounted(async () => {
    subUE.value = await getSubUE(props.sub_ue_id)
    topic.value = await getTopic(props.topic_id)
    quiz.value = await getQuiz(props.quiz_id)
+   quizChoiceList.value = await getQuizChoiceList(props.quiz_id)
+   for (const quizChoice of quizChoiceList.value) {
+      const userQuizeChoice = await getTheUserQuizChoice(props.userid, quizChoice.id)
+      answersDict.value[quizChoice.id] = userQuizeChoice.answer
+   }
 
    userQuiz.value = await getTheUserQuiz(props.userid, props.quiz_id)
    done.value = userQuiz.value.done
@@ -217,6 +161,12 @@ onMounted(async () => {
 const onDoneClick = async () => {
    done.value = !done.value
    await updateUserQuiz(userQuiz.value.id, { done: done.value })
+}
+
+const setAnswer = async (quiz_choice_id, answer) => {
+   const userQuizeChoice = await getTheUserQuizChoice(props.userid, quiz_choice_id)
+   await updateUserQuizChoice(userQuizeChoice.id, { answer })
+   answersDict.value[quiz_choice_id] = answer
 }
 
 const gotoStudy = () => {

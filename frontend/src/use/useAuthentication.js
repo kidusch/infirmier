@@ -14,7 +14,10 @@ import { resetUseQuizChoice } from '/src/use/useQuizChoice'
 import { resetUseUserTopic } from '/src/use/useUserTopic'
 import { resetUseUserCard } from '/src/use/useUserCard'
 import { resetUseUserQuiz } from '/src/use/useUserQuiz'
+import { resetUseUserQuizChoice } from '/src/use/useUserQuizChoice'
 import { resetUseUserCaseStudy } from '/src/use/useUserCaseStudy'
+
+import router from '/src/router'
 
 
 // state backed in SessionStorage
@@ -42,16 +45,13 @@ export function clearSessionStorage() {
    resetUseUserTopic()
    resetUseUserCard()
    resetUseUserQuiz()
+   resetUseUserQuizChoice()
    resetUseUserCaseStudy()
 }
 
 export function setAuthenticatedUser(user) {
    authenticationState.value.user = user
 }
-
-// export function getAuthenticatedUser() {
-//    return authenticationState.value.user
-// }
 
 
 ////////////////////////           LOGIN / LOGOUT            ////////////////////////
@@ -76,6 +76,7 @@ export async function logout() {
       console.log('err', err)
    }
    clearSessionStorage()
+   router.push('/')
 }
 
 export async function addUserAction(action) {

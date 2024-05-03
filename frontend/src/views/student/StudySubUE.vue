@@ -12,7 +12,7 @@
 
       <!-- Header -->
       <header class="py-2">
-         <h3 class="lg:opacity-50">
+         <h3 class="opacity-50">
             {{ subUE?.name }}
          </h3>
       </header>

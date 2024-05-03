@@ -15,7 +15,7 @@
             </router-link>
 
             <button @click="signout">
-               <img class="w-6" src="/src/assets/logout.svg" alt="logout.svg">
+               <img class="w-6" src="/src/assets/logout.svg">
             </button>
 
          </main>
@@ -51,11 +51,8 @@
 
 
                <div class="mx-4 ">
-                  <button class="flex gap-4 items-center w-full p-3 rounded-lg opacity-50 ">
+                  <button class="flex gap-4 items-center w-full p-3 rounded-lg opacity-50 " @click="signout">
                      <img class="w-5" src="/src/assets/logout.svg" alt="logout">
-                     <p class="font-medium">
-                        Log out
-                     </p>
                   </button>
                </div>
 
