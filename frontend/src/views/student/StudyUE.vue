@@ -19,7 +19,7 @@
                <template v-for="subUE in subUEListDict[ue.id]">
                   <div class="progress-item cursor-pointer" @click="select(ue, subUE)">
                      <!-- <img src="/src/assets/progress-bar-0.svg"> -->
-                     <div class="w-14">
+                     <div class="w-14 h-14">
                         <jcb-radial :value="subUEProgressDict[subUE.id]"></jcb-radial>
                      </div>
                      <p>
