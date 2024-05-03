@@ -86,7 +86,7 @@ async function chie() {
 
 ////////////////////////           PERIODIC PROBE OF AUTHENTICATION            ////////////////////////
 
-const PROBE_PERIOD = import.meta.env.VITE_PROBE_PERIOD
+const PROBE_PERIOD = import.meta.env.VITE_PROBE_PERIOD || 10000
 
 setInterval(async () => {
    if (route.meta.requiresAuth) {
