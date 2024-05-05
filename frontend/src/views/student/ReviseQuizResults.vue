@@ -4,7 +4,7 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p class="leading-loose">
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-ue`">Révisions</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-ue`">RÉVISIONS</router-link>
             /
             <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-ue`">{{ ue?.name }}</router-link>
             /
@@ -21,7 +21,7 @@
       <!-- Header -->
       <header class="py-2">
          <h3 class="opacity-50">
-            Résultats
+            SCORE : {{ score > 0 ? '+' : '' }}{{ score }}
          </h3>
       </header>
 
@@ -38,9 +38,9 @@
       <!-- Main content -->
       <main class="py-4 w-full">
 
-         <h4 class="py-2 font-semibold text-gray-500">
+         <!-- <h4 class="py-2 font-semibold text-gray-500">
             SCORE : {{ score > 0 ? '+' : '' }}{{ score }}
-         </h4>
+         </h4> -->
 
          <h4 class="py-2 font-semibold">
             {{ quiz.question }}

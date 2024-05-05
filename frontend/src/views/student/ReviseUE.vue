@@ -2,10 +2,10 @@
     <main class="flex-1 container max-w-7xl">
 
       <!-- Header -->
-      <header class="py-4">
-         <h2 class="opacity-50">
-            Révisions
-         </h2>
+      <header class="chapter-card my-6">
+         <p>
+            <span>RÉVISIONS</span>
+         </p>
       </header>
 
       <!-- Main content -> courses list -->

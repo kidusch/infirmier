@@ -4,6 +4,8 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p>
+            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/study-ue`">COURS</router-link>
+            /
             <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/study-ue`">{{ ue?.name }}</router-link>
             /
             <span class="font-semibold">{{ subUE?.name }}</span>
