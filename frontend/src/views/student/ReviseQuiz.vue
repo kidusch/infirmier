@@ -12,7 +12,7 @@
             /
             <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-topic/${ue_id}/${sub_ue_id}/${topic_id}`">{{ topic?.name }}</router-link>
             /
-            <span class="font-semibold">{{ quiz?.title }}</span>
+            <span class="font-semibold">QCM : {{ quiz?.title }}</span>
          </p>
       </header>
 
@@ -87,7 +87,7 @@
         </main>
 
         <footer class="flex-1 flex flex-col justify-end pb-8">
-            <button class="primary-btn px-4">
+            <button class="primary-btn px-4" @click="gotoResults">
                Vérifier mes réponses
             </button>
         </footer>
@@ -171,5 +171,9 @@ const setAnswer = async (quiz_choice_id, answer) => {
 
 const gotoStudy = () => {
    router.push(`/home/${props.userid}/study-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
+}
+
+const gotoResults = () => {
+   router.push(`/home/${props.userid}/revise-quiz-results/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${props.quiz_id}`)
 }
 </script>

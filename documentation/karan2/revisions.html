@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Révisions</title>
+    <link rel="stylesheet" href="./src/output.css">
+</head>
+
+<body class="py-4 lg:pt-2 flex flex-col h-screen relative">
+
+    <!-- navbar -->
+    <nav class="lg:border-b lg:pb-2">
+
+        <main class="flex w-full justify-between items-center container max-w-7xl">
+            <button onclick="toggleSideMenu()">
+                <img class="w-6" src="./assets/menu.svg" alt="menu">
+            </button>
+
+            <a class="flex items-center gap-4 lg:flex-1 lg:px-12" href="#">
+                <img class="h-12" src="./assets/logo.svg" alt="Logo">
+                <h3 class="max-lg:hidden">Journal de bord infirmier</h3>
+            </a>
+
+            <button>
+                <img class="w-6" src="./assets/logout.svg" alt="logout.svg">
+            </button>
+
+        </main>
+
+        <!-- side menu -->
+        <aside id="sidebarMenu"
+            class="hidden fixed bg-black/70  h-screen h-svh  w-screen top-0 left-0 transition-all z-50">
+
+            <main id="sidebarMenuArea"
+                class="fixed  h-screen h-svh  top-0 -left-full w-1/5 max-lg:w-1/3 max-sm:w-2/3 bg-white p-5 flex flex-col transition-all">
+
+                <div class="w-full flex justify-end">
+                    <button onclick="toggleSideMenu()">
+                        <img src="./assets/cancel.svg" alt="cancel">
+                    </button>
+                </div>
+
+                <div class="flex justify-center">
+                    <img class="w-36" src="./assets/logo.svg" alt="logo">
+                </div>
+
+                <div class="py-8 mx-4 flex-1 flex flex-col gap-2">
+
+                    <a href="courses.html" class="flex gap-4 items-center w-full p-3 rounded-lg opacity-50 ">
+                        <img class="w-5" src="./assets/courses.svg" alt="courses">
+                        <p class="font-medium">
+                            Cours
+                        </p>
+                    </a>
+
+                    <a href="revisions.html" class="flex gap-4 items-center w-full p-3 rounded-lg bg-primary ">
+                        <img class="w-5" src="./assets/revisions-activate.svg" alt="revisions">
+                        <p class="font-medium text-white">
+                            Révisions
+                        </p>
+                    </a>
+
+                    <a href="anatomy.html" class="flex gap-4 items-center w-full p-3 rounded-lg opacity-50 ">
+                        <img class="w-5" src="./assets/anatomy.svg" alt="anatomy">
+                        <p class="font-medium">
+                            Anatomie
+                        </p>
+                    </a>
+
+
+                </div>
+
+
+                <div class="mx-4 ">
+                    <button class="flex gap-4 items-center w-full p-3 rounded-lg opacity-50 ">
+                        <img class="w-5" src="./assets/logout.svg" alt="logout">
+                        <p class="font-medium">
+                            Log out
+                        </p>
+                    </button>
+                </div>
+
+            </main>
+
+            <div id="sidebarMenuSpace" onclick="toggleSideMenu()"
+                class="fixed  h-screen h-svh  top-0 right-0 w-4/5 max-lg:w-2/3 max-sm:w-1/3">
+            </div>
+
+        </aside>
+
+    </nav>
+
+
+    <main class="flex-1 container max-w-7xl flex flex-col">
+
+        <!-- Header -->
+        <header class="chapter-card my-6">
+            <p>
+                UE 2.1 - Biologie fondamentale / Molécules constitutives du vivant - <span
+                    class="font-medium underline"> Fiche de révision </span>
+            </p>
+        </header>
+
+        <!-- Settings -->
+        <section class="w-full flex justify-end gap-6">
+
+            <label class="inline-flex gap-3 items-center cursor-pointer">
+                <p class="font-semibold text-black">Acquis</p>
+
+                <input type="checkbox" value="" class="sr-only peer" checked>
+                <div
+                    class="relative w-11 h-6 bg-gray-200 rounded-full peer   peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#76EE59]">
+                </div>
+
+            </label>
+
+            <button>
+                <img class="h-5" src="./assets/courses.svg" alt="course">
+            </button>
+
+        </section>
+
+
+        <!-- Revision Card -->
+        <main class="my-6 relative flex justify-center">
+
+            <div class="bg-accent-darker py-4 px-6 rounded-3xl lg:w-full max-lg:max-w-xl z-30 relative">
+                <h2 class="py-2 text-center">Fiche de révision</h2>
+                <h4 class="py-2">
+                    Type des cellules
+                </h4>
+                <p>
+                    Cellules Eucaryotes:
+                </p>
+                <ul class="pb-2">
+                    <li class="flex">
+                        <div class="h-1 w-1 rounded-full bg-black lg:mt-2 mt-1.5 mr-1.5">
+                        </div>
+                        <p class="w-11/12">
+                            Présence d'un noyau délimité par une membrane nucléaire.
+                        </p>
+                    </li>
+                    <li class="flex">
+                        <div class="h-1 w-1 rounded-full bg-black lg:mt-2 mt-1.5 mr-1.5">
+
+                        </div>
+                        <p class="w-11/12">
+                            Possèdent des organites membranaires comme les mitochondries, le réticulum endoplasmique,
+                            l'appareil de Golgi, etc.
+                        </p>
+                    </li>
+                    <li class="flex">
+                        <div class="h-1 w-1 rounded-full bg-black lg:mt-2 mt-1.5 mr-1.5">
+
+                        </div>
+                        <p class="w-11/12">
+                            Plus complexes et plus grandes que les cellules procaryotes.
+                        </p>
+                    </li>
+                </ul>
+
+                <p>
+                    Cellules Eucaryotes:
+                </p>
+                <ul>
+                    <li class="flex">
+                        <div class="h-1 w-1 rounded-full bg-black lg:mt-2 mt-1.5 mr-1.5">
+
+                        </div>
+                        <p class="w-11/12">
+                            Présence d'un noyau délimité par une membrane nucléaire.
+                        </p>
+                    </li>
+                    <li class="flex">
+                        <div class="h-1 w-1 rounded-full bg-black lg:mt-2 mt-1.5 mr-1.5">
+
+                        </div>
+                        <p class="w-11/12">
+                            Possèdent des organites membranaires comme les mitochondries, le réticulum endoplasmique,
+                            l'appareil de Golgi, etc.
+                        </p>
+                    </li>
+                    <li class="flex">
+                        <div class="h-1 w-1 rounded-full bg-black lg:mt-2 mt-1.5 mr-1.5">
+
+                        </div>
+                        <p class="w-11/12">
+                            Plus complexes et plus grandes que les cellules procaryotes.
+                        </p>
+                    </li>
+                </ul>
+            </div>
+
+            <div
+                class="bg-accent-darker/50 absolute -bottom-5 left-0 right-0 mr-auto ml-auto w-full scale-90 h-20  rounded-3xl max-lg:max-w-xl z-20">
+            </div>
+
+            <div
+                class="bg-accent-darker/30 absolute -bottom-10 left-0 right-0 mr-auto ml-auto w-full scale-75 h-20  rounded-3xl max-lg:max-w-xl z-10">
+            </div>
+
+        </main>
+
+        <section class="py-6 w-full flex flex-col justify-end flex-1 items-center">
+            <button class="primary-btn px-12">
+                continuer...
+            </button>
+        </section>
+
+    </main>
+
+    <script src="./src/app.js"></script>
+</body>
+
+</html>
