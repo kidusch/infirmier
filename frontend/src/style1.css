@@ -84,7 +84,7 @@
   }
 
   .standard-input {
-    @apply max-h-14 border border-black/15 rounded-md p-2.5 placeholder:text-zinc-800 font-medium outline-none;
+    @apply max-h-14 border border-black/15 p-2.5 rounded-md placeholder:text-zinc-800 font-medium;
   }
 
   .progress-item {
@@ -102,25 +102,5 @@
 
   .chapter-card {
     @apply bg-accent rounded-2xl text-primary p-4 w-full max-lg:text-center;
-  }
-
-  .standard-input-container {
-    @apply border border-black/15  rounded-md flex px-0.5 relative;
-  }
-  .standard-input-container input,
-  textarea {
-    @apply standard-input border-0 flex-1 w-full;
-  }
-  .standard-input-container textarea {
-    @apply h-32 max-h-max overflow-auto;
-  }
-  .standard-input-container img {
-    @apply p-2.5 h-10 w-10 absolute top-0 right-0;
-  }
-  .standard-input-container .img-placeholder {
-    @apply p-2.5 h-10 w-10;
-  }
-  .standard-input-container textarea::-webkit-scrollbar {
-    display: none;
   }
 }

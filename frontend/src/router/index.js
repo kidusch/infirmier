@@ -55,6 +55,13 @@ const routes = [
       }),
       children: [
          {
+            path: 'admin-misc',
+            component: () => import('/src/views/admin/AdminMisc.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+            }),
+         },
+         {
             path: 'admin-ue',
             component: () => import('/src/views/admin/AdminUE.vue'),
             props: route => ({

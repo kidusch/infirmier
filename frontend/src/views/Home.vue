@@ -98,16 +98,16 @@ onMounted(async () => {
    if (user.value.admin) {
       menuItems.value = [
          {
-            label: "Inscription",
-            path: "/",
-            img: "",
+            label: "Contenu",
+            path: `/home/${props.userid}/admin-ue`,
+            img: "/src/assets/revisions.svg",
             active: /admin/,
          },
          {
-            label: "Cours",
-            path: "/admin-ue",
-            img: "",
-            active: /admin/,
+            label: "Divers",
+            path: `/home/${props.userid}/admin-misc`,
+            img: "/src/assets/courses-activate.svg",
+            active: /fff/,
          },
       ]
       router.push(`/home/${props.userid}/admin-ue`)
