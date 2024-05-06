@@ -52,6 +52,15 @@
                </span>
             </button>
          </div>
+         
+         <!-- <div class="flex flex-col">
+            <a class="secondary-btn" :href="`/auth/google?cnxid=${sessionStorage?.cnxid}`">
+               <img src="/src/assets/google.svg" alt="google">
+               <span>
+                  Continuer avec Google
+               </span>
+            </a>
+         </div> -->
 
          <footer>
             <h4 class="text-center">

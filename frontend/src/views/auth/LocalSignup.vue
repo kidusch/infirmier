@@ -1,29 +1,4 @@
 <template>
-   <!-- <h1>Local signup</h1>
-
-   <label class="form-control w-full max-w-xs">
-      <div class="label">
-         <span class="label-text">Email</span>
-      </div>
-      <input type="text" v-model="email" name="email" placeholder="email" class="input input-bordered w-full max-w-xs" />
-      <div class="label">
-         <span class="label-text-alt">email incorrect</span>
-      </div>
-   </label>
-
-   <label class="form-control w-full max-w-xs">
-      <div class="label">
-         <span class="label-text">Nom ou pseudo</span>
-      </div>
-      <input type="text" v-model="name" name="fullname" placeholder="email" class="input input-bordered w-full max-w-xs" />
-   </label>
-
-   <button class="block btn btn-primary" @click="validate" :disabled="false">Valider</button>
-
-   <div>
-      Vous avez déjà un compte ? <RouterLink to="/login" class="link">connexion</RouterLink>
-   </div> -->
-
    <div class="container max-w-lg py-4 flex flex-col h-screen">
 
       <!-- Logo -->

@@ -118,8 +118,7 @@ onMounted(async () => {
 
 const onDoneClick = async () => {
    done.value = !done.value
-   const updatedUserTopic = await updateUserTopic(userTopic.value.id, { done: done.value })
-   console.log('updatedUserTopic', updatedUserTopic)
+   userTopic.value = await updateUserTopic(userTopic.value.id, { done: done.value })
 }
 
 const gotoRevise = () => {

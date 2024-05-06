@@ -120,7 +120,6 @@ const quiz = ref([])
 const userQuiz = ref([])
 const quizChoiceList = ref([])
 
-const done = ref(true)
 const answersDict = ref({})
 const score = ref(0)
 
@@ -142,7 +141,6 @@ onMounted(async () => {
    }
 
    userQuiz.value = await getTheUserQuiz(props.userid, props.quiz_id)
-   done.value = userQuiz.value.done
 })
 
 function isGoodAnswer(quizChoice, studentAnswer) {

@@ -29,6 +29,13 @@
                </span>
             </button>
 
+            <!-- <a class="secondary-btn" :href="`/auth/google?cnxid=${sessionStorage?.cnxid}`">
+               <img src="/src/assets/google.svg" alt="google">
+               <span>
+                  Continuer avec Google
+               </span>
+            </a> -->
+
             <div class="flex gap-2 items-center justify-center">
                <span class="h-px w-1/4 bg-black/20"></span>
                <p>ou</p>

@@ -12,14 +12,14 @@
             /
             <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-topic/${ue_id}/${sub_ue_id}/${topic_id}`">{{ topic?.name }}</router-link>
             /
-            <span class="font-semibold">{{ card?.title }}</span>
+            <span class="font-semibold">Étude de cas : {{ caseStudy?.title }}</span>
          </p>
       </header>
 
       <!-- Header -->
       <header class="py-2">
          <h3 class="opacity-50">
-            Fiche de révision
+            Étude de cas
          </h3>
       </header>
 
@@ -43,62 +43,47 @@
       </section>
 
 
-      <!-- Revision Card -->
-      <main class="my-6 relative flex justify-center">
+      <!-- Main content -->
+      <main class="py-4 w-full">
+         <h4 class="py-2 font-semibold">
+            {{ caseStudy?.title }}
+         </h4>
 
-         <div class="bg-accent-darker py-4 px-6 rounded-3xl lg:w-full max-lg:max-w-xl z-30 relative">
-            <h4 class="py-2">
-               {{ card?.title }}
-            </h4>
+         <p>{{ caseStudy?.content }}</p>
 
-            <template v-for="part in parts">
-               <template v-if="part.type === 'title'">
-                  <AnnotatedBlock type="title-block" :text="part.text"></AnnotatedBlock>
-               </template>
-               <template v-if="part.type === 'break'">
-                  <br/>
-               </template>
-               <template v-if="part.type === 'plain_text'">
-                  <AnnotatedBlock type="span" :text="part.text"></AnnotatedBlock>
-               </template>
-               <template v-if="part.type === 'emphasized_text'">
-                  <AnnotatedBlock type="bold-span" :text="part.text"></AnnotatedBlock>
-               </template>
-            </template>
-
+         <div class="py-4">
+            <div class="standard-input-container">
+               <textarea placeholder="Écrivez votre réponse ici..." type="text" rows="50"
+                  :value="userCaseStudy?.answer"
+                  @input="debouncedInputText"
+               ></textarea>
+               <img src="/src/assets/edit.svg" alt="edit">
+               <div class="img-placeholder"></div>
+            </div>
          </div>
-
-         <div
-            class="bg-accent-darker/50 absolute -bottom-5 left-0 right-0 mr-auto ml-auto w-full scale-90 h-20  rounded-3xl max-lg:max-w-xl z-20">
-         </div>
-
-         <div
-            class="bg-accent-darker/30 absolute -bottom-10 left-0 right-0 mr-auto ml-auto w-full scale-75 h-20  rounded-3xl max-lg:max-w-xl z-10">
-         </div>
-
-         </main>
-
-         <section class="py-6 w-full flex flex-col justify-end flex-1 items-center">
-            <button class="primary-btn px-12" @click="back">
-               Retour
-            </button>
-         </section>
 
       </main>
+
+      <footer class="flex-1 flex flex-col justify-end pb-8">
+         <button class="primary-btn px-4" @click="submitResponse">
+            Soumettre ma réponse
+         </button>
+      </footer>
+
+   </main>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useDebounceFn } from '@vueuse/core'
 
 import { getUE } from '/src/use/useUE'
 import { getSubUE } from '/src/use/useSubUE'
 import { getTopic } from '/src/use/useTopic'
-import { getCard } from '/src/use/useCard'
-import { getTheUserCard, updateUserCard } from '/src/use/useUserCard'
-import router from "/src/router"
+import { getCaseStudy } from '/src/use/useCaseStudy'
+import { getTheUserCaseStudy, updateUserCaseStudy } from '/src/use/useUserCaseStudy'
 
-import parser from '/src/lib/grammar.js'
-import AnnotatedBlock from '/src/components/AnnotatedBlock.vue'
+import router from "/src/router"
 
 
 const props = defineProps({
@@ -118,7 +103,7 @@ const props = defineProps({
       type: Number,
       required: true
    },
-   card_id: {
+   case_study_id: {
       type: Number,
       required: true
    },
@@ -127,10 +112,9 @@ const props = defineProps({
 const ue = ref()
 const subUE = ref()
 const topic = ref([])
-const card = ref([])
-const userCard = ref([])
+const caseStudy = ref([])
+const userCaseStudy = ref([])
 
-const parts = ref('')
 const done = ref(true)
 
 
@@ -138,27 +122,26 @@ onMounted(async () => {
    ue.value = await getUE(props.ue_id)
    subUE.value = await getSubUE(props.sub_ue_id)
    topic.value = await getTopic(props.topic_id)
-   card.value = await getCard(props.card_id)
+   caseStudy.value = await getCaseStudy(props.case_study_id)
 
-   try {
-      parts.value = parser.parse(card.value.content)
-      console.log('parts', parts.value)
-   } catch(err) {
-      parts.value = ''
-   }
-
-   userCard.value = await getTheUserCard(props.userid, props.card_id)
-   done.value = userCard.value.done
+   userCaseStudy.value = await getTheUserCaseStudy(props.userid, props.case_study_id)
+   done.value = userCaseStudy.value.done
 })
 
 const onDoneClick = async () => {
    done.value = !done.value
-   userCard.value = await updateUserCard(userCard.value.id, { done: done.value })
+   userCaseStudy.value = await updateUserCaseStudy(userCaseStudy.value.id, { done: done.value })
 }
-
-const back = () => router.back()
 
 const gotoStudy = () => {
    router.push(`/home/${props.userid}/study-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
+}
+
+const onInputText = async (ev) => {
+   userCaseStudy.value = await updateUserCaseStudy(userCaseStudy.value.id, { answer: ev.target.value })
+}
+const debouncedInputText = useDebounceFn(onInputText, 500)
+
+const submitResponse = () => {
 }
 </script>

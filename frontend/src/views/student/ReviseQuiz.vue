@@ -160,7 +160,7 @@ onMounted(async () => {
 
 const onDoneClick = async () => {
    done.value = !done.value
-   await updateUserQuiz(userQuiz.value.id, { done: done.value })
+   userQuiz.value = await updateUserQuiz(userQuiz.value.id, { done: done.value })
 }
 
 const setAnswer = async (quiz_choice_id, answer) => {
