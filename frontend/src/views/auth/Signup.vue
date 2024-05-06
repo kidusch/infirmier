@@ -22,19 +22,19 @@
          <!-- Login Options -->
          <main class="flex flex-col gap-2 my-8 h-1/4">
 
-            <button class="secondary-btn" @click="goGoogle">
+            <!-- <button class="secondary-btn" @click="goGoogle">
                <img src="/src/assets/google.svg" alt="google">
                <span>
                   Continuer avec Google
                </span>
-            </button>
+            </button> -->
 
-            <!-- <a class="secondary-btn" :href="`/auth/google?cnxid=${sessionStorage?.cnxid}`">
+            <a class="secondary-btn" :href="`/auth/google?cnxid=${sessionStorage?.cnxid}`">
                <img src="/src/assets/google.svg" alt="google">
                <span>
                   Continuer avec Google
                </span>
-            </a> -->
+            </a>
 
             <div class="flex gap-2 items-center justify-center">
                <span class="h-px w-1/4 bg-black/20"></span>

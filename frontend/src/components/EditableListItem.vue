@@ -1,16 +1,22 @@
 <template>
-   <li class="flex">
-      <textarea :value="element[field]" @input="debouncedInput" class="textarea textarea-bordered" placeholder="Titre" :disabled="disabled"></textarea>
-      <span class="link m-2" @click="disabled = false">edit</span>
-      <span class="link m-2" @click="remove">delete</span>
-      <span class="link m-2" @click="up" v-if="!isFirst">up</span>
-      <span class="link m-2" @click="down" v-if="!isLast">down</span>
-      <span class="link m-2" @click="select">select</span>
-   </li>
+
+   <div class="flex gap-3 items-center">
+      <div class="flex gap-1.5 w-16">
+         <img class="h-8 cursor-pointer" src="/src/assets/sort_up_light.svg" v-if="!isFirst" @click="up">
+         <img class="h-8 cursor-pointer" src="/src/assets/sort_down_light.svg" v-if="!isLast" @click="down">
+      </div>
+      <input class="standard-input flex-1" placeholder="Titre" type="text" :value="element[field]" @input="debouncedInput" :disabled="disabled">
+      <div class="flex gap-1.5">
+         <img class="h-4 cursor-pointer" src="/src/assets/edit.svg" @click="disabled = !disabled">
+         <img class="h-4 cursor-pointer" src="/src/assets/delete.svg" @click="remove">
+         <img class="h-4 cursor-pointer" src="/src/assets/thick-arrow-right.svg" @click="select">
+      </div>
+   </div>
+
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
 const props = defineProps({
@@ -33,6 +39,7 @@ const emit = defineEmits(['update', 'remove', 'select'])
 const element = computed(() => props.list[props.index])
 const isFirst = computed(() => (props.index === 0))
 const isLast = computed(() => (props.index === (props.list.length - 1)))
+const disabled = ref(true)
 
 const up = () => {
    const prev = props.list[props.index - 1]

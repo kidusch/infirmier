@@ -1,32 +1,62 @@
 <template>
-   <h1 class="text-xl font-semibold">Sous-unités d'enseignement</h1>
+   <main class="flex-1 container max-w-7xl">
 
-   <div class="link m-2" @click="back">back</div>
+      <!-- Header -->
+      <header class="chapter-card my-6">
+         <p class="leading-loose">
+            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/admin-ue`">Unités d'enseignement</router-link>
+            /
+            <span class="font-semibold">Sous-unités d'enseignement</span>
+         </p>
+      </header>
 
-   <h1 class="text-xl font-semibold">{{ ue && ue.name }}</h1>
+      <!-- Header -->
+      <header class="py-4">
+         <div class="flex sm:items-center items-start gap-1.5">
+            <h3 class="">
+               {{ ue?.name }}
+            </h3>
+         </div>
+      </header>
 
-   <ul v-for="subUE, index in subUEList">
-      <EditableListItem
-         field="name" :index="index" :list="subUEList"
-         @update="(ue1, ue2) => update(ue1, ue2)"
-         @edit="(text) => edit(subUE.id, text)"
-         @remove="remove(subUE.id)"
-         @select="select(subUE.id)"
-      ></EditableListItem>
-   </ul>
+      <!-- Header -->
+      <header class="py-4">
+         <div class="flex sm:items-center items-start gap-1.5">
+            <h3 class="opacity-50">
+               Sous-unités d'enseignement
+            </h3>
+         </div>
+      </header>
 
-   <div class="flex">
-      <textarea v-model="title" class="textarea textarea-bordered" placeholder="Titre nouvelle sous-UE"></textarea>
-      <button class="btn btn-circle" @click="addSubUE">
-         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="mdiPlus" /></svg>
-      </button>
-   </div>
-   
+      <main class="flex flex-col gap-6 pb-4">
+
+         <div class="flex flex-col gap-3">
+            <div v-for="subUE, index in subUEList">
+               <EditableListItem
+                  field="name" :index="index" :list="subUEList"
+                  @update="(ue1, ue2) => update(ue1, ue2)"
+                  @edit="(text) => edit(subUE.id, text)"
+                  @remove="remove(subUE.id)"
+                  @select="select(subUE.id)"
+               ></EditableListItem>
+            </div>
+
+            <div>
+               <div class="flex gap-3 items-center">
+                  <input v-model="title" class="standard-input flex-1" placeholder="Titre nouvelle Sous-UE" type="text">
+                  <div class="flex gap-1.5" @click="addSubUE">
+                     <img class="h-4 cursor-pointer" src="/src/assets/add.svg" alt="delete">
+                  </div>
+               </div>
+            </div>
+
+         </div>
+      </main>
+   </main>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { mdiPlus } from '@mdi/js'
 
 import { getUE } from '/src/use/useUE'
 import { createSubUE, updateSubUE, removeSubUE, getSubUEList } from '/src/use/useSubUE'

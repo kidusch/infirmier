@@ -44,23 +44,23 @@
 
          </div>
          
-         <div class="flex flex-col">
+         <!-- <div class="flex flex-col">
             <button class="secondary-btn" @click="goGoogle">
                <img src="/src/assets/google.svg" alt="google">
                <span>
                   Continuer avec Google
                </span>
             </button>
-         </div>
+         </div> -->
          
-         <!-- <div class="flex flex-col">
+         <div class="flex flex-col">
             <a class="secondary-btn" :href="`/auth/google?cnxid=${sessionStorage?.cnxid}`">
                <img src="/src/assets/google.svg" alt="google">
                <span>
                   Continuer avec Google
                </span>
             </a>
-         </div> -->
+         </div>
 
          <footer>
             <h4 class="text-center">

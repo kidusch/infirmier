@@ -1,23 +1,43 @@
 <template>
-   <h1 class="text-xl font-semibold">Unités d'enseignement</h1>
 
-   <ul v-for="ue, index in ueList">
-      <EditableListItem
-         field="name" :index="index" :list="ueList"
-         @update="(ue1, ue2) => update(ue1, ue2)"
-         @edit="(text) => edit(ue.id, text)"
-         @remove="remove(ue.id)"
-         @select="select(ue.id)"
-      ></EditableListItem>
-   </ul>
+   <main class="flex-1 container max-w-7xl">
 
-   <div class="flex">
-      <textarea v-model="title" class="textarea textarea-bordered" placeholder="Titre nouvelle UE"></textarea>
-      <button class="btn btn-circle" @click="addUE">
-         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="mdiPlus" /></svg>
-      </button>
-   </div>
-   
+      <!-- Header -->
+      <header class="py-4">
+         <div class="flex sm:items-center items-start gap-1.5">
+            <h3 class="lg:opacity-50">
+               Unités d'enseignement
+            </h3>
+         </div>
+      </header>
+
+      <main class="flex flex-col gap-6 pb-4">
+
+         <div class="flex flex-col gap-3">
+
+            <div v-for="ue, index in ueList">
+               <EditableListItem
+                  field="name" :index="index" :list="ueList"
+                  @update="(ue1, ue2) => update(ue1, ue2)"
+                  @edit="(text) => edit(ue.id, text)"
+                  @remove="remove(ue.id)"
+                  @select="select(ue.id)"
+               ></EditableListItem>
+
+            </div>
+
+            <div>
+               <div class="flex gap-3 items-center">
+                  <input v-model="title" class="standard-input flex-1" placeholder="Titre nouvelle UE" type="text">
+                  <div class="flex gap-1.5" @click="addUE">
+                     <img class="h-4 cursor-pointer" src="/src/assets/add.svg" alt="delete">
+                  </div>
+               </div>
+            </div>
+
+         </div>
+      </main>
+   </main>
 </template>
 
 <script setup>

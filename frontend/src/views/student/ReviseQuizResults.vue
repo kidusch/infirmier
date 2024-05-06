@@ -68,9 +68,9 @@
       </main>
 
       <footer class="flex-1 flex flex-col justify-end pb-8">
-         <button class="primary-btn px-4" @click="">
+         <router-link class="primary-btn px-4" :to="`/home/${userid}/revise-topic/${ue_id}/${sub_ue_id}/${topic_id}`">
             Continuer
-         </button>
+         </router-link>
       </footer>
 
    </main>

@@ -84,7 +84,7 @@
   }
 
   .standard-input {
-    @apply max-h-14 border border-black/15 rounded-md p-2.5 placeholder:text-zinc-800 font-medium outline-none;
+    @apply max-h-14 border border-black/15 rounded-md p-2.5 placeholder:text-zinc-400 font-normal outline-none;
   }
 
   .progress-item {
