@@ -70,14 +70,14 @@
 }
 
 @layer components {
-  .btn {
+  .karan-btn {
     @apply bg-primary text-white flex items-center justify-center gap-4 font-medium max-h-14;
   }
   .primary-btn {
-    @apply w-max px-20 py-2.5 rounded-3xl btn;
+    @apply w-max px-20 py-2.5 rounded-3xl karan-btn;
   }
   .secondary-btn {
-    @apply w-full p-2.5 rounded-md btn;
+    @apply w-full p-2.5 rounded-md karan-btn;
   }
   .secondary-btn > img {
     @apply max-h-7 w-6;
