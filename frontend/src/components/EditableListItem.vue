@@ -1,5 +1,4 @@
 <template>
-
    <div class="flex gap-3 items-center">
       <div class="flex gap-1.5 w-16">
          <img class="h-8 cursor-pointer" src="/src/assets/sort_up_light.svg" v-if="!isFirst" @click="up">
@@ -12,7 +11,6 @@
          <img class="h-4 cursor-pointer" src="/src/assets/thick-arrow-right.svg" @click="select">
       </div>
    </div>
-
 </template>
 
 <script setup>

@@ -6,7 +6,7 @@
          <p class="leading-loose">
             <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/admin-ue`">Unités d'enseignement</router-link>
             /
-            <span class="font-semibold">Sous-unités d'enseignement</span>
+            <span class="font-semibold">{{ ue?.name }}</span>
          </p>
       </header>
 
