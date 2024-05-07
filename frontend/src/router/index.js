@@ -77,10 +77,11 @@ const routes = [
             }),
          },
          {
-            path: 'admin-topics/:sub_ue_id',
+            path: 'admin-topics/:ue_id/:sub_ue_id',
             component: () => import('/src/views/admin/AdminTopics.vue'),
             props: route => ({
                userid: parseInt(route.params.userid),
+               ue_id: parseInt(route.params.ue_id),
                sub_ue_id: parseInt(route.params.sub_ue_id),
             }),
          },

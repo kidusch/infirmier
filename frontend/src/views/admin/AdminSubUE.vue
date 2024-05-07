@@ -101,17 +101,17 @@ const addSubUE = async () => {
    title.value = ''
 }
 
-const edit = async (sub_ue_id, name) => {
-   await updateSubUE(sub_ue_id, { name })
+const edit = async (subUEId, name) => {
+   await updateSubUE(subUEId, { name })
 }
 
-const remove = async (id) => {
-   await removeSubUE(id)
+const remove = async (subUEId) => {
+   await removeSubUE(subUEId)
    await updateList()
 }
 
-const select = (id) => {
-   router.push(`/home/${props.userid}/admin-topics/${id}`)
+const select = (subUEId) => {
+   router.push(`/home/${props.userid}/admin-topics/${props.ue_id}/${subUEId}`)
 }
 
 const back = () => {

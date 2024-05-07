@@ -44,7 +44,7 @@
       ></ListItem>
    </ul>
    <button class="btn btn-primary" @click="addCaseStudy">Ajouter une étude de cas</button>
-   
+
 </template>
 
 <script setup>
