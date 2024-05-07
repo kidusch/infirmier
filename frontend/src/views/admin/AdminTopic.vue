@@ -156,7 +156,7 @@ onMounted(async () => {
 })
 
 const adminCourse = () => {
-   router.push(`/home/${props.userid}/admin-course/${props.topic_id}`)
+   router.push(`/home/${props.userid}/admin-course/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
 }
 
 async function updateCardList() {
@@ -170,7 +170,7 @@ async function updateCards(e1, e2) {
 }
 
 const selectCard = (card_id) => {
-   router.push(`/home/${props.userid}/admin-card/${props.topic_id}/${card_id}`)
+   router.push(`/home/${props.userid}/admin-card/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${card_id}`)
 }
 
 const addCard = async () => {

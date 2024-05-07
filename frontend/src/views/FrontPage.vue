@@ -101,9 +101,9 @@
                      Des quizs pour réviser
                   </p>
             </div>
-            <button-karan class="primary-btn px-10" @click="signup">
+            <button class="primary-btn px-10" @click="signup">
                S’incrire
-            </button-karan>
+            </button>
          </main>
       </main>
 

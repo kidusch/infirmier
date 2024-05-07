@@ -3,6 +3,13 @@
    <main class="flex-1 container max-w-7xl">
 
       <!-- Header -->
+      <header class="chapter-card my-6">
+         <p class="leading-loose">
+            <span class="font-semibold">Unités d'enseignement</span>
+         </p>
+      </header>
+
+      <!-- Header -->
       <header class="py-4">
          <div class="flex sm:items-center items-start gap-1.5">
             <h3 class="lg:opacity-50">

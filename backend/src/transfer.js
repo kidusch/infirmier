@@ -10,9 +10,6 @@ export default async function(app) {
 
    const io = app.get('io')
 
-   // const roomCache = {}
-   // const dataCache = {}
-
    app.addDisconnectingListener((socket, reason) => {
       console.log('onSocketDisconnecting', socket.id, reason)
       // put disconnecting socket data & rooms in caches
