@@ -196,7 +196,7 @@ async function updateQuizs(e1, e2) {
 }
 
 const selectQuiz = (quiz_id) => {
-   router.push(`/home/${props.userid}/admin-quiz/${props.topic_id}/${quiz_id}`)
+   router.push(`/home/${props.userid}/admin-quiz/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${quiz_id}`)
 }
 
 const addQuiz = async () => {
@@ -222,7 +222,7 @@ async function updateCaseStudies(e1, e2) {
 }
 
 const selectCaseStudy = (case_study_id) => {
-   router.push(`/home/${props.userid}/admin-case-study/${props.topic_id}/${case_study_id}`)
+   router.push(`/home/${props.userid}/admin-case-study/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${case_study_id}`)
 }
 
 const addCaseStudy = async () => {
