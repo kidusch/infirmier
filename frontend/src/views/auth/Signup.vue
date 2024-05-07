@@ -29,7 +29,7 @@
                </span>
             </button> -->
 
-            <a class="secondary-btn" :href="`/auth/google?cnxid=${sessionStorage?.cnxid}`">
+            <a class="secondary-btn" :href="`/auth/google?cnxid=${cnxid}`">
                <img src="/src/assets/google.svg" alt="google">
                <span>
                   Continuer avec Google
@@ -62,11 +62,11 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
+
 import router from "/src/router"
 
-const goGoogle = () => {
-   window.location.href = `/auth/google?cnxid=${sessionStorage.cnxid}`
-}
+const cnxid = ref(sessionStorage.cnxid)
 
 const localSignup = () => {
    router.push('/local-signup')

@@ -15,7 +15,7 @@
       </header>
 
       <!-- Header -->
-      <header class="py-4">
+      <header class="py-2">
          <div class="flex sm:items-center items-start gap-1.5">
             <h3 class="">
                {{ topic?.name }}
@@ -29,150 +29,78 @@
             <h4 class="text-primary">
                Cours
             </h4>
-            <img class="h-4" src="/src/assets/thick-arrow-right.svg" alt="arrow">
+            <img class="h-4" src="/src/assets/thick-arrow-right.svg" @click="adminCourse">
          </div>
 
          <div class="flex flex-col gap-3">
+            <label for="title">Fiches</label>
 
-            <div>
-               <label for="title">Fiches</label>
+            <div class="flex flex-col gap-3">
+               <div v-for="card, index in cardList">
+                  <ListItem
+                     :index="index" :list="cardList"
+                     @update="(e1, e2) => updateCards(e1, e2)"
+                     @remove="deleteCard(card.id)"
+                     @select="selectCard(card.id)"
+                  ></ListItem>
+               </div>
 
-               <div class="flex flex-col gap-3">
-                  <div v-for="card, index in cardList">
-                     <ListItem
-                        :index="index" :list="cardList"
-                        @update="(e1, e2) => updateCards(e1, e2)"
-                        @remove="deleteCard(card.id)"
-                        @select="selectCard(card.id)"
-                     ></ListItem>
-                  </div>
-
-                  <div>
-                     <div class="flex gap-3 items-center">
-                        <input v-model="newCardTitle" class="standard-input flex-1" placeholder="Titre nouvelle fiche" type="text">
-                        <div class="flex gap-1.5" @click="addCard">
-                           <img class="h-4 cursor-pointer" src="/src/assets/add.svg" alt="delete">
-                        </div>
-                     </div>
+               <div class="flex gap-3 items-center">
+                  <input v-model="newCardTitle" class="standard-input flex-1" placeholder="Titre nouvelle fiche" type="text">
+                  <div class="flex gap-1.5" @click="addCard">
+                     <img class="h-4 cursor-pointer" src="/src/assets/add.svg" alt="delete">
                   </div>
                </div>
             </div>
-
-            <!-- <button class="primary-btn w-max text-base px-6">Ajouter une fiche</button> -->
-
          </div>
 
          <div class="flex flex-col gap-3">
+            <label for="title">QCM</label>
 
-            <div>
-               <label for="title">QCM</label>
+            <div class="flex flex-col gap-3">
+               <div v-for="quiz, index in quizList">
+                  <ListItem
+                     :index="index" :list="quizList"
+                     @update="(e1, e2) => updateQuizs(e1, e2)"
+                     @remove="deleteQuiz(quiz.id)"
+                     @select="selectQuiz(quiz.id)"
+                  ></ListItem>
+               </div>
+
                <div class="flex gap-3 items-center">
-                     <input class="standard-input flex-1" placeholder="Type des cellules" type="text">
-                     <div class="flex gap-1.5">
-                        <img class="h-4 cursor-pointer" src="/src/assets/delete.svg" alt="delete">
-                        <img class="h-4 cursor-pointer" src="/src/assets/thick-arrow-right.svg" alt="arrow">
-                     </div>
+                  <input v-model="newQuizTitle" class="standard-input flex-1" placeholder="Titre nouveau QCM" type="text">
+                  <div class="flex gap-1.5" @click="addQuiz">
+                     <img class="h-4 cursor-pointer" src="/src/assets/add.svg" alt="delete">
+                  </div>
                </div>
             </div>
-
-            <div>
-               <div class="flex gap-3 items-center">
-                     <input class="standard-input flex-1" placeholder="....." type="text">
-                     <div class="flex gap-1.5">
-                        <img class="h-4 cursor-pointer" src="/src/assets/delete.svg" alt="delete">
-                        <img class="h-4 cursor-pointer" src="/src/assets/thick-arrow-right.svg" alt="arrow">
-                     </div>
-               </div>
-            </div>
-
-            <button class="primary-btn w-max text-base px-6">Ajouter un QCM</button>
-
          </div>
 
          <div class="flex flex-col gap-3">
+            <label for="title">Cas d'étude</label>
 
-            <div>
-               <label for="title">Etudes de cas</label>
+            <div class="flex flex-col gap-3">
+               <div v-for="caseStudy, index in caseStudyList">
+                  <ListItem
+                     :index="index" :list="caseStudyList"
+                     @update="(e1, e2) => updateCaseStudies(e1, e2)"
+                     @remove="deleteCaseStudy(caseStudy.id)"
+                     @select="selectCaseStudy(caseStudy.id)"
+                  ></ListItem>
+               </div>
+
                <div class="flex gap-3 items-center">
-                     <input class="standard-input flex-1" placeholder="Étude #1" type="text">
-                     <div class="flex gap-1.5">
-                        <img class="h-4 cursor-pointer" src="/src/assets/delete.svg" alt="delete">
-                        <img class="h-4 cursor-pointer" src="/src/assets/thick-arrow-right.svg" alt="arrow">
-                     </div>
+                  <input v-model="newCaseStudyTitle" class="standard-input flex-1" placeholder="Titre nouveau cas d'étude" type="text">
+                  <div class="flex gap-1.5" @click="addCaseStudy">
+                     <img class="h-4 cursor-pointer" src="/src/assets/add.svg" alt="delete">
+                  </div>
                </div>
             </div>
-
-            <div>
-               <div class="flex gap-3 items-center">
-                     <input class="standard-input flex-1" placeholder="Étude #2" type="text">
-                     <div class="flex gap-1.5">
-                        <img class="h-4 cursor-pointer" src="/src/assets/delete.svg" alt="delete">
-                        <img class="h-4 cursor-pointer" src="/src/assets/thick-arrow-right.svg" alt="arrow">
-                     </div>
-               </div>
-            </div>
-
-            <div>
-               <div class="flex gap-3 items-center">
-                     <input class="standard-input flex-1" placeholder="....." type="text">
-                     <div class="flex gap-1.5">
-                        <img class="h-4 cursor-pointer" src="/src/assets/add.svg" alt="delete">
-                     </div>
-               </div>
-            </div>
-
          </div>
 
       </main>
 
    </main>
-
-
-   <div class="link m-2" @click="back">back</div>
-
-   <h1 class="text-xl font-semibold">{{ topic && topic.name }}</h1>
-
-   <div>
-      <p class="inline">Cours</p>
-      <span class="link m-2" @click="adminCourse">select</span>
-   </div>
-
-   <hr/>
-
-   <h1 class="text-xl font-semibold">Fiches de révision</h1>
-   <ul v-for="card, index in cardList">
-      <ListItem
-         :index="index" :list="cardList"
-         @update="(e1, e2) => updateCards(e1, e2)"
-         @remove="deleteCard(card.id)"
-         @select="selectCard(card.id)"
-      ></ListItem>
-   </ul>
-   <button class="btn btn-primary" @click="addCard">Ajouter une fiche</button>
-
-
-   <h1 class="text-xl font-semibold">Quiz</h1>
-   <ul v-for="quiz, index in quizList">
-      <ListItem
-         :index="index" :list="quizList"
-         @update="(e1, e2) => updateQuizs(e1, e2)"
-         @remove="deleteQuiz(quiz.id)"
-         @select="selectQuiz(quiz.id)"
-      ></ListItem>
-   </ul>
-   <button class="btn btn-primary" @click="addQuiz">Ajouter un Quiz</button>
-
-
-   <h1 class="text-xl font-semibold">Études de cas</h1>
-   <ul v-for="caseStudy, index in caseStudyList">
-      <ListItem
-         :index="index" :list="caseStudyList"
-         @update="(e1, e2) => updateCaseStudies(e1, e2)"
-         @remove="deleteCaseStudy(caseStudy.id)"
-         @select="selectCaseStudy(caseStudy.id)"
-      ></ListItem>
-   </ul>
-   <button class="btn btn-primary" @click="addCaseStudy">Ajouter une étude de cas</button>
 
 </template>
 
@@ -214,7 +142,9 @@ const topic = ref()
 const cardList = ref([])
 const newCardTitle = ref('')
 const quizList = ref([])
+const newQuizTitle = ref('')
 const caseStudyList = ref([])
+const newCaseStudyTitle = ref('')
 
 onMounted(async () => {
    ue.value = await getUE(props.ue_id)
@@ -246,6 +176,7 @@ const selectCard = (card_id) => {
 const addCard = async () => {
    await createCard(props.topic_id, newCardTitle.value)
    await updateCardList()
+   newCardTitle.value = ''
 }
 
 const deleteCard = async (id) => {
@@ -269,9 +200,9 @@ const selectQuiz = (quiz_id) => {
 }
 
 const addQuiz = async () => {
-   const quiz = await createQuiz(props.topic_id)
+   await createQuiz(props.topic_id, newQuizTitle.value)
    await updateQuizList()
-   selectQuiz(quiz.id)
+   newQuizTitle.value = ''
 }
 
 const deleteQuiz = async (id) => {
@@ -295,9 +226,9 @@ const selectCaseStudy = (case_study_id) => {
 }
 
 const addCaseStudy = async () => {
-   const caseStudy = await createCaseStudy(props.topic_id)
+   await createCaseStudy(props.topic_id, newCaseStudyTitle.value)
    await updateCaseStudyList()
-   selectCaseStudy(caseStudy.id)
+   newCaseStudyTitle.value = ''
 }
 
 const deleteCaseStudy = async (id) => {

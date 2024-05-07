@@ -54,7 +54,7 @@
          </div> -->
          
          <div class="flex flex-col">
-            <a class="secondary-btn" :href="`/auth/google?cnxid=${sessionStorage?.cnxid}`">
+            <a class="secondary-btn" :href="`/auth/google?cnxid=${cnxid}`">
                <img src="/src/assets/google.svg" alt="google">
                <span>
                   Continuer avec Google
@@ -79,7 +79,7 @@ import router from '/src/router'
 import { appState } from '/src/use/useAppState'
 import { localSignin } from '/src/use/useAuthentication'
 
-
+const cnxid = ref(sessionStorage.cnxid)
 const email = ref()
 const password = ref()
 const errorMessage = ref('')
@@ -98,11 +98,6 @@ const validate = async () => {
          appState.value.unexpectedError = true
       }
    }
-}
-
-const goGoogle = () => {
-   appState.value.isWaiting = true
-   window.location.href = `/auth/google?cnxid=${sessionStorage.cnxid}`
 }
 
 const goSignup = () => {

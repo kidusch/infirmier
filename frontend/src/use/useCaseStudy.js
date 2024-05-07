@@ -32,7 +32,7 @@ export const getCaseStudy = async (id) => {
    return promise
 }
 
-export const createCaseStudy = async (topic_id) => {
+export const createCaseStudy = async (topic_id, title = '', content = '') => {
    // get highest rank
    const result = await app.service('case-study').aggregate({
       where: { topic_id},
@@ -45,8 +45,8 @@ export const createCaseStudy = async (topic_id) => {
       data: {
          rank,
          topic_id,
-         title: '',
-         content: '',
+         title,
+         content,
       }
    })
    // update cache

@@ -1,12 +1,4 @@
 <template>
-   <!-- <li class="flex">
-      <span>{{ element[field] }}</span>
-      <span class="link m-2" @click="remove">delete</span>
-      <span class="link m-2" @click="up" v-if="!isFirst">up</span>
-      <span class="link m-2" @click="down" v-if="!isLast">down</span>
-      <span class="link m-2" @click="select">select</span>
-   </li> -->
-
    <div class="flex gap-3 items-center">
       <div class="flex gap-1.5 w-16">
          <img class="h-8 cursor-pointer" src="/src/assets/sort_up_light.svg" v-if="!isFirst" @click="up">
