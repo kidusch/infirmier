@@ -9,6 +9,11 @@ Google Developers Console : https://console.cloud.google.com/apis/dashboard?proj
 
 ## BUGS
 
+- expiration 1 semaine
+- signin / signup / mot de passe oublié vertical
+- icones menu
+- confirmation delete
+
 
 ## Parsing
 https://github.com/kach/nearley

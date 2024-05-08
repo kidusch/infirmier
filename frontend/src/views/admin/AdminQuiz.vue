@@ -153,8 +153,10 @@ const addQuizChoice = async () => {
 }
 
 const deleteChoice = async (id) => {
-   await removeQuizChoice(id)
-   await updateChoiceList()
+   if (window.confirm("Supprimer ?")) {
+      await removeQuizChoice(id)
+      await updateChoiceList()
+   }
 }
 
 const back = () => {

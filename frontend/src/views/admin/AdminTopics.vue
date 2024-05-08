@@ -119,8 +119,10 @@ const edit = async (topic_id, name) => {
 }
 
 const remove = async (topicId) => {
-   await removeTopic(topicId)
-   await updateList()
+   if (window.confirm("Supprimer ?")) {
+      await removeTopic(topicId)
+      await updateList()
+   }
 }
 const select = (topicId) => {
    router.push(`/home/${props.userid}/admin-topic/${props.ue_id}/${props.sub_ue_id}/${topicId}`)

@@ -94,8 +94,10 @@ const edit = async (ue_id, name) => {
 }
 
 const remove = async (id) => {
-   await removeUE(id)
-   await updateList()
+   if (window.confirm("Supprimer ?")) {
+      await removeUE(id)
+      await updateList()
+   }
 }
 
 const select = (id) => {

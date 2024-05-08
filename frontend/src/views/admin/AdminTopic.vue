@@ -180,8 +180,10 @@ const addCard = async () => {
 }
 
 const deleteCard = async (id) => {
-   await removeCard(id)
-   await updateCardList()
+   if (window.confirm("Supprimer ?")) {
+      await removeCard(id)
+      await updateCardList()
+   }
 }
 
 
@@ -206,8 +208,10 @@ const addQuiz = async () => {
 }
 
 const deleteQuiz = async (id) => {
-   await removeQuiz(id)
-   await updateQuizList()
+   if (window.confirm("Supprimer ?")) {
+      await removeQuiz(id)
+      await updateQuizList()
+   }
 }
 
 
@@ -232,8 +236,10 @@ const addCaseStudy = async () => {
 }
 
 const deleteCaseStudy = async (id) => {
-   await removeCaseStudy(id)
-   await updateCaseStudyList()
+   if (window.confirm("Supprimer ?")) {
+      await removeCaseStudy(id)
+      await updateCaseStudyList()
+   }
 }
 
 const back = () => {
