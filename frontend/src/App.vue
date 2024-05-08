@@ -1,15 +1,6 @@
 <template>
 
-   <div class="absolute top-2 right-24">
-      <p class="text-sm text-gray-600 p-1">{{ VERSION }}</p>
-   </div>
-
-   <!-- <button class="block link" @click="getCnxInfo">Infos</button>
-   <button class="block link" @click="chie">Chie</button> -->
-
    <router-view></router-view>
-
-   <!-- <ReloadPWA></ReloadPWA> -->
 
    <!-- EXPIRED MODAL -->
    <div class="modal" :class="{'modal-open': appState.isExpired}">
@@ -51,7 +42,6 @@ import { useRegisterSW } from 'virtual:pwa-register/vue'
 
 import app from '/src/client-app.js'
 import router from "/src/router"
-import { VERSION } from '/src/version'
 
 import { appState } from '/src/use/useAppState'
 import { clearSessionStorage } from '/src/use/useAuthentication'

@@ -12,7 +12,6 @@ Google Developers Console : https://console.cloud.google.com/apis/dashboard?proj
 - expiration 1 semaine
 - signin / signup / mot de passe oublié vertical
 - icones menu
-- confirmation delete
 
 
 ## Parsing

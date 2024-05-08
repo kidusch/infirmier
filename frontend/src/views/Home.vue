@@ -51,8 +51,12 @@
 
 
                <div class="mx-4 ">
-                  <button class="flex gap-4 items-center w-full p-3 rounded-lg opacity-50 " @click="signout">
+                  <p class="p-3 opacity-50">Version {{ VERSION }}</p>
+                  <button class="flex gap-4 items-center w-full p-3 rounded-lg opacity-50" @click="signout">
                      <img class="w-5" src="/src/assets/logout.svg" alt="logout">
+                     <p class="font-medium">
+                        Déconnexion
+                     </p>
                   </button>
                </div>
 
@@ -78,6 +82,7 @@ import { logout } from '/src/use/useAuthentication'
 import { getUser } from '/src/use/useUser'
 
 import router from '/src/router'
+import { VERSION } from '/src/version'
 
 
 const props = defineProps({
