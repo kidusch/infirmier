@@ -9,7 +9,7 @@
 
    <router-view></router-view>
 
-   <ReloadPWA></ReloadPWA>
+   <!-- <ReloadPWA></ReloadPWA> -->
 
    <!-- EXPIRED MODAL -->
    <div class="modal" :class="{'modal-open': appState.isExpired}">

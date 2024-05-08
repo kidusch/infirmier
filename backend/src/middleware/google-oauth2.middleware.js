@@ -47,6 +47,7 @@ export default function (app) {
 			code,
 			redirect_uri: `${process.env.CLIENT_URL}/auth/google/callback`
 		}
+		console.log('options', options)
 		try {
 			const result = await oauth2.getToken(options)
 			const { token } = oauth2.createToken(result)
