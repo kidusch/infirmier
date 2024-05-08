@@ -12,72 +12,103 @@
             /
             <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/admin-topic/${ue_id}/${sub_ue_id}/${topic_id}`">{{ topic?.name }}</router-link>
             /
-            <span class="font-semibold">QCM</span>
+            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/admin-quiz/${ue_id}/${sub_ue_id}/${topic_id}/${quiz_id}`">QCM : {{ quiz?.title }}</router-link>
+            /
+            <span class="font-semibold">Choix</span>
          </p>
       </header>
 
+      <!-- Header -->
+      <header class="py-2">
+         <div class="flex sm:items-center items-start gap-1.5">
+            <h3 class="text-lg opacity-50">
+               {{ quiz?.title }}
+            </h3>
+         </div>
+      </header>
+
+      <!-- Header -->
+      <header class="py-2">
+         <div class="flex sm:items-center items-start gap-1.5">
+            <h3 class="">
+               {{ quiz?.question }}
+            </h3>
+         </div>
+      </header>
+
+
+      <main class="flex flex-col gap-3">
+         <div>
+            <label for="title">Texte du choix</label>
+            <div class="standard-input-container">
+               <input placeholder="Texte du choix..." type="text"
+                  :value="quizChoice ? quizChoice.text : ''"
+                  @input="debouncedInputText"
+                  :disabled="disabledText"
+               />
+               <img src="/src/assets/edit.svg"  @click="disabledText = !disabledText">
+               <div class="img-placeholder">
+               </div>
+            </div>
+         </div>
+
+         <div>
+            <label for="title">Bonne réponse</label>
+            <div>
+               <div class="flex items-center pb-1.5">
+                  <label for="default-radio-1" class="font-normal me-2 w-6">
+                     <p class="text-sm text-black">
+                        oui
+                     </p>
+                  </label>
+
+                  <input type="checkbox" :checked="quizChoice && quizChoice.answer === true" @click="answerIs(true)" class="checkbox checkbox-primary" />
+               </div>
+
+               <div class="flex items-center">
+                  <label for="default-radio-2" class="font-normal me-2 w-6">
+                     <p class="text-sm text-black">
+                        non
+                     </p>
+                  </label>
+
+                  <input type="checkbox" :checked="quizChoice && quizChoice.answer === false" @click="answerIs(false)" class="checkbox checkbox-primary" />
+               </div>
+            </div>
+         </div>
+
+         <div>
+            <label for="title">Commentaire en cas d'erreur</label>
+            <div class="standard-input-container">
+               <input placeholder="Commentaire..." type="text"
+                  :value="quizChoice ? quizChoice.comment : ''"
+                  @input="debouncedInputComment"
+                  :disabled="disabledComment"
+               />
+               <img src="/src/assets/edit.svg"  @click="disabledComment = !disabledComment">
+               <div class="img-placeholder">
+               </div>
+            </div>
+         </div>
+
+         <div class="flex w-full gap-4 pb-4">
+            <div>
+               <label for="title">Points positifs</label>
+               <div class="standard-input-container w-full">
+                  <input type="number" :value="quizChoice && quizChoice.positive_points" @change="updatePositivePoints" class="input input-bordered w-full max-w-xs" />
+               </div>
+            </div>
+            <div>
+               <label for="title">Points négatifs</label>
+               <div class="standard-input-container w-full">
+                  <input type="number" :value="quizChoice && quizChoice.negative_points" @change="updateNegativePoints" class="input input-bordered w-full max-w-xs" />
+               </div>
+            </div>
+         </div>
+
+      </main>
+
    </main>
-
-
-
-   <div class="link m-2" @click="back">back</div>
-
-   <h1 class="text-xl font-semibold">{{ topic && topic.name }}</h1>
-
-   <h1 class="text-gray-500">QCM</h1>
-
-   <h1 class="text-lg">{{ quiz && quiz.title }}</h1>
-
-   <h1 class="font-semibold">{{ quiz && quiz.question }}</h1>
-
-   <h1 class="text-lg font-semibold">{{ quizChoice && quizChoice.title }}</h1>
-
-   <div>
-      <h1 class="text-xl font-semibold">Texte du choix</h1>
-      <textarea placeholder="Texte"
-         :value="quizChoice ? quizChoice.text : ''"
-         @input="debouncedInputText" class="textarea textarea-bordered"
-         :disabled="disabledText"
-      ></textarea>
-      <span class="link m-2" @click="disabledText = !disabledText">edit</span>
-   </div>
-
-   <div>
-      <h1 class="text-xl font-semibold">Bonne réponse</h1>
-      <label class="label cursor-pointer w-32">
-         <span class="label-text">Oui</span> 
-         <input type="checkbox" :checked="quizChoice && quizChoice.answer === true" @click="answerIs(true)" class="checkbox checkbox-primary" />
-      </label>
-      <label class="label cursor-pointer w-32">
-         <span class="label-text">Non</span> 
-         <input type="checkbox" :checked="quizChoice && quizChoice.answer === false" @click="answerIs(false)" class="checkbox checkbox-primary" />
-      </label>
-   </div>
-
-   <div>
-      <h1 class="text-xl font-semibold">Commentaire en cas d'erreur</h1>
-      <textarea placeholder="Texte"
-         :value="quizChoice ? quizChoice.comment : ''"
-         @input="debouncedInputComment" class="textarea textarea-bordered"
-         :disabled="disabledComment"
-      ></textarea>
-      <span class="link m-2" @click="disabledComment = !disabledComment">edit</span>
-   </div>
-
-   <label class="form-control w-full max-w-xs">
-      <div class="label">
-         <span class="label-text">Points positifs</span>
-      </div>
-      <input type="number" :value="quizChoice && quizChoice.positive_points" @change="updatePositivePoints" class="input input-bordered w-full max-w-xs" />
-   </label>
-
-   <label class="form-control w-full max-w-xs">
-      <div class="label">
-         <span class="label-text">Points négatifs</span>
-      </div>
-      <input type="number" :value="quizChoice && quizChoice.negative_points" @change="updateNegativePoints" class="input input-bordered w-full max-w-xs" />
-   </label>
-   
 </template>
 
 <script setup>

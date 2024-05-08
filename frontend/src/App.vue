@@ -1,8 +1,8 @@
 <template>
 
-   <!-- <div class="absolute top-2 right-2">
+   <div class="absolute top-2 right-24">
       <p class="text-sm text-gray-600 p-1">{{ VERSION }}</p>
-   </div> -->
+   </div>
 
    <!-- <button class="block link" @click="getCnxInfo">Infos</button>
    <button class="block link" @click="chie">Chie</button> -->
