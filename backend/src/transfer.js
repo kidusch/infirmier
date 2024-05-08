@@ -12,9 +12,17 @@ export default async function(app) {
 
    app.addDisconnectingListener((socket, reason) => {
       console.log('onSocketDisconnecting', socket.id, reason)
-      // put disconnecting socket data & rooms in caches
-      roomCache[socket.id] = new Set(socket.rooms)
+      // save socket data & rooms in caches
+
+      // some data & rooms may already have been saved for socket.id, during Google auth
+      const alreadySavedData = dataCache[socket.id]
+      const alreadySavedRooms = roomCache[socket.id]
+
       dataCache[socket.id] = Object.assign({}, socket.data)
+      roomCache[socket.id] = new Set(socket.rooms)
+
+      if (alreadySavedData) dataCache[socket.id] = Object.assign(dataCache[socket.id], alreadySavedData)
+      if (alreadySavedRooms) roomCache[socket.id].add(alreadySavedRooms)
 })
 
    app.addConnectListener((socket) => {

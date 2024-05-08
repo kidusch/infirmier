@@ -81,6 +81,15 @@ export default function (app) {
 			// set data.user
 			console.log('cnxid', cnxid)
 			console.log('dataCache', dataCache)
+
+			if (!dataCache[cnxid]) {
+				console.log('EXISTE PAS')
+				dataCache[cnxid] = {}
+			}
+			if (!roomCache[cnxid]) {
+				console.log('EXISTE PAS')
+				roomCache[cnxid] = new Set()
+			}
 			dataCache[cnxid].user = user
 			// set data.expiresAt
 			dataCache[cnxid].expiresAt = new Date((new Date()).getTime() + config.SESSION_EXPIRE_DELAY)
