@@ -32,7 +32,7 @@ export const getQuizChoice = async (id) => {
    return promise
 }
 
-export const createQuizChoice = async (quiz_id) => {
+export const createQuizChoice = async (quiz_id, text='') => {
    // get highest rank
    const result = await app.service('quiz_choice').aggregate({
       where: { quiz_id},
@@ -45,7 +45,7 @@ export const createQuizChoice = async (quiz_id) => {
       data: {
          rank,
          quiz_id,
-         text: '',
+         text,
          answer: false,
          comment: '',
          positive_points: 0,

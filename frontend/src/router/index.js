@@ -106,19 +106,23 @@ const routes = [
             }),
          },
          {
-            path: 'admin-quiz/:topic_id/:quiz_id',
+            path: 'admin-quiz/:ue_id/:sub_ue_id/:topic_id/:quiz_id',
             component: () => import('/src/views/admin/AdminQuiz.vue'),
             props: route => ({
                userid: parseInt(route.params.userid),
+               ue_id: parseInt(route.params.ue_id),
+               sub_ue_id: parseInt(route.params.sub_ue_id),
                topic_id: parseInt(route.params.topic_id),
                quiz_id: parseInt(route.params.quiz_id),
             }),
          },
          {
-            path: 'admin-quiz-choice/:topic_id/:quiz_id/:quiz_choice_id',
+            path: 'admin-quiz-choice/:ue_id/:sub_ue_id/:topic_id/:quiz_id/:quiz_choice_id',
             component: () => import('/src/views/admin/AdminQuizChoice.vue'),
             props: route => ({
                userid: parseInt(route.params.userid),
+               ue_id: parseInt(route.params.ue_id),
+               sub_ue_id: parseInt(route.params.sub_ue_id),
                topic_id: parseInt(route.params.topic_id),
                quiz_id: parseInt(route.params.quiz_id),
                quiz_choice_id: parseInt(route.params.quiz_choice_id),
