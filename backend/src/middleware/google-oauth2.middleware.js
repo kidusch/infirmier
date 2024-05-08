@@ -31,7 +31,7 @@ export default function (app) {
 	app.get('/auth/google', (req, res) => {
 		console.log('query', req.query)
 		const authorizationUri = oauth2.authorizeURL({
-			redirect_uri: 'http://localhost:8000/auth/google/callback',
+			redirect_uri: `${process.env.CLIENT_URL}/auth/google/callback`,
 			scope: 'openid profile email',
 			state: req.query.cnxid,
 		})
@@ -45,7 +45,7 @@ export default function (app) {
 		// console.log('cnxid', cnxid)
 		const options = {
 			code,
-			redirect_uri: 'http://localhost:8000/auth/google/callback'
+			redirect_uri: `${process.env.CLIENT_URL}/auth/google/callback`
 		}
 		try {
 			const result = await oauth2.getToken(options)

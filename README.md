@@ -1,9 +1,13 @@
 # Journal de bord infirmier
 
+## Authentification
+
+Voir [./documentation/auth-workflow.svg](schéma)
+
+Google Developers Console : https://console.cloud.google.com/apis/dashboard?project=infirmier-418706
+
+
 ## BUGS
-
-- quand la session a expiré et qu'on clique sur 'logout', on tourne en rond
-
 
 
 ## Parsing
