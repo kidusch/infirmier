@@ -26,10 +26,11 @@
                <input v-model="email" class="standard-input" placeholder="Entrer email" type="email">
             </div>
 
-            <div class="justify-center flex">
+            <div class="flex flex-col justify-center">
                <button class="primary-btn" @click="validate">
                   Valider
                </button>
+               <RouterLink to="/" class="link mt-3">Retour</RouterLink>
             </div>
 
          </div>

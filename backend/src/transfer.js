@@ -14,7 +14,8 @@ export default async function(app) {
       console.log('onSocketDisconnecting', socket.id, reason)
       // save socket data & rooms in caches
 
-      // some data & rooms may already have been saved for socket.id, during Google auth
+      // on Google auth, there is a race between the google auth callback and the websocket disconnection
+      // some data & rooms may already have been saved for socket.id by Google auth callback (see google-oauth2.middleware.js)
       const alreadySavedData = dataCache[socket.id]
       const alreadySavedRooms = roomCache[socket.id]
 

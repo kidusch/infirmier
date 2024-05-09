@@ -9,7 +9,6 @@ Google Developers Console : https://console.cloud.google.com/apis/dashboard?proj
 
 ## BUGS
 
-- signin / signup / mot de passe oublié vertical
 - icones menu
 - confirmation envoi case study
 - admin divers

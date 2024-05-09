@@ -105,14 +105,14 @@ onMounted(async () => {
          {
             label: "Contenu",
             path: `/home/${props.userid}/admin-ue`,
-            img: "/src/assets/revisions.svg",
+            img: "/img/revisions.svg", // must be put in '/public' since they are referenced statically
             active: /admin/,
          },
          {
             label: "Divers",
             path: `/home/${props.userid}/admin-misc`,
-            img: "/src/assets/courses-activate.svg",
-            active: /fff/,
+            img: "/img/courses-activate.svg", // must be put in '/public' since they are referenced statically
+            active: /misc/,
          },
       ]
       router.push(`/home/${props.userid}/admin-ue`)
@@ -121,13 +121,13 @@ onMounted(async () => {
          {
             label: "Cours",
             path: `/home/${props.userid}/study-ue`,
-            img: "/src/assets/courses-activate.svg",
+            img: "/img/courses-activate.svg", // must be put in '/public' since they are referenced statically
             active: /study/,
          },
          {
             label: "Révisions",
             path: `/home/${props.userid}/revise-ue`,
-            img: "/src/assets/revisions.svg",
+            img: "/img/revisions.svg", // must be put in '/public' since they are referenced statically
             active: /revise/,
          },
       ]
