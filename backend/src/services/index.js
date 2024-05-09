@@ -1,6 +1,7 @@
 
 // database services
 import userService from './database/user/user.service.js'
+import adminMiscService from './database/admin_misc/admin_misc.service.js'
 import ueService from './database/ue/ue.service.js'
 import subUEService from './database/sub_ue/sub_ue.service.js'
 import topicService from './database/topic/topic.service.js'
@@ -23,6 +24,7 @@ import authService from './custom/auth/auth.service.js'
 export default function (app) {
    // add database services
    app.configure(userService)
+   app.configure(adminMiscService)
    app.configure(ueService)
    app.configure(subUEService)
    app.configure(topicService)

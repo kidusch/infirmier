@@ -52,7 +52,7 @@
 
          <!-- footer -->
          <footer>
-            <h4 class="text-center">
+            <h4 class="text-center mb-3">
                Vous avez déjà un compte? <button class="text-primary" @click="login">Connexion</button>
             </h4>
          </footer>

@@ -56,8 +56,9 @@
                <textarea placeholder="Écrivez votre réponse ici..." type="text" rows="50"
                   :value="userCaseStudy?.answer"
                   @input="debouncedInputText"
+                  :disabled="disabledText"
                ></textarea>
-               <img src="/src/assets/edit.svg" alt="edit">
+               <img src="/src/assets/edit.svg" @click="disabledText = !disabledText">
                <div class="img-placeholder"></div>
             </div>
          </div>
@@ -116,7 +117,7 @@ const caseStudy = ref([])
 const userCaseStudy = ref([])
 
 const done = ref(true)
-
+const disabledText = ref(true)
 
 onMounted(async () => {
    ue.value = await getUE(props.ue_id)
@@ -143,5 +144,6 @@ const onInputText = async (ev) => {
 const debouncedInputText = useDebounceFn(onInputText, 500)
 
 const submitResponse = () => {
+   alert('La réponse a été envoyée et une correction personnalisée vous sera transmise rapidement.')
 }
 </script>

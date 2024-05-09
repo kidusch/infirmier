@@ -9,8 +9,7 @@ Google Developers Console : https://console.cloud.google.com/apis/dashboard?proj
 
 ## BUGS
 
-- icones menu
-- confirmation envoi case study
+- couleurs menu
 - admin divers
 
 

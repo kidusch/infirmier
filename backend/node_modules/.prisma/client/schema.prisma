@@ -35,6 +35,13 @@ enum UserType {
    student
 }
 
+// only one row, with id=1
+model admin_misc {
+   id                    Int               @id @default(autoincrement())
+   email                 String
+   cgu                   String
+}
+
 // UE
 model ue {
    id                    Int               @id @default(autoincrement())

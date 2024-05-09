@@ -25,7 +25,7 @@
                   @input="debouncedInputTitle"
                   :disabled="disabledTitle"
                />
-               <img src="/src/assets/edit.svg"  @click="disabledTitle = !disabledTitle">
+               <img src="/src/assets/edit.svg" @click="disabledTitle = !disabledTitle">
                <div class="img-placeholder">
                </div>
             </div>

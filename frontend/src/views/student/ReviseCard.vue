@@ -46,7 +46,7 @@
       <!-- Revision Card -->
       <main class="my-6 relative flex justify-center">
 
-         <div class="bg-accent-darker py-4 px-6 rounded-3xl lg:w-full max-lg:max-w-xl z-30 relative">
+         <div class="bg-accent-darker py-4 px-6 rounded-3xl w-full max-lg:max-w-xl z-30 relative">
             <h4 class="py-2">
                {{ card?.title }}
             </h4>

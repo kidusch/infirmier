@@ -54,7 +54,7 @@
          </div>
 
          <footer>
-            <h4 class="text-center mt-3">
+            <h4 class="text-center my-3">
                Vous n'avez pas de compte ? <button class="text-primary" @click="goSignup">Inscrivez-vous</button>
             </h4>
          </footer>
