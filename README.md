@@ -9,14 +9,24 @@ Google Developers Console : https://console.cloud.google.com/apis/dashboard?proj
 
 ## BUGS
 
-- expiration 1 semaine
 - signin / signup / mot de passe oublié vertical
 - icones menu
+- confirmation envoi case study
+- admin divers
 
 
 ## Parsing
+
+PEGJS (projet cloné dans CLONES)
+https://shamansir.github.io/pegjs-fn/
+https://github.com/pegjs/pegjs
+
+pegjs grammar.pegjs    # génère 'grammar.js'
+
+(Alternative)
 https://github.com/kach/nearley
 https://omrelli.ug/nearley-playground/
+
 
 
 ## Client

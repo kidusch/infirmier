@@ -1,13 +1,13 @@
 <template>
    
-   <div class="container max-w-lg py-4 flex flex-col h-svh">
+   <div class="container max-w-lg py-4 flex flex-col">
 
       <!-- Logo -->
       <header class="w-full flex justify-center">
          <img class="w-60 h-60 lg:w-80 lg:h-80" src="/src/assets/logo.png" alt="logo">
       </header>
 
-      <section class="flex-1 flex flex-col justify-between">
+      <section class="flex-1 flex flex-col">
 
          <!-- Headings -->
          <section class="h-1/4 flex flex-col">
@@ -51,7 +51,7 @@
          </main>
 
          <!-- footer -->
-         <footer class="flex-1 flex flex-col justify-end h-full py-2">
+         <footer>
             <h4 class="text-center">
                Vous avez déjà un compte? <button class="text-primary" @click="login">Connexion</button>
             </h4>

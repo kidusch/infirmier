@@ -1,11 +1,11 @@
 <template>
-   <div class="container max-w-lg py-4 flex flex-col h-screen">
+   <div class="container max-w-lg py-4 flex flex-col">
 
       <header class="w-full flex justify-center">
          <img class="w-80 h-80" src="/src/assets/logo.png" alt="logo">
       </header>
 
-      <section class="flex-1 flex flex-col justify-between">
+      <section class="flex-1 flex flex-col">
 
          <section class="h-1/6 lg:h-auto flex flex-col">
             <h1>
@@ -44,15 +44,6 @@
 
          </div>
          
-         <!-- <div class="flex flex-col">
-            <button class="secondary-btn" @click="goGoogle">
-               <img src="/src/assets/google.svg" alt="google">
-               <span>
-                  Continuer avec Google
-               </span>
-            </button>
-         </div> -->
-         
          <div class="flex flex-col">
             <a class="secondary-btn" :href="`/auth/google?cnxid=${cnxid}`">
                <img src="/src/assets/google.svg" alt="google">
@@ -63,7 +54,7 @@
          </div>
 
          <footer>
-            <h4 class="text-center">
+            <h4 class="text-center mt-3">
                Vous n'avez pas de compte ? <button class="text-primary" @click="goSignup">Inscrivez-vous</button>
             </h4>
          </footer>
