@@ -1,11 +1,11 @@
 <template>
-   <div class="container max-w-lg py-4 flex flex-col h-screen">
+   <div class="container max-w-lg py-4 flex flex-col">
 
       <header class="w-full flex justify-center">
          <img class="w-80 h-80" src="/src/assets/logo.png" alt="logo">
       </header>
 
-      <section class="flex-1 flex flex-col justify-between">
+      <section class="flex-1 flex flex-col">
 
          <section class="h-1/4 lg:h-auto flex flex-col">
             <h1 class="text-primary">

@@ -40,8 +40,12 @@
                <div class="py-8 mx-4 flex-1 flex flex-col gap-2">
 
                   <template v-for="item in menuItems">
-                     <div @click="selectItem(item)" class="cursor-pointer flex gap-4 items-center w-full p-3 rounded-lg" :class="{'bg-primary': isCurrentItem(item), 'opacity-50': !isCurrentItem(item)}">
-                        <img class="w-5" :src="item.img" alt="courses">
+                     <div @click="selectItem(item)" class="cursor-pointer flex gap-4 items-center w-full p-3 rounded-lg"
+                           :class="{'bg-primary': isCurrentItem(item), 'opacity-50': !isCurrentItem(item)}">
+                        <svg class="w-5 h-5" :stroke="isCurrentItem(item) ? 'white' : 'black'">
+                           <path fill="white" :d="item.iconPath"></path>
+                        </svg>
+
                         <p class="font-medium" :class="{ 'text-white': isCurrentItem(item)}">
                            {{ item.label }}
                         </p>
@@ -81,6 +85,7 @@ import { useRoute} from 'vue-router'
 import { logout } from '/src/use/useAuthentication'
 import { getUser } from '/src/use/useUser'
 
+import { courseIconPath, revisionIconPath } from '/src/lib/icons.mjs'
 import router from '/src/router'
 import { VERSION } from '/src/version'
 
@@ -105,46 +110,44 @@ onMounted(async () => {
          {
             label: "Contenu",
             path: `/home/${props.userid}/admin-ue`,
-            img: "/img/revisions.svg", // must be put in '/public' since they are referenced statically
-            active: /admin/,
+            iconPath: courseIconPath,
          },
          {
             label: "Divers",
             path: `/home/${props.userid}/admin-misc`,
-            img: "/img/courses-activate.svg", // must be put in '/public' since they are referenced statically
-            active: /misc/,
+            iconPath: revisionIconPath,
          },
       ]
       router.push(`/home/${props.userid}/admin-ue`)
+      currentItem.value = menuItems.value[0]
    } else {
       menuItems.value = [
          {
             label: "Cours",
             path: `/home/${props.userid}/study-ue`,
-            img: "/img/courses-activate.svg", // must be put in '/public' since they are referenced statically
-            active: /study/,
+            iconPath: courseIconPath,
          },
          {
             label: "Révisions",
             path: `/home/${props.userid}/revise-ue`,
-            img: "/img/revisions.svg", // must be put in '/public' since they are referenced statically
-            active: /revise/,
+            iconPath: revisionIconPath,
          },
       ]
       router.push(`/home/${props.userid}/study-ue`)
+      currentItem.value = menuItems.value[0]
    }
 })
 
 const selectItem = (item) => {
    console.log('route', route)
+   currentItem.value = item
    toggleSideMenu()
    router.push(item.path)
 }
 
+const currentItem = ref()
 const isCurrentItem = (item) => {
-   console.log(route.path, item.path, item.active.test(route.path))
-   // return (route.path.startsWith(item.path))
-   return item.active.test(route.path)
+   return item === currentItem.value
 }
 
 const sidebarMenu = ref(null)
@@ -169,7 +172,7 @@ function toggleSideMenu() {
 }
 
 const signout = async () => {
-   await logout()
+   await logout(props.userid)
    router.push(`/`)
 }
 </script>

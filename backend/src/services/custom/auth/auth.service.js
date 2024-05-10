@@ -37,11 +37,12 @@ export default function (app) {
          })
          // send confirmation email
          const token = jwt.sign({ userid: createdUser.id }, config.SECRET)
+         const adminMisc = await prisma.admin_misc.findUnique({ where: { id: 1 }})
          await app.service('mail').send({
             from: 'buisson@enseeiht.fr',
             to: email,
             subject: "Création compte Journal de bord Infirmier",
-            text: `Cliquez <a href="${config.CLIENT_URL}/local-signup-confirm/${token}">sur ce lien</a> pour confirmer votre inscription`,
+            text: `${adminMisc.email}<br><br>Cliquez <a href="${config.CLIENT_URL}/local-signup-confirm/${token}">sur ce lien</a> pour confirmer votre inscription`,
          })
          return createdUser
       },

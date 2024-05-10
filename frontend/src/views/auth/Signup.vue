@@ -4,13 +4,13 @@
 
       <!-- Logo -->
       <header class="w-full flex justify-center">
-         <img class="w-60 h-60 lg:w-80 lg:h-80" src="/src/assets/logo.png" alt="logo">
+         <img class="w-64 h-64" src="/src/assets/logo.png" alt="logo">
       </header>
 
       <section class="flex-1 flex flex-col">
 
          <!-- Headings -->
-         <section class="h-1/4 flex flex-col">
+         <section class="flex flex-col">
             <h1>
                Inscription au
             </h1>
@@ -20,16 +20,9 @@
          </section>
 
          <!-- Login Options -->
-         <main class="flex flex-col gap-2 my-8 h-1/4">
+         <main class="flex flex-col gap-2 my-8">
 
-            <!-- <button class="secondary-btn" @click="goGoogle">
-               <img src="/src/assets/google.svg" alt="google">
-               <span>
-                  Continuer avec Google
-               </span>
-            </button> -->
-
-            <a class="secondary-btn" :href="`/auth/google?cnxid=${cnxid}`">
+            <a class="secondary-btn" :href="`/auth/google?cnxid=${cnxid}`" @click="spinner">
                <img src="/src/assets/google.svg" alt="google">
                <span>
                   Continuer avec Google
@@ -64,6 +57,7 @@
 <script setup>
 import { ref } from 'vue'
 
+import { appState } from '/src/use/useAppState'
 import router from "/src/router"
 
 const cnxid = ref(sessionStorage.cnxid)
@@ -74,5 +68,9 @@ const localSignup = () => {
 
 const login = () => {
    router.push('/login')
+}
+
+const spinner = () => {
+   appState.value.isWaiting = true
 }
 </script>

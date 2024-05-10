@@ -2,12 +2,12 @@
    <div class="container max-w-lg py-4 flex flex-col">
 
       <header class="w-full flex justify-center">
-         <img class="w-80 h-80" src="/src/assets/logo.png" alt="logo">
+         <img class="w-64 h-64" src="/src/assets/logo.png" alt="logo">
       </header>
 
       <section class="flex-1 flex flex-col">
 
-         <section class="h-1/6 lg:h-auto flex flex-col">
+         <section class="flex flex-col">
             <h1>
                Connexion au
             </h1>
@@ -16,7 +16,7 @@
             </h1>
          </section>
 
-         <div class="flex flex-col">
+         <div class="flex flex-col mt-2">
 
             <div class="flex flex-col gap-6">
                <div class="flex flex-col">
@@ -45,7 +45,7 @@
          </div>
          
          <div class="flex flex-col">
-            <a class="secondary-btn" :href="`/auth/google?cnxid=${cnxid}`">
+            <a class="secondary-btn" :href="`/auth/google?cnxid=${cnxid}`" @click="spinner">
                <img src="/src/assets/google.svg" alt="google">
                <span>
                   Continuer avec Google
@@ -85,6 +85,7 @@ const validate = async () => {
       console.log('login error', err)
       if (err.code === 'wrong-credentials') {
          errorMessage.value = "wrong credentials"
+         alert('Mot de passe incorrect')
       } else {
          appState.value.unexpectedError = true
       }
@@ -93,5 +94,9 @@ const validate = async () => {
 
 const goSignup = () => {
    router.push('/signup')
+}
+
+const spinner = () => {
+   appState.value.isWaiting = true
 }
 </script>
