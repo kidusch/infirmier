@@ -25,7 +25,7 @@
          </div>
 
          <div class="modal-action">
-            <button class="btn btn-primary" @click="restartApp">
+            <button class="btn btn-primary" @click="restartApp2">
                OK
             </button>
          </div>
@@ -56,8 +56,16 @@ const restartApp = async () => {
    appState.value.isExpired = false
    appState.value.unexpectedError = false
    clearSessionStorage()
-   await app.service('auth').logout()
+   try {
+      // can fail if connection is broken
+      await app.service('auth').logout()
+   } catch(err) {}
    router.push('/')
+}
+
+const restartApp2 = async () => {
+   appState.value.isExpired = false
+   appState.value.unexpectedError = false
 }
 
 async function getCnxInfo() {
