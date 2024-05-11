@@ -49,6 +49,15 @@ export function clearSessionStorage() {
    resetUseUserCaseStudy()
 }
 
+export const restartApp = async () => {
+   clearSessionStorage()
+   try {
+      // can fail if connection is broken
+      await app.service('auth').logout()
+   } catch(err) {}
+   router.push('/')
+}
+
 
 ////////////////////////           LOGIN / LOGOUT            ////////////////////////
 

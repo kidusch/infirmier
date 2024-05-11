@@ -90,9 +90,8 @@ const validate = async () => {
       if (err.code === 'email-already-used') {
          alert("Cet email est déjà utilisé")
       } else {
-         appState.value.unexpectedError = true
+         alert("Une erreur s'est produite lors de l'envoi de l'email de confirmation")
       }
-      console.log('signup error', err)
    } finally {
       appState.value.isWaiting = false
    }

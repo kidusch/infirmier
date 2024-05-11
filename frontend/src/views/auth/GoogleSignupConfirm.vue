@@ -36,18 +36,14 @@ const props = defineProps({
 const accept = ref()
 
 const validate = async () => {
-   try {
-      const user = await app.service('user').update({
-         where: { id: parseInt(props.userid) },
-         data: { accept_cgu: accept.value }
-      })
-      if (accept.value) {
-         router.push(`/home/${user.id}`)
-      } else {
-         router.push(`/`)
-      }
-   } catch(err) {
-      appState.value.unexpectedError = true
+   const user = await app.service('user').update({
+      where: { id: parseInt(props.userid) },
+      data: { accept_cgu: accept.value }
+   })
+   if (accept.value) {
+      router.push(`/home/${user.id}`)
+   } else {
+      router.push(`/`)
    }
 }
 </script>

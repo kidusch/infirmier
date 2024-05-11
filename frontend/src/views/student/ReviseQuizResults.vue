@@ -144,13 +144,13 @@ onMounted(async () => {
 })
 
 function isGoodAnswer(quizChoice, studentAnswer) {
-   if (studentAnswer === undefined) return false
+   if (studentAnswer === null) return false
    if (studentAnswer === quizChoice.answer) return true
    return false
 }
 
 const answerLabel = (quizChoice, studentAnswer) => {
-   if (studentAnswer === undefined) return `Absence de réponse (-${quizChoice.negative_points} points)`
+   if (studentAnswer === null) return `Absence de réponse (-${quizChoice.negative_points} points)`
    if (studentAnswer === quizChoice.answer) return `Bonne réponse (${quizChoice.positive_points} points)`
    return `Mauvaise réponse (-${quizChoice.negative_points} points)`
 }

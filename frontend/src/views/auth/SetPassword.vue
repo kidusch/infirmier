@@ -83,7 +83,7 @@ const validate = async () => {
       router.push('/login')
    } catch(err) {
       console.log('err', err)
-      appState.value.unexpectedError = true
+      alert("Une erreur inconnue s'est produite")
    }
 }
 </script>

@@ -2,84 +2,32 @@
 
    <router-view></router-view>
 
-   <!-- EXPIRED MODAL -->
-   <div class="modal" :class="{'modal-open': appState.isExpired}">
-      <div class="modal-box max-w-xl">
-         <div class="text-large mt-2 mb-4 font-semibold">
-            La session a expiré
-         </div>
-
-         <div class="modal-action">
-            <button class="btn btn-primary" @click="restartApp">
-               OK
-            </button>
-         </div>
-      </div>
-   </div>
-
-   <!-- ERROR MODAL -->
-   <div class="modal" :class="{'modal-open': appState.unexpectedError}">
-      <div class="modal-box max-w-xl">
-         <div class="text-large mt-2 mb-4 font-semibold">
-            Une erreur est survenue
-         </div>
-
-         <div class="modal-action">
-            <button class="btn btn-primary" @click="restartApp2">
-               OK
-            </button>
-         </div>
-      </div>
-   </div>
-
    <Spinner v-if="appState.isWaiting"></Spinner>
 
 </template>
 
 <script setup>
+import { watch } from 'vue'
 import { useRoute} from 'vue-router'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 
 import app from '/src/client-app.js'
-import router from "/src/router"
 
 import { appState } from '/src/use/useAppState'
-import { clearSessionStorage } from '/src/use/useAuthentication'
+import { restartApp } from '/src/use/useAuthentication'
 
 import Spinner from '/src/components/Spinner.vue'
-
 
 const route = useRoute()
 
 
-const restartApp = async () => {
-   appState.value.isExpired = false
-   appState.value.unexpectedError = false
-   clearSessionStorage()
-   try {
-      // can fail if connection is broken
-      await app.service('auth').logout()
-   } catch(err) {}
-   router.push('/')
-}
+watch(appState.unrecoverableError, async (value) => {
+   if (value) restartApp()
+})
 
-const restartApp2 = async () => {
-   appState.value.isExpired = false
-   appState.value.unexpectedError = false
-}
-
-async function getCnxInfo() {
-   const time = await app.service('auth').getCnxInfo()
-   console.log('expires at', time)
-}
-
-async function chie() {
-   try {
-      await app.service('caca').chie()
-   } catch(err) {
-      appState.value.unexpectedError = true
-   }
-}
+watch(appState.isExpired, async (value) => {
+   if (value) restartApp()
+})
 
 
 ////////////////////////           PERIODIC PROBE OF AUTHENTICATION            ////////////////////////
@@ -93,11 +41,7 @@ setInterval(async () => {
          await app.service('auth').ping()
       } catch(err) {
          console.log('err', err.code, err.message)
-         if (err.code === 'not-authenticated') {
-            appState.value.isExpired = true
-         } else {
-            appState.value.unexpectedError = true
-         }
+         restartApp()
       }
    }
 }, PROBE_PERIOD)

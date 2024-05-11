@@ -62,7 +62,7 @@
                            </p>
                         </label>
 
-                        <input type="checkbox" :checked="answersDict[choice.id] === true" @click="setAnswer(choice.id, true)" class="checkbox checkbox-primary" />
+                        <input type="checkbox" :checked="answersDict[choice.id] === true" @click="(ev) => setAnswer(choice.id, true, ev.target.checked)" class="checkbox checkbox-primary" />
 
                      </div>
                      <div class="flex items-center">
@@ -72,7 +72,7 @@
                            </p>
                         </label>
 
-                        <input type="checkbox" :checked="answersDict[choice.id] === false" @click="setAnswer(choice.id, false)" class="checkbox checkbox-primary" />
+                        <input type="checkbox" :checked="answersDict[choice.id] === false" @click="(ev) => setAnswer(choice.id, false, ev.target.checked)" class="checkbox checkbox-primary" />
                      </div>
                   </div>
                   <label class="font-normal ml-4">
@@ -163,8 +163,9 @@ const onDoneClick = async () => {
    userQuiz.value = await updateUserQuiz(userQuiz.value.id, { done: done.value })
 }
 
-const setAnswer = async (quiz_choice_id, answer) => {
+const setAnswer = async (quiz_choice_id, value, checked) => {
    const userQuizeChoice = await getTheUserQuizChoice(props.userid, quiz_choice_id)
+   const answer = checked ? value : null
    await updateUserQuizChoice(userQuizeChoice.id, { answer })
    answersDict.value[quiz_choice_id] = answer
 }

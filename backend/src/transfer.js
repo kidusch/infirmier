@@ -55,6 +55,7 @@ export default async function(app) {
             toSocket.emit('cnx-transfer-ack', fromSocketId, toSocketId)
          } else {
             console.log(`*** CNX TRANSFER ERROR, ${fromSocketId} -> ${toSocketId}`)
+            toSocket.emit('cnx-transfer-error', fromSocketId, toSocketId)
          }
       })
    })

@@ -73,21 +73,20 @@ import { localSignin } from '/src/use/useAuthentication'
 const cnxid = ref(sessionStorage.cnxid)
 const email = ref()
 const password = ref()
-const errorMessage = ref('')
+// const errorMessage = ref('')
 
 const validate = async () => {
-   errorMessage.value = ''
+   // errorMessage.value = ''
    try {
       const user = await localSignin(email.value, password.value)
       // go home
       router.push(`/home/${user.id}`)
    } catch(err) {
-      console.log('login error', err)
       if (err.code === 'wrong-credentials') {
-         errorMessage.value = "wrong credentials"
-         alert('Mot de passe incorrect')
+         // errorMessage.value = "wrong credentials"
+         alert('Email ou mot de passe incorrect')
       } else {
-         appState.value.unexpectedError = true
+         alert("Une erreur inconnue s'est produite")
       }
    }
 }

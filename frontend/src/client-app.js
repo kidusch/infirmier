@@ -3,6 +3,7 @@ import { io } from "socket.io-client"
 import expressXClient from './client.mjs'
 
 import { appState } from '/src/use/useAppState'
+// import { restartApp } from '/src/use/useAuthentication'
 
 
 const socket = io({
@@ -54,7 +55,12 @@ app.onConnect(async (socket) => {
    }
 
    socket.on('cnx-transfer-ack', async (fromSocketId, toSocketId) => {
-      console.log('ACKACK!!!', fromSocketId, toSocketId)
+      console.log('ACK ACK!!!', fromSocketId, toSocketId)
+   })
+
+   socket.on('cnx-transfer-error', async (fromSocketId, toSocketId) => {
+      console.log('ERR ERR!!!', fromSocketId, toSocketId)
+      appState.value.unrecoverableError = true
    })
 
    socket.on('expired', async () => {

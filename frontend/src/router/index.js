@@ -5,6 +5,7 @@ import app from '/src/client-app.js'
 import { appState } from '/src/use/useAppState'
 
 import FrontPage from '/src/views/FrontPage.vue'
+import { restartApp } from '/src/use/useAuthentication'
 
 
 const routes = [
@@ -268,11 +269,7 @@ router.beforeEach(async (to, from, next) => {
          await app.service('auth').checkAndExtend()
       } catch(err) {
          console.log('err', err.code, err.message)
-         if (err.code === 'not-authenticated') {
-            appState.value.isExpired = true
-         } else {
-            appState.value.unexpectedError = true
-         }
+         restartApp()
       }
    }
 

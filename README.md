@@ -10,7 +10,6 @@ Google Developers Console : https://console.cloud.google.com/apis/dashboard?proj
 ## BUGS
 
 - gérer déconnexions
-- QCM détecte pas absence de réponse
 
 
 ## Parsing

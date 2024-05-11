@@ -63,7 +63,7 @@ const validate = async () => {
       router.push(`/`)
    } catch(err) {
       console.log('err', err)
-      appState.value.unexpectedError = true
+      alert("Une erreur s'est produite lors de l'envoi de l'email de confirmation")
    } finally {
       appState.value.isWaiting = false
    }

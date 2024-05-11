@@ -4,7 +4,7 @@ import { useSessionStorage } from '@vueuse/core'
 // state backed in SessionStorage
 const initialState = () => ({
    isExpired: false,
-   unexpectedError: false,
+   unrecoverableError: false,
    isWaiting: false,
 })
 
