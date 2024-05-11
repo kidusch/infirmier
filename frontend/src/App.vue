@@ -32,19 +32,19 @@ watch(appState.isExpired, async (value) => {
 
 ////////////////////////           PERIODIC PROBE OF AUTHENTICATION            ////////////////////////
 
-const PROBE_PERIOD = import.meta.env.VITE_PROBE_PERIOD || 10000
+// const PROBE_PERIOD = import.meta.env.VITE_PROBE_PERIOD || 10000
 
-setInterval(async () => {
-   if (route.meta.requiresAuth) {
-      try {
-         // calls a service which needs authentication
-         await app.service('auth').ping()
-      } catch(err) {
-         console.log('err', err.code, err.message)
-         restartApp()
-      }
-   }
-}, PROBE_PERIOD)
+// setInterval(async () => {
+//    if (route.meta.requiresAuth) {
+//       try {
+//          // calls a service which needs authentication
+//          await app.service('auth').ping()
+//       } catch(err) {
+//          console.log('err', err.code, err.message)
+//          restartApp()
+//       }
+//    }
+// }, PROBE_PERIOD)
 
 
 /////////////////      AUTOMATIC VERSION UPDATE     ////////////////
