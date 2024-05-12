@@ -30,11 +30,11 @@ part = emphasized_text / plain_text / special
 
 plain_text
   = text:words
-  { return { type: 'plain_text', text } }
+  { return { type: 'span', text } }
 
 emphasized_text
   = "{" text:words "}"
-  { return { type: 'emphasized_text', text } }
+  { return { type: 'bold-span', text } }
 
 special
   = "[" text:words "]{" type:type " " ref:words "}"

@@ -152,12 +152,12 @@ function peg$parse(input, options) {
       peg$c8 = "-",
       peg$c9 = peg$literalExpectation("-", false),
       peg$c10 = function(content) { return [{ type: 'li', content }] },
-      peg$c11 = function(text) { return { type: 'plain_text', text } },
+      peg$c11 = function(text) { return { type: 'span', text } },
       peg$c12 = "{",
       peg$c13 = peg$literalExpectation("{", false),
       peg$c14 = "}",
       peg$c15 = peg$literalExpectation("}", false),
-      peg$c16 = function(text) { return { type: 'emphasized_text', text } },
+      peg$c16 = function(text) { return { type: 'bold-span', text } },
       peg$c17 = "[",
       peg$c18 = peg$literalExpectation("[", false),
       peg$c19 = "]{",
@@ -847,7 +847,7 @@ function peg$parse(input, options) {
   }
 }
 
-export default = {
+export default {
   SyntaxError: peg$SyntaxError,
   parse:       peg$parse
 };
