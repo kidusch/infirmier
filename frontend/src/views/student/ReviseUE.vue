@@ -18,7 +18,6 @@
             <div class="progress-list">
                <template v-for="subUE in subUEListDict[ue.id]">
                   <div class="progress-item cursor-pointer" @click="select(ue, subUE)">
-                     <!-- <img src="/src/assets/progress-bar-0.svg"> -->
                      <div class="w-14 h-14">
                         <jcb-radial :value="subUEProgressDict[subUE.id]"></jcb-radial>
                      </div>
@@ -68,10 +67,12 @@ onMounted(async () => {
    for (const ue of ueList.value) {
       subUEListDict.value[ue.id] = await getSubUEList(ue.id)
       for (const subUE of subUEListDict.value[ue.id]) {
-         let count = 0
-         let sum = 0
+         let totalSum = 0
+         let totalCount = 0
          const topicList = await getTopicList(subUE.id)
          for (const topic of topicList) {
+            let count = 0
+            let sum = 0
             const cardList = await getCardList(topic.id)
             const quizList = await getQuizList(topic.id)
             const caseStudyList = await getCaseStudyList(topic.id)
@@ -83,15 +84,18 @@ onMounted(async () => {
             for (const quiz of quizList) {
                const userQuiz = await getTheUserQuiz(props.userid, quiz.id)
                count += 1
-               sum += (userQuiz.done ? 1 : 0)
+               sum += (userQuiz.done ? 100 : 0)
             }
             for (const caseStudy of caseStudyList) {
                const userCaseStudy = await getTheUserCaseStudy(props.userid, caseStudy.id)
                count += 1
-               sum += (userCaseStudy.done ? 1 : 0)
+               sum += (userCaseStudy.done ? 100 : 0)
             }
+            const percentage = count === 0 ? 0 : Math.round(sum / count)
+            totalSum += percentage
+            totalCount += 1
          }
-         subUEProgressDict.value[subUE.id] = count === 0 ? 0 : Math.round(sum / count)
+         subUEProgressDict.value[subUE.id] = totalCount === 0 ? 0 : Math.round(totalSum / totalCount)
       }
    }
 })

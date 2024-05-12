@@ -18,7 +18,7 @@
       <header class="py-2">
          <h3 class="opacity-50 flex items-center">
             {{ topic?.name }}
-            <div class="ml-2 w-14">
+            <div class="ml-2 mt-3 w-14">
                <jcb-radial :value="progress"></jcb-radial>
             </div>
          </h3>

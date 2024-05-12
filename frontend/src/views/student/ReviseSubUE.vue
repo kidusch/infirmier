@@ -14,8 +14,11 @@
 
       <!-- Header -->
       <header class="py-2">
-         <h3 class="lg:opacity-50">
+         <h3 class="opacity-50 flex items-center">
             {{ subUE?.name }}
+            <div class="ml-2 mt-3 w-14">
+               <jcb-radial :value="progress"></jcb-radial>
+            </div>
          </h3>
       </header>
 
@@ -75,12 +78,15 @@ const ue = ref()
 const subUE = ref()
 const topicList = ref([])
 const topicProgressDict = ref({})
+const progress = ref(0)
 
 onMounted(async () => {
    console.log('onMounted StudentSubUE', props.userid)
    ue.value = await getUE(props.ue_id)
    subUE.value = await getSubUE(props.sub_ue_id)
    topicList.value = await getTopicList(props.sub_ue_id)
+   let totalSum = 0
+   let totalCount = 0
    for (const topic of topicList.value) {
       let count = 0
       let sum = 0
@@ -95,15 +101,19 @@ onMounted(async () => {
       for (const quiz of quizList) {
          const userQuiz = await getTheUserQuiz(props.userid, quiz.id)
          count += 1
-         sum += (userQuiz.done ? 1 : 0)
+         sum += (userQuiz.done ? 100 : 0)
       }
       for (const caseStudy of caseStudyList) {
          const userCaseStudy = await getTheUserCaseStudy(props.userid, caseStudy.id)
          count += 1
-         sum += (userCaseStudy.done ? 1 : 0)
+         sum += (userCaseStudy.done ? 100 : 0)
       }
-      topicProgressDict.value[topic.id] = count === 0 ? 0 : Math.round(sum / count)
+      const percentage = count === 0 ? 0 : Math.round(sum / count)
+      topicProgressDict.value[topic.id] = percentage
+      totalSum += percentage
+      totalCount += 1
    }
+   progress.value = totalCount === 0 ? 0 : Math.round(totalSum / totalCount)
 })
 
 const selectTopic = (topic) => {

@@ -3,7 +3,10 @@
       <div
          :class="{
             'font-bold': isTitle || isBoldSpan,
-            'text-4xl': isTitle1, 'text-3xl': isTitle2, 'text-2xl': isTitle3, 'text-xl': isTitle4,
+            'text-2xl': isTitle1, 'sm:text-4xl': isTitle1,
+            'text-xl': isTitle2, 'sm:text-3xl': isTitle2,
+            'text-lg': isTitle3, 'sm:text-2xl': isTitle3,
+            'text-normal': isTitle4, 'sm:text-xl': isTitle4,
 
             'text-red-600': isLexicon, underline: isLexicon,
             'hover:cursor-pointer': isLexicon,

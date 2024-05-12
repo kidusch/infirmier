@@ -135,7 +135,7 @@ onMounted(async () => {
       answersDict.value[quizChoice.id] = userQuizeChoice.answer
       if (isGoodAnswer(quizChoice, userQuizeChoice.answer)) {
          score.value += quizChoice.positive_points
-      } else {
+      } else if (isWrongAnswer(quizChoice, userQuizeChoice.answer)) {
          score.value -= quizChoice.negative_points
       }
    }
@@ -149,8 +149,14 @@ function isGoodAnswer(quizChoice, studentAnswer) {
    return false
 }
 
+function isWrongAnswer(quizChoice, studentAnswer) {
+   if (studentAnswer === null) return false
+   if (studentAnswer !== quizChoice.answer) return true
+   return false
+}
+
 const answerLabel = (quizChoice, studentAnswer) => {
-   if (studentAnswer === null) return `Absence de réponse (-${quizChoice.negative_points} points)`
+   if (studentAnswer === null) return `Absence de réponse (0 point)`
    if (studentAnswer === quizChoice.answer) return `Bonne réponse (${quizChoice.positive_points} points)`
    return `Mauvaise réponse (-${quizChoice.negative_points} points)`
 }
