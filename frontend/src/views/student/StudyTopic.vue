@@ -48,7 +48,15 @@
                <br/>
             </template>
 
-            <template v-else>
+            <template v-if="part.type === 'image'">
+               <img :src="part.ref" />
+            </template>
+
+            <template v-if="part.type === 'audio'">
+               <audio controls :src="part.ref" ></audio>
+            </template>
+
+            <template v-if="part.type !== 'break' && part.type !== 'image' && part.type !== 'audio'">
                <AnnotatedBlock :content="part"></AnnotatedBlock>
             </template>
 
