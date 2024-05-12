@@ -43,18 +43,23 @@
       <!-- Course content -->
       <main class="">
          <template v-for="part in parts">
+
             <template v-if="part.type === 'title'">
                <AnnotatedBlock type="title-block" :text="part.text"></AnnotatedBlock>
             </template>
+
             <template v-if="part.type === 'break'">
                <br/>
             </template>
+
             <template v-if="part.type === 'plain_text'">
                <AnnotatedBlock type="span" :text="part.text"></AnnotatedBlock>
             </template>
+
             <template v-if="part.type === 'emphasized_text'">
                <AnnotatedBlock type="bold-span" :text="part.text"></AnnotatedBlock>
             </template>
+            
          </template>
       </main>
 

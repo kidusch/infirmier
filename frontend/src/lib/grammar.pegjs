@@ -17,7 +17,7 @@ empty_line
   { return [{ type: 'break' }] }
 
 title
-  = cat:"#"+ ([ ]+) text:words
+  = cat:"#"+ ([ ]+) text:words lineTerminator
   { return [{ type: 'title', cat: cat.length, text }] }
 
 li
@@ -37,10 +37,10 @@ emphasized_text
   { return { type: 'emphasized_text', text } }
 
 special
-  = "[" text:words "]{" type " " ref:words "}"
-  { return { type: 'special', text, ref } }
+  = "[" text:words "]{" type:type " " ref:words "}"
+  { return { type, text, ref } }
 
-type = "link" / "lexique" / "image" / "3D-model"
+type = "link" / "lexique" / "image" / "audio" / "3D"
 
 words
   = text:[^\n\r\[\]\{\}*]+

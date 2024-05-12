@@ -49,6 +49,9 @@ watch(appState.isExpired, async (value) => {
 
 /////////////////      AUTOMATIC VERSION UPDATE     ////////////////
 
+// POSSIBLE DE SIMPLIFIER AVEC registerType: 'autoUpdate'
+// VOIR : https://vite-pwa-org.netlify.app/guide/auto-update.html
+
 const { offlineReady, needRefresh, updateServiceWorker } = useRegisterSW({
    immediate: true,
    onRegistered(r) {
