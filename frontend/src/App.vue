@@ -8,24 +8,24 @@
 
 <script setup>
 import { watch } from 'vue'
-import { useRoute} from 'vue-router'
+// import { useRoute} from 'vue-router'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 
-import app from '/src/client-app.js'
+// import app from '/src/client-app.js'
 
 import { appState } from '/src/use/useAppState'
 import { restartApp } from '/src/use/useAuthentication'
 
 import Spinner from '/src/components/Spinner.vue'
 
-const route = useRoute()
+// const route = useRoute()
 
 
-watch(appState.unrecoverableError, async (value) => {
+watch(() => appState.value.unrecoverableError, async (value) => {
    if (value) restartApp()
 })
 
-watch(appState.isExpired, async (value) => {
+watch(() => appState.value.isExpired, async (value) => {
    if (value) restartApp()
 })
 

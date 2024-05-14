@@ -1,5 +1,5 @@
 <template>
-    <main class="flex-1 container max-w-7xl">
+    <main class="flex-1 container max-w-7xl" :class="{ 'page-wrapper': move }">
 
       <!-- Header -->
       <header class="chapter-card my-6">
@@ -35,7 +35,9 @@
          </label>
 
          <button @click="gotoRevise">
-            <img class="h-5" src="/src/assets/courses.svg" alt="course">
+            <svg class="w-5 h-5">
+               <path :d="revisionIconPath"></path>
+            </svg>
          </button>
 
       </section>
@@ -57,14 +59,25 @@
             </template>
 
             <template v-if="part.type !== 'break' && part.type !== 'image' && part.type !== 'audio'">
-               <AnnotatedBlock :content="part"></AnnotatedBlock>
+               <AnnotatedBlock :userid="userid" :topic_id="topic_id" :content="part"></AnnotatedBlock>
             </template>
 
          </template>
       </main>
-
    </main>
 </template>
+
+<style scoped>
+.myTextarea {
+   background-color: #444444;
+  position: absolute;
+  right: 0; /* Position from the right side of its containing block */
+  top: 50%; /* Adjust as needed */
+  transform: translateY(-50%); /* Center vertically */
+  width: 200px; /* Set the width of the textarea */
+  height: 150px; /* Set the height of the textarea */
+}
+</style>
 
 <script setup>
 import { ref, onMounted, createApp } from 'vue'
@@ -78,6 +91,7 @@ import parser from '/src/lib/grammar.js'
 import AnnotatedBlock from '/src/components/AnnotatedBlock.vue'
 
 import router from "/src/router"
+import { revisionIconPath } from '/src/lib/icons.mjs'
 
 
 const props = defineProps({
@@ -126,6 +140,7 @@ const onDoneClick = async () => {
    userTopic.value = await updateUserTopic(userTopic.value.id, { done: done.value })
 }
 
+const move = ref(false)
 const gotoRevise = () => {
    router.push(`/home/${props.userid}/revise-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
 }

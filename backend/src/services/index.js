@@ -15,6 +15,7 @@ import userCardService from './database/user_card/user_card.service.js'
 import userQuizService from './database/user_quiz/user_quiz.service.js'
 import userQuizChoiceService from './database/user_quiz_choice/user_quiz_choice.service.js'
 import userCaseStudyService from './database/user_case_study/user_case_study.service.js'
+import highlightedPartService from './database/highlighted_part/highlighted_part.service.js'
 
 // custom services
 import mailService from './custom/mail/mail.service.js'
@@ -38,6 +39,7 @@ export default function (app) {
    app.configure(userQuizService)
    app.configure(userQuizChoiceService)
    app.configure(userCaseStudyService)
+   app.configure(highlightedPartService)
 
    // add custom services
    app.configure(mailService)
