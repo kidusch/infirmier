@@ -59,25 +59,13 @@
             </template>
 
             <template v-if="part.type !== 'break' && part.type !== 'image' && part.type !== 'audio'">
-               <AnnotatedBlock :userid="userid" :topic_id="topic_id" :content="part"></AnnotatedBlock>
+               <TextPart :userid="userid" :topic_id="topic_id" :card_id="undefined" :part="part"></TextPart>
             </template>
 
          </template>
       </main>
    </main>
 </template>
-
-<style scoped>
-.myTextarea {
-   background-color: #444444;
-  position: absolute;
-  right: 0; /* Position from the right side of its containing block */
-  top: 50%; /* Adjust as needed */
-  transform: translateY(-50%); /* Center vertically */
-  width: 200px; /* Set the width of the textarea */
-  height: 150px; /* Set the height of the textarea */
-}
-</style>
 
 <script setup>
 import { ref, onMounted, createApp } from 'vue'
@@ -88,7 +76,7 @@ import { getTopic } from '/src/use/useTopic'
 import { getTheUserTopic, updateUserTopic } from '/src/use/useUserTopic'
 
 import parser from '/src/lib/grammar.js'
-import AnnotatedBlock from '/src/components/AnnotatedBlock.vue'
+import TextPart from '/src/components/TextPart.vue'
 
 import router from "/src/router"
 import { revisionIconPath } from '/src/lib/icons.mjs'

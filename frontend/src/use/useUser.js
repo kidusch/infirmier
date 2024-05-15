@@ -23,12 +23,10 @@ app.service('user').on('create', user => {
 
 
 export const getUser = async (id) => {
-   const user = userState.value.userCache[id]
+   let user = userState.value.userCache[id]
    if (user) return user
-   const promise = app.service('user').findUnique({ where: { id }})
-   promise.then(user => {
-      userState.value.userCache[id] = user
-   })
-   return promise
+   user = await app.service('user').findUnique({ where: { id }})
+   userState.value.userCache[id] = user
+   return user
 }
 

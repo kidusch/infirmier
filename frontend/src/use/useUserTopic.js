@@ -15,7 +15,6 @@ export const resetUseUserTopic = () => {
    userTopicState.value = initialState()
 }
 
-
 app.service('user_topic').on('create', (userTopic) => {
    console.log('USER_TOPIC EVENT created', userTopic)
    userTopicState.value.userTopicCache[userTopic.id] = userTopic

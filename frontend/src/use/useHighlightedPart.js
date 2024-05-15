@@ -1,4 +1,5 @@
 import { useSessionStorage } from '@vueuse/core'
+import stringHash from 'string-hash'
 
 import app from '/src/client-app.js'
 
@@ -15,30 +16,31 @@ export const resetUseHighlightedPart = () => {
 }
 
 
-app.service('highlighted-part').on('create', highlightedPart => {
+app.service('highlighted_part').on('create', highlightedPart => {
    console.log('HIGHLIGHTED EVENT created', highlightedPart)
    highlightedPartState.value.highlightedPartCache[highlightedPart.id] = highlightedPart
 })
 
 
-export const getHighlightedPart = async (hash) => {
-   const highlightedPart = highlightedPartState.value.highlightedPartCache[hash]
+export const upsertHighlightedPart = async (userid, topic_id, card_id, text, color) => {
+   const hash = stringHash(`${userid},${topic_id},${card_id},${text}`) + ''
+   let highlightedPart = highlightedPartState.value.highlightedPartCache[hash]
    if (highlightedPart) return highlightedPart
-   const promise = app.service('highlighted-part').findUnique({ where: { hash }})
-   promise.then(highlightedPart => {
-      highlightedPartState.value.highlightedPartCache[hash] = highlightedPart
+   highlightedPart = await app.service('highlighted_part').upsert({
+      where: { hash },
+      create: { hash, text, color },
+      update: { hash, text, color },
    })
-   return promise
+   highlightedPartState.value.highlightedPartCache[hash] = highlightedPart
+   return highlightedPart
 }
 
-export const createHighlightedPart = async (hash, color) => {
-   const highlightedPart = await app.service('highlightedPart').create({
-      data: {
-         hash,
-         color,
-      }
+export const updateHighlightedPart = async (hash, data) => {
+   const highlightedPart = await app.service('highlighted_part').update({
+      where: { hash },
+      data,
    })
    // update cache
-   highlightedPartState.value.highlightedPartCache[highlightedPart.hash] = highlightedPart
+   highlightedPartState.value.highlightedPartCache[hash] = highlightedPart
    return highlightedPart
 }

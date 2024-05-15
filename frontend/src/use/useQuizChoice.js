@@ -23,13 +23,11 @@ app.service('quiz_choice').on('create', (quizChoice) => {
 
 
 export const getQuizChoice = async (id) => {
-   const quizChoice = quizChoiceState.value.quizChoiceCache[id]
+   let quizChoice = quizChoiceState.value.quizChoiceCache[id]
    if (quizChoice) return quizChoice
-   const promise = app.service('quiz_choice').findUnique({ where: { id }})
-   promise.then(quizChoice => {
-      quizChoiceState.value.quizChoiceCache[id] = quizChoice
-   })
-   return promise
+   quizChoice = await app.service('quiz_choice').findUnique({ where: { id }})
+   quizChoiceState.value.quizChoiceCache[id] = quizChoice
+   return quizChoice
 }
 
 export const createQuizChoice = async (quiz_id, text='') => {

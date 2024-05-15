@@ -23,13 +23,11 @@ app.service('card').on('create', card => {
 
 
 export const getCard = async (id) => {
-   const card = cardState.value.cardCache[id]
+   let card = cardState.value.cardCache[id]
    if (card) return card
-   const promise = app.service('card').findUnique({ where: { id }})
-   promise.then(card => {
-      cardState.value.cardCache[id] = card
-   })
-   return promise
+   card = await app.service('card').findUnique({ where: { id }})
+   cardState.value.cardCache[id] = card
+   return card
 }
 
 export const createCard = async (topic_id, title = '', content = '') => {

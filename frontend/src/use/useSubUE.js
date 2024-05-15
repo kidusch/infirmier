@@ -23,13 +23,11 @@ app.service('sub_ue').on('create', subUE => {
 
 
 export const getSubUE = async (id) => {
-   const ue = subUEState.value.subUECache[id]
+   let ue = subUEState.value.subUECache[id]
    if (ue) return ue
-   const promise = app.service('sub_ue').findUnique({ where: { id }})
-   promise.then(ue => {
-      subUEState.value.subUECache[id] = ue
-   })
-   return promise
+   ue = await app.service('sub_ue').findUnique({ where: { id }})
+   subUEState.value.subUECache[id] = ue
+   return ue
 }
 
 export const createSubUE = async (ue_id, name) => {

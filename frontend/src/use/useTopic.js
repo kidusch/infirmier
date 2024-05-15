@@ -23,13 +23,11 @@ app.service('topic').on('create', topic => {
 
 
 export const getTopic = async (id) => {
-   const topic = topicState.value.topicCache[id]
+   let topic = topicState.value.topicCache[id]
    if (topic) return topic
-   const promise = app.service('topic').findUnique({ where: { id }})
-   promise.then(topic => {
-      topicState.value.topicCache[id] = topic
-   })
-   return promise
+   topic = await app.service('topic').findUnique({ where: { id }})
+   topicState.value.topicCache[id] = topic
+   return topic
 }
 
 export const createTopic = async (sub_ue_id, name) => {

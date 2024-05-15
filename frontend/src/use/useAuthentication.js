@@ -16,6 +16,7 @@ import { resetUseUserCard } from '/src/use/useUserCard'
 import { resetUseUserQuiz } from '/src/use/useUserQuiz'
 import { resetUseUserQuizChoice } from '/src/use/useUserQuizChoice'
 import { resetUseUserCaseStudy } from '/src/use/useUserCaseStudy'
+import { resetUseHighlightedPart } from '/src/use/useHighlightedPart'
 
 import router from '/src/router'
 
@@ -47,6 +48,7 @@ export function clearSessionStorage() {
    resetUseUserQuiz()
    resetUseUserQuizChoice()
    resetUseUserCaseStudy()
+   resetUseHighlightedPart()
 }
 
 export const restartApp = async () => {

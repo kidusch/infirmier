@@ -108,6 +108,9 @@ export function expressX(config) {
 
                   try {
                      // call method with context
+                     if (name === 'highlighted_part') {
+                        console.log('')
+                     }
                      const result = await serviceMethod(context, ...args)
 
                      const trimmedResult = result ? JSON.stringify(result).slice(0, 300) : ''
@@ -117,7 +120,7 @@ export function expressX(config) {
                         result,
                      })
                   } catch(err) {
-                     console.log('!!!!!!error', err.code, err.message)
+                     console.log('!!!!!!error', 'name', name, 'action', action, 'args', args, 'err.code', err.code, 'err.message', err.message)
                      app.log('verbose', err.stack)
                      socket.emit('client-response', {
                         uid,

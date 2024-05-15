@@ -23,13 +23,11 @@ app.service('caseStudy').on('create', caseStudy => {
 
 
 export const getCaseStudy = async (id) => {
-   const caseStudy = caseStudyState.value.caseStudyCache[id]
+   let caseStudy = caseStudyState.value.caseStudyCache[id]
    if (caseStudy) return caseStudy
-   const promise = app.service('case-study').findUnique({ where: { id }})
-   promise.then(caseStudy => {
-      caseStudyState.value.caseStudyCache[id] = caseStudy
-   })
-   return promise
+   caseStudy = await app.service('case-study').findUnique({ where: { id }})
+   caseStudyState.value.caseStudyCache[id] = caseStudy
+   return caseStudy
 }
 
 export const createCaseStudy = async (topic_id, title = '', content = '') => {
