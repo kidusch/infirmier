@@ -9,7 +9,6 @@ Google Developers Console : https://console.cloud.google.com/apis/dashboard?proj
 
 ## BUGS
 
-- gérer déconnexions
 
 
 ## Parsing

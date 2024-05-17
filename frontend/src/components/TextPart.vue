@@ -27,7 +27,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 
-import { upsertHighlightedPart, updateHighlightedPart } from '/src/use/useHighlightedPart.js'
+import { getOrCreateHighlightedPart, updateHighlightedPart } from '/src/use/useHighlightedPart.js'
 
 
 const props = defineProps({
@@ -54,7 +54,7 @@ const props = defineProps({
 const highlightedPart = ref()
 
 onMounted(async () => {
-   highlightedPart.value = await upsertHighlightedPart(props.userid, props.topic_id, props.card_id, props.part.text, 'black')
+   highlightedPart.value = await getOrCreateHighlightedPart(props.userid, props.topic_id, props.card_id, props.part.text, 'black')
 })
 
 const type = computed(() => props.part.type)

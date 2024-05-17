@@ -22,14 +22,14 @@ app.service('highlighted_part').on('create', highlightedPart => {
 })
 
 
-export const upsertHighlightedPart = async (userid, topic_id, card_id, text, color) => {
+export const getOrCreateHighlightedPart = async (userid, topic_id, card_id, text, color) => {
    const hash = stringHash(`${userid},${topic_id},${card_id},${text}`) + ''
    let highlightedPart = highlightedPartState.value.highlightedPartCache[hash]
    if (highlightedPart) return highlightedPart
    highlightedPart = await app.service('highlighted_part').upsert({
       where: { hash },
       create: { hash, text, color },
-      update: { hash, text, color },
+      update: { },
    })
    highlightedPartState.value.highlightedPartCache[hash] = highlightedPart
    return highlightedPart
