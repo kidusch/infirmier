@@ -50,40 +50,8 @@
             <h4 class="py-2">
                {{ card?.title }}
             </h4>
-
-            <template v-for="part in parts">
-
-               <template v-if="part.type === 'break'">
-                  <br/>
-               </template>
-
-               <template v-if="part.type === 'image'">
-                  <img :src="part.ref" />
-               </template>
-
-               <template v-if="part.type === 'audio'">
-                  <audio controls :src="part.ref" ></audio>
-               </template>
-
-               <template v-if="part.type !== 'break' && part.type !== 'image' && part.type !== 'audio'">
-                  <TextPart :userid="userid" :topic_id="topic_id" :card_id="card_id" :part="part"></TextPart>
-               </template>
-
-
-               <!-- <template v-if="part.type === 'title'">
-                  <TextPart type="title-block" :text="part.text"></TextPart>
-               </template>
-               <template v-if="part.type === 'break'">
-                  <br/>
-               </template>
-               <template v-if="part.type === 'plain_text'">
-                  <TextPart type="span" :text="part.text"></TextPart>
-               </template>
-               <template v-if="part.type === 'emphasized_text'">
-                  <TextPart type="bold-span" :text="part.text"></TextPart>
-               </template> -->
-            </template>
-
+            <!-- contenu -->
+            <TextParts :userid="userid" :topic_id="topic_id" :card_id="card_id" :parts="parts"></TextParts>
          </div>
 
          <div
@@ -116,7 +84,7 @@ import { getTheUserCard, updateUserCard } from '/src/use/useUserCard'
 import router from "/src/router"
 
 import parser from '/src/lib/grammar.js'
-import TextPart from '/src/components/TextPart.vue'
+import TextParts from '/src/components/TextParts.vue'
 
 
 const props = defineProps({

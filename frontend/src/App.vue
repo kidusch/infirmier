@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import { watch } from 'vue'
+import { onMounted, watch } from 'vue'
 // import { useRoute} from 'vue-router'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 
@@ -30,21 +30,13 @@ watch(() => appState.value.isExpired, async (value) => {
 })
 
 
-////////////////////////           PERIODIC PROBE OF AUTHENTICATION            ////////////////////////
+/////////////////      PREVENT COPY EVERYWHERE     ////////////////
 
-// const PROBE_PERIOD = import.meta.env.VITE_PROBE_PERIOD || 10000
-
-// setInterval(async () => {
-//    if (route.meta.requiresAuth) {
-//       try {
-//          // calls a service which needs authentication
-//          await app.service('auth').ping()
-//       } catch(err) {
-//          console.log('err', err.code, err.message)
-//          restartApp()
-//       }
-//    }
-// }, PROBE_PERIOD)
+onMounted(() => {
+   document.addEventListener('copy', (event) => {
+      event.preventDefault()
+   })
+})
 
 
 /////////////////      AUTOMATIC VERSION UPDATE     ////////////////

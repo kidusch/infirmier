@@ -7,7 +7,7 @@
          'text-2xl': isTitle1, 'lg:text-4xl': isTitle1,
          'text-xl': isTitle2, 'lg:text-3xl': isTitle2,
          'text-lg': isTitle3, 'lg:text-2xl': isTitle3,
-         'text-normal': isTitle4, 'mlg:text-xl': isTitle4,
+         'text-normal': isTitle4, 'lg:text-xl': isTitle4,
 
          'text-red-600': isLexicon, underline: isLexicon,
          'hover:cursor-pointer': isLexicon,
@@ -35,11 +35,13 @@ const props = defineProps({
       type: Number,
       required: true
    },
-   // topic_id or card_id is undefined
    topic_id: {
       type: Number,
    },
    card_id: {
+      type: Number,
+   },
+   case_study_id: {
       type: Number,
    },
    part: {
@@ -55,7 +57,7 @@ const props = defineProps({
 const highlightedPart = ref()
 
 onMounted(async () => {
-   highlightedPart.value = await getOrCreateHighlightedPart(props.userid, props.topic_id, props.card_id, props.part.text, 'black')
+   highlightedPart.value = await getOrCreateHighlightedPart(props.userid, props.topic_id, props.card_id, props.case_study_id, props.part.text, 'black')
 })
 
 const type = computed(() => props.part.type)
@@ -71,7 +73,8 @@ const isLexicon = computed(() => type.value === 'lexicon')
 
 async function selectstart() {
    // console.log('selectstart')
-   const color = highlightedPart.value.color === 'black' ? props.highlight : 'black'
+   // const color = highlightedPart.value.color === 'black' ? props.highlight : 'black'
+   const color = highlightedPart.value.color === props.highlight ? 'none' : props.highlight
    highlightedPart.value = await updateHighlightedPart(highlightedPart.value.hash, { color })
 }
 </script>

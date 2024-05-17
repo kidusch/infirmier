@@ -43,27 +43,50 @@
       </section>
 
       <!-- Course content -->
-      <main class="">
-         <template v-for="part in parts">
-
-            <template v-if="part.type === 'break'">
-               <br/>
-            </template>
-
-            <template v-if="part.type === 'image'">
-               <img :src="part.ref" />
-            </template>
-
-            <template v-if="part.type === 'audio'">
-               <audio controls :src="part.ref" ></audio>
-            </template>
-
-            <template v-if="part.type !== 'break' && part.type !== 'image' && part.type !== 'audio'">
-               <TextPart :userid="userid" :topic_id="topic_id" :card_id="undefined" :part="part"></TextPart>
-            </template>
-
-         </template>
+      <main>
+         <TextParts :userid="userid" :topic_id="topic_id" :card_id="undefined" :parts="parts" :highlight="highlight"></TextParts>
       </main>
+
+      <!-- Highlighting pens -->
+      <!-- <div class="bg-[#F0F0F0] fixed bottom-0 right-0 flex py-3 px-1.5 rounded-xl mb-8 mr-4">
+         <button>
+            <img class="px-2 h-7 bg-gray-300" src="/src/assets/highlighter-yellow.svg" alt="highlighter-yellow">
+         </button>
+
+         <button>
+            <img class="px-2 h-7" src="/src/assets/highlighter-orange.svg" alt="highlighter-orange">
+         </button>
+         <button>
+            <img class="px-2 h-7" src="/src/assets/highlighter-purple.svg" alt="highlighter-purple">
+         </button>
+         <button>
+            <img class="px-2 h-7" src="/src/assets/eraser.svg" alt="eraser">
+         </button>
+      </div> -->
+
+      <ul class="menu bg-base-200 rounded-box h-44 fixed right-2 bottom-10">
+         <li>
+            <a :class="{ active: highlight === 'yellow' }" @click="highlight = 'yellow'">
+               <img class="h-6 w-6" src="/src/assets/highlighter-yellow.svg">
+            </a>
+         </li>
+         <li>
+            <a :class="{ active: highlight === 'orange' }" @click="highlight = 'orange'">
+               <img class="h-6 w-6" src="/src/assets/highlighter-orange.svg">
+            </a>
+         </li>
+         <li>
+            <a :class="{ active: highlight === 'purple' }" @click="highlight = 'purple'">
+               <img class="h-6 w-6" src="/src/assets/highlighter-purple.svg">
+            </a>
+         </li>
+         <li>
+            <a :class="{ active: highlight === 'none' }" @click="highlight = 'none'">
+               <img class="h-6 w-6" src="/src/assets/eraser.svg">
+            </a>
+         </li>
+      </ul>
+
 
       <!-- Note button -->
       <button ref="openNoteBtn" class="p-2 bg-primary rounded-full shadow-primary shadow-md fixed top-[30%] right-2"
@@ -71,7 +94,7 @@
          <img class="h-6 w-6" alt="note" src="/src/assets/note.svg">
       </button>
 
-      <!-- dark overlay -->
+      <!-- Note dark overlay -->
       <div ref="darkOverlay" class="hidden fixed h-[100vh] bg-black/50 w-full top-0 right-0 transition-all"
          @click="closeNoteModal">
       </div>
@@ -106,7 +129,7 @@ import { getTopic } from '/src/use/useTopic'
 import { getTheUserTopic, updateUserTopic } from '/src/use/useUserTopic'
 
 import parser from '/src/lib/grammar.js'
-import TextPart from '/src/components/TextPart.vue'
+import TextParts from '/src/components/TextParts.vue'
 
 import router from "/src/router"
 import { revisionIconPath } from '/src/lib/icons.mjs'
@@ -135,8 +158,9 @@ const ue = ref()
 const subUE = ref()
 const topic = ref([])
 const userTopic = ref()
-const parts = ref('')
+const parts = ref([])
 const done = ref(true)
+const highlight = ref('yellow')
 
 onMounted(async () => {
    ue.value = await getUE(props.ue_id)

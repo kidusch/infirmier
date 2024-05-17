@@ -49,9 +49,12 @@
             {{ caseStudy?.title }}
          </h4>
 
-         <p>{{ caseStudy?.content }}</p>
+         <!-- Course content -->
+         <TextParts :userid="userid" :case_study_id="case_study_id" :parts="parts"></TextParts>
 
+         <!-- Student's answer -->
          <div class="py-4">
+            <label for="title">Ma réponse</label>
             <div class="standard-input-container">
                <textarea placeholder="Écrivez votre réponse ici..." type="text" rows="50"
                   :value="userCaseStudy?.answer"
@@ -83,8 +86,10 @@ import { getSubUE } from '/src/use/useSubUE'
 import { getTopic } from '/src/use/useTopic'
 import { getCaseStudy } from '/src/use/useCaseStudy'
 import { getTheUserCaseStudy, updateUserCaseStudy } from '/src/use/useUserCaseStudy'
-
 import router from "/src/router"
+
+import parser from '/src/lib/grammar.js'
+import TextParts from '/src/components/TextParts.vue'
 
 
 const props = defineProps({
@@ -115,6 +120,7 @@ const subUE = ref()
 const topic = ref([])
 const caseStudy = ref([])
 const userCaseStudy = ref([])
+const parts = ref([])
 
 const done = ref(true)
 const disabledText = ref(true)
@@ -127,6 +133,13 @@ onMounted(async () => {
 
    userCaseStudy.value = await getTheUserCaseStudy(props.userid, props.case_study_id)
    done.value = userCaseStudy.value.done
+
+   try {
+      parts.value = parser.parse(caseStudy.value.content)
+      console.log('parts', parts.value)
+   } catch(err) {
+      parts.value = ''
+   }
 })
 
 const onDoneClick = async () => {
