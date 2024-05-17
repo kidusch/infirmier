@@ -16,7 +16,7 @@
          'bg-orange-200': highlightedPart?.color === 'orange',
          'bg-purple-200': highlightedPart?.color === 'purple',
       }"
-      @selectstart="selectstart"
+      @click="selectstart"
 
       v-html="highlightedPart?.text"
    ></div>
@@ -72,7 +72,7 @@ const isBoldSpan = computed(() => type.value === 'bold-span')
 const isLexicon = computed(() => type.value === 'lexicon')
 
 async function selectstart() {
-   // console.log('selectstart')
+   console.log('selectstart')
    // const color = highlightedPart.value.color === 'black' ? props.highlight : 'black'
    const color = highlightedPart.value.color === props.highlight ? 'none' : props.highlight
    highlightedPart.value = await updateHighlightedPart(highlightedPart.value.hash, { color })

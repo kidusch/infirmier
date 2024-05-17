@@ -43,7 +43,7 @@
       </section>
 
       <!-- Course content -->
-      <main>
+      <main class="mt-4">
          <TextParts :userid="userid" :topic_id="topic_id" :card_id="undefined" :parts="parts" :highlight="highlight"></TextParts>
       </main>
 
@@ -64,7 +64,7 @@
          </button>
       </div> -->
 
-      <ul class="menu bg-base-200 rounded-box h-44 fixed right-2 bottom-10">
+      <ul class="menu menu-horizontal bg-slate-50 rounded-box fixed right-0 bottom-0">
          <li>
             <a :class="{ active: highlight === 'yellow' }" @click="highlight = 'yellow'">
                <img class="h-6 w-6" src="/src/assets/highlighter-yellow.svg">
@@ -89,7 +89,7 @@
 
 
       <!-- Note button -->
-      <button ref="openNoteBtn" class="p-2 bg-primary rounded-full shadow-primary shadow-md fixed top-[30%] right-2"
+      <button ref="openNoteBtn" class="p-2 bg-primary rounded-full shadow-primary shadow-md fixed bottom-16 ttttop-[30%] right-2"
          @click="openNoteModal">
          <img class="h-6 w-6" alt="note" src="/src/assets/note.svg">
       </button>
