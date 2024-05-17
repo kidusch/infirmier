@@ -64,11 +64,41 @@
 
          </template>
       </main>
+
+      <!-- Note button -->
+      <button ref="openNoteBtn" class="p-2 bg-primary rounded-full shadow-primary shadow-md fixed top-[30%] right-2"
+         @click="openNoteModal">
+         <img class="h-6 w-6" alt="note" src="/src/assets/note.svg">
+      </button>
+
+      <!-- dark overlay -->
+      <div ref="darkOverlay" class="hidden fixed h-[100vh] bg-black/50 w-full top-0 right-0 transition-all"
+         @click="closeNoteModal">
+      </div>
+
+      <!-- Note Area -->
+      <div ref="noteBox"
+         class="fixed bottom-0 -right-full transition-all duration-300 bg-white w-1/2 sm:w-52 lg:w-72 z-[1] rounded-ss-2xl max-h-[65vh] h-[65vh] flex-col">
+         <div class="flex items-center justify-between p-4 pb-2">
+            <h3>Note</h3>
+            <!-- close icon -->
+            <button @click="closeNoteModal">
+               <img class="h-4 w-4" alt="close" src="/src/assets/close.svg">
+            </button>
+         </div>
+         <textarea class="min-h-[65vh] h-[65vh] px-4 text-black/70 font-normal text-base"
+            placeholder="Écrivez vos notes ici"
+            :value="userTopic?.note"
+            @input="debouncedInputText"
+         ></textarea>
+      </div>
+
    </main>
 </template>
 
 <script setup>
-import { ref, onMounted, createApp } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useDebounceFn } from '@vueuse/core'
 
 import { getUE } from '/src/use/useUE'
 import { getSubUE } from '/src/use/useSubUE'
@@ -132,4 +162,25 @@ const move = ref(false)
 const gotoRevise = () => {
    router.push(`/home/${props.userid}/revise-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
 }
+
+const darkOverlay = ref(null)
+const openNoteBtn = ref(null)
+const noteBox = ref(null)
+
+function openNoteModal() {
+   openNoteBtn.value.classList.add("hidden")
+   darkOverlay.value.classList.remove("hidden")
+   noteBox.value.style.right = 0
+}
+
+function closeNoteModal() {
+   openNoteBtn.value.classList.remove("hidden")
+   darkOverlay.value.classList.add("hidden")
+   noteBox.value.style.right = "-100%"
+}
+
+const onInputText = async (ev) => {
+   userTopic.value = await updateUserTopic(userTopic.value.id, { note: ev.target.value })
+}
+const debouncedInputText = useDebounceFn(onInputText, 500)
 </script>

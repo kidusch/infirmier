@@ -17,7 +17,9 @@ PEGJS (projet cloné dans CLONES)
 https://shamansir.github.io/pegjs-fn/
 https://github.com/pegjs/pegjs
 
+```
 pegjs grammar.pegjs    # génère 'grammar.js'
+```
 
 (Alternative)
 https://github.com/kach/nearley

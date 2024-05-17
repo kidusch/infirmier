@@ -35,6 +35,7 @@ const props = defineProps({
       type: Number,
       required: true
    },
+   // topic_id or card_id is undefined
    topic_id: {
       type: Number,
    },
