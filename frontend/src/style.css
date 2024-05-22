@@ -107,8 +107,7 @@
   .standard-input-container {
     @apply border border-black/15  rounded-md flex px-0.5 relative;
   }
-  .standard-input-container input,
-  textarea {
+  .standard-input-container input,textarea {
     @apply standard-input border-0 flex-1 w-full;
   }
   .standard-input-container textarea {

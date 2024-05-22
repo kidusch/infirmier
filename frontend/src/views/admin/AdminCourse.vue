@@ -20,7 +20,7 @@
          <div>
                <label for="title">Contenu</label>
                <div class="standard-input-container">
-                  <textarea placeholder="Écrire le contenu ici..." type="text" rows="50"
+                  <textarea placeholder="Écrire le contenu ici..." type="text" rows="5"
                      :value="topic ? topic.course_content : ''"
                      @input="debouncedInput"
                      :disabled="disabled"
@@ -30,6 +30,24 @@
                </div>
          </div>
       </main>
+
+      <!-- Note button -->
+      <button class="p-2 bg-primary rounded-full shadow-primary shadow-md fixed top-40 right-2"
+         @click="preview">
+         <img class="h-6 w-6" alt="note" src="/src/assets/note.svg">
+      </button>
+
+      <dialog class="modal" :class="{'modal-open': isPreviewOpen}">
+         <div class="modal-box w-full max-w-full">
+            <form method="dialog">
+               <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" @click="isPreviewOpen = false">✕</button>
+            </form>
+
+            <TextParts :userid="userid" :topic_id="topic_id" :card_id="undefined" :parts="parts"></TextParts>
+
+         </div>
+      </dialog>
+
 
    </main>
    
@@ -42,7 +60,10 @@ import { useDebounceFn } from '@vueuse/core'
 import { getUE } from '/src/use/useUE'
 import { getSubUE } from '/src/use/useSubUE'
 import { getTopic, updateTopic } from '/src/use/useTopic'
-import router from '/src/router'
+
+import parser from '/src/lib/grammar.js'
+import TextParts from '/src/components/TextParts.vue'
+
 
 const props = defineProps({
    userid: {
@@ -79,11 +100,17 @@ const onInput = async (ev) => {
 }
 const debouncedInput = useDebounceFn(onInput, 500)
 
-const preview = () => {
-   console.log('preview')
-}
+const isPreviewOpen = ref(false)
+const parts = ref([])
 
-const back = () => {
-   router.back()
+const preview = () => {
+   isPreviewOpen.value = true
+
+   try {
+      parts.value = parser.parse(topic.value.course_content)
+      console.log('parts', parts.value)
+   } catch(err) {
+      parts.value = ''
+   }
 }
 </script>

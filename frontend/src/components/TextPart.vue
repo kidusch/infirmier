@@ -15,6 +15,9 @@
          'bg-yellow-200': highlightedPart?.color === 'yellow',
          'bg-orange-200': highlightedPart?.color === 'orange',
          'bg-purple-200': highlightedPart?.color === 'purple',
+
+         'text-red-600': part.type === 'title' && part.cat === 1,
+         'text-blue-600': part.type === 'title' && part.cat === 2,
       }"
       @click="selectstart"
 

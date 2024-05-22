@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QCM</title>
+    <link rel="stylesheet" href="./src/output.css">
+</head>
+
+<body class="py-4 lg:pt-2 flex flex-col h-screen relative">
+
+    <!-- navbar -->
+    <nav class="lg:border-b lg:pb-2">
+
+        <main class="flex w-full justify-between items-center container max-w-7xl">
+            <button onclick="toggleSideMenu()">
+                <img class="w-6" src="./assets/menu.svg" alt="menu">
+            </button>
+
+            <a class="flex items-center gap-4 lg:flex-1 lg:px-12" href="#">
+                <img class="h-12" src="./assets/logo.svg" alt="Logo">
+                <h3 class="max-lg:hidden">Journal de bord infirmier</h3>
+            </a>
+
+            <button>
+                <img class="w-6" src="./assets/logout.svg" alt="logout">
+            </button>
+
+        </main>
+
+        <!-- side menu -->
+        <aside id="sidebarMenu"
+            class="hidden fixed bg-black/70  h-screen h-svh  w-screen top-0 left-0 transition-all z-50">
+
+            <main id="sidebarMenuArea"
+                class="fixed h-screen h-svh top-0 -left-full w-1/5 max-lg:w-1/3 max-sm:w-2/3 bg-white p-5 flex flex-col transition-all">
+
+                <div class="w-full flex justify-end">
+                    <button onclick="toggleSideMenu()">
+                        <img src="./assets/cancel.svg" alt="cancel">
+                    </button>
+                </div>
+
+                <div class="flex justify-center">
+                    <img class="w-36" src="./assets/logo.svg" alt="logo">
+                </div>
+
+                <div class="py-8 mx-4 flex-1 flex flex-col gap-2">
+
+                    <a href="courses.html" class="flex gap-4 items-center w-full p-3 rounded-lg opacity-50 ">
+                        <img class="w-5" src="./assets/courses.svg" alt="courses">
+                        <p class="font-medium">
+                            Cours
+                        </p>
+                    </a>
+
+                    <a href="revisions.html" class="flex gap-4 items-center w-full p-3 rounded-lg opacity-50 ">
+                        <img class="w-5" src="./assets/revisions.svg" alt="revisions">
+                        <p class="font-medium">
+                            Révisions
+                        </p>
+                    </a>
+
+                    <a href="anatomy.html" class="flex gap-4 items-center w-full p-3 rounded-lg bg-primary">
+                        <img class="w-5" src="./assets/anatomy-activate.svg" alt="anatomy">
+                        <p class="font-medium text-white">
+                            Anatomie
+                        </p>
+                    </a>
+
+
+                </div>
+
+
+                <div class="mx-4 ">
+                    <button class="flex gap-4 items-center w-full p-3 rounded-lg opacity-50 ">
+                        <img class="w-5" src="./assets/logout.svg" alt="logout">
+                        <p class="font-medium">
+                            Log out
+                        </p>
+                    </button>
+                </div>
+
+            </main>
+
+            <div id="sidebarMenuSpace" onclick="toggleSideMenu()"
+                class="fixed h-svh top-0 right-0 w-4/5 max-lg:w-2/3 max-sm:w-1/3">
+            </div>
+
+        </aside>
+
+    </nav>
+
+
+    <main class="flex-1 container max-w-7xl flex flex-col items-center relative">
+
+        <!-- Header -->
+        <header class="chapter-card my-6">
+            <p>
+                UE 2.1 - Biologie fondamentale / Molécules constitutives du vivant - QCM
+            </p>
+        </header>
+
+        <!-- Settings -->
+        <section class="w-full flex justify-end gap-6">
+
+            <h2 class="flex-1 px-3">
+                QCM
+            </h2>
+
+            <label class="inline-flex gap-3 items-center cursor-pointer">
+                <p class="font-semibold text-black">Acquis</p>
+
+                <input type="checkbox" value="" class="sr-only peer" checked>
+                <div
+                    class="relative w-11 h-6 bg-gray-200 rounded-full peer   peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#76EE59]">
+                </div>
+
+            </label>
+
+            <button>
+                <img class="h-5" src="./assets/courses.svg" alt="course">
+            </button>
+
+        </section>
+
+
+        <!-- Main content -->
+        <main class="py-4 w-full">
+            <h4 class="py-2 font-semibold text-center">
+                Quelle Caracteristique distingue une cellule
+                eucaryote d’une cellule procaryote ?
+            </h4>
+            <p class="text-center">(selectionnez toutes les reponses correctes)</p>
+
+            <!-- MCQ / QCM -->
+            <form>
+
+                <div>
+                    <div class="py-5">
+                        <div class="flex items-baseline pb-1.5">
+                            <label for="default-radio-1" class="font-normal me-2 w-6">
+                                <p class="text-sm text-black">
+                                    Oui
+                                </p>
+                            </label>
+
+                            <input id="default-radio-1" type="radio" value="" name="mcq-1" class="w-4 h-4 ">
+                            <label for="default-radio-1" class="font-normal ms-2">
+                                <p class="text-sm max-sm:text-xs text-black">
+                                    A - Presence d’un noyau delimite par une
+                                </p>
+                            </label>
+                        </div>
+                        <div class="flex items-baseline">
+                            <label for="default-radio-2" class="font-normal me-2 w-6">
+                                <p class="text-sm text-black">
+                                    non
+                                </p>
+                            </label>
+
+                            <input checked id="default-radio-2" type="radio" value="" name="mcq-1" class="w-4 h-4  ">
+                            <label for="default-radio-2" class="font-normal ms-2">
+                                <p class="text-sm max-sm:text-xs text-black">
+                                    membrane
+                                </p>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="">
+                        <div class="flex items-baseline pb-1.5">
+                            <label for="default-radio-3" class="font-normal me-2 w-6">
+                                <p class="text-sm text-black">
+                                    Oui
+                                </p>
+                            </label>
+
+                            <input id="default-radio-3" type="radio" value="" name="mcq-2" class="w-4 h-4 ">
+                            <label for="default-radio-3" class="font-normal ms-2">
+                                <p class="text-sm max-sm:text-xs text-black">
+                                    A - Presence d’un noyau delimite par une
+                                </p>
+                            </label>
+                        </div>
+                        <div class="flex items-baseline">
+                            <label for="default-radio-4" class="font-normal me-2 w-6">
+                                <p class="text-sm text-black">
+                                    non
+                                </p>
+                            </label>
+
+                            <input checked id="default-radio-4" type="radio" value="" name="mcq-2" class="w-4 h-4  ">
+                            <label for="default-radio-4" class="font-normal ms-2">
+                                <p class="text-sm max-sm:text-xs text-black">
+                                    membrane
+                                </p>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="py-5">
+                        <div class="flex items-baseline pb-1.5">
+                            <label for="default-radio-1" class="font-normal me-2 w-6">
+                                <p class="text-sm text-black">
+                                    Oui
+                                </p>
+                            </label>
+
+                            <input id="default-radio-1" type="radio" value="" name="mcq-3" class="w-4 h-4 ">
+                            <label for="default-radio-1" class="font-normal ms-2">
+                                <p class="text-sm max-sm:text-xs text-black">
+                                    A - Presence d’un noyau delimite par une
+                                </p>
+                            </label>
+                        </div>
+                        <div class="flex items-baseline">
+                            <label for="default-radio-2" class="font-normal me-2 w-6">
+                                <p class="text-sm text-black">
+                                    non
+                                </p>
+                            </label>
+
+                            <input checked id="default-radio-2" type="radio" value="" name="mcq-3" class="w-4 h-4  ">
+                            <label for="default-radio-2" class="font-normal ms-2">
+                                <p class="text-sm max-sm:text-xs text-black">
+                                    membrane
+                                </p>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </form>
+        </main>
+
+        <footer class="flex-1 flex flex-col justify-end pb-8">
+            <button class="primary-btn px-4">
+                Verifier mes responses
+            </button>
+        </footer>
+    </main>
+
+    <script src="/src/app.js"></script>
+
+</body>
+
+</html>
