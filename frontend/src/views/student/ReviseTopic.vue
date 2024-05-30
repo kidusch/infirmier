@@ -18,9 +18,13 @@
       <header class="py-2">
          <h3 class="opacity-50 flex items-center">
             {{ topic?.name }}
-            <div class="ml-2 mt-3 w-14">
+            <div class="ml-4 mt-3 w-14">
                <jcb-radial :value="progress"></jcb-radial>
             </div>
+            <button class="mx-4" @click="gotoStudy">
+               <img class="h-5" src="/src/assets/courses.svg" alt="course">
+            </button>
+
          </h3>
       </header>
 
@@ -159,5 +163,9 @@ const selectQuiz = (quiz) => {
 
 const selectCaseStudy = (caseStudy) => {
    router.push(`/home/${props.userid}/revise-case-study/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${caseStudy.id}`)
+}
+
+const gotoStudy = () => {
+   router.push(`/home/${props.userid}/study-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
 }
 </script>
