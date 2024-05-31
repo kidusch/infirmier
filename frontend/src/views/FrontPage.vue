@@ -56,6 +56,7 @@ const adminMisc = ref({})
 onMounted(async () => {
    // the only row of table 'admin_misc' is supposed to have id=1
    adminMisc.value = await app.service('admin_misc').findUnique({ where: { id: 1 }})
+   console.log('adminMisc.value', adminMisc.value)
 })
 
 function login() {

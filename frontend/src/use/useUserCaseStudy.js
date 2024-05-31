@@ -9,7 +9,7 @@ const initialState = () => ({
    theUserCaseStudyReady: {},
 })
  
-const userCaseStudyState = useSessionStorage('user-caseStudy-state', initialState())
+const userCaseStudyState = useSessionStorage('user-case-study-state', initialState())
 
 export const resetUseUserCaseStudy = () => {
    userCaseStudyState.value = initialState()
