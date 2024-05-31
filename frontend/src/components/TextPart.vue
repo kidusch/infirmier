@@ -16,10 +16,14 @@
          'bg-orange-200': highlightedPart?.color === 'orange',
          'bg-purple-200': highlightedPart?.color === 'purple',
 
-         'text-red-600': part.type === 'title' && part.cat === 1,
-         'text-blue-600': part.type === 'title' && part.cat === 2,
+         'text-red-600': isTitle1,
+         'text-blue-600': isTitle2,
+
+         'list-disc': isLi,
+         'pl-5': isLi,
+         'space-y-2': isLi,
       }"
-      @click="selectstart"
+      @click="onClick"
 
       v-html="highlightedPart?.text"
    ></div>
@@ -73,10 +77,9 @@ const isTitle3 = computed(() => isTitle.value && props.part.cat === 3)
 const isTitle4 = computed(() => isTitle.value && props.part.cat === 4)
 const isBoldSpan = computed(() => type.value === 'bold-span')
 const isLexicon = computed(() => type.value === 'lexicon')
+const isLi = computed(() => type.value === 'li')
 
-async function selectstart() {
-   console.log('selectstart')
-   // const color = highlightedPart.value.color === 'black' ? props.highlight : 'black'
+async function onClick() {
    const color = highlightedPart.value.color === props.highlight ? 'none' : props.highlight
    highlightedPart.value = await updateHighlightedPart(highlightedPart.value.hash, { color })
 }

@@ -70,6 +70,10 @@
 }
 
 @layer components {
+  li {
+    @apply list-disc pl-5 space-y-2;
+  }
+
   .karan-btn {
     @apply bg-primary text-white flex items-center justify-center gap-4 font-medium max-h-14;
   }

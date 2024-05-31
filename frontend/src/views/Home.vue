@@ -14,9 +14,12 @@
                <h3 class="max-lg:hidden">Journal de bord infirmier</h3>
             </router-link>
 
-            <button @click="signout">
+            <!-- <button @click="signout">
                <img class="w-6" src="/src/assets/logout.svg">
-            </button>
+            </button> -->
+            <div class="cursor-pointer link hover:text-red-600 text-blue-600" @click="signout">
+               Sortie
+            </div>
 
          </main>
 

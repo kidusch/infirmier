@@ -16,16 +16,21 @@
 
       <!-- Header -->
       <header class="py-2">
-         <h3 class="opacity-50 flex items-center">
-            {{ topic?.name }}
+         <div class="flex items-center">
+            <h3 class="opacity-50">{{ topic?.name }}</h3>
+
             <div class="ml-4 mt-3 w-14">
                <jcb-radial :value="progress"></jcb-radial>
             </div>
-            <button class="mx-4" @click="gotoStudy">
-               <img class="h-5" src="/src/assets/courses.svg" alt="course">
-            </button>
 
-         </h3>
+            <!-- <button class="mx-4" @click="gotoStudy">
+               <img class="h-5" src="/src/assets/courses.svg" alt="course">
+            </button> -->
+            <div class="ml-4 cursor-pointer link hover:text-red-600 text-blue-600" @click="gotoStudy">
+               cours
+            </div>
+
+         </div>
       </header>
 
       <!-- Main content -->

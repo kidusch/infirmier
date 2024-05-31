@@ -36,9 +36,12 @@
 
          </label>
 
-         <button @click="gotoStudy">
+         <!-- <button @click="gotoStudy">
             <img class="h-5" src="/src/assets/courses.svg" alt="course">
-         </button>
+         </button> -->
+         <div class="cursor-pointer link hover:text-red-600 text-blue-600" @click="gotoStudy">
+            cours
+         </div>
 
       </section>
 

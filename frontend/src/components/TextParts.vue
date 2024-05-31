@@ -5,6 +5,15 @@
          <br/>
       </template>
 
+      <template v-if="part.type === 'li'">
+         <div class="pl-5 space-y-2">
+            •
+            <template v-for="subpart in part.content">
+               <TextPart :userid="userid" :topic_id="topic_id" :card_id="card_id" :case_study_id="case_study_id" :part="subpart" :highlight="highlight"></TextPart>
+            </template>
+         </div>
+      </template>
+
       <template v-if="part.type === 'image'">
          <img :src="part.ref" />
       </template>
@@ -13,7 +22,7 @@
          <audio controls :src="part.ref" ></audio>
       </template>
 
-      <template v-if="part.type !== 'break' && part.type !== 'image' && part.type !== 'audio'">
+      <template v-if="part.type !== 'break' && part.type !== 'li' && part.type !== 'image' && part.type !== 'audio'">
          <TextPart :userid="userid" :topic_id="topic_id" :card_id="card_id" :case_study_id="case_study_id" :part="part" :highlight="highlight"></TextPart>
       </template>
 

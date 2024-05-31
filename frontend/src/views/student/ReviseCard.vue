@@ -36,9 +36,12 @@
 
          </label>
 
-         <button @click="gotoStudy">
+         <!-- <button @click="gotoStudy">
             <img class="h-5" src="/src/assets/courses.svg" alt="course">
-         </button>
+         </button> -->
+         <div class="cursor-pointer link hover:text-red-600 text-blue-600" @click="gotoStudy">
+            cours
+         </div>
 
       </section>
 
@@ -47,9 +50,9 @@
       <main class="my-6 relative flex justify-center">
 
          <div class="bg-accent-darker py-4 px-6 rounded-3xl w-full max-lg:max-w-xl z-30 relative">
-            <h4 class="py-2">
+            <!-- <h4 class="py-2">
                {{ card?.title }}
-            </h4>
+            </h4> -->
             <!-- contenu -->
             <TextParts :userid="userid" :topic_id="topic_id" :card_id="card_id" :parts="parts"></TextParts>
          </div>

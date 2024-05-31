@@ -15,11 +15,11 @@
       </header>
 
       <!-- Header -->
-      <header class="py-2">
+      <!-- <header class="py-2">
          <h3 class="lg:opacity-50">
             {{ topic?.name }}
          </h3>
-      </header>
+      </header> -->
 
       <!-- Settings -->
       <section class="w-full flex justify-end gap-6">
@@ -34,11 +34,14 @@
 
          </label>
 
-         <button @click="gotoRevise">
+         <!-- <button @click="gotoRevise">
             <svg class="w-5 h-5">
                <path :d="revisionIconPath"></path>
             </svg>
-         </button>
+         </button> -->
+         <div class="cursor-pointer link hover:text-red-600 text-blue-600" @click="gotoRevise">
+            révisions
+         </div>
 
       </section>
 
