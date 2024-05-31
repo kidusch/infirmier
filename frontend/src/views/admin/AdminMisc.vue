@@ -4,7 +4,7 @@
       <main class="flex flex-col">
          
          <div class="my-4">
-            <label for="title">Email de bienvenue</label>
+            <label for="title">Texte de l'email de bienvenue</label>
             <div class="standard-input-container">
                <textarea placeholder="Texte..." type="text" rows="50"
                   :value="adminMisc ? adminMisc.email : ''"
@@ -26,6 +26,34 @@
                   :disabled="disabledCGU"
                />
                <img src="/src/assets/edit.svg" @click="disabledCGU = !disabledCGU">
+               <div class="img-placeholder">
+               </div>
+            </div>
+         </div>
+         
+         <div class="my-4">
+            <label for="title">Texte page d'accueil</label>
+            <div class="standard-input-container">
+               <textarea placeholder="Texte..." type="text" rows="50"
+                  :value="adminMisc ? adminMisc.welcome_text : ''"
+                  @input="debouncedInputWelcomeText"
+                  :disabled="disabledWelcomeText"
+               />
+               <img src="/src/assets/edit.svg" @click="disabledWelcomeText = !disabledWelcomeText">
+               <div class="img-placeholder">
+               </div>
+            </div>
+         </div>
+         
+         <div class="my-4">
+            <label for="title">URL image page d'accueil</label>
+            <div class="standard-input-container">
+               <textarea placeholder="URL..." type="text" rows="50"
+                  :value="adminMisc ? adminMisc.welcome_img : ''"
+                  @input="debouncedInputWelcomeImg"
+                  :disabled="disabledWelcomeImg"
+               />
+               <img src="/src/assets/edit.svg" @click="disabledWelcomeImg = !disabledWelcomeImg">
                <div class="img-placeholder">
                </div>
             </div>
@@ -72,5 +100,23 @@ const onInputCGU = async (ev) => {
 }
 const debouncedInputCGU = useDebounceFn(onInputCGU, 500)
 const disabledCGU = ref(true)
+
+const onInputWelcomeText = async (ev) => {
+   adminMisc.value = await app.service('admin_misc').update({
+      where: { id: 1 },
+      data: { welcome_text: ev.target.value }
+   })
+}
+const debouncedInputWelcomeText = useDebounceFn(onInputWelcomeText, 500)
+const disabledWelcomeText = ref(true)
+
+const onInputWelcomeImg = async (ev) => {
+   adminMisc.value = await app.service('admin_misc').update({
+      where: { id: 1 },
+      data: { welcome_img: ev.target.value }
+   })
+}
+const debouncedInputWelcomeImg = useDebounceFn(onInputWelcomeImg, 500)
+const disabledWelcomeImg = ref(true)
 
 </script>

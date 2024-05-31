@@ -153,6 +153,13 @@ const routes = [
          },
          
          {
+            path: 'welcome-student',
+            component: () => import('/src/views/student/WelcomeStudent.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+            }),
+         },
+         {
             path: 'study-ue',
             component: () => import('/src/views/student/StudyUE.vue'),
             props: route => ({

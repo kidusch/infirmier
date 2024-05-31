@@ -21,6 +21,11 @@ app.service('topic').on('create', topic => {
    topicState.value.topicCache[topic.id] = topic
 })
 
+app.service('topic').on('update', topic => {
+   console.log('TOPIC EVENT update', topic)
+   topicState.value.topicCache[topic.id] = topic
+})
+
 
 export const getTopic = async (id) => {
    let topic = topicState.value.topicCache[id]

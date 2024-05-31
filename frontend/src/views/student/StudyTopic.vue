@@ -135,7 +135,7 @@ import parser from '/src/lib/grammar.js'
 import TextParts from '/src/components/TextParts.vue'
 
 import router from "/src/router"
-import { revisionIconPath } from '/src/lib/icons.mjs'
+// import { revisionIconPath } from '/src/lib/icons.mjs'
 
 
 const props = defineProps({

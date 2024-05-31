@@ -36,9 +36,11 @@ enum UserType {
 
 // only one row, with id=1
 model admin_misc {
-  id    Int    @id @default(autoincrement())
-  email String
-  cgu   String
+  id            Int          @id @default(autoincrement())
+  email         String?
+  cgu           String?
+  welcome_text  String       @default("Des cours complets que vous pouvez personnaliser<br/>Des quizs pour réviser")
+  welcome_img   String       @default("/src/assets/home_illustration.png")
 }
 
 // UE

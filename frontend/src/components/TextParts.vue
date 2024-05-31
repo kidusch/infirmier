@@ -6,12 +6,11 @@
       </template>
 
       <template v-if="part.type === 'li'">
-         <div class="pl-5 space-y-2">
-            •
+         <li>
             <template v-for="subpart in part.content">
                <TextPart :userid="userid" :topic_id="topic_id" :card_id="card_id" :case_study_id="case_study_id" :part="subpart" :highlight="highlight"></TextPart>
             </template>
-         </div>
+         </li>
       </template>
 
       <template v-if="part.type === 'image'">

@@ -136,7 +136,8 @@ onMounted(async () => {
             iconPath: revisionIconPath,
          },
       ]
-      router.push(`/home/${props.userid}/study-ue`)
+      // router.push(`/home/${props.userid}/study-ue`)
+      router.push(`/home/${props.userid}/welcome-student`)
       currentItem.value = menuItems.value[0]
    }
 })
