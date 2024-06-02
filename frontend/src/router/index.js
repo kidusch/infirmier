@@ -97,13 +97,35 @@ const routes = [
             }),
          },
          {
-            path: 'admin-course/:ue_id/:sub_ue_id/:topic_id',
+            path: 'admin-course-ex/:ue_id/:sub_ue_id/:topic_id',
+            component: () => import('/src/views/admin/AdminCourseEx.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+               ue_id: parseInt(route.params.ue_id),
+               sub_ue_id: parseInt(route.params.sub_ue_id),
+               topic_id: parseInt(route.params.topic_id),
+            }),
+         },
+         {
+            path: 'admin-course/:ue_id/:sub_ue_id/:topic_id/:course_id',
             component: () => import('/src/views/admin/AdminCourse.vue'),
             props: route => ({
                userid: parseInt(route.params.userid),
                ue_id: parseInt(route.params.ue_id),
                sub_ue_id: parseInt(route.params.sub_ue_id),
                topic_id: parseInt(route.params.topic_id),
+               course_id: parseInt(route.params.course_id),
+            }),
+         },
+         {
+            path: 'admin-card/:ue_id/:sub_ue_id/:topic_id/:card_id',
+            component: () => import('/src/views/admin/AdminCard.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+               ue_id: parseInt(route.params.ue_id),
+               sub_ue_id: parseInt(route.params.sub_ue_id),
+               topic_id: parseInt(route.params.topic_id),
+               card_id: parseInt(route.params.card_id),
             }),
          },
          {
@@ -127,17 +149,6 @@ const routes = [
                topic_id: parseInt(route.params.topic_id),
                quiz_id: parseInt(route.params.quiz_id),
                quiz_choice_id: parseInt(route.params.quiz_choice_id),
-            }),
-         },
-         {
-            path: 'admin-card/:ue_id/:sub_ue_id/:topic_id/:card_id',
-            component: () => import('/src/views/admin/AdminCard.vue'),
-            props: route => ({
-               userid: parseInt(route.params.userid),
-               ue_id: parseInt(route.params.ue_id),
-               sub_ue_id: parseInt(route.params.sub_ue_id),
-               topic_id: parseInt(route.params.topic_id),
-               card_id: parseInt(route.params.card_id),
             }),
          },
          {

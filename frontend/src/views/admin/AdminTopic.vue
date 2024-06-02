@@ -33,6 +33,28 @@
          </div>
 
          <div class="flex flex-col gap-3">
+            <label for="title">Cours</label>
+
+            <div class="flex flex-col gap-3">
+               <div v-for="course, index in courseList">
+                  <ListItem
+                     :index="index" :list="courseList"
+                     @update="(e1, e2) => updateCourses(e1, e2)"
+                     @remove="deleteCourse(course.id)"
+                     @select="selectCourse(course.id)"
+                  ></ListItem>
+               </div>
+
+               <div class="flex gap-3 items-center">
+                  <input v-model="newCourseTitle" class="standard-input flex-1" placeholder="Titre nouveau cours" type="text">
+                  <div class="flex gap-1.5" @click="addCourse">
+                     <img class="h-4 cursor-pointer" src="/src/assets/add.svg" alt="delete">
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <div class="flex flex-col gap-3">
             <label for="title">Fiches</label>
 
             <div class="flex flex-col gap-3">
@@ -110,6 +132,7 @@ import { ref, onMounted } from 'vue'
 import { getUE } from '/src/use/useUE'
 import { getSubUE } from '/src/use/useSubUE'
 import { getTopic } from '/src/use/useTopic'
+import { getCourseList, createCourse, updateCourse, removeCourse } from '/src/use/useCourse'
 import { getCardList, createCard, updateCard, removeCard } from '/src/use/useCard'
 import { getQuizList, createQuiz, updateQuiz, removeQuiz } from '/src/use/useQuiz'
 import { getCaseStudyList, createCaseStudy, updateCaseStudy, removeCaseStudy } from '/src/use/useCaseStudy'
@@ -139,6 +162,8 @@ const props = defineProps({
 const ue = ref()
 const subUE = ref()
 const topic = ref()
+const courseList = ref([])
+const newCourseTitle = ref('')
 const cardList = ref([])
 const newCardTitle = ref('')
 const quizList = ref([])
@@ -150,14 +175,45 @@ onMounted(async () => {
    ue.value = await getUE(props.ue_id)
    subUE.value = await getSubUE(props.sub_ue_id)
    topic.value = await getTopic(props.topic_id)
+   await updateCourseList()
    await updateCardList()
    await updateQuizList()
    await updateCaseStudyList()
 })
 
 const adminCourse = () => {
-   router.push(`/home/${props.userid}/admin-course/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
+   router.push(`/home/${props.userid}/admin-course-ex/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
 }
+
+
+
+async function updateCourseList() {
+   courseList.value= await getCourseList(props.topic_id)
+}
+
+async function updateCourses(e1, e2) {
+   await updateCourse(e1.id, { rank: e1.rank })
+   await updateCourse(e2.id, { rank: e2.rank })
+   updateCourseList()
+}
+
+const selectCourse = (course_id) => {
+   router.push(`/home/${props.userid}/admin-course/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${course_id}`)
+}
+
+const addCourse = async () => {
+   await createCourse(props.topic_id, newCourseTitle.value)
+   await updateCourseList()
+   newCourseTitle.value = ''
+}
+
+const deleteCourse = async (id) => {
+   if (window.confirm("Supprimer ?")) {
+      await removeCourse(id)
+      await updateCourseList()
+   }
+}
+
 
 async function updateCardList() {
    cardList.value= await getCardList(props.topic_id)

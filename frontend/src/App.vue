@@ -32,11 +32,11 @@ watch(() => appState.value.isExpired, async (value) => {
 
 /////////////////      PREVENT COPY EVERYWHERE     ////////////////
 
-onMounted(() => {
-   document.addEventListener('copy', (event) => {
-      event.preventDefault()
-   })
-})
+// onMounted(() => {
+//    document.addEventListener('copy', (event) => {
+//       event.preventDefault()
+//    })
+// })
 
 
 /////////////////      AUTOMATIC VERSION UPDATE     ////////////////

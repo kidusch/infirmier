@@ -24,7 +24,6 @@
          
          <header class="mt-10 w-full flex justify-center flex-1">
             <img class="object-contain sm:max-w-2xl" :src="adminMisc?.welcome_img" alt="home_illustration">
-            <!-- <img class="object-contain sm:max-w-2xl" src="/img/home_illustration.png" alt="home_illustration"> -->
          </header>
 
          <main class="flex-1 flex flex-col items-center justify-evenly text-center">
@@ -56,7 +55,6 @@ const adminMisc = ref({})
 onMounted(async () => {
    // the only row of table 'admin_misc' is supposed to have id=1
    adminMisc.value = await app.service('admin_misc').findUnique({ where: { id: 1 }})
-   console.log('adminMisc.value', adminMisc.value)
 })
 
 function login() {

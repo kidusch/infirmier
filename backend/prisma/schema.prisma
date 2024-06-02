@@ -22,7 +22,7 @@ model user {
 
   user_actions          user_action[]
   user_topics           user_topic[] // actually a 1:1 relationship
-  // user_text_annotations user_text_annotation[]
+  user_courses          user_course[] // actually a 1:1 relationship
   user_cards            user_card[] // actually a 1:1 relationship
   user_quizes           user_quiz[] // actually a 1:1 relationship
   user_case_studies     user_case_study[] // actually a 1:1 relationship
@@ -75,10 +75,10 @@ model topic {
   course_content String   @default("")
 
   sub_ue                sub_ue                 @relation(fields: [sub_ue_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  courses               course[]
   cards                 card[]
   case_studies          case_study[]
   quizes                quiz[]
-  // user_text_annotations user_text_annotation[]
   user_topics           user_topic[] // actually a 1:1 relationship
 }
 
@@ -89,6 +89,19 @@ model highlighted_part {
   color      String   @default("yellow")
 }
 
+// Cours au sein d'une matière
+model course {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  topic_id   Int
+  rank       Int
+  title      String
+  content    String // contenu du cours
+
+  topic      topic       @relation(fields: [topic_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user_courses user_course[] // actually a 1:1 relationship
+}
+
 // Fiche de révision au sein d'une matière
 model card {
   id         Int      @id @default(autoincrement())
@@ -96,7 +109,7 @@ model card {
   topic_id   Int
   rank       Int
   title      String
-  content    String // contenu du cours
+  content    String // contenu de la fiche
 
   topic      topic       @relation(fields: [topic_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   user_cards user_card[] // actually a 1:1 relationship
@@ -170,19 +183,19 @@ model user_topic {
   @@unique([user_id, topic_id])
 }
 
-// // Annoation textuelle d'un cours par un utilisateur
-// model user_text_annotation {
-//   id       Int      @id @default(autoincrement())
-//   time     DateTime @default(now()) @db.Timestamptz(6)
-//   user_id  Int
-//   topic_id Int
-//   text     String
-//   x        Int
-//   y        Int
+// Relation utilisateur <-> cours (est-il acquis)
+model user_course {
+  id         Int      @id @default(autoincrement())
+  time       DateTime @default(now()) @db.Timestamptz(6)
+  user_id    Int
+  course_id  Int
+  done       Boolean  @default(false) // = le cours est acquis par l'utilisateur
 
-//   user  user  @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-//   topic topic @relation(fields: [topic_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-// }
+  user user @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  course course @relation(fields: [course_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([user_id, course_id])
+}
 
 // Relation utilisateur <-> fiche de révision (est-elle acquise)
 model user_card {
