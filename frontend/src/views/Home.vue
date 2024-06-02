@@ -137,9 +137,9 @@ onMounted(async () => {
          },
       ]
       // prevent copy for student
-      document.addEventListener('copy', (event) => {
-         event.preventDefault()
-      })
+      // document.addEventListener('copy', (event) => {
+      //    event.preventDefault()
+      // })
       // go to student welcome page
       router.push(`/home/${props.userid}/welcome-student`)
       currentItem.value = menuItems.value[0]
