@@ -63,20 +63,20 @@ onMounted(async () => {
    ueList.value = await getUEList()
    for (const ue of ueList.value) {
       subUEListDict.value[ue.id] = await getSubUEList(ue.id)
-      for (const subUE of subUEListDict.value[ue.id]) {
-         let count = 0
-         let sum = 0
-         const topicList = await getTopicList(subUE.id)
-         for (const topic of topicList) {
-            const courseList = await getCourseList(topic.id)
-            for (const course of courseList) {
-               const user_course = await getTheUserCourse(props.userid, course.id)
-               sum += (user_course.done ? 100 : 0)
-               count += 1
-            }
-         }
-         subUEProgressDict.value[subUE.id] = count === 0 ? 0 : Math.round(sum / count)
-      }
+      // for (const subUE of subUEListDict.value[ue.id]) {
+      //    let count = 0
+      //    let sum = 0
+      //    const topicList = await getTopicList(subUE.id)
+      //    for (const topic of topicList) {
+      //       const courseList = await getCourseList(topic.id)
+      //       for (const course of courseList) {
+      //          const user_course = await getTheUserCourse(props.userid, course.id)
+      //          sum += (user_course.done ? 100 : 0)
+      //          count += 1
+      //       }
+      //    }
+      //    subUEProgressDict.value[subUE.id] = count === 0 ? 0 : Math.round(sum / count)
+      // }
    }
 })
 

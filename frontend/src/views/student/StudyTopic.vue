@@ -21,7 +21,7 @@
          </h3>
       </header> -->
 
-      
+
       <!-- Main content -> courses list -->
       <main class="flex flex-col gap-6 pb-6">
          
@@ -89,10 +89,10 @@ onMounted(async () => {
    subUE.value = await getSubUE(props.sub_ue_id)
    topic.value = await getTopic(props.topic_id)
    courseList.value = await getCourseList(props.topic_id)
-   for (const course of courseList.value) {
-      const user_course = await getTheUserCourse(props.userid, course.id)
-      courseProgressDict.value[course.id] = user_course.done ? 100 : 0
-   }
+   // for (const course of courseList.value) {
+   //    const user_course = await getTheUserCourse(props.userid, course.id)
+   //    courseProgressDict.value[course.id] = user_course.done ? 100 : 0
+   // }
 })
 
 const move = ref(false)

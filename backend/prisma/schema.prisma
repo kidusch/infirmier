@@ -72,7 +72,7 @@ model topic {
   name           String
   sub_ue_id      Int
   rank           Int
-  course_content String   @default("")
+  course_content String   @default("")   // TO-DELETE TO-DELETE
 
   sub_ue                sub_ue                 @relation(fields: [sub_ue_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   courses               course[]
