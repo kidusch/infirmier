@@ -11,6 +11,7 @@ import { resetUseCard } from '/src/use/useCard'
 import { resetUseCaseStudy } from '/src/use/useCaseStudy'
 import { resetUseQuiz } from '/src/use/useQuiz'
 import { resetUseQuizChoice } from '/src/use/useQuizChoice'
+import { resetUseUserCourse } from '/src/use/useUserCourse'
 import { resetUseUserTopic } from '/src/use/useUserTopic'
 import { resetUseUserCard } from '/src/use/useUserCard'
 import { resetUseUserQuiz } from '/src/use/useUserQuiz'
@@ -43,6 +44,7 @@ export function clearSessionStorage() {
    resetUseCaseStudy()
    resetUseQuiz()
    resetUseQuizChoice()
+   resetUseUserCourse()
    resetUseUserTopic()
    resetUseUserCard()
    resetUseUserQuiz()

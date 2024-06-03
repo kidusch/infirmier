@@ -196,6 +196,17 @@ const routes = [
                topic_id: parseInt(route.params.topic_id),
             }),
          },
+         {
+            path: 'study-course/:ue_id/:sub_ue_id/:topic_id/:course_id',
+            component: () => import('/src/views/student/StudyCourse.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+               ue_id: parseInt(route.params.ue_id),
+               sub_ue_id: parseInt(route.params.sub_ue_id),
+               topic_id: parseInt(route.params.topic_id),
+               course_id: parseInt(route.params.course_id),
+            }),
+         },
          
          {
             path: 'revise-ue',

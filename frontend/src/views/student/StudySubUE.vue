@@ -19,7 +19,7 @@
          </h3>
       </header>
 
-      <!-- Main content -> courses list -->
+      <!-- Main content -> topics list -->
       <main class="flex flex-col gap-6 pb-6">
          
          <div class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
@@ -83,6 +83,6 @@ onMounted(async () => {
 })
 
 const selectTopic = (topic) => {
-   router.push(`/home/${props.userid}/study-topic/${ue.value.id}/${subUE.value.id}/${topic.id}`)
+   router.push(`/home/${props.userid}/study-topic/${props.ue_id}/${props.sub_ue_id}/${topic.id}`)
 }
 </script>
