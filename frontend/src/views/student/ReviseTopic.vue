@@ -143,33 +143,33 @@ onMounted(async () => {
    quizList.value = await getQuizList(props.topic_id)
    caseStudyList.value = await getCaseStudyList(props.topic_id)
 
-   let count = 0
-   let sum = 0
-   for (const course of courseList.value) {
-      const userCourse = await getTheUserCourse(props.userid, course.id)
-      userCourseDict.value[course.id] = userCourse
-      count += 1
-      sum += (userCourse.done ? 100 : 0)
-   }
-   for (const card of cardList.value) {
-      const userCard = await getTheUserCard(props.userid, card.id)
-      userCardDict.value[card.id] = userCard
-      count += 1
-      sum += (userCard.done ? 100 : 0)
-   }
-   for (const quiz of quizList.value) {
-      const userQuiz = await getTheUserQuiz(props.userid, quiz.id)
-      userQuizDict.value[quiz.id] = userQuiz
-      count += 1
-      sum += (userQuiz.done ? 100 : 0)
-   }
-   for (const caseStudy of caseStudyList.value) {
-      const userCaseStudy = await getTheUserCaseStudy(props.userid, caseStudy.id)
-      userCaseStudyDict.value[caseStudy.id] = userCaseStudy
-      count += 1
-      sum += (userCaseStudy.done ? 100 : 0)
-   }
-   progress.value = count === 0 ? 0 : Math.round(sum / count)
+   // let count = 0
+   // let sum = 0
+   // for (const course of courseList.value) {
+   //    const userCourse = await getTheUserCourse(props.userid, course.id)
+   //    userCourseDict.value[course.id] = userCourse
+   //    count += 1
+   //    sum += (userCourse.done ? 100 : 0)
+   // }
+   // for (const card of cardList.value) {
+   //    const userCard = await getTheUserCard(props.userid, card.id)
+   //    userCardDict.value[card.id] = userCard
+   //    count += 1
+   //    sum += (userCard.done ? 100 : 0)
+   // }
+   // for (const quiz of quizList.value) {
+   //    const userQuiz = await getTheUserQuiz(props.userid, quiz.id)
+   //    userQuizDict.value[quiz.id] = userQuiz
+   //    count += 1
+   //    sum += (userQuiz.done ? 100 : 0)
+   // }
+   // for (const caseStudy of caseStudyList.value) {
+   //    const userCaseStudy = await getTheUserCaseStudy(props.userid, caseStudy.id)
+   //    userCaseStudyDict.value[caseStudy.id] = userCaseStudy
+   //    count += 1
+   //    sum += (userCaseStudy.done ? 100 : 0)
+   // }
+   // progress.value = count === 0 ? 0 : Math.round(sum / count)
 })
 
 const selectCard = (card) => {

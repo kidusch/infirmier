@@ -66,37 +66,37 @@ onMounted(async () => {
    ueList.value = await getUEList()
    for (const ue of ueList.value) {
       subUEListDict.value[ue.id] = await getSubUEList(ue.id)
-      for (const subUE of subUEListDict.value[ue.id]) {
-         let totalSum = 0
-         let totalCount = 0
-         const topicList = await getTopicList(subUE.id)
-         for (const topic of topicList) {
-            let count = 0
-            let sum = 0
-            const cardList = await getCardList(topic.id)
-            const quizList = await getQuizList(topic.id)
-            const caseStudyList = await getCaseStudyList(topic.id)
-            for (const card of cardList) {
-               const userCard = await getTheUserCard(props.userid, card.id)
-               count += 1
-               sum += (userCard.done ? 100 : 0)
-            }
-            for (const quiz of quizList) {
-               const userQuiz = await getTheUserQuiz(props.userid, quiz.id)
-               count += 1
-               sum += (userQuiz.done ? 100 : 0)
-            }
-            for (const caseStudy of caseStudyList) {
-               const userCaseStudy = await getTheUserCaseStudy(props.userid, caseStudy.id)
-               count += 1
-               sum += (userCaseStudy.done ? 100 : 0)
-            }
-            const percentage = count === 0 ? 0 : Math.round(sum / count)
-            totalSum += percentage
-            totalCount += 1
-         }
-         subUEProgressDict.value[subUE.id] = totalCount === 0 ? 0 : Math.round(totalSum / totalCount)
-      }
+      // for (const subUE of subUEListDict.value[ue.id]) {
+      //    let totalSum = 0
+      //    let totalCount = 0
+      //    const topicList = await getTopicList(subUE.id)
+      //    for (const topic of topicList) {
+      //       let count = 0
+      //       let sum = 0
+      //       const cardList = await getCardList(topic.id)
+      //       const quizList = await getQuizList(topic.id)
+      //       const caseStudyList = await getCaseStudyList(topic.id)
+      //       for (const card of cardList) {
+      //          const userCard = await getTheUserCard(props.userid, card.id)
+      //          count += 1
+      //          sum += (userCard.done ? 100 : 0)
+      //       }
+      //       for (const quiz of quizList) {
+      //          const userQuiz = await getTheUserQuiz(props.userid, quiz.id)
+      //          count += 1
+      //          sum += (userQuiz.done ? 100 : 0)
+      //       }
+      //       for (const caseStudy of caseStudyList) {
+      //          const userCaseStudy = await getTheUserCaseStudy(props.userid, caseStudy.id)
+      //          count += 1
+      //          sum += (userCaseStudy.done ? 100 : 0)
+      //       }
+      //       const percentage = count === 0 ? 0 : Math.round(sum / count)
+      //       totalSum += percentage
+      //       totalCount += 1
+      //    }
+      //    subUEProgressDict.value[subUE.id] = totalCount === 0 ? 0 : Math.round(totalSum / totalCount)
+      // }
    }
 })
 
