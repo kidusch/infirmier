@@ -37,6 +37,7 @@
       <main class="flex flex-col gap-6 pb-6">
          
          <div class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
+            
             <div class="progress-list">
                <template v-for="card in cardList">
                   <div class="progress-item cursor-pointer" @click="selectCard(card)">
@@ -49,6 +50,7 @@
                   </div>
                </template>
             </div>
+
             <div class="progress-list">
                <template v-for="quiz in quizList">
                   <div class="progress-item cursor-pointer" @click="selectQuiz(quiz)">
@@ -61,6 +63,7 @@
                   </div>
                </template>
             </div>
+
             <div class="progress-list">
                <template v-for="caseStudy in caseStudyList">
                   <div class="progress-item cursor-pointer" @click="selectCaseStudy(caseStudy)">
@@ -86,9 +89,11 @@ import { ref, onMounted } from 'vue'
 import { getUE } from '/src/use/useUE'
 import { getSubUE } from '/src/use/useSubUE'
 import { getTopic } from '/src/use/useTopic'
+import { getCourseList } from '/src/use/useCourse'
 import { getCardList } from '/src/use/useCard'
 import { getQuizList } from '/src/use/useQuiz'
 import { getCaseStudyList } from '/src/use/useCaseStudy'
+import { getTheUserCourse } from '/src/use/useUserCourse'
 import { getTheUserCard } from '/src/use/useUserCard'
 import { getTheUserQuiz } from '/src/use/useUserQuiz'
 import { getTheUserCaseStudy } from '/src/use/useUserCaseStudy'
@@ -117,9 +122,11 @@ const props = defineProps({
 const ue = ref()
 const subUE = ref()
 const topic = ref([])
+const courseList = ref()
 const cardList = ref()
 const quizList = ref()
 const caseStudyList = ref()
+const userCourseDict = ref({})
 const userCardDict = ref({})
 const userQuizDict = ref({})
 const userCaseStudyDict = ref({})
@@ -131,12 +138,19 @@ onMounted(async () => {
    subUE.value = await getSubUE(props.sub_ue_id)
    topic.value = await getTopic(props.topic_id)
 
+   courseList.value = await getCourseList(props.topic_id)
    cardList.value = await getCardList(props.topic_id)
    quizList.value = await getQuizList(props.topic_id)
    caseStudyList.value = await getCaseStudyList(props.topic_id)
 
    let count = 0
    let sum = 0
+   for (const course of courseList.value) {
+      const userCourse = await getTheUserCourse(props.userid, course.id)
+      userCourseDict.value[course.id] = userCourse
+      count += 1
+      sum += (userCourse.done ? 100 : 0)
+   }
    for (const card of cardList.value) {
       const userCard = await getTheUserCard(props.userid, card.id)
       userCardDict.value[card.id] = userCard

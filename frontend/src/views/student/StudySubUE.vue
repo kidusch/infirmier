@@ -48,7 +48,8 @@ import { ref, onMounted } from 'vue'
 import { getUE } from '/src/use/useUE'
 import { getSubUE } from '/src/use/useSubUE'
 import { getTopicList } from '/src/use/useTopic'
-import { getTheUserTopic } from '/src/use/useUserTopic'
+import { getCourseList } from '/src/use/useCourse'
+import { getTheUserCourse } from '/src/use/useUserCourse'
 import router from "/src/router"
 
 const props = defineProps({
@@ -77,8 +78,15 @@ onMounted(async () => {
    subUE.value = await getSubUE(props.sub_ue_id)
    topicList.value = await getTopicList(props.sub_ue_id)
    for (const topic of topicList.value) {
-      const user_topic = await getTheUserTopic(props.userid, topic.id)
-      topicProgressDict.value[topic.id] = user_topic.done ? 100 : 0
+      let count = 0
+      let sum = 0
+      const courseList = await getCourseList(topic.id)
+      for (const course of courseList) {
+         const user_course = await getTheUserCourse(props.userid, course.id)
+         sum += (user_course.done ? 100 : 0)
+         count += 1
+      }
+      topicProgressDict.value[topic.id] = count === 0 ? 0 : Math.round(sum / count)
    }
 })
 

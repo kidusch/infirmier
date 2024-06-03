@@ -41,7 +41,8 @@ import { ref, onMounted } from 'vue'
 import { getUEList } from '/src/use/useUE'
 import { getSubUEList } from '/src/use/useSubUE'
 import { getTopicList } from '/src/use/useTopic'
-import { getTheUserTopic } from '/src/use/useUserTopic'
+import { getCourseList } from '/src/use/useCourse'
+import { getTheUserCourse } from '/src/use/useUserCourse'
 import router from "/src/router"
 
 // import 'jcb-radial'
@@ -67,9 +68,12 @@ onMounted(async () => {
          let sum = 0
          const topicList = await getTopicList(subUE.id)
          for (const topic of topicList) {
-            const user_topic = await getTheUserTopic(props.userid, topic.id)
-            sum += (user_topic.done ? 100 : 0)
-            count += 1
+            const courseList = await getCourseList(topic.id)
+            for (const course of courseList) {
+               const user_course = await getTheUserCourse(props.userid, course.id)
+               sum += (user_course.done ? 100 : 0)
+               count += 1
+            }
          }
          subUEProgressDict.value[subUE.id] = count === 0 ? 0 : Math.round(sum / count)
       }
