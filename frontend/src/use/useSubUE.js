@@ -1,3 +1,4 @@
+import { computed } from 'vue'
 import { useSessionStorage } from '@vueuse/core'
 
 import app from '/src/client-app.js'
@@ -78,3 +79,18 @@ export const getSubUEList = async (ue_id) => {
    }
    return Object.values(subUEState.value.subUECache).filter(subUE => subUE.ue_id === ue_id).sort((e1, e2) => e1.rank - e2.rank)
 }
+
+export const listOfSubUEs = computed(() => (ue_id) => {
+   if (subUEState.value.isListReady[ue_id]) {
+      return Object.values(subUEState.value.subUECache).filter(subUE => subUE.ue_id === ue_id).sort((e1, e2) => e1.rank - e2.rank)
+   }
+   app.service('sub_ue').findMany({
+      where: { ue_id }
+   }).then((list) => {
+      for (const subUE of list) {
+         subUEState.value.subUECache[subUE.id] = subUE
+      }
+      subUEState.value.isListReady[ue_id] = true
+   })
+   return []
+})

@@ -2,7 +2,7 @@ import { computed } from 'vue'
 import { theUserCourse } from '/src/use/useUserCourse'
 import { listOfCourses } from '/src/use/useCourse'
 import { listOfTopics } from '/src/use/useTopic'
-// import { listOfSubUE } from '/src/use/useSubUE'
+import { listOfSubUEs } from '/src/use/useSubUE'
 
 
 export const courseProgress = computed(() => (user_id, course_id) => {
@@ -34,14 +34,14 @@ export const subUEProgress = computed(() => (user_id, subue_id) => {
    return (count === 0 ? 0 : Math.round(sum / count))
 })
 
-// export const ueProgress = computed(() => (user_id, ue_id) => {
-//    let count = 0
-//    let sum = 0
-//    const subUEList = listOfSubUEs.value(ue_id)
-//    for (const subUE of subUEList) {
-//       if (subUE.hidden) continue
-//       sum += subUEProgress.value(user_id, subUE.id)
-//       count += 1
-//    }
-//    return (count === 0 ? 0 : Math.round(sum / count))
-// })
+export const ueProgress = computed(() => (user_id, ue_id) => {
+   let count = 0
+   let sum = 0
+   const subUEList = listOfSubUEs.value(ue_id)
+   for (const subUE of subUEList) {
+      if (subUE.hidden) continue
+      sum += subUEProgress.value(user_id, subUE.id)
+      count += 1
+   }
+   return (count === 0 ? 0 : Math.round(sum / count))
+})

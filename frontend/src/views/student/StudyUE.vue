@@ -12,9 +12,16 @@
       <main class="flex flex-col gap-6 pb-6">
          <template v-for="ue in ueList">
          <div v-if="!ue.hidden" class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
-            <h2 class="font-semibold">
+            <!-- <h2 class="font-semibold">
                {{ ue.name }}
-            </h2>
+            </h2> -->
+            <h3 class="font-semibold flex items-center">
+               {{ ue?.name }}
+               <div class="ml-2 mt-3 w-12">
+                  <jcb-radial :value="ueProgress(userid, ue?.id)"></jcb-radial>
+               </div>
+            </h3>
+
             <div class="progress-list">
                <template v-for="subUE in subUEListDict[ue.id]">
                   <div v-if="!subUE.hidden" class="progress-item cursor-pointer" @click="select(ue, subUE)">
@@ -42,7 +49,7 @@ import { ref, onMounted } from 'vue'
 
 import { getUEList } from '/src/use/useUE'
 import { getSubUEList } from '/src/use/useSubUE'
-import { subUEProgress } from '/src/use/useProgress'
+import { subUEProgress, ueProgress } from '/src/use/useProgress'
 import router from "/src/router"
 
 // import 'jcb-radial'
