@@ -25,12 +25,12 @@
 
       <main class="flex flex-col gap-6 pb-4">
 
-         <div class="flex justify-between items-center bg-accent py-2 px-4 rounded-xl">
+         <!-- <div class="flex justify-between items-center bg-accent py-2 px-4 rounded-xl">
             <h4 class="text-primary">
                Cours
             </h4>
             <img class="h-4" src="/src/assets/thick-arrow-right.svg" @click="adminCourse">
-         </div>
+         </div> -->
 
          <div class="flex flex-col gap-3">
             <label for="title">Cours</label>
@@ -42,6 +42,8 @@
                      @update="(e1, e2) => updateCourses(e1, e2)"
                      @remove="deleteCourse(course.id)"
                      @select="selectCourse(course.id)"
+                     @show="updateCourse(course.id, { hidden: false }); updateCourseList()"
+                     @hide="updateCourse(course.id, { hidden: true }); updateCourseList()"
                   ></ListItem>
                </div>
 
@@ -64,6 +66,8 @@
                      @update="(e1, e2) => updateCards(e1, e2)"
                      @remove="deleteCard(card.id)"
                      @select="selectCard(card.id)"
+                     @show="updateCard(card.id, { hidden: false }); updateCardList()"
+                     @hide="updateCard(card.id, { hidden: true }); updateCardList()"
                   ></ListItem>
                </div>
 
@@ -86,6 +90,8 @@
                      @update="(e1, e2) => updateQuizs(e1, e2)"
                      @remove="deleteQuiz(quiz.id)"
                      @select="selectQuiz(quiz.id)"
+                     @show="updateQuiz(quiz.id, { hidden: false }); updateQuizList()"
+                     @hide="updateQuiz(quiz.id, { hidden: true }); updateQuizList()"
                   ></ListItem>
                </div>
 
@@ -108,6 +114,8 @@
                      @update="(e1, e2) => updateCaseStudies(e1, e2)"
                      @remove="deleteCaseStudy(caseStudy.id)"
                      @select="selectCaseStudy(caseStudy.id)"
+                     @show="updateCaseStudy(caseStudy.id, { hidden: false }); updateCaseStudyList()"
+                     @hide="updateCaseStudy(caseStudy.id, { hidden: true }); updateCaseStudyList()"
                   ></ListItem>
                </div>
 

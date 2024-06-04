@@ -1,3 +1,4 @@
+import { computed } from 'vue'
 import { useSessionStorage } from '@vueuse/core'
 
 import app from '/src/client-app.js'
@@ -83,3 +84,18 @@ export const getTopicList = async (sub_ue_id) => {
    }
    return Object.values(topicState.value.topicCache).filter(topic => topic.sub_ue_id === sub_ue_id).sort((e1, e2) => e1.rank - e2.rank)
 }
+
+export const listOfTopics = computed(() => (sub_ue_id) => {
+   if (topicState.value.isListReady[sub_ue_id]) {
+      return Object.values(topicState.value.topicCache).filter(topic => topic.sub_ue_id === sub_ue_id).sort((e1, e2) => e1.rank - e2.rank)
+   }
+   app.service('topic').findMany({
+      where: { sub_ue_id }
+   }).then((topicList) => {
+      for (const topic of topicList) {
+         topicState.value.topicCache[topic.id] = topic
+      }
+      topicState.value.isListReady[sub_ue_id] = true
+   })
+   return []
+})

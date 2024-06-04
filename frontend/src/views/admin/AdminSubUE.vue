@@ -38,6 +38,8 @@
                   @edit="(text) => edit(subUE.id, text)"
                   @remove="remove(subUE.id)"
                   @select="select(subUE.id)"
+                  @show="updateHidden(subUE.id, false)"
+                  @hide="updateHidden(subUE.id, true)"
                ></EditableListItem>
             </div>
 
@@ -90,6 +92,11 @@ async function updateList() {
 async function update(e1, e2) {
    await updateSubUE(e1.id, { rank: e1.rank })
    await updateSubUE(e2.id, { rank: e2.rank })
+   updateList()
+}
+
+async function updateHidden(id, hidden) {
+   await updateSubUE(id, { hidden })
    updateList()
 }
 

@@ -7,6 +7,8 @@
       <input class="standard-input flex-1" placeholder="Titre" type="text" :value="element[field]" @input="debouncedInput" :disabled="disabled">
       <div class="flex gap-1.5">
          <img class="h-4 cursor-pointer" src="/src/assets/edit.svg" @click="disabled = !disabled">
+         <img class="h-4 cursor-pointer" src="/src/assets/eye-close.svg" v-if="element?.hidden" @click="show">
+         <img class="h-4 cursor-pointer" src="/src/assets/eye-open.svg" v-if="!element?.hidden" @click="hide">
          <img class="h-4 cursor-pointer" src="/src/assets/delete.svg" @click="remove">
          <img class="h-4 cursor-pointer" src="/src/assets/thick-arrow-right.svg" @click="select">
       </div>
@@ -56,8 +58,9 @@ const down = () => {
 }
 
 const remove = () => emit('remove')
-
 const select = () => emit('select')
+const show = () => emit('show')
+const hide = () => emit('hide')
 
 const onInput = async (ev) => {
    emit('edit', ev.target.value)

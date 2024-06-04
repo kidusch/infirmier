@@ -1,3 +1,4 @@
+import { computed } from 'vue'
 import { useSessionStorage } from '@vueuse/core'
 
 import app from '/src/client-app.js'
@@ -79,3 +80,18 @@ export const getCourseList = async (topic_id) => {
    }
    return Object.values(courseState.value.courseCache).filter(course => course.topic_id === topic_id).sort((e1, e2) => e1.rank - e2.rank)
 }
+
+export const listOfCourses = computed(() => (topic_id) => {
+   if (courseState.value.isListReady[topic_id]) {
+      return Object.values(courseState.value.courseCache).filter(course => course.topic_id === topic_id).sort((e1, e2) => e1.rank - e2.rank)
+   }
+   app.service('course').findMany({
+      where: { topic_id }
+   }).then((list) => {
+      for (const course of list) {
+         courseState.value.courseCache[course.id] = course
+      }
+      courseState.value.isListReady[topic_id] = true
+   })
+   return []
+})

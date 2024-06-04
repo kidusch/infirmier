@@ -28,7 +28,7 @@
          <div class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
             <div class="progress-list">
                <template v-for="topic in topicList">
-                  <div class="progress-item cursor-pointer" @click="selectTopic(topic)">
+                  <div v-if="!topic.hidden" class="progress-item cursor-pointer" @click="selectTopic(topic)">
                      <div class="w-14 h-14">
                         <jcb-radial :value="topicProgressDict[topic.id]"></jcb-radial>
                      </div>

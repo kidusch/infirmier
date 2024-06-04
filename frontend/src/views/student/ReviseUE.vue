@@ -11,23 +11,25 @@
       <!-- Main content -> courses list -->
       <main class="flex flex-col gap-6 pb-6">
          
-         <div class="bg-accent p-5 gap-3 flex flex-col rounded-3xl" v-for="ue in ueList">
-            <h2 class="font-semibold">
-               {{ ue.name }}
-            </h2>
-            <div class="progress-list">
-               <template v-for="subUE in subUEListDict[ue.id]">
-                  <div class="progress-item cursor-pointer" @click="select(ue, subUE)">
-                     <div class="w-14 h-14">
-                        <jcb-radial :value="subUEProgressDict[subUE.id]"></jcb-radial>
+         <template v-for="ue in ueList">
+            <div v-if="!ue.hidden" class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
+               <h2 class="font-semibold">
+                  {{ ue.name }}
+               </h2>
+               <div class="progress-list">
+                  <template v-for="subUE in subUEListDict[ue.id]">
+                     <div v-if="!subUE.hidden" class="progress-item cursor-pointer" @click="select(ue, subUE)">
+                        <div class="w-14 h-14">
+                           <jcb-radial :value="subUEProgressDict[subUE.id]"></jcb-radial>
+                        </div>
+                        <p>
+                           {{ subUE.name }}
+                        </p>
                      </div>
-                     <p>
-                        {{ subUE.name }}
-                     </p>
-                  </div>
-               </template>
+                  </template>
+               </div>
             </div>
-         </div>
+         </template>
 
       </main>
 

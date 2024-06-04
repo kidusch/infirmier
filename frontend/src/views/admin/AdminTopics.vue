@@ -40,6 +40,8 @@
                   @edit="(text) => edit(topic.id, text)"
                   @remove="remove(topic.id)"
                   @select="select(topic.id)"
+                  @show="updateHidden(topic.id, false)"
+                  @hide="updateHidden(topic.id, true)"
                ></EditableListItem>
             </div>
 
@@ -103,6 +105,11 @@ async function updateList() {
 async function update(e1, e2) {
    await updateTopic(e1.id, { rank: e1.rank })
    await updateTopic(e2.id, { rank: e2.rank })
+   updateList()
+}
+
+async function updateHidden(id, hidden) {
+   await updateTopic(id, { hidden })
    updateList()
 }
 

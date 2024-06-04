@@ -14,8 +14,11 @@
 
       <!-- Header -->
       <header class="py-2">
-         <h3 class="opacity-50">
+         <h3 class="opacity-50 flex items-center">
             {{ subUE?.name }}
+            <div class="ml-2 mt-3 w-12">
+               <jcb-radial :value="subUEProgress(userid, subUE?.id)"></jcb-radial>
+            </div>
          </h3>
       </header>
 
@@ -25,9 +28,10 @@
          <div class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
             <div class="progress-list">
                <template v-for="topic in topicList">
-                  <div class="progress-item cursor-pointer" @click="selectTopic(topic)">
+                  <div v-if="!topic.hidden" class="progress-item cursor-pointer" @click="selectTopic(topic)">
                      <div class="w-14 h-14">
-                        <jcb-radial :value="topicProgressDict[topic.id]"></jcb-radial>
+                        <!-- <jcb-radial :value="topicProgressDict[topic.id]"></jcb-radial> -->
+                        <jcb-radial :value="topicProgress(userid, topic.id)"></jcb-radial>
                      </div>
                      <p>
                         {{ topic?.name }}
@@ -43,13 +47,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 
 import { getUE } from '/src/use/useUE'
 import { getSubUE } from '/src/use/useSubUE'
 import { getTopicList } from '/src/use/useTopic'
-import { getCourseList } from '/src/use/useCourse'
-import { getTheUserCourse } from '/src/use/useUserCourse'
+import { topicProgress, subUEProgress } from '/src/use/useProgress'
 import router from "/src/router"
 
 const props = defineProps({
@@ -70,24 +73,12 @@ const props = defineProps({
 const ue = ref()
 const subUE = ref()
 const topicList = ref([])
-const topicProgressDict = ref({})
 
 onMounted(async () => {
    console.log('onMounted StudentSubUE', props.userid)
    ue.value = await getUE(props.ue_id)
    subUE.value = await getSubUE(props.sub_ue_id)
    topicList.value = await getTopicList(props.sub_ue_id)
-   // for (const topic of topicList.value) {
-   //    let count = 0
-   //    let sum = 0
-   //    const courseList = await getCourseList(topic.id)
-   //    for (const course of courseList) {
-   //       const user_course = await getTheUserCourse(props.userid, course.id)
-   //       sum += (user_course.done ? 100 : 0)
-   //       count += 1
-   //    }
-   //    topicProgressDict.value[topic.id] = count === 0 ? 0 : Math.round(sum / count)
-   // }
 })
 
 const selectTopic = (topic) => {

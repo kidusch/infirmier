@@ -1,3 +1,4 @@
+import { computed } from 'vue'
 import { useSessionStorage } from '@vueuse/core'
 
 import app from '/src/client-app.js'
@@ -36,6 +37,26 @@ export const getTheUserCourse = async (user_id, course_id) => {
    userCourseState.value.theUserCourseReady[user_id + ':' + course_id] = true
    return userCourse
 }
+
+export const theUserCourse = computed(() => (user_id, course_id) => {
+   const isReady = userCourseState.value.theUserCourseReady[user_id + ':' + course_id]
+   if (isReady) return Object.values(userCourseState.value.userCourseCache).find(userCourse => userCourse.user_id === user_id && userCourse.course_id === course_id)
+   app.service('user_course').findMany({
+      where: { user_id, course_id },
+   }).then((userCourses) => {
+      if (userCourses.length === 0) {
+         app.service('user_course').create({
+            data: { user_id, course_id },
+         }).then(userCourse => {
+            userCourseState.value.userCourseCache[userCourse.id] = userCourse
+            userCourseState.value.theUserCourseReady[user_id + ':' + course_id] = true
+         })
+      } else {
+         userCourseState.value.userCourseCache[userCourses[0].id] = userCourses[0]
+         userCourseState.value.theUserCourseReady[user_id + ':' + course_id] = true
+      }
+   })
+})
 
 export const updateUserCourse = async (id, data) => {
    const userCourse = await app.service('user_course').update({

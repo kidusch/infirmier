@@ -29,6 +29,8 @@
                   @edit="(text) => edit(ue.id, text)"
                   @remove="remove(ue.id)"
                   @select="select(ue.id)"
+                  @show="updateHidden(ue.id, false)"
+                  @hide="updateHidden(ue.id, true)"
                ></EditableListItem>
 
             </div>
@@ -49,7 +51,6 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { mdiPlus } from '@mdi/js'
 
 import { createUE, updateUE, removeUE, getUEList } from '/src/use/useUE'
 import router from "/src/router"
@@ -77,6 +78,11 @@ async function updateList() {
 async function update(e1, e2) {
    await updateUE(e1.id, { rank: e1.rank })
    await updateUE(e2.id, { rank: e2.rank })
+   updateList()
+}
+
+async function updateHidden(id, hidden) {
+   await updateUE(id, { hidden })
    updateList()
 }
 

@@ -15,11 +15,14 @@
       </header>
 
       <!-- Header -->
-      <!-- <header class="py-2">
-         <h3 class="lg:opacity-50">
+      <header class="py-2">
+         <h3 class="opacity-50 flex items-center">
             {{ topic?.name }}
+            <div class="ml-2 mt-3 w-12">
+               <jcb-radial :value="topicProgress(userid, topic?.id)"></jcb-radial>
+            </div>
          </h3>
-      </header> -->
+      </header>
 
 
       <!-- Main content -> courses list -->
@@ -28,9 +31,10 @@
          <div class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
             <div class="progress-list">
                <template v-for="course in courseList">
-                  <div class="progress-item cursor-pointer" @click="selectCourse(course)">
+                  <div v-if="!course.hidden" class="progress-item cursor-pointer" @click="selectCourse(course)">
                      <div class="w-14 h-14">
-                        <jcb-radial :value="courseProgressDict[course.id]"></jcb-radial>
+                        <!-- <jcb-radial :value="courseProgressDict[course.id]"></jcb-radial> -->
+                        <jcb-radial :value="courseProgress(userid, course.id)"></jcb-radial>
                      </div>
                      <p>
                         {{ course?.title }}
@@ -47,14 +51,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useDebounceFn } from '@vueuse/core'
+import { ref, onMounted, computed } from 'vue'
 
 import { getUE } from '/src/use/useUE'
 import { getSubUE } from '/src/use/useSubUE'
 import { getTopic } from '/src/use/useTopic'
 import { getCourseList } from '/src/use/useCourse'
-import { getTheUserCourse } from '/src/use/useUserCourse'
+import { courseProgress, topicProgress } from '/src/use/useProgress'
 
 import router from "/src/router"
 
@@ -82,17 +85,12 @@ const ue = ref()
 const subUE = ref()
 const topic = ref()
 const courseList = ref([])
-const courseProgressDict = ref({})
 
 onMounted(async () => {
    ue.value = await getUE(props.ue_id)
    subUE.value = await getSubUE(props.sub_ue_id)
    topic.value = await getTopic(props.topic_id)
    courseList.value = await getCourseList(props.topic_id)
-   // for (const course of courseList.value) {
-   //    const user_course = await getTheUserCourse(props.userid, course.id)
-   //    courseProgressDict.value[course.id] = user_course.done ? 100 : 0
-   // }
 })
 
 const move = ref(false)

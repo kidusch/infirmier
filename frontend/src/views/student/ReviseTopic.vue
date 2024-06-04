@@ -16,16 +16,16 @@
 
       <!-- Header -->
       <header class="py-2">
-         <div class="flex items-center">
-            <h3 class="opacity-50">{{ topic?.name }}</h3>
+         <div class="flex items-center justify-between">
 
-            <div class="ml-4 mt-3 w-14">
-               <jcb-radial :value="progress"></jcb-radial>
+            <div class="flex items-center">
+               <h3 class="opacity-50">{{ topic?.name }}</h3>
+
+               <div class="ml-4 mt-3 w-14">
+                  <jcb-radial :value="progress"></jcb-radial>
+               </div>
             </div>
 
-            <!-- <button class="mx-4" @click="gotoStudy">
-               <img class="h-5" src="/src/assets/courses.svg" alt="course">
-            </button> -->
             <div class="ml-4 cursor-pointer link hover:text-red-600 text-blue-600" @click="gotoStudy">
                cours
             </div>
@@ -40,7 +40,7 @@
             
             <div class="progress-list">
                <template v-for="card in cardList">
-                  <div class="progress-item cursor-pointer" @click="selectCard(card)">
+                  <div v-if="!card.hidden" class="progress-item cursor-pointer" @click="selectCard(card)">
                      <div class="w-14">
                         {{ userCardDict[card.id]?.done ? "✔️": "" }}
                      </div>
@@ -53,7 +53,7 @@
 
             <div class="progress-list">
                <template v-for="quiz in quizList">
-                  <div class="progress-item cursor-pointer" @click="selectQuiz(quiz)">
+                  <div v-if="!quiz.hidden" class="progress-item cursor-pointer" @click="selectQuiz(quiz)">
                      <div class="w-14">
                         {{ userQuizDict[quiz.id]?.done ? "✔️": "" }}
                      </div>
@@ -66,7 +66,7 @@
 
             <div class="progress-list">
                <template v-for="caseStudy in caseStudyList">
-                  <div class="progress-item cursor-pointer" @click="selectCaseStudy(caseStudy)">
+                  <div v-if="!caseStudy.hidden" class="progress-item cursor-pointer" @click="selectCaseStudy(caseStudy)">
                      <div class="w-14">
                         {{ userCaseStudyDict[caseStudy.id]?.done ? "✔️": "" }}
                      </div>
