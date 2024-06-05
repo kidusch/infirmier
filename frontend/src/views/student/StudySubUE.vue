@@ -17,7 +17,7 @@
          <h3 class="opacity-50 flex items-center">
             {{ subUE?.name }}
             <div class="ml-2 mt-3 w-12">
-               <jcb-radial :value="subUEProgress(userid, subUE?.id)"></jcb-radial>
+               <jcb-radial :value="subUEProgress(userid, sub_ue_id)"></jcb-radial>
             </div>
          </h3>
       </header>
