@@ -8,6 +8,7 @@ import app from '/src/client-app.js'
 const initialState = () => ({
    topicCache: {},
    isListReady: {},
+   topicListStatus: {},
 })
  
 const topicState = useSessionStorage('topic-state', initialState())
@@ -73,29 +74,33 @@ export const removeTopic = async (id) => {
 }
 
 export const getTopicList = async (sub_ue_id) => {
-   if (!topicState.value.isListReady[sub_ue_id]) {
+   if (topicState.value.topicListStatus[sub_ue_id] !== 'ready') {
+      topicState.value.topicListStatus[sub_ue_id] = 'ongoing'
       const list = await app.service('topic').findMany({
          where: { sub_ue_id }
       })
       for (const topic of list) {
          topicState.value.topicCache[topic.id] = topic
       }
-      topicState.value.isListReady[sub_ue_id] = true
+      topicState.value.topicListStatus[sub_ue_id] = 'ready'
    }
    return Object.values(topicState.value.topicCache).filter(topic => topic.sub_ue_id === sub_ue_id).sort((e1, e2) => e1.rank - e2.rank)
 }
 
 export const listOfTopics = computed(() => (sub_ue_id) => {
-   if (topicState.value.isListReady[sub_ue_id]) {
+   if (topicState.value.topicListStatus[sub_ue_id] === 'ready') {
       return Object.values(topicState.value.topicCache).filter(topic => topic.sub_ue_id === sub_ue_id).sort((e1, e2) => e1.rank - e2.rank)
    }
-   app.service('topic').findMany({
-      where: { sub_ue_id }
-   }).then((topicList) => {
-      for (const topic of topicList) {
-         topicState.value.topicCache[topic.id] = topic
-      }
-      topicState.value.isListReady[sub_ue_id] = true
-   })
+   if (topicState.value.topicListStatus[sub_ue_id] !== 'ongoing') {
+      topicState.value.topicListStatus[sub_ue_id] = 'ongoing'
+      app.service('topic').findMany({
+         where: { sub_ue_id }
+      }).then((topicList) => {
+         for (const topic of topicList) {
+            topicState.value.topicCache[topic.id] = topic
+         }
+         topicState.value.topicListStatus[sub_ue_id] = 'ready'
+      })
+   }
    return []
 })

@@ -7,6 +7,8 @@ import app from '/src/client-app.js'
 
 const initialState = () => ({
    userCache: {},
+   userStatus: {},
+   userPromise: {},
 })
  
 const userState = useSessionStorage('user-state', initialState())
@@ -23,10 +25,42 @@ app.service('user').on('create', user => {
 
 
 export const getUser = async (id) => {
-   let user = userState.value.userCache[id]
-   if (user) return user
-   user = await app.service('user').findUnique({ where: { id }})
-   userState.value.userCache[id] = user
-   return user
+   const status = userState.value.userStatus[id]
+   if (status === 'ready') return userState.value.userCache[id]
+   const promise = (status === 'ongoing') ?
+      userState.value.userPromise[id] :
+      app.service('user').findUnique({ where: { id }})
+   try {
+      const user = await promise
+      userState.value.userCache[id] = user
+      userState.value.userStatus[id] = 'ready'
+      return user
+   } catch(err) {
+      userState.value.userStatus[id] = undefined
+      userState.value.userPromise[id] = undefined
+      throw err
+   }
 }
 
+
+// const foodPromise = async (id) => {
+//    const status = stateFoods.value.foodsStatus[id]
+//    if (status === 'ready') return stateFoods.value.foods[id]
+//    stateFoods.value.foodsStatus[id] = 'ongoing'
+//    const food = await app.service('food').findUnique({ where: { id }})
+//    stateFoods.value.foods[id] = food
+//    stateFoods.value.foodsStatus[id] = 'ready'
+//    return food
+// }
+
+// const foodOfId = computed(() => (id) => {
+//    const status = stateFoods.value.foodsStatus[id]
+//    if (status === 'ready') return stateFoods.value.foods[id]
+//    if (status === 'ongoing') return undefined // ongoing request
+//    stateFoods.value.foodsStatus[id] = 'ongoing'
+//    app.service('food').findUnique({ where: { id }}).then(food => {
+//       stateFoods.value.foods[id] = food
+//       stateFoods.value.foodsStatus[id] = 'ready'
+//    })
+//    return undefined
+// })
