@@ -7,6 +7,7 @@ import { resetUseUser } from '/src/use/useUser'
 import { resetUseUE } from '/src/use/useUE'
 import { resetUseSubUE } from '/src/use/useSubUE'
 import { resetUseTopic } from '/src/use/useTopic'
+import { resetUseCourse } from '/src/use/useCourse'
 import { resetUseCard } from '/src/use/useCard'
 import { resetUseCaseStudy } from '/src/use/useCaseStudy'
 import { resetUseQuiz } from '/src/use/useQuiz'
@@ -39,6 +40,7 @@ export function clearSessionStorage() {
    resetUseUE()
    resetUseSubUE()
    resetUseTopic()
+   resetUseCourse()
    resetUseCard()
    resetUseCaseStudy()
    resetUseQuiz()

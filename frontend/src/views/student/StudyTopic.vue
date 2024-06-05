@@ -32,9 +32,8 @@
             <div class="progress-list">
                <template v-for="course in courseList">
                   <div v-if="!course.hidden" class="progress-item cursor-pointer" @click="selectCourse(course)">
-                     <div class="w-14 h-14">
-                        <!-- <jcb-radial :value="courseProgressDict[course.id]"></jcb-radial> -->
-                        <jcb-radial :value="courseProgress(userid, course.id)"></jcb-radial>
+                     <div class="w-14">
+                        <jcb-radial class="w-14" :value="courseProgress(userid, course.id)"></jcb-radial>
                      </div>
                      <p>
                         {{ course?.title }}
