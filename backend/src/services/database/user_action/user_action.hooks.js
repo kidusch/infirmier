@@ -7,7 +7,7 @@ import config from '#config'
 
 export default {
    before: {
-      all: [isAuthenticated, isNotExpired],
+      find: [isAuthenticated, isNotExpired],
    },
    after: {
       all: [extendExpiration(config.SESSION_EXPIRE_DELAY)],
