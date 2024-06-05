@@ -91,7 +91,7 @@ export default function (app) {
 			if (!roomCache[cnxid]) {
 				roomCache[cnxid] = new Set()
 			}
-			console.log('!! add user to datacache', user)
+			console.log('!! add user to datacache', cnxid, user)
 			// add user to dataCache so that information will be transfered on reconnection
 			dataCache[cnxid].user = user
 			// set data.expiresAt
