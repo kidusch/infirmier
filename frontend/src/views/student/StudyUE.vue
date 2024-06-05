@@ -11,32 +11,27 @@
       <!-- Main content -> courses list -->
       <main class="flex flex-col gap-6 pb-6">
          <template v-for="ue in ueList">
-         <div v-if="!ue.hidden" class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
-            <!-- <h2 class="font-semibold">
-               {{ ue.name }}
-            </h2> -->
-            <h3 class="font-semibold flex items-center">
-               {{ ue?.name }}
-               <div class="ml-2 mt-3 w-12">
-                  <jcb-radial :value="ueProgress(userid, ue?.id)"></jcb-radial>
-               </div>
-            </h3>
-
-            <div class="progress-list">
-               <template v-for="subUE in subUEListDict[ue.id]">
-                  <div v-if="!subUE.hidden" class="progress-item cursor-pointer" @click="select(ue, subUE)">
-                     <!-- <img src="/src/assets/progress-bar-0.svg"> -->
-                     <div class="w-14 h-14">
-                        <!-- <jcb-radial :value="subUEProgressDict[subUE.id]"></jcb-radial> -->
-                        <jcb-radial :value="subUEProgress(userid, subUE.id)"></jcb-radial>
-                     </div>
-                     <p>
-                        {{ subUE.name }}
-                     </p>
+            <div v-if="!ue.hidden" class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
+               <h3 class="font-semibold flex items-center gap-2.5">
+                  <div class="ml-2 mt-3 w-12">
+                     <jcb-radial class="w-12" :value="ueProgress(userid, ue?.id)"></jcb-radial>
                   </div>
-               </template>
+                  {{ ue?.name }}
+               </h3>
+
+               <div class="progress-list">
+                  <template v-for="subUE in subUEListDict[ue.id]">
+                     <div v-if="!subUE.hidden" class="progress-item cursor-pointer" @click="select(ue, subUE)">
+                        <div class="w-14">
+                           <jcb-radial class="w-14" :value="subUEProgress(userid, subUE.id)"></jcb-radial>
+                        </div>
+                        <p>
+                           {{ subUE.name }}
+                        </p>
+                     </div>
+                  </template>
+               </div>
             </div>
-         </div>
          </template>
 
       </main>

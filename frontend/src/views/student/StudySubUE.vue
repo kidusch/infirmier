@@ -13,12 +13,12 @@
       </header>
 
       <!-- Header -->
-      <header class="py-2">
-         <h3 class="opacity-50 flex items-center">
-            {{ subUE?.name }}
+      <header>
+         <h3 class="opacity-50 flex items-center gap-2.5">
             <div class="ml-2 mt-3 w-12">
-               <jcb-radial :value="subUEProgress(userid, sub_ue_id)"></jcb-radial>
+               <jcb-radial class="w-12" :value="subUEProgress(userid, sub_ue_id)"></jcb-radial>
             </div>
+            {{ subUE?.name }}
          </h3>
       </header>
 
@@ -30,8 +30,7 @@
                <template v-for="topic in topicList">
                   <div v-if="!topic.hidden" class="progress-item cursor-pointer" @click="selectTopic(topic)">
                      <div class="w-14 h-14">
-                        <!-- <jcb-radial :value="topicProgressDict[topic.id]"></jcb-radial> -->
-                        <jcb-radial :value="topicProgress(userid, topic.id)"></jcb-radial>
+                        <jcb-radial class="w-14" :value="topicProgress(userid, topic.id)"></jcb-radial>
                      </div>
                      <p>
                         {{ topic?.name }}

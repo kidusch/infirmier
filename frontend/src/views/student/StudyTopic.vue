@@ -15,12 +15,12 @@
       </header>
 
       <!-- Header -->
-      <header class="py-2">
-         <h3 class="opacity-50 flex items-center">
-            {{ topic?.name }}
+      <header>
+         <h3 class="opacity-50 flex items-center gap-2.5">
             <div class="ml-2 mt-3 w-12">
-               <jcb-radial :value="topicProgress(userid, topic?.id)"></jcb-radial>
+               <jcb-radial class="w-12" :value="topicProgress(userid, topic?.id)"></jcb-radial>
             </div>
+            {{ topic?.name }}
          </h3>
       </header>
 
