@@ -22,7 +22,7 @@ export const topicProgress = computed(() => (user_id, topic_id) => {
       sum += progress
       count += 1
    }
-   return count === 0 ? -1 : Math.round(sum / count)
+   return count === 0 ? 0 : Math.round(sum / count)
 })
 
 export const subUEProgress = computed(() => (user_id, subue_id) => {
@@ -36,7 +36,7 @@ export const subUEProgress = computed(() => (user_id, subue_id) => {
       sum += progress
       count += 1
    }
-   return (count === 0 ? -1 : Math.round(sum / count))
+   return (count === 0 ? 0 : Math.round(sum / count))
 })
 
 export const ueProgress = computed(() => (user_id, ue_id) => {
@@ -50,5 +50,5 @@ export const ueProgress = computed(() => (user_id, ue_id) => {
       sum += progress
       count += 1
    }
-   return (count === 0 ? -1 : Math.round(sum / count))
+   return (count === 0 ? 0 : Math.round(sum / count))
 })
