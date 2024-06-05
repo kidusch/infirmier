@@ -77,6 +77,8 @@ const password = ref()
 // const errorMessage = ref('')
 
 onMounted(() => {
+   const cnxi = getStorageSocketId()
+   console.log('cnxi', cnxi)
    cnxid.value = getStorageSocketId()
 })
 
