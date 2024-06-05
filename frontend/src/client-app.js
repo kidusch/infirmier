@@ -22,17 +22,6 @@ export const app = expressXClient(socket, { debug: true })
 
 export const cnxid = useSessionStorage('cnxid', '')
 
-
-function getStorageSocketId() {
-   if (typeof sessionStorage !== 'undefined') return sessionStorage.getItem('cnxid')
-}
-
-function setStorageSocketId(id) {
-   if (typeof sessionStorage !== 'undefined') {
-      sessionStorage.setItem('cnxid', id)
-   }
-}
-
 app.onConnectError((socket, err) => {
    console.log('CNX ERROR!!!', socket.id, err.code)
 })
