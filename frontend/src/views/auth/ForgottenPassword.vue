@@ -43,7 +43,7 @@ import { ref } from 'vue'
 
 import router from '/src/router'
 import { appState } from '/src/use/useAppState'
-import app from '/src/client-app.js'
+import { app } from '/src/client-app.js'
 import { testEmail } from '/src/lib/utilities.mjs'
 
 

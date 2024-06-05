@@ -51,7 +51,7 @@
 import { ref, onMounted, createApp } from 'vue'
 
 import router from '/src/router'
-import app from '/src/client-app.js'
+import { app } from '/src/client-app.js'
 
 
 const props = defineProps({

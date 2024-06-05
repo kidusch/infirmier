@@ -1,7 +1,7 @@
 
 import { createRouter, createWebHistory } from 'vue-router'
 
-import app from '/src/client-app.js'
+import { app } from '/src/client-app.js'
 import { appState } from '/src/use/useAppState'
 
 import FrontPage from '/src/views/FrontPage.vue'

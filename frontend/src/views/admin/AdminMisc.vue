@@ -66,7 +66,7 @@
 import { ref, onMounted } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
-import app from '/src/client-app.js'
+import { app } from '/src/client-app.js'
 
 
 const props = defineProps({

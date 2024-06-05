@@ -1,6 +1,6 @@
 import { useSessionStorage } from '@vueuse/core'
 
-import app from '/src/client-app.js'
+import { app } from '/src/client-app.js'
 
 import { resetUseAppState } from '/src/use/useAppState'
 import { resetUseUser } from '/src/use/useUser'

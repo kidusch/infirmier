@@ -61,7 +61,7 @@
 <script setup>
 import { ref } from 'vue'
 
-import app from '/src/client-app.js'
+import { app } from '/src/client-app.js'
 import { testEmail } from '/src/lib/utilities.mjs'
 import { appState } from '/src/use/useAppState'
 import router from "/src/router"

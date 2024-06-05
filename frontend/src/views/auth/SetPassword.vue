@@ -50,7 +50,7 @@
 import { onMounted, ref } from 'vue'
 
 import router from '/src/router'
-import app from '/src/client-app.js'
+import { app } from '/src/client-app.js'
 import { appState } from '/src/use/useAppState'
 
 

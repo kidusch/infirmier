@@ -11,7 +11,7 @@ import { onMounted, watch } from 'vue'
 // import { useRoute} from 'vue-router'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 
-// import app from '/src/client-app.js'
+// import { app } from '/src/client-app.js'
 
 import { appState } from '/src/use/useAppState'
 import { restartApp } from '/src/use/useAuthentication'

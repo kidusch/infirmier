@@ -64,16 +64,21 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 import router from '/src/router'
 import { appState } from '/src/use/useAppState'
 import { localSignin } from '/src/use/useAuthentication'
+import { getStorageSocketId } from '/src/client-app.js'
 
-const cnxid = ref(sessionStorage.cnxid)
+const cnxid = ref()
 const email = ref()
 const password = ref()
 // const errorMessage = ref('')
+
+onMounted(() => {
+   cnxid.value = getStorageSocketId()
+})
 
 const validate = async () => {
    // errorMessage.value = ''

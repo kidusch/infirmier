@@ -55,12 +55,17 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 import { appState } from '/src/use/useAppState'
 import router from "/src/router"
+import { getStorageSocketId } from '/src/client-app.js'
 
-const cnxid = ref(sessionStorage.cnxid)
+const cnxid = ref()
+
+onMounted(() => {
+   cnxid.value = getStorageSocketId()
+})
 
 const localSignup = () => {
    router.push('/local-signup')

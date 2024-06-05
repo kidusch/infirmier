@@ -16,15 +16,15 @@ const socket = io({
    }
 })
 
-const app = expressXClient(socket, { debug: true })
+export const app = expressXClient(socket, { debug: true })
 
 
-function _getStorageSocketId() {
+export function getStorageSocketId() {
    if (typeof sessionStorage !== 'undefined') return sessionStorage.getItem('cnxid')
    return nodeCnxId
 }
 
-function _setStorageSocketId(id) {
+export function setStorageSocketId(id) {
    if (typeof sessionStorage !== 'undefined') {
       sessionStorage.setItem('cnxid', id)
    } else {
@@ -40,18 +40,18 @@ app.onConnect(async (socket) => {
    const socketId = socket.id
    console.log('connect', socketId)
    // look for a previously stored connection id
-   const prevSocketId = _getStorageSocketId()
+   const prevSocketId = getStorageSocketId()
    if (prevSocketId) {
       // it's a connection after a reload/refresh
       // ask server to transfer all data from connection `prevSocketId` to connection `socketId`
       console.log('cnx-transfer', prevSocketId, 'to', socketId)
       await socket.emit('cnx-transfer', prevSocketId, socketId)
       // update connection id
-      _setStorageSocketId(socketId)
+      setStorageSocketId(socketId)
 
    } else {
       // set connection id
-      _setStorageSocketId(socketId)
+      setStorageSocketId(socketId)
    }
 
    socket.on('cnx-transfer-ack', async (fromSocketId, toSocketId) => {
@@ -68,5 +68,3 @@ app.onConnect(async (socket) => {
       appState.value.isExpired = true
    })
 })
-
-export default app
