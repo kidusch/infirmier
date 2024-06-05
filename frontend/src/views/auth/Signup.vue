@@ -15,7 +15,7 @@
                Inscription au
             </h1>
             <h1 class="text-primary">
-               Journal de bord Infirmier - {{ cnxid }}
+               Journal de bord Infirmier
             </h1>
          </section>
 
