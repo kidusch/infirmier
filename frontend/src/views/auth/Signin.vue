@@ -12,7 +12,7 @@
                Connexion au
             </h1>
             <h1 class="text-primary">
-               Journal de bord Infirmier
+               Journal de bord Infirmier - {{ cnxid }}
             </h1>
          </section>
 
