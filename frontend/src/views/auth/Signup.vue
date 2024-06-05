@@ -15,7 +15,7 @@
                Inscription au
             </h1>
             <h1 class="text-primary">
-               Journal de bord Infirmier
+               Journal de bord Infirmier - {{ cnxid }}
             </h1>
          </section>
 
@@ -55,17 +55,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-
 import { appState } from '/src/use/useAppState'
 import router from "/src/router"
-import { getStorageSocketId } from '/src/client-app.js'
+import { cnxid } from '/src/client-app.js'
 
-const cnxid = ref()
-
-onMounted(() => {
-   cnxid.value = getStorageSocketId()
-})
 
 const localSignup = () => {
    router.push('/local-signup')
