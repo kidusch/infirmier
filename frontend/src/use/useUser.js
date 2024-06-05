@@ -25,6 +25,7 @@ app.service('user').on('create', user => {
 export const getUser = async (id) => {
    let user = userState.value.userCache[id]
    if (user) return user
+   console.log('!!!! getUser')
    user = await app.service('user').findUnique({ where: { id }})
    userState.value.userCache[id] = user
    return user
