@@ -7,6 +7,7 @@ import { listOfSubUEs } from '/src/use/useSubUE'
 
 export const courseProgress = computed(() => (user_id, course_id) => {
    const userCourse = theUserCourse.value(user_id, course_id)
+   if (userCourse === undefined) return -1
    return userCourse?.done ? 100 : 0
 })
 
@@ -16,10 +17,12 @@ export const topicProgress = computed(() => (user_id, topic_id) => {
    const courseList = listOfCourses.value(topic_id)
    for (const course of courseList) {
       if (course.hidden) continue
-      sum += courseProgress.value(user_id, course.id)
+      const progress = courseProgress.value(user_id, course.id)
+      if (progress === -1) return -1
+      sum += progress
       count += 1
    }
-   return count === 0 ? 0 : Math.round(sum / count)
+   return count === 0 ? -1 : Math.round(sum / count)
 })
 
 export const subUEProgress = computed(() => (user_id, subue_id) => {
@@ -28,10 +31,12 @@ export const subUEProgress = computed(() => (user_id, subue_id) => {
    const topicList = listOfTopics.value(subue_id)
    for (const topic of topicList) {
       if (topic.hidden) continue
-      sum += topicProgress.value(user_id, topic.id)
+      const progress = topicProgress.value(user_id, topic.id)
+      if (progress === -1) return -1
+      sum += progress
       count += 1
    }
-   return (count === 0 ? 0 : Math.round(sum / count))
+   return (count === 0 ? -1 : Math.round(sum / count))
 })
 
 export const ueProgress = computed(() => (user_id, ue_id) => {
@@ -40,8 +45,10 @@ export const ueProgress = computed(() => (user_id, ue_id) => {
    const subUEList = listOfSubUEs.value(ue_id)
    for (const subUE of subUEList) {
       if (subUE.hidden) continue
-      sum += subUEProgress.value(user_id, subUE.id)
+      const progress = subUEProgress.value(user_id, subUE.id)
+      if (progress === -1) return -1
+      sum += progress
       count += 1
    }
-   return (count === 0 ? 0 : Math.round(sum / count))
+   return (count === 0 ? -1 : Math.round(sum / count))
 })

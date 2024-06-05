@@ -8,6 +8,7 @@ import { app } from '/src/client-app.js'
 const initialState = () => ({
    subUECache: {},
    isListReady: {},
+   subUEListStatus: {},
 })
  
 const subUEState = useSessionStorage('sub-ue-state', initialState())
@@ -81,16 +82,19 @@ export const getSubUEList = async (ue_id) => {
 }
 
 export const listOfSubUEs = computed(() => (ue_id) => {
-   if (subUEState.value.isListReady[ue_id]) {
+   if (subUEState.value.subUEListStatus[ue_id] === 'ready') {
       return Object.values(subUEState.value.subUECache).filter(subUE => subUE.ue_id === ue_id).sort((e1, e2) => e1.rank - e2.rank)
    }
-   app.service('sub_ue').findMany({
-      where: { ue_id }
-   }).then((list) => {
-      for (const subUE of list) {
-         subUEState.value.subUECache[subUE.id] = subUE
-      }
-      subUEState.value.isListReady[ue_id] = true
-   })
+   if (subUEState.value.subUEListStatus[ue_id] !== 'ongoing') {
+      subUEState.value.subUEListStatus[ue_id] = 'ongoing'
+      app.service('sub_ue').findMany({
+         where: { ue_id }
+      }).then((list) => {
+         for (const subUE of list) {
+            subUEState.value.subUECache[subUE.id] = subUE
+         }
+         subUEState.value.subUEListStatus[ue_id] = 'ready'
+      })
+   }
    return []
 })
