@@ -46,6 +46,7 @@ export const theUserCard = computed(() => (user_id, card_id) => {
    const status = userCardState.value.theUserCardStatus[key]
    if (status === 'ready') return Object.values(userCardState.value.userCardCache).find(userCard => userCard.user_id === user_id && userCard.card_id === card_id)
    if (status !== 'ongoing') {
+      userCardState.value.theUserCardStatus[key] = 'ongoing'
       app.service('user_card').findMany({
          where: { user_id, card_id },
       }).then(userCards => {

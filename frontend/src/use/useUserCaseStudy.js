@@ -47,6 +47,7 @@ export const theUserCaseStudy = computed(() => (user_id, case_study_id) => {
    const status = userCaseStudyState.value.theUserCaseStudyStatus[key]
    if (status === 'ready') return Object.values(userCaseStudyState.value.userCaseStudyCache).find(userCaseStudy => userCaseStudy.user_id === user_id && userCaseStudy.case_study_id === case_study_id)
    if (status !== 'ongoing') {
+      userCaseStudyState.value.theUserCaseStudyStatus[key] = 'ongoing'
       app.service('user_case_study').findMany({
          where: { user_id, case_study_id },
       }).then(userCaseStudys => {
