@@ -14,11 +14,11 @@
 
       <!-- Header -->
       <header class="py-2">
-         <h3 class="opacity-50 flex items-center">
-            {{ subUE?.name }}
+         <h3 class="opacity-50 flex items-center gap-2.5">
             <div class="ml-2 mt-3 w-14">
-               <jcb-radial :value="progress"></jcb-radial>
+               <jcb-radial class="w-14" :value="subUEReviseProgress(userid, sub_ue_id)"></jcb-radial>
             </div>
+            {{ subUE?.name }}
          </h3>
       </header>
 
@@ -29,8 +29,8 @@
             <div class="progress-list">
                <template v-for="topic in topicList">
                   <div v-if="!topic.hidden" class="progress-item cursor-pointer" @click="selectTopic(topic)">
-                     <div class="w-14 h-14">
-                        <jcb-radial :value="topicProgressDict[topic.id]"></jcb-radial>
+                     <div class="w-12">
+                        <jcb-radial class="w-12" :value="topicReviseProgress(userid, topic.id)"></jcb-radial>
                      </div>
                      <p>
                         {{ topic?.name }}
@@ -51,12 +51,13 @@ import { ref, onMounted } from 'vue'
 import { getUE } from '/src/use/useUE'
 import { getSubUE } from '/src/use/useSubUE'
 import { getTopicList } from '/src/use/useTopic'
-import { getCardList } from '/src/use/useCard'
-import { getQuizList } from '/src/use/useQuiz'
-import { getCaseStudyList } from '/src/use/useCaseStudy'
-import { getTheUserCard } from '/src/use/useUserCard'
-import { getTheUserQuiz } from '/src/use/useUserQuiz'
-import { getTheUserCaseStudy } from '/src/use/useUserCaseStudy'
+// import { getCardList } from '/src/use/useCard'
+// import { getQuizList } from '/src/use/useQuiz'
+// import { getCaseStudyList } from '/src/use/useCaseStudy'
+// import { getTheUserCard } from '/src/use/useUserCard'
+// import { getTheUserQuiz } from '/src/use/useUserQuiz'
+// import { getTheUserCaseStudy } from '/src/use/useUserCaseStudy'
+import { topicReviseProgress, subUEReviseProgress } from '/src/use/useProgress'
 import router from "/src/router"
 
 const props = defineProps({
@@ -77,11 +78,10 @@ const props = defineProps({
 const ue = ref()
 const subUE = ref()
 const topicList = ref([])
-const topicProgressDict = ref({})
+// const topicStudyProgressDict = ref({})
 const progress = ref(0)
 
 onMounted(async () => {
-   console.log('onMounted StudentSubUE', props.userid)
    ue.value = await getUE(props.ue_id)
    subUE.value = await getSubUE(props.sub_ue_id)
    topicList.value = await getTopicList(props.sub_ue_id)
@@ -109,7 +109,7 @@ onMounted(async () => {
    //       sum += (userCaseStudy.done ? 100 : 0)
    //    }
    //    const percentage = count === 0 ? 0 : Math.round(sum / count)
-   //    topicProgressDict.value[topic.id] = percentage
+   //    topicStudyProgressDict.value[topic.id] = percentage
    //    totalSum += percentage
    //    totalCount += 1
    // }

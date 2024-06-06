@@ -1,3 +1,4 @@
+import { computed } from 'vue'
 import { useSessionStorage } from '@vueuse/core'
 
 import { app } from '/src/client-app.js'
@@ -6,7 +7,7 @@ import { app } from '/src/client-app.js'
 // state backed in SessionStorage
 const initialState = () => ({
    quizCache: {},
-   isListReady: {},
+   quizListStatus: {},
 })
  
 const quizState = useSessionStorage('quiz-state', initialState())
@@ -68,14 +69,33 @@ export const removeQuiz = async (id) => {
 }
 
 export const getQuizList = async (topic_id) => {
-   if (!quizState.value.isListReady[topic_id]) {
+   if (quizState.value.quizListStatus[topic_id] !== 'ready') {
+      quizState.value.quizListStatus[topic_id] = 'ongoing'
       const list = await app.service('quiz').findMany({
          where: { topic_id }
       })
       for (const quiz of list) {
          quizState.value.quizCache[quiz.id] = quiz
       }
-      quizState.value.isListReady[topic_id] = true
+      quizState.value.quizListStatus[topic_id] = 'ready'
    }
    return Object.values(quizState.value.quizCache).filter(quiz => quiz.topic_id === topic_id).sort((e1, e2) => e1.rank - e2.rank)
 }
+
+export const listOfQuizs = computed(() => (topic_id) => {
+   if (quizState.value.quizListStatus[topic_id] === 'ready') {
+      return Object.values(quizState.value.quizCache).filter(quiz => quiz.topic_id === topic_id).sort((e1, e2) => e1.rank - e2.rank)
+   }
+   if (quizState.value.quizListStatus[topic_id] !== 'ongoing') {
+      quizState.value.quizListStatus[topic_id] = 'ongoing'
+      app.service('quiz').findMany({
+         where: { topic_id }
+      }).then((list) => {
+         for (const quiz of list) {
+            quizState.value.quizCache[quiz.id] = quiz
+         }
+         quizState.value.quizListStatus[topic_id] = 'ready'
+      })
+   }
+   return []
+})

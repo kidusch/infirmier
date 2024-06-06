@@ -14,7 +14,7 @@
             <div v-if="!ue.hidden" class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
                <h3 class="font-semibold flex items-center gap-2.5">
                   <div class="ml-2 mt-3 w-12">
-                     <jcb-radial class="w-12" :value="ueProgress(userid, ue?.id)"></jcb-radial>
+                     <jcb-radial class="w-12" :value="ueStudyProgress(userid, ue?.id)"></jcb-radial>
                   </div>
                   {{ ue?.name }}
                </h3>
@@ -22,8 +22,8 @@
                <div class="progress-list">
                   <template v-for="subUE in subUEListDict[ue.id]">
                      <div v-if="!subUE.hidden" class="progress-item cursor-pointer" @click="select(ue, subUE)">
-                        <div class="w-14">
-                           <jcb-radial class="w-14" :value="subUEProgress(userid, subUE.id)"></jcb-radial>
+                        <div class="w-12">
+                           <jcb-radial class="w-12" :value="subUEStudyProgress(userid, subUE.id)"></jcb-radial>
                         </div>
                         <p>
                            {{ subUE.name }}
@@ -44,7 +44,7 @@ import { ref, onMounted } from 'vue'
 
 import { getUEList } from '/src/use/useUE'
 import { getSubUEList } from '/src/use/useSubUE'
-import { subUEProgress, ueProgress } from '/src/use/useProgress'
+import { subUEStudyProgress, ueStudyProgress } from '/src/use/useProgress'
 import router from "/src/router"
 
 // import 'jcb-radial'
@@ -60,7 +60,7 @@ const props = defineProps({
    },
 })
 
-const subUEProgressDict = ref({})
+const subUEStudyProgressDict = ref({})
 
 onMounted(async () => {
    ueList.value = await getUEList()
@@ -78,7 +78,7 @@ onMounted(async () => {
       //          count += 1
       //       }
       //    }
-      //    subUEProgressDict.value[subUE.id] = count === 0 ? 0 : Math.round(sum / count)
+      //    subUEStudyProgressDict.value[subUE.id] = count === 0 ? 0 : Math.round(sum / count)
       // }
    }
 })

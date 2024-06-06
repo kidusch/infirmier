@@ -15,8 +15,8 @@
       <!-- Header -->
       <header>
          <h3 class="opacity-50 flex items-center gap-2.5">
-            <div class="ml-2 mt-3 w-12">
-               <jcb-radial class="w-12" :value="subUEProgress(userid, sub_ue_id)"></jcb-radial>
+            <div class="ml-2 mt-3 w-14">
+               <jcb-radial class="w-14" :value="subUEStudyProgress(userid, sub_ue_id)"></jcb-radial>
             </div>
             {{ subUE?.name }}
          </h3>
@@ -29,8 +29,8 @@
             <div class="progress-list">
                <template v-for="topic in topicList">
                   <div v-if="!topic.hidden" class="progress-item cursor-pointer" @click="selectTopic(topic)">
-                     <div class="w-14 h-14">
-                        <jcb-radial class="w-14" :value="topicProgress(userid, topic.id)"></jcb-radial>
+                     <div class="w-12">
+                        <jcb-radial class="w-12" :value="topicStudyProgress(userid, topic.id)"></jcb-radial>
                      </div>
                      <p>
                         {{ topic?.name }}
@@ -51,7 +51,7 @@ import { ref, onMounted, computed } from 'vue'
 import { getUE } from '/src/use/useUE'
 import { getSubUE } from '/src/use/useSubUE'
 import { getTopicList } from '/src/use/useTopic'
-import { topicProgress, subUEProgress } from '/src/use/useProgress'
+import { topicStudyProgress, subUEStudyProgress } from '/src/use/useProgress'
 import router from "/src/router"
 
 const props = defineProps({

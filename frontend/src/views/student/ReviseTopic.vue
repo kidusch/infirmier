@@ -22,7 +22,7 @@
                <h3 class="opacity-50">{{ topic?.name }}</h3>
 
                <div class="ml-4 mt-3 w-14">
-                  <jcb-radial :value="progress"></jcb-radial>
+                  <jcb-radial class="w-14" :value="topicReviseProgress(userid, topic_id)"></jcb-radial>
                </div>
             </div>
 
@@ -42,7 +42,7 @@
                <template v-for="card in cardList">
                   <div v-if="!card.hidden" class="progress-item cursor-pointer" @click="selectCard(card)">
                      <div class="w-14">
-                        {{ userCardDict[card.id]?.done ? "✔️": "" }}
+                        {{ isTheUserCardDone(card.id) ? "✔️": "" }}
                      </div>
                      <p>
                         Fiche : {{ card?.title }}
@@ -55,7 +55,7 @@
                <template v-for="quiz in quizList">
                   <div v-if="!quiz.hidden" class="progress-item cursor-pointer" @click="selectQuiz(quiz)">
                      <div class="w-14">
-                        {{ userQuizDict[quiz.id]?.done ? "✔️": "" }}
+                        {{ isTheUserQuizDone(quiz.id) ? "✔️": "" }}
                      </div>
                      <p>
                         QCM : {{ quiz?.title }}
@@ -68,7 +68,7 @@
                <template v-for="caseStudy in caseStudyList">
                   <div v-if="!caseStudy.hidden" class="progress-item cursor-pointer" @click="selectCaseStudy(caseStudy)">
                      <div class="w-14">
-                        {{ userCaseStudyDict[caseStudy.id]?.done ? "✔️": "" }}
+                        {{ isTheUserCaseStudyDone(caseStudy.id) ? "✔️": "" }}
                      </div>
                      <p>
                         Étude de cas : {{ caseStudy?.title }}
@@ -84,7 +84,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 
 import { getUE } from '/src/use/useUE'
 import { getSubUE } from '/src/use/useSubUE'
@@ -93,10 +93,10 @@ import { getCourseList } from '/src/use/useCourse'
 import { getCardList } from '/src/use/useCard'
 import { getQuizList } from '/src/use/useQuiz'
 import { getCaseStudyList } from '/src/use/useCaseStudy'
-import { getTheUserCourse } from '/src/use/useUserCourse'
-import { getTheUserCard } from '/src/use/useUserCard'
-import { getTheUserQuiz } from '/src/use/useUserQuiz'
-import { getTheUserCaseStudy } from '/src/use/useUserCaseStudy'
+import { theUserCard } from '/src/use/useUserCard'
+import { theUserQuiz } from '/src/use/useUserQuiz'
+import { theUserCaseStudy } from '/src/use/useUserCaseStudy'
+import { topicReviseProgress } from '/src/use/useProgress'
 import router from "/src/router"
 
 
@@ -126,11 +126,11 @@ const courseList = ref()
 const cardList = ref()
 const quizList = ref()
 const caseStudyList = ref()
-const userCourseDict = ref({})
-const userCardDict = ref({})
-const userQuizDict = ref({})
-const userCaseStudyDict = ref({})
-const progress = ref(0)
+// const userCourseDict = ref({})
+// const userCardDict = ref({})
+// const userQuizDict = ref({})
+// const userCaseStudyDict = ref({})
+// const progress = ref(0)
 
 
 onMounted(async () => {
@@ -170,6 +170,21 @@ onMounted(async () => {
    //    sum += (userCaseStudy.done ? 100 : 0)
    // }
    // progress.value = count === 0 ? 0 : Math.round(sum / count)
+})
+
+const isTheUserCardDone = computed(() => (cardId) => {
+   const userCard = theUserCard.value(props.userid, cardId)
+   return userCard && userCard.done
+})
+
+const isTheUserQuizDone = computed(() => (quizId) => {
+   const userQuiz = theUserQuiz.value(props.userid, quizId)
+   return userQuiz && userQuiz.done
+})
+
+const isTheUserCaseStudyDone = computed(() => (caseStudyId) => {
+   const userCaseStudy = theUserCaseStudy.value(props.userid, caseStudyId)
+   return userCaseStudy && userCaseStudy.done
 })
 
 const selectCard = (card) => {

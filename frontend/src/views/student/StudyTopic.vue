@@ -18,7 +18,7 @@
       <header>
          <h3 class="opacity-50 flex items-center gap-2.5">
             <div class="ml-2 mt-3 w-12">
-               <jcb-radial class="w-12" :value="topicProgress(userid, topic?.id)"></jcb-radial>
+               <jcb-radial class="w-12" :value="topicStudyProgress(userid, topic?.id)"></jcb-radial>
             </div>
             {{ topic?.name }}
          </h3>
@@ -33,7 +33,7 @@
                <template v-for="course in courseList">
                   <div v-if="!course.hidden" class="progress-item cursor-pointer" @click="selectCourse(course)">
                      <div class="w-14">
-                        <jcb-radial class="w-14" :value="courseProgress(userid, course.id)"></jcb-radial>
+                        <jcb-radial class="w-14" :value="courseStudyProgress(userid, course.id)"></jcb-radial>
                      </div>
                      <p>
                         {{ course?.title }}
@@ -56,7 +56,7 @@ import { getUE } from '/src/use/useUE'
 import { getSubUE } from '/src/use/useSubUE'
 import { getTopic } from '/src/use/useTopic'
 import { getCourseList } from '/src/use/useCourse'
-import { courseProgress, topicProgress } from '/src/use/useProgress'
+import { courseStudyProgress, topicStudyProgress } from '/src/use/useProgress'
 
 import router from "/src/router"
 
