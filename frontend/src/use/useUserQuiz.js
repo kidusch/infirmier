@@ -22,24 +22,24 @@ app.service('user_quiz').on('create', (userQuiz) => {
    userQuizState.value.userQuizCache[userQuiz.id] = userQuiz
 })
 
-// // get or create the unique user_quiz associated to (user_id, quiz_id)
-// export const getTheUserQuiz = async (user_id, quiz_id) => {
-//    const key = user_id + ':' + quiz_id
-//    const status = userQuizState.value.theUserQuizStatus[key]
-//    if (status === 'ready') return Object.values(userQuizState.value.userQuizCache).find(userQuiz => userQuiz.user_id === user_id && userQuiz.quiz_id === quiz_id)
-//    userQuizState.value.theUserQuizStatus[key] = 'ongoing'
-//    let [userQuiz] = await app.service('user_quiz').findMany({
-//       where: { user_id, quiz_id },
-//    })
-//    if (!userQuiz) {
-//       userQuiz = await app.service('user_quiz').create({
-//          data: { user_id, quiz_id },
-//       })
-//    }
-//    userQuizState.value.userQuizCache[userQuiz.id] = userQuiz
-//    userQuizState.value.theUserQuizStatus[key] = 'ready'
-//    return userQuiz
-// }
+// get or create the unique user_quiz associated to (user_id, quiz_id)
+export const getTheUserQuiz = async (user_id, quiz_id) => {
+   const key = user_id + ':' + quiz_id
+   const status = userQuizState.value.theUserQuizStatus[key]
+   if (status === 'ready') return Object.values(userQuizState.value.userQuizCache).find(userQuiz => userQuiz.user_id === user_id && userQuiz.quiz_id === quiz_id)
+   userQuizState.value.theUserQuizStatus[key] = 'ongoing'
+   let [userQuiz] = await app.service('user_quiz').findMany({
+      where: { user_id, quiz_id },
+   })
+   if (!userQuiz) {
+      userQuiz = await app.service('user_quiz').create({
+         data: { user_id, quiz_id },
+      })
+   }
+   userQuizState.value.userQuizCache[userQuiz.id] = userQuiz
+   userQuizState.value.theUserQuizStatus[key] = 'ready'
+   return userQuiz
+}
 
 export const theUserQuiz = computed(() => (user_id, quiz_id) => {
    const key = user_id + ':' + quiz_id

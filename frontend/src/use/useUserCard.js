@@ -22,24 +22,24 @@ app.service('user_card').on('create', (userCard) => {
    userCardState.value.userCardCache[userCard.id] = userCard
 })
 
-// // get or create the unique user_card associated to (user_id, card_id)
-// export const getTheUserCard = async (user_id, card_id) => {
-//    const key = user_id + ':' + card_id
-//    const status = userCardState.value.theUserCardStatus[key]
-//    if (status === 'ready') return Object.values(userCardState.value.userCardCache).find(userCard => userCard.user_id === user_id && userCard.card_id === card_id)
-//    userCardState.value.theUserCardStatus[key] = 'ongoing'
-//    let [userCard] = await app.service('user_card').findMany({
-//       where: { user_id, card_id },
-//    })
-//    if (!userCard) {
-//       userCard = await app.service('user_card').create({
-//          data: { user_id, card_id },
-//       })
-//    }
-//    userCardState.value.userCardCache[userCard.id] = userCard
-//    userCardState.value.theUserCardStatus[key] = 'ready'
-//    return userCard
-// }
+// get or create the unique user_card associated to (user_id, card_id)
+export const getTheUserCard = async (user_id, card_id) => {
+   const key = user_id + ':' + card_id
+   const status = userCardState.value.theUserCardStatus[key]
+   if (status === 'ready') return Object.values(userCardState.value.userCardCache).find(userCard => userCard.user_id === user_id && userCard.card_id === card_id)
+   userCardState.value.theUserCardStatus[key] = 'ongoing'
+   let [userCard] = await app.service('user_card').findMany({
+      where: { user_id, card_id },
+   })
+   if (!userCard) {
+      userCard = await app.service('user_card').create({
+         data: { user_id, card_id },
+      })
+   }
+   userCardState.value.userCardCache[userCard.id] = userCard
+   userCardState.value.theUserCardStatus[key] = 'ready'
+   return userCard
+}
 
 export const theUserCard = computed(() => (user_id, card_id) => {
    const key = user_id + ':' + card_id
