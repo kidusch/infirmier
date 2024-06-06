@@ -86,7 +86,7 @@ export const topicReviseProgress = computed(() => (user_id, topic_id) => {
    }
    const caseStudyList = listOfCaseStudies.value(topic_id)
    for (const caseStudy of caseStudyList) {
-      const userCaseStudy = theUserCaseStudy(user_id, caseStudy.id)
+      const userCaseStudy = theUserCaseStudy.value(user_id, caseStudy.id)
       if (userCaseStudy === undefined) return -1
       count += 1
       sum += (userCaseStudy.done ? 100 : 0)

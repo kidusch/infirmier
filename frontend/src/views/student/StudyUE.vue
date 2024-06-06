@@ -13,8 +13,8 @@
          <template v-for="ue in ueList">
             <div v-if="!ue.hidden" class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
                <h3 class="font-semibold flex items-center gap-2.5">
-                  <div class="ml-2 mt-3 w-12">
-                     <jcb-radial class="w-12" :value="ueStudyProgress(userid, ue?.id)"></jcb-radial>
+                  <div class="ml-2 mt-3 w-14">
+                     <jcb-radial class="w-14" :value="ueStudyProgress(userid, ue?.id)"></jcb-radial>
                   </div>
                   {{ ue?.name }}
                </h3>
