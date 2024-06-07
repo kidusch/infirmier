@@ -97,18 +97,19 @@ const routes = [
             }),
          },
          {
-            path: 'admin-course-ex/:ue_id/:sub_ue_id/:topic_id',
-            component: () => import('/src/views/admin/AdminCourseEx.vue'),
+            path: 'admin-course/:ue_id/:sub_ue_id/:topic_id/:course_id',
+            component: () => import('/src/views/admin/AdminCourse.vue'),
             props: route => ({
                userid: parseInt(route.params.userid),
                ue_id: parseInt(route.params.ue_id),
                sub_ue_id: parseInt(route.params.sub_ue_id),
                topic_id: parseInt(route.params.topic_id),
+               course_id: parseInt(route.params.course_id),
             }),
          },
          {
-            path: 'admin-course/:ue_id/:sub_ue_id/:topic_id/:course_id',
-            component: () => import('/src/views/admin/AdminCourse.vue'),
+            path: 'admin-course-preview/:ue_id/:sub_ue_id/:topic_id/:course_id',
+            component: () => import('/src/views/admin/AdminCoursePreview.vue'),
             props: route => ({
                userid: parseInt(route.params.userid),
                ue_id: parseInt(route.params.ue_id),

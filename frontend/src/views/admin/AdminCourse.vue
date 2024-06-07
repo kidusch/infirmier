@@ -18,42 +18,51 @@
 
       <main class="flex flex-col gap-3">
          <div>
-            <label for="title">Titre</label>
+            <div class="flex justify-between">
+               <label for="title">Titre</label>
+               <img class="h-5 mb-1" src="/src/assets/edit.svg"  @click="disabledTitle = !disabledTitle">
+            </div>
             <div class="standard-input-container">
                <input placeholder="Titre..." type="text"
                   :value="course ? course.title : ''"
                   @input="debouncedInputTitle"
                   :disabled="disabledTitle"
                />
-               <img src="/src/assets/edit.svg"  @click="disabledTitle = !disabledTitle">
-               <div class="img-placeholder">
-               </div>
             </div>
          </div>
          <div>
-            <label for="title">Contenu</label>
+            <div class="flex justify-between">
+               <label for="title">Contenu</label>
+               <div class="flex gap-2">
+                  <img class="h-5 mb-1" src="/src/assets/preview.svg"  @click="preview">
+                  <img class="h-5 mb-1" src="/src/assets/edit.svg"  @click="disabledContent = !disabledContent">
+               </div>
+            </div>
             <div class="standard-input-container">
                <textarea placeholder="Contenu..." type="text" rows="50"
                   :value="course ? course.content : ''"
                   @input="debouncedInputContent"
                   :disabled="disabledContent"
                ></textarea>
-               <img src="/src/assets/edit.svg"  @click="disabledContent = !disabledContent">
-               <div class="img-placeholder"></div>
+               <!-- <img src="/src/assets/edit.svg"  @click="disabledContent = !disabledContent">
+               <div class="img-placeholder"></div> -->
             </div>
+         </div>
+         <div>
+            <p class="text-red-600">{{ errorMessage }}</p>
          </div>
       </main>
    </main>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
 import { getUE } from '/src/use/useUE'
 import { getSubUE } from '/src/use/useSubUE'
 import { getTopic } from '/src/use/useTopic'
-import { getCourse, updateCourse } from '/src/use/useCourse'
+import { getCourse, courseOfId, updateCourse } from '/src/use/useCourse'
 import router from '/src/router'
 import parser from '/src/lib/grammar.js'
 
@@ -84,27 +93,37 @@ const props = defineProps({
 const ue = ref()
 const subUE = ref()
 const topic = ref()
-const course = ref()
+// const course = ref()
+const errorMessage = ref('')
 
 onMounted(async () => {
    ue.value = await getUE(props.ue_id)
    subUE.value = await getSubUE(props.sub_ue_id)
    topic.value = await getTopic(props.topic_id)
-   course.value = await getCourse(props.course_id)
+   // course.value = await getCourse(props.course_id)
 })
+
+const course = computed(() => courseOfId.value(props.course_id))
+
+watch(() => course.value?.content, async (content) => {
+   console.log('check syntax', content)
+   if (content) {
+      try {
+         const parts = parser.parse(content)
+         console.log('parts', parts)
+         errorMessage.value = ''
+      } catch(err) {
+         console.log('err', err)
+         errorMessage.value = err.toString()
+      }
+   }
+}, { immediate: true })
 
 const onInputTitle = async (ev) => {
    await updateCourse(props.course_id, { title: ev.target.value })
 }
 const onInputContent = async (ev) => {
    await updateCourse(props.course_id, { content: ev.target.value })
-   // check syntax
-   try {
-      const parts = parser.parse(course.value.content)
-      console.log('parts', parts)
-   } catch(err) {
-      alert(err)
-   }
 }
 const debouncedInputTitle = useDebounceFn(onInputTitle, 500)
 const debouncedInputContent = useDebounceFn(onInputContent, 500)
@@ -117,6 +136,6 @@ const back = () => {
 }
 
 const preview = () => {
-   console.log('preview')
+   router.push(`/home/${props.userid}/admin-course-preview/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${props.course_id}`)
 }
 </script>

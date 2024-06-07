@@ -7,6 +7,7 @@ import { app } from '/src/client-app.js'
 // state backed in SessionStorage
 const initialState = () => ({
    courseCache: {},
+   courseStatus: {},
    courseListStatus: {},
 })
 
@@ -32,6 +33,18 @@ export const getCourse = async (id) => {
    courseState.value.courseCache[id] = course
    return course
 }
+
+export const courseOfId = computed(() => (id) => {
+   const status = courseState.value.courseStatus[id]
+   if (status === 'ready') return courseState.value.courseCache[id]
+   if (status === 'ongoing') return undefined // ongoing request
+   courseState.value.courseStatus[id] = 'ongoing'
+   app.service('course').findUnique({ where: { id }}).then(course => {
+      courseState.value.courseCache[id] = course
+      courseState.value.courseStatus[id] = 'ready'
+   })
+   return undefined
+})
 
 export const createCourse = async (topic_id, title = '', content = '') => {
    // get highest rank
