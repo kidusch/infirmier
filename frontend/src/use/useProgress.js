@@ -42,6 +42,7 @@ export const subUEStudyProgress = computed(() => (user_id, subue_id) => {
       sum += progress
       count += 1
    }
+   console.log('subUEStudyProgress', subue_id, count, sum, topicList.length)
    return (count === 0 ? 0 : Math.round(sum / count))
 })
 
