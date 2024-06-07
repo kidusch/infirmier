@@ -73,8 +73,8 @@ export const getSubUEList = async (ue_id) => {
    if (subUEState.value.subUEListStatus[ue_id] === 'ready') {
       return Object.values(subUEState.value.subUECache).filter(subUE => subUE.ue_id === ue_id).sort((e1, e2) => e1.rank - e2.rank)
    }
-   subUEState.value.subUEListStatus[ue_id] = 'ongoing'
-   try {
+   // subUEState.value.subUEListStatus[ue_id] = 'ongoing'
+   // try {
       const list = await app.service('sub_ue').findMany({
          where: { ue_id }
       })
@@ -83,10 +83,10 @@ export const getSubUEList = async (ue_id) => {
       }
       subUEState.value.subUEListStatus[ue_id] = 'ready'
       return list
-   } catch(err) {
-      subUEState.value.subUEListStatus[ue_id] = undefined
-      throw err
-   }
+   // } catch(err) {
+   //    subUEState.value.subUEListStatus[ue_id] = undefined
+   //    throw err
+   // }
 }
 
 export const listOfSubUEs = computed(() => (ue_id) => {
