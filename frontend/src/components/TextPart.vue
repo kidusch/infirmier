@@ -21,6 +21,11 @@
          'text-red-600': isTitle3,
          'text-blue-600': isTitle4,
 
+         'py-4': isTitle1,
+         'py-3': isTitle2,
+         'py-2': isTitle3,
+         'py-1': isTitle4,
+
          'list-disc': isLi,
          'pl-5': isLi,
          'space-y-2': isLi,
