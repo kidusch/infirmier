@@ -9,11 +9,13 @@ const initialState = () => ({
    cardCache: {},
    cardListStatus: {},
 })
- 
-const cardState = useSessionStorage('card-state', initialState())
+
+const key = 'card-state'
+const cardState = useSessionStorage(key, initialState())
 
 export const resetUseCard = () => {
-   cardState.value = initialState()
+   // cardState.value = initialState()
+   sessionStorage.removeItem(key)
 }
 
 

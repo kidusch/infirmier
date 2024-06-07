@@ -9,11 +9,13 @@ const initialState = () => ({
    userQuizCache: {},
    theUserQuizStatus: {},
 })
- 
-const userQuizState = useSessionStorage('user-quiz-state', initialState())
+
+const key = 'user-quiz-state'
+const userQuizState = useSessionStorage(key, initialState())
 
 export const resetUseUserQuiz = () => {
-   userQuizState.value = initialState()
+   // userQuizState.value = initialState()
+   sessionStorage.removeItem(key)
 }
 
 

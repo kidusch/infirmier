@@ -8,8 +8,10 @@ const initialState = () => ({
    isWaiting: false,
 })
 
-export const appState = useSessionStorage('app-state', initialState())
+const key = 'app-state'
+export const appState = useSessionStorage(key, initialState())
 
 export const resetUseAppState = () => {
-   appState.value = initialState()
+   // appState.value = initialState()
+   sessionStorage.removeItem(key)
 }

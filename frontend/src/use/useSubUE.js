@@ -9,11 +9,13 @@ const initialState = () => ({
    subUECache: {},
    subUEListStatus: {},
 })
- 
-const subUEState = useSessionStorage('sub-ue-state', initialState())
+
+const key = 'sub-ue-state'
+const subUEState = useSessionStorage(key, initialState())
 
 export const resetUseSubUE = () => {
-   subUEState.value = initialState()
+   // subUEState.value = initialState()
+   sessionStorage.removeItem(key)
 }
 
 

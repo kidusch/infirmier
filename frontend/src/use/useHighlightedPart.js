@@ -8,11 +8,13 @@ import { app } from '/src/client-app.js'
 const initialState = () => ({
    highlightedPartCache: {},
 })
- 
-const highlightedPartState = useSessionStorage('highlighted-part-state', initialState())
+
+const key = 'highlighted-part-state'
+const highlightedPartState = useSessionStorage(key, initialState())
 
 export const resetUseHighlightedPart = () => {
-   highlightedPartState.value = initialState()
+   // highlightedPartState.value = initialState()
+   sessionStorage.removeItem(key)
 }
 
 

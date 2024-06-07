@@ -9,11 +9,13 @@ const initialState = () => ({
    caseStudyCache: {},
    caseStudyListStatus: {},
 })
- 
-const caseStudyState = useSessionStorage('case-study-state', initialState())
+
+const key = 'case-study-state'
+const caseStudyState = useSessionStorage(key, initialState())
 
 export const resetUseCaseStudy = () => {
-   caseStudyState.value = initialState()
+   // caseStudyState.value = initialState()
+   sessionStorage.removeItem(key)
 }
 
 

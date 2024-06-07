@@ -8,11 +8,13 @@ const initialState = () => ({
    ueCache: {},
    isListReady: false,
 })
- 
-const ueState = useSessionStorage('ue-state', initialState())
+
+const key = 'ue-state'
+const ueState = useSessionStorage(key, initialState())
 
 export const resetUseUE = () => {
-   ueState.value = initialState()
+   // ueState.value = initialState()
+   sessionStorage.removeItem(key)
 }
 
 

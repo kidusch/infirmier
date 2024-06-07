@@ -8,11 +8,13 @@ import { app } from '/src/client-app.js'
 const initialState = () => ({
    userCache: {},
 })
- 
-const userState = useSessionStorage('user-state', initialState())
+
+const key = 'user-state'
+const userState = useSessionStorage(key, initialState())
 
 export const resetUseUser = () => {
-   userState.value = initialState()
+   // userState.value = initialState()
+   sessionStorage.removeItem(key)
 }
 
 

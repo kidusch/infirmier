@@ -9,11 +9,13 @@ const initialState = () => ({
    userCourseCache: {},
    theUserCourseStatus: {},
 })
- 
-const userCourseState = useSessionStorage('user-course-state', initialState())
+
+const key = 'user-course-state'
+const userCourseState = useSessionStorage(key, initialState())
 
 export const resetUseUserCourse = () => {
-   userCourseState.value = initialState()
+   // userCourseState.value = initialState()
+   sessionStorage.removeItem(key)
 }
 
 app.service('user_course').on('create', (userCourse) => {

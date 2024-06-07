@@ -9,11 +9,13 @@ const initialState = () => ({
    courseCache: {},
    courseListStatus: {},
 })
- 
-const courseState = useSessionStorage('course-state', initialState())
+
+const key = 'course-state'
+const courseState = useSessionStorage(key, initialState())
 
 export const resetUseCourse = () => {
-   courseState.value = initialState()
+   // courseState.value = initialState()
+   sessionStorage.removeItem(key)
 }
 
 

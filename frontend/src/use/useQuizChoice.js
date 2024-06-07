@@ -8,11 +8,13 @@ const initialState = () => ({
    quizChoiceCache: {},
    isListReady: {},
 })
- 
-const quizChoiceState = useSessionStorage('quiz-choice-state', initialState())
+
+const key = 'quiz-choice-state'
+const quizChoiceState = useSessionStorage(key, initialState())
 
 export const resetUseQuizChoice = () => {
-   quizChoiceState.value = initialState()
+   // quizChoiceState.value = initialState()
+   sessionStorage.removeItem(key)
 }
 
 

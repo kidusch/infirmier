@@ -9,11 +9,13 @@ const initialState = () => ({
    topicCache: {},
    topicListStatus: {},
 })
- 
-const topicState = useSessionStorage('topic-state', initialState())
+
+const key = 'topic-state'
+const topicState = useSessionStorage(key, initialState())
 
 export const resetUseTopic = () => {
-   topicState.value = initialState()
+   // topicState.value = initialState()
+   sessionStorage.removeItem(key)
 }
 
 
