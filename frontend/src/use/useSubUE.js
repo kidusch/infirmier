@@ -7,7 +7,6 @@ import { app } from '/src/client-app.js'
 // state backed in SessionStorage
 const initialState = () => ({
    subUECache: {},
-   isListReady: {},
    subUEListStatus: {},
 })
  
@@ -69,16 +68,23 @@ export const removeSubUE = async (id) => {
 }
 
 export const getSubUEList = async (ue_id) => {
-   if (!subUEState.value.isListReady[ue_id]) {
+   if (subUEState.value.subUEListStatus[ue_id] === 'ready') {
+      return Object.values(subUEState.value.subUECache).filter(subUE => subUE.ue_id === ue_id).sort((e1, e2) => e1.rank - e2.rank)
+   }
+   subUEState.value.subUEListStatus[ue_id] = 'ongoing'
+   try {
       const list = await app.service('sub_ue').findMany({
          where: { ue_id }
       })
       for (const subUE of list) {
          subUEState.value.subUECache[subUE.id] = subUE
       }
-      subUEState.value.isListReady[ue_id] = true
+      subUEState.value.subUEListStatus[ue_id] = 'ready'
+      return list
+   } catch(err) {
+      subUEState.value.subUEListStatus[ue_id] = undefined
+      throw err
    }
-   return Object.values(subUEState.value.subUECache).filter(subUE => subUE.ue_id === ue_id).sort((e1, e2) => e1.rank - e2.rank)
 }
 
 export const listOfSubUEs = computed(() => (ue_id) => {
@@ -89,11 +95,14 @@ export const listOfSubUEs = computed(() => (ue_id) => {
       subUEState.value.subUEListStatus[ue_id] = 'ongoing'
       app.service('sub_ue').findMany({
          where: { ue_id }
-      }).then((list) => {
+      }).then(list => {
          for (const subUE of list) {
             subUEState.value.subUECache[subUE.id] = subUE
          }
          subUEState.value.subUEListStatus[ue_id] = 'ready'
+      }).catch(err => {
+         console.log('listOfSubUEs err', err)
+         subUEState.value.subUEListStatus[ue_id] = undefined
       })
    }
    return []

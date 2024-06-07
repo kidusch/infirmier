@@ -20,7 +20,8 @@
                </h3>
 
                <div class="progress-list">
-                  <template v-for="subUE in subUEListDict[ue.id]">
+                  <!-- <template v-for="subUE in subUEListDict[ue.id]"> -->
+                  <template v-for="subUE in listOfSubUEs(ue.id)">
                      <div v-if="!subUE.hidden" class="progress-item cursor-pointer" @click="select(ue, subUE)">
                         <div class="w-12">
                            <jcb-radial class="w-12" :value="subUEStudyProgress(userid, subUE.id)"></jcb-radial>
@@ -43,7 +44,7 @@
 import { ref, onMounted } from 'vue'
 
 import { getUEList } from '/src/use/useUE'
-import { getSubUEList } from '/src/use/useSubUE'
+import { getSubUEList, listOfSubUEs } from '/src/use/useSubUE'
 import { subUEStudyProgress, ueStudyProgress } from '/src/use/useProgress'
 import router from "/src/router"
 
@@ -60,26 +61,10 @@ const props = defineProps({
    },
 })
 
-const subUEStudyProgressDict = ref({})
-
 onMounted(async () => {
    ueList.value = await getUEList()
    for (const ue of ueList.value) {
       subUEListDict.value[ue.id] = await getSubUEList(ue.id)
-      // for (const subUE of subUEListDict.value[ue.id]) {
-      //    let count = 0
-      //    let sum = 0
-      //    const topicList = await getTopicList(subUE.id)
-      //    for (const topic of topicList) {
-      //       const courseList = await getCourseList(topic.id)
-      //       for (const course of courseList) {
-      //          const user_course = await getTheUserCourse(props.userid, course.id)
-      //          sum += (user_course.done ? 100 : 0)
-      //          count += 1
-      //       }
-      //    }
-      //    subUEStudyProgressDict.value[subUE.id] = count === 0 ? 0 : Math.round(sum / count)
-      // }
    }
 })
 
