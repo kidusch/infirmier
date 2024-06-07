@@ -181,7 +181,7 @@ function toggleSideMenu() {
 
 const signout = async () => {
    // change to a page which calls no service
-   router.push(`/`)
+   await router.push(`/`)
    // ...then unauthenticate
    await logout(props.userid)
 }
