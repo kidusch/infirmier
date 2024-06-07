@@ -34,6 +34,7 @@ export const resetUseAuthentication = () => {
 }
 
 export function clearSessionStorage() {
+   console.log('clearSessionStorage')
    resetUseAuthentication()
    resetUseAppState()
    resetUseUser()
@@ -78,13 +79,15 @@ export async function logout(userId) {
    } catch(err) {
       console.log('err', err)
    }
+
+   clearSessionStorage()
+
    try {
       await app.service('auth').logout()
    } catch(err) {
       console.log('err', err)
    }
-   clearSessionStorage()
-   router.push('/')
+   // router.push('/')
 }
 
 export async function addUserAction(user_id, action) {

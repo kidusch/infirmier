@@ -180,8 +180,9 @@ function toggleSideMenu() {
 }
 
 const signout = async () => {
-   // change to a page which calls no service
+   // change to a page (front page) which calls no service
    await router.push(`/`)
+   console.log('on front page')
    // ...then unauthenticate
    await logout(props.userid)
 }
