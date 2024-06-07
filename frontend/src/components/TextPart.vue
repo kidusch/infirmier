@@ -18,6 +18,8 @@
 
          'text-red-600': isTitle1,
          'text-blue-600': isTitle2,
+         'text-red-600': isTitle3,
+         'text-blue-600': isTitle4,
 
          'list-disc': isLi,
          'pl-5': isLi,
