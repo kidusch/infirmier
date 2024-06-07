@@ -70,19 +70,6 @@ export const removeCaseStudy = async (id) => {
    delete caseStudyState.value.caseStudyCache[id]
 }
 
-// export const getCaseStudyList = async (topic_id) => {
-//    if (!caseStudyState.value.isListReady[topic_id]) {
-//       const list = await app.service('case_study').findMany({
-//          where: { topic_id }
-//       })
-//       for (const caseStudy of list) {
-//          caseStudyState.value.caseStudyCache[caseStudy.id] = caseStudy
-//       }
-//       caseStudyState.value.isListReady[topic_id] = true
-//    }
-//    return Object.values(caseStudyState.value.caseStudyCache).filter(caseStudy => caseStudy.topic_id === topic_id).sort((e1, e2) => e1.rank - e2.rank)
-// }
-
 export const getCaseStudyList = async (topic_id) => {
    if (caseStudyState.value.caseStudyListStatus[topic_id] !== 'ready') {
       caseStudyState.value.caseStudyListStatus[topic_id] = 'ongoing'

@@ -70,19 +70,6 @@ export const removeCard = async (id) => {
    delete cardState.value.cardCache[id]
 }
 
-// export const getCardList = async (topic_id) => {
-//    if (!cardState.value.isListReady[topic_id]) {
-//       const list = await app.service('card').findMany({
-//          where: { topic_id }
-//       })
-//       for (const card of list) {
-//          cardState.value.cardCache[card.id] = card
-//       }
-//       cardState.value.isListReady[topic_id] = true
-//    }
-//    return Object.values(cardState.value.cardCache).filter(card => card.topic_id === topic_id).sort((e1, e2) => e1.rank - e2.rank)
-// }
-
 export const getCardList = async (topic_id) => {
    if (cardState.value.cardListStatus[topic_id] !== 'ready') {
       cardState.value.cardListStatus[topic_id] = 'ongoing'
