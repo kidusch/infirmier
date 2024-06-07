@@ -87,6 +87,7 @@ export async function logout(userId) {
    } catch(err) {
       console.log('err', err)
    }
+   
    // router.push('/')
 }
 

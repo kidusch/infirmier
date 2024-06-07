@@ -55,6 +55,8 @@ import { getSubUE } from '/src/use/useSubUE'
 import { getTopic } from '/src/use/useTopic'
 import { getCourse, updateCourse } from '/src/use/useCourse'
 import router from '/src/router'
+import parser from '/src/lib/grammar.js'
+
 
 const props = defineProps({
    userid: {
@@ -96,6 +98,13 @@ const onInputTitle = async (ev) => {
 }
 const onInputContent = async (ev) => {
    await updateCourse(props.course_id, { content: ev.target.value })
+   // check syntax
+   try {
+      const parts = parser.parse(course.value.content)
+      console.log('parts', parts)
+   } catch(err) {
+      alert(err)
+   }
 }
 const debouncedInputTitle = useDebounceFn(onInputTitle, 500)
 const debouncedInputContent = useDebounceFn(onInputContent, 500)

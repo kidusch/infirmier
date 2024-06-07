@@ -42,7 +42,7 @@ export const subUEStudyProgress = computed(() => (user_id, subue_id) => {
       sum += progress
       count += 1
    }
-   console.log('subUEStudyProgress', subue_id, count, sum, topicList.length)
+   // console.log('subUEStudyProgress', subue_id, count, sum, topicList.length)
    return (count === 0 ? 0 : Math.round(sum / count))
 })
 
@@ -57,7 +57,7 @@ export const ueStudyProgress = computed(() => (user_id, ue_id) => {
       sum += progress
       count += 1
    }
-   console.log('ueStudyProgress', ue_id, count, sum, subUEList.length)
+   // console.log('ueStudyProgress', ue_id, count, sum, subUEList.length)
    return (count === 0 ? 0 : Math.round(sum / count))
 })
 
