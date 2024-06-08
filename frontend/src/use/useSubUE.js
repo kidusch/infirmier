@@ -7,6 +7,7 @@ import { app } from '/src/client-app.js'
 // state backed in SessionStorage
 const initialState = () => ({
    subUECache: {},
+   subUEStatus: {},
    subUEListStatus: {},
 })
 
@@ -24,6 +25,16 @@ app.service('sub_ue').on('create', subUE => {
    subUEState.value.subUECache[subUE.id] = subUE
 })
 
+app.service('sub_ue').on('update', subUE => {
+   console.log('SUB_UE EVENT update', subUE)
+   subUEState.value.subUECache[subUE.id] = subUE
+})
+
+app.service('sub_ue').on('delete', subUE => {
+   console.log('SUB_UE EVENT delete', subUE)
+   delete subUEState.value.subUECache[subUE.id]
+})
+
 
 export const getSubUE = async (id) => {
    let ue = subUEState.value.subUECache[id]
@@ -32,6 +43,22 @@ export const getSubUE = async (id) => {
    subUEState.value.subUECache[id] = ue
    return ue
 }
+
+export const subUEOfId = computed(() => id => {
+   if (subUEState.value.subUEStatus[id] === 'ready') {
+      return subUEState.value.subUECache[id]
+   }
+   subUEState.value.subUEStatus[id] = 'ongoing'
+   app.service('sub_ue').findUnique({ where: { id }})
+   .then(subUE => {
+      subUEState.value.subUECache[id] = subUE
+      subUEState.value.subUEStatus[id] = 'ready'
+   })
+   .catch(err => {
+      console.log('ueOfId err', id, err)
+      subUEState.value.subUEStatus[id] = undefined
+   })
+})
 
 export const createSubUE = async (ue_id, name) => {
    // get highest rank

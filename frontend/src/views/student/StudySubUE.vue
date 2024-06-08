@@ -46,11 +46,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { computed } from 'vue'
 
-import { getUE } from '/src/use/useUE'
-import { getSubUE } from '/src/use/useSubUE'
-import { getTopicList } from '/src/use/useTopic'
+import { ueOfId } from '/src/use/useUE'
+import { subUEOfId } from '/src/use/useSubUE'
+import { listOfTopics } from '/src/use/useTopic'
 import { topicStudyProgress, subUEStudyProgress } from '/src/use/useProgress'
 import router from "/src/router"
 
@@ -69,16 +69,9 @@ const props = defineProps({
    },
 })
 
-const ue = ref()
-const subUE = ref()
-const topicList = ref([])
-
-onMounted(async () => {
-   console.log('onMounted StudentSubUE', props.userid)
-   ue.value = await getUE(props.ue_id)
-   subUE.value = await getSubUE(props.sub_ue_id)
-   topicList.value = await getTopicList(props.sub_ue_id)
-})
+const ue = computed(() => ueOfId.value(props.ue_id))
+const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
+const topicList = computed(() => listOfTopics.value(props.sub_ue_id))
 
 const selectTopic = (topic) => {
    router.push(`/home/${props.userid}/study-topic/${props.ue_id}/${props.sub_ue_id}/${topic.id}`)

@@ -1,3 +1,4 @@
+import { computed } from 'vue'
 import { useSessionStorage } from '@vueuse/core'
 
 import { app } from '/src/client-app.js'
@@ -6,7 +7,8 @@ import { app } from '/src/client-app.js'
 // state backed in SessionStorage
 const initialState = () => ({
    ueCache: {},
-   isListReady: false,
+   ueStatus: {},
+   ueListStatus: undefined,
 })
 
 const key = 'ue-state'
@@ -23,6 +25,16 @@ app.service('ue').on('create', ue => {
    ueState.value.ueCache[ue.id] = ue
 })
 
+app.service('ue').on('update', ue => {
+   console.log('UE EVENT update', ue)
+   ueState.value.ueCache[ue.id] = ue
+})
+
+app.service('ue').on('delete', ue => {
+   console.log('UE EVENT delete', ue)
+   delete ueState.value.ueCache[ue.id]
+})
+
 
 export const getUE = async (id) => {
    let ue = ueState.value.ueCache[id]
@@ -31,6 +43,22 @@ export const getUE = async (id) => {
    ueState.value.ueCache[id] = ue
    return ue
 }
+
+export const ueOfId = computed(() => id => {
+   if (ueState.value.ueStatus[id] === 'ready') {
+      return ueState.value.ueCache[id]
+   }
+   ueState.value.ueStatus[id] = 'ongoing'
+   app.service('ue').findUnique({ where: { id }})
+   .then(ue => {
+      ueState.value.ueCache[id] = ue
+      ueState.value.ueStatus[id] = 'ready'
+   })
+   .catch(err => {
+      console.log('ueOfId err', id, err)
+      ueState.value.ueStatus[id] = undefined
+   })
+})
 
 export const createUE = async (name) => {
    // get highest rank
@@ -76,3 +104,23 @@ export const getUEList = async () => {
    }
    return Object.values(ueState.value.ueCache).sort((e1, e2) => e1.rank - e2.rank)
 }
+
+export const listOfUEs = computed(() => {
+   if (ueState.value.ueListStatus === 'ready') {
+      return Object.values(ueState.value.ueCache).sort((e1, e2) => e1.rank - e2.rank)
+   }
+   if (ueState.value.ueListStatus !== 'ongoing') {
+      ueState.value.ueListStatus = 'ongoing'
+      app.service('ue').findMany({})
+      .then(list => {
+         for (const ue of list) {
+            ueState.value.ueCache[ue.id] = ue
+         }
+         ueState.value.ueListStatus = 'ready'
+      }).catch(err => {
+         console.log('listOfSubUEs err', err)
+         ueState.value.ueListStatus = undefined
+      })
+   }
+   return []
+})

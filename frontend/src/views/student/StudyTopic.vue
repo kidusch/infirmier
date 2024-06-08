@@ -52,10 +52,10 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 
-import { getUE } from '/src/use/useUE'
-import { getSubUE } from '/src/use/useSubUE'
-import { getTopic } from '/src/use/useTopic'
-import { getCourseList } from '/src/use/useCourse'
+import { ueOfId } from '/src/use/useUE'
+import { subUEOfId } from '/src/use/useSubUE'
+import { topicOfId } from '/src/use/useTopic'
+import { listOfCourses } from '/src/use/useCourse'
 import { courseStudyProgress, topicStudyProgress } from '/src/use/useProgress'
 
 import router from "/src/router"
@@ -80,17 +80,10 @@ const props = defineProps({
    },
 })
 
-const ue = ref()
-const subUE = ref()
-const topic = ref()
-const courseList = ref([])
-
-onMounted(async () => {
-   ue.value = await getUE(props.ue_id)
-   subUE.value = await getSubUE(props.sub_ue_id)
-   topic.value = await getTopic(props.topic_id)
-   courseList.value = await getCourseList(props.topic_id)
-})
+const ue = computed(() => ueOfId.value(props.ue_id))
+const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
+const topic = computed(() => topicOfId.value(props.topic_id))
+const courseList = computed(() => listOfCourses.value(props.topic_id))
 
 const move = ref(false)
 

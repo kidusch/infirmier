@@ -282,6 +282,11 @@ const routes = [
                case_study_id: parseInt(route.params.case_study_id),
             }),
          },
+
+         {
+            path: 'lexicon',
+            component: () => import('/src/views/student/Lexicon.vue'),
+         },
       ],
    },
 ]

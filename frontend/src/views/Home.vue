@@ -132,6 +132,11 @@ onMounted(async () => {
             path: `/home/${props.userid}/revise-ue`,
             iconPath: revisionIconPath,
          },
+         {
+            label: "Lexique",
+            path: `/home/${props.userid}/lexicon`,
+            iconPath: revisionIconPath,
+         },
       ]
       // prevent copy for student
       // document.addEventListener('copy', (event) => {

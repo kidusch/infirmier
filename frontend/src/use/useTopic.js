@@ -7,6 +7,7 @@ import { app } from '/src/client-app.js'
 // state backed in SessionStorage
 const initialState = () => ({
    topicCache: {},
+   topicStatus: {},
    topicListStatus: {},
 })
 
@@ -29,6 +30,11 @@ app.service('topic').on('update', topic => {
    topicState.value.topicCache[topic.id] = topic
 })
 
+app.service('topic').on('delete', topic => {
+   console.log('TOPIC EVENT delete', topic)
+   delete topicState.value.topicCache[topic.id]
+})
+
 
 export const getTopic = async (id) => {
    let topic = topicState.value.topicCache[id]
@@ -37,6 +43,22 @@ export const getTopic = async (id) => {
    topicState.value.topicCache[id] = topic
    return topic
 }
+
+export const topicOfId = computed(() => (id) => {
+   const status = topicState.value.topicStatus[id]
+   if (status === 'ready') return topicState.value.topicCache[id]
+   if (status === 'ongoing') return undefined // ongoing request
+   topicState.value.topicStatus[id] = 'ongoing'
+   app.service('topic').findUnique({ where: { id }})
+   .then(topic => {
+      topicState.value.topicCache[id] = topic
+      topicState.value.topicStatus[id] = 'ready'
+   })
+   .catch(err => {
+      console.log('topicOfId err', id, err)
+      topicState.value.topicStatus[id] = undefined
+   })
+})
 
 export const createTopic = async (sub_ue_id, name) => {
    // get highest rank

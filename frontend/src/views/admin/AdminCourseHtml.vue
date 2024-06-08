@@ -62,7 +62,7 @@ import { getSubUE } from '/src/use/useSubUE'
 import { getTopic } from '/src/use/useTopic'
 import { courseOfId, updateCourse } from '/src/use/useCourse'
 import router from '/src/router'
-import parser from '/src/lib/grammar.js'
+// import parser from '/src/lib/grammar.js'
 
 
 const props = defineProps({
@@ -91,7 +91,7 @@ const props = defineProps({
 const ue = ref()
 const subUE = ref()
 const topic = ref()
-const errorMessage = ref('')
+// const errorMessage = ref('')
 
 onMounted(async () => {
    ue.value = await getUE(props.ue_id)
