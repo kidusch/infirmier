@@ -14,9 +14,6 @@
                <h3 class="max-lg:hidden">Journal de bord infirmier</h3>
             </router-link>
 
-            <!-- <button @click="signout">
-               <img class="w-6" src="/src/assets/logout.svg">
-            </button> -->
             <div class="cursor-pointer link hover:text-red-600 text-blue-600" @click="signout">
                Sortie
             </div>
@@ -85,7 +82,7 @@
 import { onMounted, ref } from 'vue'
 import { useRoute} from 'vue-router'
 
-import { logout } from '/src/use/useAuthentication'
+import { logout, clearSessionStorage } from '/src/use/useAuthentication'
 import { getUser } from '/src/use/useUser'
 
 import { courseIconPath, revisionIconPath } from '/src/lib/icons.mjs'
@@ -185,6 +182,6 @@ const signout = async () => {
    console.log('on front page')
    // ...then unauthenticate
    // await logout(props.userid)
-   // clearSessionStorage()
+   clearSessionStorage()
 }
 </script>

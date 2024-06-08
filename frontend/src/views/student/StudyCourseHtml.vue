@@ -37,7 +37,7 @@
 
       <!-- Course content -->
       <main class="mt-4">
-         <div v-html="course.content"></div>
+         <div v-html="course?.content"></div>
       </main>
 
 
