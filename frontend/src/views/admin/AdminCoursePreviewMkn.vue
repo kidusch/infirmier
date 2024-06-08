@@ -10,20 +10,16 @@
 
       <!-- Course content -->
       <main class="mt-4">
-         <TextParts :userid="userid" :topic_id="topic_id" :card_id="undefined" :parts="parts" :highlight="highlight"></TextParts>
+         <TextParts :userid="userid" :topic_id="topic_id" :card_id="undefined" :parts="parts" highlight="none"></TextParts>
       </main>
 
    </main>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useDebounceFn } from '@vueuse/core'
+import { ref, onMounted, computed } from 'vue'
 
-import { getUE } from '/src/use/useUE'
-import { getSubUE } from '/src/use/useSubUE'
-import { getTopic } from '/src/use/useTopic'
-import { getCourse } from '/src/use/useCourse'
+import { courseOfId } from '/src/use/useCourse'
 import { getTheUserCourse, updateUserCourse } from '/src/use/useUserCourse'
 
 import parser from '/src/lib/grammar.js'
@@ -55,23 +51,11 @@ const props = defineProps({
    },
 })
 
-const ue = ref()
-const subUE = ref()
-const topic = ref([])
-const course = ref([])
-const userCourse = ref()
 const parts = ref([])
-const done = ref(true)
-const highlight = ref('yellow')
+
+const course = computed(() => courseOfId.value(props.course_id))
 
 onMounted(async () => {
-   ue.value = await getUE(props.ue_id)
-   subUE.value = await getSubUE(props.sub_ue_id)
-   topic.value = await getTopic(props.topic_id)
-   course.value = await getCourse(props.course_id)
-   userCourse.value = await getTheUserCourse(props.userid, props.course_id)
-   done.value = userCourse.value.done
-
    try {
       parts.value = parser.parse(course.value.content)
       console.log('parts', parts.value)

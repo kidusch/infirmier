@@ -62,7 +62,7 @@ import { useDebounceFn } from '@vueuse/core'
 import { getUE } from '/src/use/useUE'
 import { getSubUE } from '/src/use/useSubUE'
 import { getTopic } from '/src/use/useTopic'
-import { getCourse, courseOfId, updateCourse } from '/src/use/useCourse'
+import { courseOfId, updateCourse } from '/src/use/useCourse'
 import router from '/src/router'
 import parser from '/src/lib/grammar.js'
 
@@ -93,14 +93,12 @@ const props = defineProps({
 const ue = ref()
 const subUE = ref()
 const topic = ref()
-// const course = ref()
 const errorMessage = ref('')
 
 onMounted(async () => {
    ue.value = await getUE(props.ue_id)
    subUE.value = await getSubUE(props.sub_ue_id)
    topic.value = await getTopic(props.topic_id)
-   // course.value = await getCourse(props.course_id)
 })
 
 const course = computed(() => courseOfId.value(props.course_id))
@@ -130,10 +128,6 @@ const debouncedInputContent = useDebounceFn(onInputContent, 500)
 
 const disabledTitle = ref(true)
 const disabledContent = ref(true)
-
-const back = () => {
-   router.back()
-}
 
 const preview = () => {
    router.push(`/home/${props.userid}/admin-course-preview/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${props.course_id}`)

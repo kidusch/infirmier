@@ -98,7 +98,8 @@ const routes = [
          },
          {
             path: 'admin-course/:ue_id/:sub_ue_id/:topic_id/:course_id',
-            component: () => import('/src/views/admin/AdminCourse.vue'),
+            // component: () => import('/src/views/admin/AdminCourseMkn.vue'),
+            component: () => import('/src/views/admin/AdminCourseHtml.vue'),
             props: route => ({
                userid: parseInt(route.params.userid),
                ue_id: parseInt(route.params.ue_id),
@@ -109,7 +110,8 @@ const routes = [
          },
          {
             path: 'admin-course-preview/:ue_id/:sub_ue_id/:topic_id/:course_id',
-            component: () => import('/src/views/admin/AdminCoursePreview.vue'),
+            // component: () => import('/src/views/admin/AdminCoursePreviewMkn.vue'),
+            component: () => import('/src/views/admin/AdminCoursePreviewHtml.vue'),
             props: route => ({
                userid: parseInt(route.params.userid),
                ue_id: parseInt(route.params.ue_id),
@@ -199,7 +201,8 @@ const routes = [
          },
          {
             path: 'study-course/:ue_id/:sub_ue_id/:topic_id/:course_id',
-            component: () => import('/src/views/student/StudyCourse.vue'),
+            // component: () => import('/src/views/student/StudyCourseMkn.vue'),
+            component: () => import('/src/views/student/StudyCourseHtml.vue'),
             props: route => ({
                userid: parseInt(route.params.userid),
                ue_id: parseInt(route.params.ue_id),
