@@ -2,30 +2,25 @@
 
    <router-view></router-view>
 
-   <Spinner v-if="appState.isWaiting"></Spinner>
+   <Spinner v-if="appState?.isWaiting"></Spinner>
 
 </template>
 
 <script setup>
-import { onMounted, watch } from 'vue'
-// import { useRoute} from 'vue-router'
+import { watch } from 'vue'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
-
-// import { app } from '/src/client-app.js'
 
 import { appState } from '/src/use/useAppState'
 import { restartApp } from '/src/use/useAuthentication'
 
 import Spinner from '/src/components/Spinner.vue'
 
-// const route = useRoute()
 
-
-watch(() => appState.value.unrecoverableError, async (value) => {
+watch(() => appState.value?.unrecoverableError, async (value) => {
    if (value) restartApp()
 })
 
-watch(() => appState.value.isExpired, async (value) => {
+watch(() => appState.value?.isExpired, async (value) => {
    if (value) restartApp()
 })
 

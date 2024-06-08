@@ -28,11 +28,10 @@ const initialState = () => ({
 })
 
 const key = 'authentication-state'
-const authenticationState = useSessionStorage(key, initialState())
+const authenticationState = useSessionStorage(key, initialState(), { mergeDefaults: true })
 
 export const resetUseAuthentication = () => {
-   // authenticationState.value = initialState()
-   sessionStorage.removeItem(key)
+   authenticationState.value = null
 }
 
 export function clearSessionStorage() {

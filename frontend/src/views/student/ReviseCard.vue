@@ -1,5 +1,5 @@
 <template>
-    <main class="flex-1 container max-w-7xl">
+   <main class="flex-1 container max-w-7xl">
 
       <!-- Header -->
       <header class="chapter-card my-6">
@@ -49,11 +49,8 @@
       <!-- Revision Card -->
       <main class="my-6 relative flex justify-center">
 
+         <!-- contenu -->
          <div class="bg-accent-darker py-4 px-6 rounded-3xl w-full max-lg:max-w-xl z-30 relative">
-            <!-- <h4 class="py-2">
-               {{ card?.title }}
-            </h4> -->
-            <!-- contenu -->
             <TextParts :userid="userid" :topic_id="topic_id" :card_id="card_id" :parts="parts"></TextParts>
          </div>
 
@@ -65,25 +62,25 @@
             class="bg-accent-darker/30 absolute -bottom-10 left-0 right-0 mr-auto ml-auto w-full scale-75 h-20  rounded-3xl max-lg:max-w-xl z-10">
          </div>
 
-         </main>
-
-         <section class="py-6 w-full flex flex-col justify-end flex-1 items-center">
-            <button class="primary-btn px-12" @click="back">
-               Retour
-            </button>
-         </section>
-
       </main>
+
+      <section class="py-6 w-full flex flex-col justify-end flex-1 items-center">
+         <button class="primary-btn px-12" @click="back">
+            Retour
+         </button>
+      </section>
+
+   </main>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 
-import { getUE } from '/src/use/useUE'
-import { getSubUE } from '/src/use/useSubUE'
-import { getTopic } from '/src/use/useTopic'
-import { getCard } from '/src/use/useCard'
-import { getTheUserCard, updateUserCard } from '/src/use/useUserCard'
+import { ueOfId } from '/src/use/useUE'
+import { subUEOfId } from '/src/use/useSubUE'
+import { topicOfId } from '/src/use/useTopic'
+import { cardOfId } from '/src/use/useCard'
+import { getTheUserCard, theUserCard, updateUserCard } from '/src/use/useUserCard'
 import router from "/src/router"
 
 import parser from '/src/lib/grammar.js'
@@ -113,36 +110,29 @@ const props = defineProps({
    },
 })
 
-const ue = ref()
-const subUE = ref()
-const topic = ref([])
-const card = ref([])
-const userCard = ref([])
+const ue = computed(() => ueOfId.value(props.ue_id))
+const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
+const topic = computed(() => topicOfId.value(props.topic_id))
+const card = computed(() => cardOfId.value(props.card_id))
+const userCard = computed(() => theUserCard.value(props.userid, props.card_id))
 
 const parts = ref('')
 const done = ref(true)
 
 
 onMounted(async () => {
-   ue.value = await getUE(props.ue_id)
-   subUE.value = await getSubUE(props.sub_ue_id)
-   topic.value = await getTopic(props.topic_id)
-   card.value = await getCard(props.card_id)
-
    try {
       parts.value = parser.parse(card.value.content)
       console.log('parts', parts.value)
    } catch(err) {
       parts.value = ''
    }
-
-   userCard.value = await getTheUserCard(props.userid, props.card_id)
    done.value = userCard.value.done
 })
 
 const onDoneClick = async () => {
    done.value = !done.value
-   userCard.value = await updateUserCard(userCard.value.id, { done: done.value })
+   await updateUserCard(userCard.value.id, { done: done.value })
 }
 
 const back = () => router.back()

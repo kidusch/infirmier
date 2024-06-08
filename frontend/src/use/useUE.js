@@ -12,11 +12,10 @@ const initialState = () => ({
 })
 
 const key = 'ue-state'
-const ueState = useSessionStorage(key, initialState())
+const ueState = useSessionStorage(key, initialState(), { mergeDefaults: true })
 
 export const resetUseUE = () => {
-   // ueState.value = initialState()
-   sessionStorage.removeItem(key)
+   ueState.value = null
 }
 
 

@@ -11,11 +11,10 @@ const initialState = () => ({
 })
 
 const key = 'user-course-state'
-const userCourseState = useSessionStorage(key, initialState())
+const userCourseState = useSessionStorage(key, initialState(), { mergeDefaults: true })
 
 export const resetUseUserCourse = () => {
-   // userCourseState.value = initialState()
-   sessionStorage.removeItem(key)
+   userCourseState.value = null
 }
 
 app.service('user_course').on('create', (userCourse) => {

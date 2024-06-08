@@ -10,11 +10,10 @@ const initialState = () => ({
 })
 
 const key = 'quiz-choice-state'
-const quizChoiceState = useSessionStorage(key, initialState())
+const quizChoiceState = useSessionStorage(key, initialState(), { mergeDefaults: true })
 
 export const resetUseQuizChoice = () => {
-   // quizChoiceState.value = initialState()
-   sessionStorage.removeItem(key)
+   quizChoiceState.value = null
 }
 
 

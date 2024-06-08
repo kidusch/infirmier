@@ -120,7 +120,7 @@ const props = defineProps({
 
 const ue = computed(() => ueOfId.value(props.ue_id))
 const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
-const topic = computed(() => topicOfId.value(props.sub_ue_id))
+const topic = computed(() => topicOfId.value(props.topic_id))
 
 const cardList = computed(() => listOfCards.value(props.topic_id))
 const quizList = computed(() => listOfQuizs.value(props.topic_id))

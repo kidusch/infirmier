@@ -12,11 +12,10 @@ const initialState = () => ({
 })
 
 const key = 'course-state'
-const courseState = useSessionStorage(key, initialState())
+const courseState = useSessionStorage(key, initialState(), { mergeDefaults: true })
 
 export const resetUseCourse = () => {
-   // courseState.value = initialState()
-   sessionStorage.removeItem(key)
+   courseState.value = null
 }
 
 
@@ -58,7 +57,7 @@ export const courseOfId = computed(() => (id) => {
          console.log('courseOfId err', id, err)
          courseState.value.courseStatus[id] = undefined
       })
-      }
+   }
 })
 
 export const createCourse = async (topic_id, title = '', content = '') => {

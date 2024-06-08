@@ -11,11 +11,10 @@ const initialState = () => ({
 })
 
 const key = 'user-card-state'
-const userCardState = useSessionStorage(key, initialState())
+const userCardState = useSessionStorage(key, initialState(), { mergeDefaults: true })
 
 export const resetUseUserCard = () => {
-   // userCardState.value = initialState()
-   sessionStorage.removeItem(key)
+   userCardState.value = null
 }
 
 

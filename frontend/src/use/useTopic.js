@@ -12,11 +12,10 @@ const initialState = () => ({
 })
 
 const key = 'topic-state'
-const topicState = useSessionStorage(key, initialState())
+const topicState = useSessionStorage(key, initialState(), { mergeDefaults: true })
 
 export const resetUseTopic = () => {
-   // topicState.value = initialState()
-   sessionStorage.removeItem(key)
+   topicState.value = null
 }
 
 

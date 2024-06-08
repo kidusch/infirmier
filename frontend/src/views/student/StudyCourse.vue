@@ -22,7 +22,7 @@
          <label class="inline-flex gap-3 items-center cursor-pointer">
             <p class="font-semibold text-black">Acquis</p>
 
-            <input type="checkbox" class="sr-only peer" :checked="done" @input="onDoneClick">
+            <input type="checkbox" class="sr-only peer" :checked="userCourse?.done" @input="onDoneClick(userCourse?.done)">
             <div
                class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#76EE59]">
             </div>
@@ -37,10 +37,14 @@
 
       <!-- Course content -->
       <main class="mt-4">
-         <TextParts :userid="userid" :topic_id="topic_id" :card_id="undefined" :parts="parts" :highlight="highlight"></TextParts>
+         <div v-html="course?.content"></div>
       </main>
+      <!-- <main class="mt-4">
+         <TextParts :userid="userid" :topic_id="topic_id" :card_id="undefined" :parts="parts" :highlight="highlight"></TextParts>
+      </main> -->
 
-      <ul class="menu menu-horizontal bg-slate-50 rounded-box fixed right-0 bottom-0">
+      <!-- Highlight pens -->
+      <!-- <ul class="menu menu-horizontal bg-slate-50 rounded-box fixed right-0 bottom-0">
          <li>
             <a :class="{ active: highlight === 'yellow' }" @click="highlight = 'yellow'">
                <img class="h-6 w-6" src="/src/assets/highlighter-yellow.svg">
@@ -61,7 +65,7 @@
                <img class="h-6 w-6" src="/src/assets/eraser.svg">
             </a>
          </li>
-      </ul>
+      </ul> -->
 
 
       <!-- Note button -->
@@ -96,19 +100,19 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
-import { getUE } from '/src/use/useUE'
-import { getSubUE } from '/src/use/useSubUE'
-import { getTopic } from '/src/use/useTopic'
-import { getCourse } from '/src/use/useCourse'
-import { getTheUserCourse, updateUserCourse } from '/src/use/useUserCourse'
-
-import parser from '/src/lib/grammar.js'
-import TextParts from '/src/components/TextParts.vue'
+import { ueOfId } from '/src/use/useUE'
+import { subUEOfId } from '/src/use/useSubUE'
+import { topicOfId } from '/src/use/useTopic'
+import { courseOfId } from '/src/use/useCourse'
+import { theUserCourse, updateUserCourse } from '/src/use/useUserCourse'
 
 import router from "/src/router"
+
+import parser from '/src/lib/grammar.js'
+// import TextParts from '/src/components/TextParts.vue'
 
 
 const props = defineProps({
@@ -134,34 +138,25 @@ const props = defineProps({
    },
 })
 
-const ue = ref()
-const subUE = ref()
-const topic = ref([])
-const course = ref([])
-const userCourse = ref()
-const parts = ref([])
-const done = ref(true)
-const highlight = ref('yellow')
+const ue = computed(() => ueOfId.value(props.ue_id))
+const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
+const topic = computed(() => topicOfId.value(props.topic_id))
+const course = computed(() => courseOfId.value(props.course_id))
+const userCourse = computed(() => theUserCourse.value(props.userid, props.course_id))
+
+// const parts = ref([])
 
 onMounted(async () => {
-   ue.value = await getUE(props.ue_id)
-   subUE.value = await getSubUE(props.sub_ue_id)
-   topic.value = await getTopic(props.topic_id)
-   course.value = await getCourse(props.course_id)
-   userCourse.value = await getTheUserCourse(props.userid, props.course_id)
-   done.value = userCourse.value.done
-
-   try {
-      parts.value = parser.parse(course.value.content)
-      console.log('parts', parts.value)
-   } catch(err) {
-      parts.value = ''
-   }
+   // try {
+   //    parts.value = parser.parse(course.value.content)
+   //    console.log('parts', parts.value)
+   // } catch(err) {
+   //    parts.value = ''
+   // }
 })
 
-const onDoneClick = async () => {
-   done.value = !done.value
-   userCourse.value = await updateUserCourse(userCourse.value.id, { done: done.value })
+const onDoneClick = async (prevValue) => {
+   await updateUserCourse(userCourse.value.id, { done: !prevValue })
 }
 
 const move = ref(false)

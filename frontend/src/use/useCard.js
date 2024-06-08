@@ -7,15 +7,15 @@ import { app } from '/src/client-app.js'
 // state backed in SessionStorage
 const initialState = () => ({
    cardCache: {},
+   cardStatus: {},
    cardListStatus: {},
 })
 
 const key = 'card-state'
-const cardState = useSessionStorage(key, initialState())
+const cardState = useSessionStorage(key, initialState(), { mergeDefaults: true })
 
 export const resetUseCard = () => {
-   // cardState.value = initialState()
-   sessionStorage.removeItem(key)
+   cardState.value = null
 }
 
 
@@ -42,6 +42,23 @@ export const getCard = async (id) => {
    cardState.value.cardCache[id] = card
    return card
 }
+
+export const cardOfId = computed(() => (id) => {
+   const status = cardState.value.cardStatus[id]
+   if (status === 'ready') return cardState.value.cardCache[id]
+   if (status !== 'ongoing') {
+      cardState.value.cardStatus[id] = 'ongoing'
+      app.service('card').findUnique({ where: { id }})
+      .then(card => {
+         cardState.value.cardCache[id] = card
+         cardState.value.cardStatus[id] = 'ready'
+      })
+      .catch(err => {
+         console.log('cardOfId err', id, err)
+         cardState.value.cardStatus[id] = undefined
+      })
+   }
+})
 
 export const createCard = async (topic_id, title = '', content = '') => {
    // get highest rank

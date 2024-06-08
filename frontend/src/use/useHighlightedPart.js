@@ -10,11 +10,10 @@ const initialState = () => ({
 })
 
 const key = 'highlighted-part-state'
-const highlightedPartState = useSessionStorage(key, initialState())
+const highlightedPartState = useSessionStorage(key, initialState(), { mergeDefaults: true })
 
 export const resetUseHighlightedPart = () => {
-   // highlightedPartState.value = initialState()
-   sessionStorage.removeItem(key)
+   highlightedPartState.value = null
 }
 
 
