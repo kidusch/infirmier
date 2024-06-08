@@ -24,6 +24,16 @@ app.service('card').on('create', card => {
    cardState.value.cardCache[card.id] = card
 })
 
+app.service('card').on('update', card => {
+   console.log('CARD EVENT update', card)
+   cardState.value.cardCache[card.id] = card
+})
+
+app.service('card').on('delete', card => {
+   console.log('CARD EVENT delete', card)
+   delete cardState.value.cardCache[card.id]
+})
+
 
 export const getCard = async (id) => {
    let card = cardState.value.cardCache[id]

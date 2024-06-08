@@ -24,6 +24,16 @@ app.service('user_quiz').on('create', (userQuiz) => {
    userQuizState.value.userQuizCache[userQuiz.id] = userQuiz
 })
 
+app.service('user_quiz').on('update', (userQuiz) => {
+   console.log('USER_QUIZ EVENT update', userQuiz)
+   userQuizState.value.userQuizCache[userQuiz.id] = userQuiz
+})
+
+app.service('user_quiz').on('delete', (userQuiz) => {
+   console.log('USER_QUIZ EVENT delete', userQuiz)
+   delete userQuizState.value.userQuizCache[userQuiz.id]
+})
+
 // get or create the unique user_quiz associated to (user_id, quiz_id)
 export const getTheUserQuiz = async (user_id, quiz_id) => {
    const key = user_id + ':' + quiz_id

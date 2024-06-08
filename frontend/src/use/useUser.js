@@ -23,6 +23,16 @@ app.service('user').on('create', user => {
    userState.value.userCache[user.id] = user
 })
 
+app.service('user').on('update', user => {
+   console.log('USER EVENT update', user)
+   userState.value.userCache[user.id] = user
+})
+
+app.service('user').on('delete', user => {
+   console.log('USER EVENT delete', user)
+   delete userState.value.userCache[user.id]
+})
+
 
 export const getUser = async (id) => {
    let user = userState.value.userCache[id]

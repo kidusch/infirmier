@@ -24,6 +24,16 @@ app.service('quiz').on('create', quiz => {
    quizState.value.quizCache[quiz.id] = quiz
 })
 
+app.service('quiz').on('update', quiz => {
+   console.log('QUIZ EVENT update', quiz)
+   quizState.value.quizCache[quiz.id] = quiz
+})
+
+app.service('quiz').on('delete', quiz => {
+   console.log('QUIZ EVENT delete', quiz)
+   delete quizState.value.quizCache[quiz.id]
+})
+
 
 export const getQuiz = async (id) => {
    let quiz = quizState.value.quizCache[id]

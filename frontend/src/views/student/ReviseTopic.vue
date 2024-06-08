@@ -86,13 +86,12 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 
-import { getUE } from '/src/use/useUE'
-import { getSubUE } from '/src/use/useSubUE'
-import { getTopic } from '/src/use/useTopic'
-import { getCourseList } from '/src/use/useCourse'
-import { getCardList } from '/src/use/useCard'
-import { getQuizList } from '/src/use/useQuiz'
-import { getCaseStudyList } from '/src/use/useCaseStudy'
+import { ueOfId } from '/src/use/useUE'
+import { subUEOfId } from '/src/use/useSubUE'
+import { topicOfId } from '/src/use/useTopic'
+import { listOfCards } from '/src/use/useCard'
+import { listOfQuizs } from '/src/use/useQuiz'
+import { listOfCaseStudies } from '/src/use/useCaseStudy'
 import { theUserCard } from '/src/use/useUserCard'
 import { theUserQuiz } from '/src/use/useUserQuiz'
 import { theUserCaseStudy } from '/src/use/useUserCaseStudy'
@@ -119,58 +118,14 @@ const props = defineProps({
    },
 })
 
-const ue = ref()
-const subUE = ref()
-const topic = ref([])
-const courseList = ref()
-const cardList = ref()
-const quizList = ref()
-const caseStudyList = ref()
-// const userCourseDict = ref({})
-// const userCardDict = ref({})
-// const userQuizDict = ref({})
-// const userCaseStudyDict = ref({})
-// const progress = ref(0)
+const ue = computed(() => ueOfId.value(props.ue_id))
+const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
+const topic = computed(() => topicOfId.value(props.sub_ue_id))
 
+const cardList = computed(() => listOfCards.value(props.topic_id))
+const quizList = computed(() => listOfQuizs.value(props.topic_id))
+const caseStudyList = computed(() => listOfCaseStudies.value(props.topic_id))
 
-onMounted(async () => {
-   ue.value = await getUE(props.ue_id)
-   subUE.value = await getSubUE(props.sub_ue_id)
-   topic.value = await getTopic(props.topic_id)
-
-   courseList.value = await getCourseList(props.topic_id)
-   cardList.value = await getCardList(props.topic_id)
-   quizList.value = await getQuizList(props.topic_id)
-   caseStudyList.value = await getCaseStudyList(props.topic_id)
-
-   // let count = 0
-   // let sum = 0
-   // for (const course of courseList.value) {
-   //    const userCourse = await getTheUserCourse(props.userid, course.id)
-   //    userCourseDict.value[course.id] = userCourse
-   //    count += 1
-   //    sum += (userCourse.done ? 100 : 0)
-   // }
-   // for (const card of cardList.value) {
-   //    const userCard = await getTheUserCard(props.userid, card.id)
-   //    userCardDict.value[card.id] = userCard
-   //    count += 1
-   //    sum += (userCard.done ? 100 : 0)
-   // }
-   // for (const quiz of quizList.value) {
-   //    const userQuiz = await getTheUserQuiz(props.userid, quiz.id)
-   //    userQuizDict.value[quiz.id] = userQuiz
-   //    count += 1
-   //    sum += (userQuiz.done ? 100 : 0)
-   // }
-   // for (const caseStudy of caseStudyList.value) {
-   //    const userCaseStudy = await getTheUserCaseStudy(props.userid, caseStudy.id)
-   //    userCaseStudyDict.value[caseStudy.id] = userCaseStudy
-   //    count += 1
-   //    sum += (userCaseStudy.done ? 100 : 0)
-   // }
-   // progress.value = count === 0 ? 0 : Math.round(sum / count)
-})
 
 const isTheUserCardDone = computed(() => (cardId) => {
    const userCard = theUserCard.value(props.userid, cardId)

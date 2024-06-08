@@ -16,5 +16,25 @@ export default function(app) {
     app.service('topic').publish(async (context) => {
         return context.methodName.startsWith('find') ? [] : ['authenticated']
     })
+        
+    app.service('course').publish(async (context) => {
+        return context.methodName.startsWith('find') ? [] : ['authenticated']
+    })
+
+    app.service('card').publish(async (context) => {
+        return context.methodName.startsWith('find') ? [] : ['authenticated']
+    })
+    
+    app.service('quiz').publish(async (context) => {
+        return context.methodName.startsWith('find') ? [] : ['authenticated']
+    })
+    
+    app.service('quiz_choice').publish(async (context) => {
+        return context.methodName.startsWith('find') ? [] : ['authenticated']
+    })
+    
+    app.service('case_study').publish(async (context) => {
+        return context.methodName.startsWith('find') ? [] : ['authenticated']
+    })
 
 }

@@ -23,6 +23,16 @@ app.service('user_quiz_choice').on('create', (userQuizChoice) => {
    userQuizChoiceState.value.userQuizChoiceCache[userQuizChoice.id] = userQuizChoice
 })
 
+app.service('user_quiz_choice').on('update', (userQuizChoice) => {
+   console.log('USER_QUIZ_CHOICE EVENT update', userQuizChoice)
+   userQuizChoiceState.value.userQuizChoiceCache[userQuizChoice.id] = userQuizChoice
+})
+
+app.service('user_quiz_choice').on('delete', (userQuizChoice) => {
+   console.log('USER_QUIZ_CHOICE EVENT delete', userQuizChoice)
+   delete userQuizChoiceState.value.userQuizChoiceCache[userQuizChoice.id]
+})
+
 // get or create the unique user_quiz_choice associated to (user_id, quiz_choice_id)
 export const getTheUserQuizChoice = async (user_id, quiz_choice_id) => {
    const isReady = userQuizChoiceState.value.theUserQuizChoiceReady[user_id + ':' + quiz_choice_id]

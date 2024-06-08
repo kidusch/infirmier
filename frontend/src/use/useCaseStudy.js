@@ -19,9 +19,19 @@ export const resetUseCaseStudy = () => {
 }
 
 
-app.service('caseStudy').on('create', caseStudy => {
-   console.log('CARD EVENT created', caseStudy)
+app.service('case_study').on('create', caseStudy => {
+   console.log('CASE_STUDY EVENT created', caseStudy)
    caseStudyState.value.caseStudyCache[caseStudy.id] = caseStudy
+})
+
+app.service('case_study').on('update', caseStudy => {
+   console.log('CASE_STUDY EVENT update', caseStudy)
+   caseStudyState.value.caseStudyCache[caseStudy.id] = caseStudy
+})
+
+app.service('case_study').on('delete', caseStudy => {
+   console.log('CASE_STUDY EVENT delete', caseStudy)
+   delete caseStudyState.value.caseStudyCache[caseStudy.id]
 })
 
 

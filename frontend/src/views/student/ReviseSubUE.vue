@@ -46,17 +46,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { computed } from 'vue'
 
-import { getUE } from '/src/use/useUE'
-import { getSubUE } from '/src/use/useSubUE'
-import { getTopicList } from '/src/use/useTopic'
-// import { getCardList } from '/src/use/useCard'
-// import { getQuizList } from '/src/use/useQuiz'
-// import { getCaseStudyList } from '/src/use/useCaseStudy'
-// import { getTheUserCard } from '/src/use/useUserCard'
-// import { getTheUserQuiz } from '/src/use/useUserQuiz'
-// import { getTheUserCaseStudy } from '/src/use/useUserCaseStudy'
+import { ueOfId } from '/src/use/useUE'
+import { subUEOfId } from '/src/use/useSubUE'
+import { listOfTopics } from '/src/use/useTopic'
 import { topicReviseProgress, subUEReviseProgress } from '/src/use/useProgress'
 import router from "/src/router"
 
@@ -75,46 +69,9 @@ const props = defineProps({
    },
 })
 
-const ue = ref()
-const subUE = ref()
-const topicList = ref([])
-// const topicStudyProgressDict = ref({})
-const progress = ref(0)
-
-onMounted(async () => {
-   ue.value = await getUE(props.ue_id)
-   subUE.value = await getSubUE(props.sub_ue_id)
-   topicList.value = await getTopicList(props.sub_ue_id)
-   // let totalSum = 0
-   // let totalCount = 0
-   // for (const topic of topicList.value) {
-   //    let count = 0
-   //    let sum = 0
-   //    const cardList = await getCardList(topic.id)
-   //    const quizList = await getQuizList(topic.id)
-   //    const caseStudyList = await getCaseStudyList(topic.id)
-   //    for (const card of cardList) {
-   //       const userCard = await getTheUserCard(props.userid, card.id)
-   //       count += 1
-   //       sum += (userCard.done ? 100 : 0)
-   //    }
-   //    for (const quiz of quizList) {
-   //       const userQuiz = await getTheUserQuiz(props.userid, quiz.id)
-   //       count += 1
-   //       sum += (userQuiz.done ? 100 : 0)
-   //    }
-   //    for (const caseStudy of caseStudyList) {
-   //       const userCaseStudy = await getTheUserCaseStudy(props.userid, caseStudy.id)
-   //       count += 1
-   //       sum += (userCaseStudy.done ? 100 : 0)
-   //    }
-   //    const percentage = count === 0 ? 0 : Math.round(sum / count)
-   //    topicStudyProgressDict.value[topic.id] = percentage
-   //    totalSum += percentage
-   //    totalCount += 1
-   // }
-   // progress.value = totalCount === 0 ? 0 : Math.round(totalSum / totalCount)
-})
+const ue = computed(() => ueOfId.value(props.ue_id))
+const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
+const topicList = computed(() => listOfTopics.value(props.sub_ue_id))
 
 const selectTopic = (topic) => {
    router.push(`/home/${props.userid}/revise-topic/${props.ue_id}/${props.sub_ue_id}/${topic.id}`)

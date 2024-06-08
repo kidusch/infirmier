@@ -24,6 +24,16 @@ app.service('user_card').on('create', (userCard) => {
    userCardState.value.userCardCache[userCard.id] = userCard
 })
 
+app.service('user_card').on('update', (userCard) => {
+   console.log('USER_CARD EVENT update', userCard)
+   userCardState.value.userCardCache[userCard.id] = userCard
+})
+
+app.service('user_card').on('delete', (userCard) => {
+   console.log('USER_CARD EVENT delete', userCard)
+   delete userCardState.value.userCardCache[userCard.id]
+})
+
 // get or create the unique user_card associated to (user_id, card_id)
 export const getTheUserCard = async (user_id, card_id) => {
    const key = user_id + ':' + card_id

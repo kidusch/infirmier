@@ -23,6 +23,16 @@ app.service('user_course').on('create', (userCourse) => {
    userCourseState.value.userCourseCache[userCourse.id] = userCourse
 })
 
+app.service('user_course').on('update', (userCourse) => {
+   console.log('USER_COURSE EVENT update', userCourse)
+   userCourseState.value.userCourseCache[userCourse.id] = userCourse
+})
+
+app.service('user_course').on('delete', (userCourse) => {
+   console.log('USER_COURSE EVENT delete', userCourse)
+   delete userCourseState.value.userCourseCache[userCourse.id]
+})
+
 // get or create the unique user_course associated to (user_id, course_id)
 export const getTheUserCourse = async (user_id, course_id) => {
    const key = user_id + ':' + course_id

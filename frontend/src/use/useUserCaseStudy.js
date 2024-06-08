@@ -24,6 +24,16 @@ app.service('user_case_study').on('create', (userCaseStudy) => {
    userCaseStudyState.value.userCaseStudyCache[userCaseStudy.id] = userCaseStudy
 })
 
+app.service('user_case_study').on('update', (userCaseStudy) => {
+   console.log('USER_CASE_STUDY EVENT update', userCaseStudy)
+   userCaseStudyState.value.userCaseStudyCache[userCaseStudy.id] = userCaseStudy
+})
+
+app.service('user_case_study').on('delete', (userCaseStudy) => {
+   console.log('USER_CASE_STUDY EVENT delete', userCaseStudy)
+   delete userCaseStudyState.value.userCaseStudyCache[userCaseStudy.id]
+})
+
 
 // get or create the unique user_case_study associated to (user_id, case_study_id)
 export const getTheUserCaseStudy = async (user_id, case_study_id) => {
