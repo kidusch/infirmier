@@ -61,7 +61,7 @@
                            </p>
                         </label>
 
-                        <input type="checkbox" :checked="answersDict[choice.id] === true" @click="(ev) => setAnswer(choice.id, true, ev.target.checked)" class="checkbox checkbox-primary" />
+                        <input type="checkbox" :checked="userQuizChoiceAnswer(choice.id) === true" @click="(ev) => setAnswer(choice.id, true, ev.target.checked)" class="checkbox checkbox-primary" />
 
                      </div>
                      <div class="flex items-center">
@@ -71,7 +71,7 @@
                            </p>
                         </label>
 
-                        <input type="checkbox" :checked="answersDict[choice.id] === false" @click="(ev) => setAnswer(choice.id, false, ev.target.checked)" class="checkbox checkbox-primary" />
+                        <input type="checkbox" :checked="userQuizChoiceAnswer(choice.id) === false" @click="(ev) => setAnswer(choice.id, false, ev.target.checked)" class="checkbox checkbox-primary" />
                      </div>
                   </div>
                   <label class="font-normal ml-4">
@@ -95,7 +95,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { computed } from 'vue'
 
 import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
@@ -103,7 +103,7 @@ import { topicOfId } from '/src/use/useTopic'
 import { quizOfId } from '/src/use/useQuiz'
 import { theUserQuiz, updateUserQuiz } from '/src/use/useUserQuiz'
 import { listOfQuizChoices } from '/src/use/useQuizChoice'
-import { getTheUserQuizChoice, theUserQuizChoice, updateUserQuizChoice } from '/src/use/useUserQuizChoice'
+import { theUserQuizChoice, updateUserQuizChoice } from '/src/use/useUserQuizChoice'
 
 import router from "/src/router"
 
@@ -138,25 +138,16 @@ const quiz = computed(() => quizOfId.value(props.quiz_id))
 const userQuiz = computed(() => theUserQuiz.value(props.userid, props.quiz_id))
 const quizChoiceList = computed(() => listOfQuizChoices.value(props.quiz_id))
 
-const answersDict = ref({})
-
-
-onMounted(async () => {
-   for (const quizChoice of quizChoiceList.value) {
-      const userQuizeChoice = await getTheUserQuizChoice(props.userid, quizChoice.id)
-      answersDict.value[quizChoice.id] = userQuizeChoice.answer
-   }
-})
+const userQuizChoiceAnswer = computed(() => quiz_choice_id => theUserQuizChoice.value(props.userid, quiz_choice_id).answer)
 
 const onDoneClick = async (done) => {
    await updateUserQuiz(userQuiz.value.id, { done })
 }
 
 const setAnswer = async (quiz_choice_id, value, checked) => {
-   const userQuizeChoice = await getTheUserQuizChoice(props.userid, quiz_choice_id)
+   const userQuizeChoice = theUserQuizChoice.value(props.userid, quiz_choice_id)
    const answer = checked ? value : null
    await updateUserQuizChoice(userQuizeChoice.id, { answer })
-   answersDict.value[quiz_choice_id] = answer
 }
 
 const gotoStudy = () => {
