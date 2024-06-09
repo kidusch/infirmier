@@ -7,7 +7,6 @@ import { app } from '/src/client-app.js'
 // state backed in SessionStorage
 const initialState = () => ({
    userQuizChoiceCache: {},
-   // theUserQuizChoiceReady: {},
    theUserQuizChoiceStatus: {},
 })
 

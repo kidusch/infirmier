@@ -102,7 +102,7 @@ import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
 import { quizOfId } from '/src/use/useQuiz'
 import { theUserQuiz, updateUserQuiz } from '/src/use/useUserQuiz'
-import { getQuizChoiceList } from '/src/use/useQuizChoice'
+import { listOfQuizChoices } from '/src/use/useQuizChoice'
 import { getTheUserQuizChoice, theUserQuizChoice, updateUserQuizChoice } from '/src/use/useUserQuizChoice'
 
 import router from "/src/router"
@@ -136,14 +136,12 @@ const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
 const topic = computed(() => topicOfId.value(props.topic_id))
 const quiz = computed(() => quizOfId.value(props.quiz_id))
 const userQuiz = computed(() => theUserQuiz.value(props.userid, props.quiz_id))
-
-const quizChoiceList = ref([])
+const quizChoiceList = computed(() => listOfQuizChoices.value(props.quiz_id))
 
 const answersDict = ref({})
 
 
 onMounted(async () => {
-   quizChoiceList.value = await getQuizChoiceList(props.quiz_id)
    for (const quizChoice of quizChoiceList.value) {
       const userQuizeChoice = await getTheUserQuizChoice(props.userid, quizChoice.id)
       answersDict.value[quizChoice.id] = userQuizeChoice.answer

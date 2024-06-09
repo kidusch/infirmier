@@ -42,7 +42,7 @@
 
 
       <!-- Main content -->
-      <main class="py-4 w-full">
+      <main class="pt-4 w-full">
 
          <!-- Case study desciption -->
          <!-- <TextParts :userid="userid" :case_study_id="case_study_id" :parts="parts"></TextParts> -->
