@@ -104,6 +104,7 @@ export const getTopicList = async (sub_ue_id) => {
       })
       for (const topic of list) {
          topicState.value.topicCache[topic.id] = topic
+         topicState.value.topicStatus[topic.id] = 'ready'
       }
       topicState.value.topicListStatus[sub_ue_id] = 'ready'
    }
@@ -121,6 +122,7 @@ export const listOfTopics = computed(() => (sub_ue_id) => {
       }).then((topicList) => {
          for (const topic of topicList) {
             topicState.value.topicCache[topic.id] = topic
+            topicState.value.topicStatus[topic.id] = 'ready'
          }
          topicState.value.topicListStatus[sub_ue_id] = 'ready'
       })

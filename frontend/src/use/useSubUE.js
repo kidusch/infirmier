@@ -105,6 +105,7 @@ export const getSubUEList = async (ue_id) => {
          })
          for (const subUE of list) {
             subUEState.value.subUECache[subUE.id] = subUE
+            subUEState.value.subUEStatus[subUE.id] = 'ready'
          }
          subUEState.value.subUEListStatus[ue_id] = 'ready'
       } catch(err) {
@@ -126,6 +127,7 @@ export const listOfSubUEs = computed(() => (ue_id) => {
       }).then(list => {
          for (const subUE of list) {
             subUEState.value.subUECache[subUE.id] = subUE
+            subUEState.value.subUEStatus[subUE.id] = 'ready'
          }
          subUEState.value.subUEListStatus[ue_id] = 'ready'
       }).catch(err => {

@@ -105,6 +105,7 @@ export const getCaseStudyList = async (topic_id) => {
       })
       for (const case_study of list) {
          caseStudyState.value.caseStudyCache[case_study.id] = case_study
+         caseStudyState.value.caseStudyStatus[case_study.id] = 'ready'
       }
       caseStudyState.value.caseStudyListStatus[topic_id] = 'ready'
    }
@@ -122,6 +123,7 @@ export const listOfCaseStudies = computed(() => (topic_id) => {
       }).then((list) => {
          for (const case_study of list) {
             caseStudyState.value.caseStudyCache[case_study.id] = case_study
+            caseStudyState.value.caseStudyStatus[case_study.id] = 'ready'
          }
          caseStudyState.value.caseStudyListStatus[topic_id] = 'ready'
       })

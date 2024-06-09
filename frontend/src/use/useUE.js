@@ -99,6 +99,7 @@ export const getUEList = async () => {
       const list = await app.service('ue').findMany()
       for (const ue of list) {
          ueState.value.ueCache[ue.id] = ue
+         ueState.value.ueStatus[ue.id] = 'ready'
       }
       ueState.value.isListReady = true
    }
@@ -115,6 +116,7 @@ export const listOfUEs = computed(() => {
       .then(list => {
          for (const ue of list) {
             ueState.value.ueCache[ue.id] = ue
+            ueState.value.ueStatus[ue.id] = 'ready'
          }
          ueState.value.ueListStatus = 'ready'
       }).catch(err => {

@@ -7,6 +7,7 @@ import { app } from '/src/client-app.js'
 // state backed in SessionStorage
 const initialState = () => ({
    quizCache: {},
+   quizStatus: {},
    quizListStatus: {},
 })
 
@@ -39,6 +40,7 @@ export const getQuiz = async (id) => {
    if (quiz) return quiz
    quiz = await app.service('quiz').findUnique({ where: { id }})
    quizState.value.quizCache[id] = quiz
+   quizState.value.quizStatus[id] = 'ready'
    return quiz
 }
 
@@ -95,33 +97,35 @@ export const removeQuiz = async (id) => {
    delete quizState.value.quizCache[id]
 }
 
-export const getQuizList = async (quiz_id) => {
-   if (quizState.value.quizListStatus[quiz_id] !== 'ready') {
-      quizState.value.quizListStatus[quiz_id] = 'ongoing'
+export const getQuizList = async (topic_id) => {
+   if (quizState.value.quizListStatus[topic_id] !== 'ready') {
+      quizState.value.quizListStatus[topic_id] = 'ongoing'
       const list = await app.service('quiz').findMany({
-         where: { quiz_id }
+         where: { topic_id }
       })
       for (const quiz of list) {
          quizState.value.quizCache[quiz.id] = quiz
+         quizState.value.quizStatus[quiz.id] = 'ready'
       }
-      quizState.value.quizListStatus[quiz_id] = 'ready'
+      quizState.value.quizListStatus[topic_id] = 'ready'
    }
-   return Object.values(quizState.value.quizCache).filter(quiz => quiz.quiz_id === quiz_id).sort((e1, e2) => e1.rank - e2.rank)
+   return Object.values(quizState.value.quizCache).filter(quiz => quiz.topic_id === topic_id).sort((e1, e2) => e1.rank - e2.rank)
 }
 
-export const listOfQuizs = computed(() => (quiz_id) => {
-   if (quizState.value.quizListStatus[quiz_id] === 'ready') {
-      return Object.values(quizState.value.quizCache).filter(quiz => quiz.quiz_id === quiz_id).sort((e1, e2) => e1.rank - e2.rank)
+export const listOfQuizs = computed(() => (topic_id) => {
+   if (quizState.value.quizListStatus[topic_id] === 'ready') {
+      return Object.values(quizState.value.quizCache).filter(quiz => quiz.topic_id === topic_id).sort((e1, e2) => e1.rank - e2.rank)
    }
-   if (quizState.value.quizListStatus[quiz_id] !== 'ongoing') {
-      quizState.value.quizListStatus[quiz_id] = 'ongoing'
+   if (quizState.value.quizListStatus[topic_id] !== 'ongoing') {
+      quizState.value.quizListStatus[topic_id] = 'ongoing'
       app.service('quiz').findMany({
-         where: { quiz_id }
+         where: { topic_id }
       }).then((list) => {
          for (const quiz of list) {
             quizState.value.quizCache[quiz.id] = quiz
+            quizState.value.quizStatus[quiz.id] = 'ready'
          }
-         quizState.value.quizListStatus[quiz_id] = 'ready'
+         quizState.value.quizListStatus[topic_id] = 'ready'
       })
    }
    return []

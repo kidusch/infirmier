@@ -104,6 +104,7 @@ export const getCourseList = async (topic_id) => {
       })
       for (const course of list) {
          courseState.value.courseCache[course.id] = course
+         courseState.value.courseStatus[course.id] = 'ready'
       }
       courseState.value.courseListStatus[topic_id] = 'ready'
    }
@@ -121,6 +122,7 @@ export const listOfCourses = computed(() => (topic_id) => {
       }).then((list) => {
          for (const course of list) {
             courseState.value.courseCache[course.id] = course
+            courseState.value.courseStatus[course.id] = 'ready'
          }
          courseState.value.courseListStatus[topic_id] = 'ready'
       })

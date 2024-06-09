@@ -104,6 +104,7 @@ export const getCardList = async (topic_id) => {
       })
       for (const card of list) {
          cardState.value.cardCache[card.id] = card
+         cardState.value.cardStatus[card.id] = 'ready'
       }
       cardState.value.cardListStatus[topic_id] = 'ready'
    }
@@ -121,6 +122,7 @@ export const listOfCards = computed(() => (topic_id) => {
       }).then((list) => {
          for (const card of list) {
             cardState.value.cardCache[card.id] = card
+            cardState.value.cardStatus[card.id] = 'ready'
          }
          cardState.value.cardListStatus[topic_id] = 'ready'
       })
