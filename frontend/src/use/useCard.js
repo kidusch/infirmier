@@ -46,18 +46,17 @@ export const getCard = async (id) => {
 export const cardOfId = computed(() => (id) => {
    const status = cardState.value.cardStatus[id]
    if (status === 'ready') return cardState.value.cardCache[id]
-   if (status !== 'ongoing') {
-      cardState.value.cardStatus[id] = 'ongoing'
-      app.service('card').findUnique({ where: { id }})
-      .then(card => {
-         cardState.value.cardCache[id] = card
-         cardState.value.cardStatus[id] = 'ready'
-      })
-      .catch(err => {
-         console.log('cardOfId err', id, err)
-         cardState.value.cardStatus[id] = undefined
-      })
-   }
+   if (status === 'ongoing') return undefined // ongoing request
+   cardState.value.cardStatus[id] = 'ongoing'
+   app.service('card').findUnique({ where: { id }})
+   .then(card => {
+      cardState.value.cardCache[id] = card
+      cardState.value.cardStatus[id] = 'ready'
+   })
+   .catch(err => {
+      console.log('cardOfId err', id, err)
+      cardState.value.cardStatus[id] = undefined
+   })
 })
 
 export const createCard = async (topic_id, title = '', content = '') => {

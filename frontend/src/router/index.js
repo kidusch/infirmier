@@ -98,8 +98,7 @@ const routes = [
          },
          {
             path: 'admin-course/:ue_id/:sub_ue_id/:topic_id/:course_id',
-            // component: () => import('/src/views/admin/AdminCourseMkn.vue'),
-            component: () => import('/src/views/admin/AdminCourseHtml.vue'),
+            component: () => import('/src/views/admin/AdminCourse.vue'),
             props: route => ({
                userid: parseInt(route.params.userid),
                ue_id: parseInt(route.params.ue_id),

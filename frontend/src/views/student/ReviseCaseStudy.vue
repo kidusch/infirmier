@@ -17,62 +17,59 @@
       </header>
 
       <!-- Header -->
-      <header class="py-2">
+      <section class="w-full flex justify-between">
          <h3 class="opacity-50">
             Étude de cas
          </h3>
-      </header>
 
-      <!-- Settings -->
-      <section class="w-full flex justify-end gap-6">
+         <div class="flex gap-6">
+            <label class="inline-flex gap-3 items-center cursor-pointer">
+               <p class="font-semibold text-black">Acquis</p>
 
-         <label class="inline-flex gap-3 items-center cursor-pointer">
-            <p class="font-semibold text-black">Acquis</p>
+               <input type="checkbox" class="sr-only peer" :checked="userCaseStudy?.done" @input="ev => onDoneClick(ev.target.checked)">
+               <div
+                  class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#76EE59]">
+               </div>
 
-            <input type="checkbox" class="sr-only peer" :checked="done" @input="onDoneClick">
-            <div
-               class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#76EE59]">
+            </label>
+
+            <div class="cursor-pointer link hover:text-red-600 text-blue-600" @click="gotoStudy">
+               cours
             </div>
 
-         </label>
-
-         <!-- <button @click="gotoStudy">
-            <img class="h-5" src="/src/assets/courses.svg" alt="course">
-         </button> -->
-         <div class="cursor-pointer link hover:text-red-600 text-blue-600" @click="gotoStudy">
-            cours
          </div>
-
       </section>
 
 
       <!-- Main content -->
       <main class="py-4 w-full">
-         <h4 class="py-2 font-semibold">
-            {{ caseStudy?.title }}
-         </h4>
 
-         <!-- Course content -->
-         <TextParts :userid="userid" :case_study_id="case_study_id" :parts="parts"></TextParts>
+         <!-- Case study desciption -->
+         <!-- <TextParts :userid="userid" :case_study_id="case_study_id" :parts="parts"></TextParts> -->
+         <div v-html="caseStudy?.content"></div>
 
          <!-- Student's answer -->
          <div class="py-4">
-            <label for="title">Ma réponse</label>
+            <div class="flex justify-between">
+               <label for="title">Ma réponse</label>
+               <div class="flex gap-2">
+                  <img class="cursor-pointer h-5 mb-1" src="/src/assets/edit.svg" @click="disabledText = !disabledText">
+               </div>
+            </div>
+
             <div class="standard-input-container">
                <textarea placeholder="Écrivez votre réponse ici..." type="text" rows="50"
                   :value="userCaseStudy?.answer"
                   @input="debouncedInputText"
                   :disabled="disabledText"
                ></textarea>
-               <img src="/src/assets/edit.svg" @click="disabledText = !disabledText">
-               <div class="img-placeholder"></div>
             </div>
          </div>
 
       </main>
 
       <footer class="flex-1 flex flex-col justify-end pb-8">
-         <button class="primary-btn px-4" @click="submitResponse">
+         <button class="primary-btn px-4" @click="submitResponse" :disabled="userCaseStudy?.answer?.length === 0">
             Soumettre ma réponse
          </button>
       </footer>
@@ -81,18 +78,18 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
-import { getUE } from '/src/use/useUE'
-import { getSubUE } from '/src/use/useSubUE'
-import { getTopic } from '/src/use/useTopic'
-import { getCaseStudy } from '/src/use/useCaseStudy'
-import { getTheUserCaseStudy, updateUserCaseStudy } from '/src/use/useUserCaseStudy'
+import { ueOfId } from '/src/use/useUE'
+import { subUEOfId } from '/src/use/useSubUE'
+import { topicOfId } from '/src/use/useTopic'
+import { caseStudyOfId } from '/src/use/useCaseStudy'
+import { theUserCaseStudy, updateUserCaseStudy } from '/src/use/useUserCaseStudy'
 import router from "/src/router"
 
-import parser from '/src/lib/grammar.js'
-import TextParts from '/src/components/TextParts.vue'
+// import parser from '/src/lib/grammar.js'
+// import TextParts from '/src/components/TextParts.vue'
 
 
 const props = defineProps({
@@ -118,36 +115,27 @@ const props = defineProps({
    },
 })
 
-const ue = ref()
-const subUE = ref()
-const topic = ref([])
-const caseStudy = ref([])
-const userCaseStudy = ref([])
-const parts = ref([])
+const ue = computed(() => ueOfId.value(props.ue_id))
+const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
+const topic = computed(() => topicOfId.value(props.topic_id))
+const caseStudy = computed(() => caseStudyOfId.value(props.case_study_id))
+const userCaseStudy = computed(() => theUserCaseStudy.value(props.userid, props.case_study_id))
 
-const done = ref(true)
+// const parts = ref([])
+
 const disabledText = ref(true)
 
 onMounted(async () => {
-   ue.value = await getUE(props.ue_id)
-   subUE.value = await getSubUE(props.sub_ue_id)
-   topic.value = await getTopic(props.topic_id)
-   caseStudy.value = await getCaseStudy(props.case_study_id)
-
-   userCaseStudy.value = await getTheUserCaseStudy(props.userid, props.case_study_id)
-   done.value = userCaseStudy.value.done
-
-   try {
-      parts.value = parser.parse(caseStudy.value.content)
-      console.log('parts', parts.value)
-   } catch(err) {
-      parts.value = ''
-   }
+   // try {
+   //    parts.value = parser.parse(caseStudy.value.content)
+   //    console.log('parts', parts.value)
+   // } catch(err) {
+   //    parts.value = ''
+   // }
 })
 
-const onDoneClick = async () => {
-   done.value = !done.value
-   userCaseStudy.value = await updateUserCaseStudy(userCaseStudy.value.id, { done: done.value })
+const onDoneClick = async (done) => {
+   await updateUserCaseStudy(userCaseStudy.value.id, { done })
 }
 
 const gotoStudy = () => {

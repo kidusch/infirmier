@@ -40,13 +40,14 @@ export const getSubUE = async (id) => {
    if (ue) return ue
    ue = await app.service('sub_ue').findUnique({ where: { id }})
    subUEState.value.subUECache[id] = ue
+   subUEState.value.subUEStatus[id] = 'ready'
    return ue
 }
 
 export const subUEOfId = computed(() => id => {
-   if (subUEState.value.subUEStatus[id] === 'ready') {
-      return subUEState.value.subUECache[id]
-   }
+   const status = subUEState.value.subUEStatus[id]
+   if (status === 'ready') return subUEState.value.subUECache[id]
+   if (status === 'ongoing') return undefined // ongoing request
    subUEState.value.subUEStatus[id] = 'ongoing'
    app.service('sub_ue').findUnique({ where: { id }})
    .then(subUE => {
@@ -54,7 +55,7 @@ export const subUEOfId = computed(() => id => {
       subUEState.value.subUEStatus[id] = 'ready'
    })
    .catch(err => {
-      console.log('ueOfId err', id, err)
+      console.log('subUEOfId err', id, err)
       subUEState.value.subUEStatus[id] = undefined
    })
 })
@@ -96,23 +97,22 @@ export const removeSubUE = async (id) => {
 }
 
 export const getSubUEList = async (ue_id) => {
-   if (subUEState.value.subUEListStatus[ue_id] === 'ready') {
-      return Object.values(subUEState.value.subUECache).filter(subUE => subUE.ue_id === ue_id).sort((e1, e2) => e1.rank - e2.rank)
-   }
-   // subUEState.value.subUEListStatus[ue_id] = 'ongoing'
-   // try {
-      const list = await app.service('sub_ue').findMany({
-         where: { ue_id }
-      })
-      for (const subUE of list) {
-         subUEState.value.subUECache[subUE.id] = subUE
+   if (subUEState.value.subUEListStatus[ue_id] === undefined) {
+      subUEState.value.subUEListStatus[ue_id] = 'ongoing'
+      try {
+         const list = await app.service('sub_ue').findMany({
+            where: { ue_id }
+         })
+         for (const subUE of list) {
+            subUEState.value.subUECache[subUE.id] = subUE
+         }
+         subUEState.value.subUEListStatus[ue_id] = 'ready'
+      } catch(err) {
+         subUEState.value.subUEListStatus[ue_id] = undefined
+         throw err
       }
-      subUEState.value.subUEListStatus[ue_id] = 'ready'
-      return list
-   // } catch(err) {
-   //    subUEState.value.subUEListStatus[ue_id] = undefined
-   //    throw err
-   // }
+   }
+   return Object.values(subUEState.value.subUECache).filter(subUE => subUE.ue_id === ue_id).sort((e1, e2) => e1.rank - e2.rank)
 }
 
 export const listOfSubUEs = computed(() => (ue_id) => {

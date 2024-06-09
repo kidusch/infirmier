@@ -54,27 +54,27 @@ export const getTheUserCourse = async (user_id, course_id) => {
 
 export const theUserCourse = computed(() => (user_id, course_id) => {
    const key = user_id + ':' + course_id
-   if (userCourseState.value.theUserCourseStatus[key] === 'ready') {
+   const status = userCourseState.value.theUserCourseStatus[key]
+   if (status === 'ready') {
       return Object.values(userCourseState.value.userCourseCache).find(userCourse => userCourse.user_id === user_id && userCourse.course_id === course_id)
    }
-   if (userCourseState.value.theUserCourseStatus[key] !== 'ongoing') {
-      userCourseState.value.theUserCourseStatus[key] = 'ongoing'
-      app.service('user_course').findMany({
-         where: { user_id, course_id },
-      }).then((userCourses) => {
-         if (userCourses.length === 0) {
-            app.service('user_course').create({
-               data: { user_id, course_id },
-            }).then(userCourse => {
-               userCourseState.value.userCourseCache[userCourse.id] = userCourse
-               userCourseState.value.theUserCourseStatus[key] = 'ready'
-            })
-         } else {
-            userCourseState.value.userCourseCache[userCourses[0].id] = userCourses[0]
+   if (status === 'ongoing') return undefined // ongoing request
+   userCourseState.value.theUserCourseStatus[key] = 'ongoing'
+   app.service('user_course').findMany({
+      where: { user_id, course_id },
+   }).then((userCourses) => {
+      if (userCourses.length === 0) {
+         app.service('user_course').create({
+            data: { user_id, course_id },
+         }).then(userCourse => {
+            userCourseState.value.userCourseCache[userCourse.id] = userCourse
             userCourseState.value.theUserCourseStatus[key] = 'ready'
-         }
-      })
-   }
+         })
+      } else {
+         userCourseState.value.userCourseCache[userCourses[0].id] = userCourses[0]
+         userCourseState.value.theUserCourseStatus[key] = 'ready'
+      }
+   })
 })
 
 export const updateUserCourse = async (id, data) => {

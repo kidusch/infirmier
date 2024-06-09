@@ -7,6 +7,7 @@ import { app } from '/src/client-app.js'
 // state backed in SessionStorage
 const initialState = () => ({
    caseStudyCache: {},
+   caseStudyStatus: {},
    caseStudyListStatus: {},
 })
 
@@ -39,8 +40,25 @@ export const getCaseStudy = async (id) => {
    if (caseStudy) return caseStudy
    caseStudy = await app.service('case_study').findUnique({ where: { id }})
    caseStudyState.value.caseStudyCache[id] = caseStudy
+   caseStudyState.value.caseStudyStatus[id] = 'ready'
    return caseStudy
 }
+
+export const caseStudyOfId = computed(() => id => {
+   const status = caseStudyState.value.caseStudyStatus[id]
+   if (status === 'ready') return caseStudyState.value.caseStudyCache[id]
+   if (status === 'ongoing') return undefined // ongoing request
+   caseStudyState.value.caseStudyStatus[id] = 'ongoing'
+   app.service('case_study').findUnique({ where: { id }})
+   .then(caseStudy => {
+      caseStudyState.value.caseStudyCache[id] = caseStudy
+      caseStudyState.value.caseStudyStatus[id] = 'ready'
+   })
+   .catch(err => {
+      console.log('caseStudyOfId err', id, err)
+      caseStudyState.value.caseStudyStatus[id] = undefined
+   })
+})
 
 export const createCaseStudy = async (topic_id, title = '', content = '') => {
    // get highest rank

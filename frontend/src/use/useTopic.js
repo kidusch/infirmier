@@ -40,6 +40,7 @@ export const getTopic = async (id) => {
    if (topic) return topic
    topic = await app.service('topic').findUnique({ where: { id }})
    topicState.value.topicCache[id] = topic
+   topicState.value.topicStatus[id] = 'ready'
    return topic
 }
 

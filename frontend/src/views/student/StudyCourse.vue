@@ -1,5 +1,5 @@
 <template>
-    <main class="flex-1 container max-w-7xl" :class="{ 'page-wrapper': move }">
+   <main class="flex-1 container max-w-7xl">
 
       <!-- Header -->
       <header class="chapter-card my-6">
@@ -159,7 +159,6 @@ const onDoneClick = async (prevValue) => {
    await updateUserCourse(userCourse.value.id, { done: !prevValue })
 }
 
-const move = ref(false)
 const gotoRevise = () => {
    router.push(`/home/${props.userid}/revise-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
 }

@@ -56,25 +56,24 @@ export const theUserQuiz = computed(() => (user_id, quiz_id) => {
    const key = user_id + ':' + quiz_id
    const status = userQuizState.value.theUserQuizStatus[key]
    if (status === 'ready') return Object.values(userQuizState.value.userQuizCache).find(userQuiz => userQuiz.user_id === user_id && userQuiz.quiz_id === quiz_id)
-   if (status !== 'ongoing') {
-      userQuizState.value.theUserQuizStatus[key] = 'ongoing'
-      app.service('user_quiz').findMany({
-         where: { user_id, quiz_id },
-      }).then(userQuizs => {
-         if (userQuizs.length > 0) {
-            const userQuiz = userQuizs[0]
+   if (status === 'ongoing') return undefined // ongoing request
+   userQuizState.value.theUserQuizStatus[key] = 'ongoing'
+   app.service('user_quiz').findMany({
+      where: { user_id, quiz_id },
+   }).then(userQuizs => {
+      if (userQuizs.length > 0) {
+         const userQuiz = userQuizs[0]
+         userQuizState.value.userQuizCache[userQuiz.id] = userQuiz
+         userQuizState.value.theUserQuizStatus[key] = 'ready'
+      } else {
+         app.service('user_quiz').create({
+            data: { user_id, quiz_id },
+         }).then(userQuiz => {
             userQuizState.value.userQuizCache[userQuiz.id] = userQuiz
             userQuizState.value.theUserQuizStatus[key] = 'ready'
-         } else {
-            app.service('user_quiz').create({
-               data: { user_id, quiz_id },
-            }).then(userQuiz => {
-               userQuizState.value.userQuizCache[userQuiz.id] = userQuiz
-               userQuizState.value.theUserQuizStatus[key] = 'ready'
-            })
-         }
-      })
-   }
+         })
+      }
+   })
 })
 
 export const updateUserQuiz = async (id, data) => {

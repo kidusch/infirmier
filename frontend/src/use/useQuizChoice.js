@@ -1,3 +1,4 @@
+import { computed } from 'vue'
 import { useSessionStorage } from '@vueuse/core'
 
 import { app } from '/src/client-app.js'
@@ -40,6 +41,22 @@ export const getQuizChoice = async (id) => {
    quizChoiceState.value.quizChoiceCache[id] = quizChoice
    return quizChoice
 }
+
+export const quizChoiceOfId = computed(() => (id) => {
+   const status = quizChoiceState.value.quizChoiceStatus[id]
+   if (status === 'ready') return quizChoiceState.value.quizChoiceCache[id]
+   if (status === 'ongoing') return undefined // ongoing request
+   quizChoiceState.value.quizChoiceStatus[id] = 'ongoing'
+   app.service('quiz_choice').findUnique({ where: { id }})
+   .then(quizChoice => {
+      quizChoiceState.value.quizChoiceCache[id] = quizChoice
+      quizChoiceState.value.quizChoiceStatus[id] = 'ready'
+   })
+   .catch(err => {
+      console.log('quizChoiceOfId err', id, err)
+      quizChoiceState.value.quizChoiceStatus[id] = undefined
+   })
+})
 
 export const createQuizChoice = async (quiz_id, text='') => {
    // get highest rank

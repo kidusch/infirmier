@@ -4,7 +4,7 @@
       <!-- Settings -->
       <section class="w-full flex justify-end">
          <div class="link hover:text-red-600 text-blue-600" @click="back">
-            retour
+            Retour
          </div>
       </section>
 

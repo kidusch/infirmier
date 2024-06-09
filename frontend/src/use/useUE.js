@@ -40,13 +40,14 @@ export const getUE = async (id) => {
    if (ue) return ue
    ue = await app.service('ue').findUnique({ where: { id }})
    ueState.value.ueCache[id] = ue
+   ueState.value.ueStatus[id] = 'ready'
    return ue
 }
 
 export const ueOfId = computed(() => id => {
-   if (ueState.value.ueStatus[id] === 'ready') {
-      return ueState.value.ueCache[id]
-   }
+   const status = ueState.value.ueStatus[id]
+   if (status === 'ready') return ueState.value.ueCache[id]
+   if (status === 'ongoing') return undefined // ongoing request
    ueState.value.ueStatus[id] = 'ongoing'
    app.service('ue').findUnique({ where: { id }})
    .then(ue => {

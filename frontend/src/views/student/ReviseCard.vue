@@ -17,41 +17,36 @@
       </header>
 
       <!-- Header -->
-      <header class="py-2">
+      <section class="w-full flex justify-between">
          <h3 class="opacity-50">
             Fiche de révision
          </h3>
-      </header>
 
-      <!-- Settings -->
-      <section class="w-full flex justify-end gap-6">
+         <div class="flex gap-6">
+            <label class="inline-flex gap-3 items-center cursor-pointer">
+               <p class="font-semibold text-black">Acquis</p>
 
-         <label class="inline-flex gap-3 items-center cursor-pointer">
-            <p class="font-semibold text-black">Acquis</p>
+               <input type="checkbox" class="sr-only peer" :checked="userCard?.done" @input="onDoneClick(userCard?.done)">
+               <div
+                  class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#76EE59]">
+               </div>
 
-            <input type="checkbox" class="sr-only peer" :checked="done" @input="onDoneClick">
-            <div
-               class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#76EE59]">
+            </label>
+
+            <div class="cursor-pointer link hover:text-red-600 text-blue-600" @click="gotoStudy">
+               cours
             </div>
 
-         </label>
-
-         <!-- <button @click="gotoStudy">
-            <img class="h-5" src="/src/assets/courses.svg" alt="course">
-         </button> -->
-         <div class="cursor-pointer link hover:text-red-600 text-blue-600" @click="gotoStudy">
-            cours
          </div>
-
       </section>
-
 
       <!-- Revision Card -->
       <main class="my-6 relative flex justify-center">
 
          <!-- contenu -->
          <div class="bg-accent-darker py-4 px-6 rounded-3xl w-full max-lg:max-w-xl z-30 relative">
-            <TextParts :userid="userid" :topic_id="topic_id" :card_id="card_id" :parts="parts"></TextParts>
+            <!-- <TextParts :userid="userid" :topic_id="topic_id" :card_id="card_id" :parts="parts"></TextParts> -->
+            <div v-html="card?.content"></div>
          </div>
 
          <div
@@ -80,11 +75,11 @@ import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
 import { cardOfId } from '/src/use/useCard'
-import { getTheUserCard, theUserCard, updateUserCard } from '/src/use/useUserCard'
+import { theUserCard, updateUserCard } from '/src/use/useUserCard'
 import router from "/src/router"
 
-import parser from '/src/lib/grammar.js'
-import TextParts from '/src/components/TextParts.vue'
+// import parser from '/src/lib/grammar.js'
+// import TextParts from '/src/components/TextParts.vue'
 
 
 const props = defineProps({
@@ -116,23 +111,19 @@ const topic = computed(() => topicOfId.value(props.topic_id))
 const card = computed(() => cardOfId.value(props.card_id))
 const userCard = computed(() => theUserCard.value(props.userid, props.card_id))
 
-const parts = ref('')
-const done = ref(true)
-
+// const parts = ref('')
 
 onMounted(async () => {
-   try {
-      parts.value = parser.parse(card.value.content)
-      console.log('parts', parts.value)
-   } catch(err) {
-      parts.value = ''
-   }
-   done.value = userCard.value.done
+   // try {
+   //    parts.value = parser.parse(card.value.content)
+   //    console.log('parts', parts.value)
+   // } catch(err) {
+   //    parts.value = ''
+   // }
 })
 
-const onDoneClick = async () => {
-   done.value = !done.value
-   await updateUserCard(userCard.value.id, { done: done.value })
+const onDoneClick = async (prevValue) => {
+   await updateUserCard(userCard.value.id, { done: !prevValue })
 }
 
 const back = () => router.back()

@@ -34,8 +34,8 @@
             <div class="flex justify-between">
                <label for="title">Contenu</label>
                <div class="flex gap-2">
-                  <img class="h-5 mb-1" src="/src/assets/preview.svg"  @click="preview">
-                  <img class="h-5 mb-1" src="/src/assets/edit.svg"  @click="disabledContent = !disabledContent">
+                  <img class="h-5 mb-1" src="/src/assets/preview.svg" @click="preview">
+                  <img class="h-5 mb-1" src="/src/assets/edit.svg" @click="disabledContent = !disabledContent">
                </div>
             </div>
             <div class="standard-input-container">
@@ -48,9 +48,9 @@
                <div class="img-placeholder"></div> -->
             </div>
          </div>
-         <div>
+         <!-- <div>
             <p class="text-red-600">{{ errorMessage }}</p>
-         </div>
+         </div> -->
       </main>
    </main>
 </template>
@@ -64,7 +64,7 @@ import { getSubUE } from '/src/use/useSubUE'
 import { getTopic } from '/src/use/useTopic'
 import { courseOfId, updateCourse } from '/src/use/useCourse'
 import router from '/src/router'
-import parser from '/src/lib/grammar.js'
+// import parser from '/src/lib/grammar.js'
 
 
 const props = defineProps({
@@ -93,7 +93,7 @@ const props = defineProps({
 const ue = ref()
 const subUE = ref()
 const topic = ref()
-const errorMessage = ref('')
+// const errorMessage = ref('')
 
 onMounted(async () => {
    ue.value = await getUE(props.ue_id)
@@ -103,19 +103,18 @@ onMounted(async () => {
 
 const course = computed(() => courseOfId.value(props.course_id))
 
-watch(() => course.value?.content, async (content) => {
-   console.log('check syntax', content)
-   if (content) {
-      try {
-         const parts = parser.parse(content)
-         console.log('parts', parts)
-         errorMessage.value = ''
-      } catch(err) {
-         console.log('err', err)
-         errorMessage.value = err.toString()
-      }
-   }
-}, { immediate: true })
+// watch(() => course.value?.content, async (content) => {
+//    if (content) {
+//       try {
+//          const parts = parser.parse(content)
+//          console.log('parts', parts)
+//          errorMessage.value = ''
+//       } catch(err) {
+//          console.log('err', err)
+//          errorMessage.value = err.toString()
+//       }
+//    }
+// }, { immediate: true })
 
 const onInputTitle = async (ev) => {
    await updateCourse(props.course_id, { title: ev.target.value })

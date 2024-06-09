@@ -46,18 +46,17 @@ export const getCourse = async (id) => {
 export const courseOfId = computed(() => (id) => {
    const status = courseState.value.courseStatus[id]
    if (status === 'ready') return courseState.value.courseCache[id]
-   if (status !== 'ongoing') {
-      courseState.value.courseStatus[id] = 'ongoing'
-      app.service('course').findUnique({ where: { id }})
-      .then(course => {
-         courseState.value.courseCache[id] = course
-         courseState.value.courseStatus[id] = 'ready'
-      })
-      .catch(err => {
-         console.log('courseOfId err', id, err)
-         courseState.value.courseStatus[id] = undefined
-      })
-   }
+   if (status === 'ongoing') return undefined // ongoing request
+   courseState.value.courseStatus[id] = 'ongoing'
+   app.service('course').findUnique({ where: { id }})
+   .then(course => {
+      courseState.value.courseCache[id] = course
+      courseState.value.courseStatus[id] = 'ready'
+   })
+   .catch(err => {
+      console.log('courseOfId err', id, err)
+      courseState.value.courseStatus[id] = undefined
+   })
 })
 
 export const createCourse = async (topic_id, title = '', content = '') => {

@@ -56,25 +56,24 @@ export const theUserCard = computed(() => (user_id, card_id) => {
    const key = user_id + ':' + card_id
    const status = userCardState.value.theUserCardStatus[key]
    if (status === 'ready') return Object.values(userCardState.value.userCardCache).find(userCard => userCard.user_id === user_id && userCard.card_id === card_id)
-   if (status !== 'ongoing') {
-      userCardState.value.theUserCardStatus[key] = 'ongoing'
-      app.service('user_card').findMany({
-         where: { user_id, card_id },
-      }).then(userCards => {
-         if (userCards.length > 0) {
-            const userCard = userCards[0]
+   if (status === 'ongoing') return undefined // ongoing request
+   userCardState.value.theUserCardStatus[key] = 'ongoing'
+   app.service('user_card').findMany({
+      where: { user_id, card_id },
+   }).then(userCards => {
+      if (userCards.length > 0) {
+         const userCard = userCards[0]
+         userCardState.value.userCardCache[userCard.id] = userCard
+         userCardState.value.theUserCardStatus[key] = 'ready'
+      } else {
+         app.service('user_card').create({
+            data: { user_id, card_id },
+         }).then(userCard => {
             userCardState.value.userCardCache[userCard.id] = userCard
             userCardState.value.theUserCardStatus[key] = 'ready'
-         } else {
-            app.service('user_card').create({
-               data: { user_id, card_id },
-            }).then(userCard => {
-               userCardState.value.userCardCache[userCard.id] = userCard
-               userCardState.value.theUserCardStatus[key] = 'ready'
-            })
-         }
-      })
-   }
+         })
+      }
+   })
 })
 
 export const updateUserCard = async (id, data) => {
