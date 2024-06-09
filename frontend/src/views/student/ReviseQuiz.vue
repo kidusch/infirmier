@@ -17,39 +17,35 @@
       </header>
 
       <!-- Header -->
-      <header class="py-2">
+      <section class="w-full flex justify-between">
          <h3 class="opacity-50">
             QCM
          </h3>
-      </header>
 
-      <!-- Settings -->
-      <section class="w-full flex justify-end gap-6">
+         <div class="flex gap-6">
+            <label class="inline-flex gap-3 items-center cursor-pointer">
+               <p class="font-semibold text-black">Acquis</p>
 
-         <label class="inline-flex gap-3 items-center cursor-pointer">
-            <p class="font-semibold text-black">Acquis</p>
+               <input type="checkbox" class="sr-only peer" :checked="userQuiz?.done" @input="ev => onDoneClick(ev.target.checked)">
+               <div
+                  class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#76EE59]">
+               </div>
 
-            <input type="checkbox" class="sr-only peer" :checked="done" @input="onDoneClick">
-            <div
-               class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#76EE59]">
+            </label>
+
+            <div class="cursor-pointer link hover:text-red-600 text-blue-600" @click="gotoStudy">
+               cours
             </div>
 
-         </label>
-
-         <!-- <button @click="gotoStudy">
-            <img class="h-5" src="/src/assets/courses.svg" alt="course">
-         </button> -->
-         <div class="cursor-pointer link hover:text-red-600 text-blue-600" @click="gotoStudy">
-            cours
          </div>
-
       </section>
+
 
 
         <!-- Main content -->
         <main class="py-4 w-full">
             <h4 class="py-2 font-semibold">
-               {{ quiz.question }}
+               {{ quiz?.question }}
             </h4>
             <p class="opacity-50">(Sélectionnez toutes les réponses correctes)</p>
 
@@ -99,15 +95,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 
-import { getUE } from '/src/use/useUE'
-import { getSubUE } from '/src/use/useSubUE'
-import { getTopic } from '/src/use/useTopic'
-import { getQuiz } from '/src/use/useQuiz'
-import { getTheUserQuiz, updateUserQuiz } from '/src/use/useUserQuiz'
+import { ueOfId } from '/src/use/useUE'
+import { subUEOfId } from '/src/use/useSubUE'
+import { topicOfId } from '/src/use/useTopic'
+import { quizOfId } from '/src/use/useQuiz'
+import { theUserQuiz, updateUserQuiz } from '/src/use/useUserQuiz'
 import { getQuizChoiceList } from '/src/use/useQuizChoice'
-import { getTheUserQuizChoice, updateUserQuizChoice } from '/src/use/useUserQuizChoice'
+import { getTheUserQuizChoice, theUserQuizChoice, updateUserQuizChoice } from '/src/use/useUserQuizChoice'
 
 import router from "/src/router"
 
@@ -135,35 +131,27 @@ const props = defineProps({
    },
 })
 
-const ue = ref()
-const subUE = ref()
-const topic = ref([])
-const quiz = ref([])
-const userQuiz = ref([])
+const ue = computed(() => ueOfId.value(props.ue_id))
+const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
+const topic = computed(() => topicOfId.value(props.topic_id))
+const quiz = computed(() => quizOfId.value(props.quiz_id))
+const userQuiz = computed(() => theUserQuiz.value(props.userid, props.quiz_id))
+
 const quizChoiceList = ref([])
 
-const done = ref(true)
 const answersDict = ref({})
 
 
 onMounted(async () => {
-   ue.value = await getUE(props.ue_id)
-   subUE.value = await getSubUE(props.sub_ue_id)
-   topic.value = await getTopic(props.topic_id)
-   quiz.value = await getQuiz(props.quiz_id)
    quizChoiceList.value = await getQuizChoiceList(props.quiz_id)
    for (const quizChoice of quizChoiceList.value) {
       const userQuizeChoice = await getTheUserQuizChoice(props.userid, quizChoice.id)
       answersDict.value[quizChoice.id] = userQuizeChoice.answer
    }
-
-   userQuiz.value = await getTheUserQuiz(props.userid, props.quiz_id)
-   done.value = userQuiz.value.done
 })
 
-const onDoneClick = async () => {
-   done.value = !done.value
-   userQuiz.value = await updateUserQuiz(userQuiz.value.id, { done: done.value })
+const onDoneClick = async (done) => {
+   await updateUserQuiz(userQuiz.value.id, { done })
 }
 
 const setAnswer = async (quiz_choice_id, value, checked) => {
