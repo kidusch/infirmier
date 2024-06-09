@@ -58,7 +58,7 @@
             </div>
 
             <div class="standard-input-container">
-               <textarea placeholder="Écrivez votre réponse ici..." type="text" rows="50"
+               <textarea placeholder="Écrivez votre réponse ici..." type="text"
                   :value="userCaseStudy?.answer"
                   @input="debouncedInputText"
                   :disabled="disabledText"

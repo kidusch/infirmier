@@ -117,13 +117,4 @@
   .standard-input-container textarea {
     @apply h-64 max-h-max overflow-auto;
   }
-  .standard-input-container img {
-    @apply p-2.5 h-10 w-10 absolute top-0 right-0;
-  }
-  .standard-input-container .img-placeholder {
-    @apply p-2.5 h-10 w-10;
-  }
-  .standard-input-container textarea::-webkit-scrollbar {
-    display: none;
-  }
 }
