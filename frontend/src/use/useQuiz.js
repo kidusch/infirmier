@@ -60,10 +60,10 @@ export const quizOfId = computed(() => (id) => {
    })
 })
 
-export const createQuiz = async (quiz_id, title = '', question = '') => {
+export const createQuiz = async (topic_id, title = '', question = '') => {
    // get highest rank
    const result = await app.service('quiz').aggregate({
-      where: { quiz_id},
+      where: { topic_id },
       _max: { rank: true }
    })
    const highestRank = result._max.rank
@@ -72,13 +72,14 @@ export const createQuiz = async (quiz_id, title = '', question = '') => {
    const quiz = await app.service('quiz').create({
       data: {
          rank,
-         quiz_id,
+         topic_id,
          title,
          question,
       }
    })
    // update cache
    quizState.value.quizCache[quiz.id] = quiz
+   quizState.value.quizStatus[quiz.id] = 'ready'
    return quiz
 }
 

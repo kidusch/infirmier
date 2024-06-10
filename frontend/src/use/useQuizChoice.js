@@ -82,6 +82,7 @@ export const createQuizChoice = async (quiz_id, text='') => {
    })
    // update cache
    quizChoiceState.value.quizChoiceCache[quizChoice.id] = quizChoice
+   quizChoiceState.value.quizChoiceStatus[quizChoice.id] = 'ready'
    return quizChoice
 }
 

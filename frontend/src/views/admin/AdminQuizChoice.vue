@@ -39,16 +39,16 @@
 
       <main class="flex flex-col gap-3">
          <div>
-            <label for="title">Texte du choix</label>
+            <div class="flex justify-between">
+               <label for="title">Texte du choix</label>
+               <img class="h-5 mb-1" src="/src/assets/edit.svg"  @click="disabledText = !disabledText">
+            </div>
             <div class="standard-input-container">
                <input placeholder="Texte du choix..." type="text"
-                  :value="quizChoice ? quizChoice.text : ''"
+               :value="quizChoice ? quizChoice.text : ''"
                   @input="debouncedInputText"
                   :disabled="disabledText"
                />
-               <img src="/src/assets/edit.svg"  @click="disabledText = !disabledText">
-               <div class="img-placeholder">
-               </div>
             </div>
          </div>
 
@@ -78,16 +78,16 @@
          </div>
 
          <div>
-            <label for="title">Commentaire en cas d'erreur</label>
+            <div class="flex justify-between">
+               <label for="title">Commentaire en cas d'erreur</label>
+               <img class="h-5 mb-1" src="/src/assets/edit.svg"  @click="disabledComment = !disabledComment">
+            </div>
             <div class="standard-input-container">
                <input placeholder="Commentaire..." type="text"
                   :value="quizChoice ? quizChoice.comment : ''"
                   @input="debouncedInputComment"
                   :disabled="disabledComment"
                />
-               <img src="/src/assets/edit.svg"  @click="disabledComment = !disabledComment">
-               <div class="img-placeholder">
-               </div>
             </div>
          </div>
 
@@ -112,14 +112,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
-import { getUE } from '/src/use/useUE'
-import { getSubUE } from '/src/use/useSubUE'
-import { getTopic } from '/src/use/useTopic'
-import { getQuiz } from '/src/use/useQuiz'
-import { getQuizChoice, updateQuizChoice } from '/src/use/useQuizChoice'
+import { ueOfId } from '/src/use/useUE'
+import { subUEOfId } from '/src/use/useSubUE'
+import { topicOfId } from '/src/use/useTopic'
+import { quizOfId, updateQuiz } from '/src/use/useQuiz'
+import { quizChoiceOfId, updateQuizChoice } from '/src/use/useQuizChoice'
 import router from '/src/router'
 
 const props = defineProps({
@@ -149,34 +149,25 @@ const props = defineProps({
    },
 })
 
-const ue = ref()
-const subUE = ref()
-const topic = ref()
-const quiz = ref()
-const quizChoice = ref()
-
-onMounted(async () => {
-   ue.value = await getUE(props.ue_id)
-   subUE.value = await getSubUE(props.sub_ue_id)
-   topic.value = await getTopic(props.topic_id)
-   quiz.value = await getQuiz(props.quiz_id)
-   quizChoice.value = await getQuizChoice(props.quiz_choice_id)
-})
+const ue = computed(() => ueOfId.value(props.ue_id))
+const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
+const topic = computed(() => topicOfId.value(props.topic_id))
+const quiz = computed(() => quizOfId.value(props.quiz_id))
+const quizChoice = computed(() => quizChoiceOfId.value(props.quiz_choice_id))
 
 const onInputText = async (ev) => {
-   quizChoice.value = await updateQuizChoice(props.quiz_choice_id, { text: ev.target.value })
+   await updateQuizChoice(props.quiz_choice_id, { text: ev.target.value })
 }
 const debouncedInputText = useDebounceFn(onInputText, 500)
 
 const disabledText = ref(true)
 
 const answerIs = async (answer) => {
-   console.log('answer', answer)
-   quizChoice.value = await updateQuizChoice(props.quiz_choice_id, { answer })
+   await updateQuizChoice(props.quiz_choice_id, { answer })
 }
 
 const onInputComment = async (ev) => {
-   quizChoice.value = await updateQuizChoice(props.quiz_choice_id, { comment: ev.target.value })
+   await updateQuizChoice(props.quiz_choice_id, { comment: ev.target.value })
 }
 const debouncedInputComment = useDebounceFn(onInputComment, 500)
 
@@ -184,15 +175,11 @@ const disabledComment = ref(true)
 
 const updatePositivePoints = async (ev) => {
    const positive_points = parseInt(ev.target.value)
-   quizChoice.value = await updateQuizChoice(props.quiz_choice_id, { positive_points })
+   await updateQuizChoice(props.quiz_choice_id, { positive_points })
 }
 
 const updateNegativePoints = async (ev) => {
    const negative_points = parseInt(ev.target.value)
-   quizChoice.value = await updateQuizChoice(props.quiz_choice_id, { negative_points })
-}
-
-const back = () => {
-   router.back()
+   await updateQuizChoice(props.quiz_choice_id, { negative_points })
 }
 </script>

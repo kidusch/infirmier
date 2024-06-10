@@ -63,7 +63,7 @@ export const caseStudyOfId = computed(() => id => {
 export const createCaseStudy = async (topic_id, title = '', content = '') => {
    // get highest rank
    const result = await app.service('case_study').aggregate({
-      where: { topic_id},
+      where: { topic_id },
       _max: { rank: true }
    })
    const highestRank = result._max.rank
@@ -79,6 +79,7 @@ export const createCaseStudy = async (topic_id, title = '', content = '') => {
    })
    // update cache
    caseStudyState.value.caseStudyCache[caseStudy.id] = caseStudy
+   caseStudyState.value.caseStudyStatus[caseStudy.id] = 'ready'
    return caseStudy
 }
 

@@ -62,7 +62,7 @@ export const courseOfId = computed(() => (id) => {
 export const createCourse = async (topic_id, title = '', content = '') => {
    // get highest rank
    const result = await app.service('course').aggregate({
-      where: { topic_id},
+      where: { topic_id },
       _max: { rank: true }
    })
    const highestRank = result._max.rank
@@ -78,6 +78,7 @@ export const createCourse = async (topic_id, title = '', content = '') => {
    })
    // update cache
    courseState.value.courseCache[course.id] = course
+   courseState.value.courseStatus[course.id] = 'ready'
    return course
 }
 

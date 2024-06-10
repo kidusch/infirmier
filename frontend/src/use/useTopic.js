@@ -78,6 +78,7 @@ export const createTopic = async (sub_ue_id, name) => {
    })
    // update cache
    topicState.value.topicCache[topic.id] = topic
+   topicState.value.topicStatus[topic.id] = 'ready'
    return topic
 }
 

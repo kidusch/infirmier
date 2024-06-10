@@ -62,7 +62,7 @@ export const cardOfId = computed(() => (id) => {
 export const createCard = async (topic_id, title = '', content = '') => {
    // get highest rank
    const result = await app.service('card').aggregate({
-      where: { topic_id},
+      where: { topic_id },
       _max: { rank: true }
    })
    const highestRank = result._max.rank
@@ -78,6 +78,7 @@ export const createCard = async (topic_id, title = '', content = '') => {
    })
    // update cache
    cardState.value.cardCache[card.id] = card
+   cardState.value.cardStatus[card.id] = 'ready'
    return card
 }
 

@@ -76,6 +76,7 @@ export const createUE = async (name) => {
    })
    // update cache
    ueState.value.ueCache[ue.id] = ue
+   ueState.value.ueStatus[ue.id] = 'ready'
    return ue
 }
 
