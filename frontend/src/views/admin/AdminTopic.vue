@@ -29,11 +29,11 @@
             <label for="title">Cours</label>
 
             <div class="flex flex-col gap-3">
-               <div v-for="course, index in courseList">
+               <div v-for="course, index in listOfCourses(topic_id)">
                   <ListItem
-                     :index="index" :list="courseList"
+                     :index="index" :list="listOfCourses(topic_id)"
                      @update="(e1, e2) => updateCourses(e1, e2)"
-                     @remove="deleteCourse(course.id)"
+                     @remove="deleteCourse(course)"
                      @select="selectCourse(course.id)"
                      @show="setCourseHidden(course.id, false)"
                      @hide="setCourseHidden(course.id, true)"
@@ -53,11 +53,11 @@
             <label for="title">Fiches</label>
 
             <div class="flex flex-col gap-3">
-               <div v-for="card, index in cardList">
+               <div v-for="card, index in listOfCards(topic_id)">
                   <ListItem
-                     :index="index" :list="cardList"
+                     :index="index" :list="listOfCards(topic_id)"
                      @update="(e1, e2) => updateCards(e1, e2)"
-                     @remove="deleteCard(card.id)"
+                     @remove="deleteCard(card)"
                      @select="selectCard(card.id)"
                      @show="setCardHidden(card.id, false)"
                      @hide="setCardHidden(card.id, true)"
@@ -77,11 +77,11 @@
             <label for="title">QCM</label>
 
             <div class="flex flex-col gap-3">
-               <div v-for="quiz, index in quizList">
+               <div v-for="quiz, index in listOfQuizs(topic_id)">
                   <ListItem
-                     :index="index" :list="quizList"
+                     :index="index" :list="listOfQuizs(topic_id)"
                      @update="(e1, e2) => updateQuizs(e1, e2)"
-                     @remove="deleteQuiz(quiz.id)"
+                     @remove="deleteQuiz(quiz)"
                      @select="selectQuiz(quiz.id)"
                      @show="setQuizHidden(quiz.id, false)"
                      @hide="setQuizHidden(quiz.id, true)"
@@ -101,11 +101,11 @@
             <label for="title">Cas d'étude</label>
 
             <div class="flex flex-col gap-3">
-               <div v-for="caseStudy, index in caseStudyList">
+               <div v-for="caseStudy, index in listOfCaseStudies(topic_id)">
                   <ListItem
-                     :index="index" :list="caseStudyList"
+                     :index="index" :list="listOfCaseStudies(topic_id)"
                      @update="(e1, e2) => updateCaseStudies(e1, e2)"
-                     @remove="deleteCaseStudy(caseStudy.id)"
+                     @remove="deleteCaseStudy(caseStudy)"
                      @select="selectCaseStudy(caseStudy.id)"
                      @show="setCaseStudyHidden(caseStudy.id, false)"
                      @hide="setCaseStudyHidden(caseStudy.id, true)"
@@ -128,15 +128,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 
-import { getUE } from '/src/use/useUE'
-import { getSubUE } from '/src/use/useSubUE'
-import { getTopic } from '/src/use/useTopic'
-import { getCourseList, createCourse, updateCourse, removeCourse } from '/src/use/useCourse'
-import { getCardList, createCard, updateCard, removeCard } from '/src/use/useCard'
-import { getQuizList, createQuiz, updateQuiz, removeQuiz } from '/src/use/useQuiz'
-import { getCaseStudyList, createCaseStudy, updateCaseStudy, removeCaseStudy } from '/src/use/useCaseStudy'
+import { ueOfId } from '/src/use/useUE'
+import { subUEOfId } from '/src/use/useSubUE'
+import { topicOfId } from '/src/use/useTopic'
+import { listOfCourses, createCourse, updateCourse, removeCourse } from '/src/use/useCourse'
+import { listOfCards, createCard, updateCard, removeCard } from '/src/use/useCard'
+import { listOfQuizs, createQuiz, updateQuiz, removeQuiz } from '/src/use/useQuiz'
+import { listOfCaseStudies, createCaseStudy, updateCaseStudy, removeCaseStudy } from '/src/use/useCaseStudy'
 import router from '/src/router'
 
 import ListItem from '/src/components/ListItem.vue'
@@ -160,36 +160,19 @@ const props = defineProps({
    },
 })
 
-const ue = ref()
-const subUE = ref()
-const topic = ref()
-const courseList = ref([])
+const ue = computed(() => ueOfId.value(props.ue_id))
+const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
+const topic = computed(() => topicOfId.value(props.topic_id))
+
 const newCourseTitle = ref('')
-const cardList = ref([])
 const newCardTitle = ref('')
-const quizList = ref([])
 const newQuizTitle = ref('')
-const caseStudyList = ref([])
 const newCaseStudyTitle = ref('')
 
-onMounted(async () => {
-   ue.value = await getUE(props.ue_id)
-   subUE.value = await getSubUE(props.sub_ue_id)
-   topic.value = await getTopic(props.topic_id)
-   await updateCourseList()
-   await updateCardList()
-   await updateQuizList()
-   await updateCaseStudyList()
-})
-
-async function updateCourseList() {
-   courseList.value= await getCourseList(props.topic_id)
-}
 
 async function updateCourses(e1, e2) {
    await updateCourse(e1.id, { rank: e1.rank })
    await updateCourse(e2.id, { rank: e2.rank })
-   updateCourseList()
 }
 
 const selectCourse = (course_id) => {
@@ -198,31 +181,23 @@ const selectCourse = (course_id) => {
 
 const addCourse = async () => {
    await createCourse(props.topic_id, newCourseTitle.value)
-   await updateCourseList()
    newCourseTitle.value = ''
 }
 
-const deleteCourse = async (id) => {
-   if (window.confirm("Supprimer ?")) {
-      await removeCourse(id)
-      await updateCourseList()
+const deleteCourse = async (course) => {
+   if (window.confirm(`Supprimer "${course.title}" ?`)) {
+      await removeCourse(course.id)
    }
 }
 
 const setCourseHidden = async (id, hidden) => {
    await updateCourse(id, { hidden })
-   await updateCourseList()
 }
 
-
-async function updateCardList() {
-   cardList.value= await getCardList(props.topic_id)
-}
 
 async function updateCards(e1, e2) {
    await updateCard(e1.id, { rank: e1.rank })
    await updateCard(e2.id, { rank: e2.rank })
-   updateCardList()
 }
 
 const selectCard = (card_id) => {
@@ -231,31 +206,23 @@ const selectCard = (card_id) => {
 
 const addCard = async () => {
    await createCard(props.topic_id, newCardTitle.value)
-   await updateCardList()
    newCardTitle.value = ''
 }
 
-const deleteCard = async (id) => {
-   if (window.confirm("Supprimer ?")) {
-      await removeCard(id)
-      await updateCardList()
+const deleteCard = async (card) => {
+   if (window.confirm(`Supprimer "${card.title}" ?`)) {
+      await removeCard(card.id)
    }
 }
 
 const setCardHidden = async (id, hidden) => {
    await updateCard(id, { hidden })
-   await updateCardList()
 }
 
-
-async function updateQuizList() {
-   quizList.value = await getQuizList(props.topic_id)
-}
 
 async function updateQuizs(e1, e2) {
    await updateQuiz(e1.id, { rank: e1.rank })
    await updateQuiz(e2.id, { rank: e2.rank })
-   updateQuizList()
 }
 
 const selectQuiz = (quiz_id) => {
@@ -264,31 +231,23 @@ const selectQuiz = (quiz_id) => {
 
 const addQuiz = async () => {
    await createQuiz(props.topic_id, newQuizTitle.value)
-   await updateQuizList()
    newQuizTitle.value = ''
 }
 
-const deleteQuiz = async (id) => {
-   if (window.confirm("Supprimer ?")) {
-      await removeQuiz(id)
-      await updateQuizList()
+const deleteQuiz = async (quiz) => {
+   if (window.confirm(`Supprimer "${quiz.title}" ?`)) {
+      await removeQuiz(quiz.id)
    }
 }
 
 const setQuizHidden = async (id, hidden) => {
    await updateQuiz(id, { hidden })
-   await updateQuizList()
 }
 
-
-async function updateCaseStudyList() {
-   caseStudyList.value = await getCaseStudyList(props.topic_id)
-}
 
 async function updateCaseStudies(e1, e2) {
    await updateCaseStudy(e1.id, { rank: e1.rank })
    await updateCaseStudy(e2.id, { rank: e2.rank })
-   updateCaseStudyList()
 }
 
 const selectCaseStudy = (case_study_id) => {
@@ -301,15 +260,13 @@ const addCaseStudy = async () => {
    newCaseStudyTitle.value = ''
 }
 
-const deleteCaseStudy = async (id) => {
-   if (window.confirm("Supprimer ?")) {
-      await removeCaseStudy(id)
-      await updateCaseStudyList()
+const deleteCaseStudy = async (caseStudy) => {
+   if (window.confirm(`Supprimer "${caseStudy.title}" ?`)) {
+      await removeCaseStudy(caseStudy.id)
    }
 }
 
 const setCaseStudyHidden = async (id, hidden) => {
    await updateCaseStudy(id, { hidden })
-   await updateCaseStudyList()
 }
 </script>

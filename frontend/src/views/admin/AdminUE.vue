@@ -22,12 +22,12 @@
 
          <div class="flex flex-col gap-3">
 
-            <div v-for="ue, index in ueList">
+            <div v-for="ue, index in listOfUEs">
                <EditableListItem
-                  field="name" :index="index" :list="ueList"
+                  field="name" :index="index" :list="listOfUEs"
                   @update="(ue1, ue2) => update(ue1, ue2)"
                   @edit="(text) => edit(ue.id, text)"
-                  @remove="remove(ue.id)"
+                  @remove="remove(ue)"
                   @select="select(ue.id)"
                   @show="updateHidden(ue.id, false)"
                   @hide="updateHidden(ue.id, true)"
@@ -50,9 +50,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
-import { createUE, updateUE, removeUE, getUEList } from '/src/use/useUE'
+import { createUE, updateUE, removeUE, listOfUEs } from '/src/use/useUE'
 import router from "/src/router"
 
 import EditableListItem from '/src/components/EditableListItem.vue'
@@ -64,45 +64,29 @@ const props = defineProps({
    },
 })
 
-const ueList = ref([])
-
-onMounted(async () => {
-   await updateList()
-})
-
-async function updateList() {
-   const unorderedList = await getUEList()
-   ueList.value = unorderedList.sort((e1, e2) => e1.rank - e2.rank)
-}
-
 async function update(e1, e2) {
    await updateUE(e1.id, { rank: e1.rank })
    await updateUE(e2.id, { rank: e2.rank })
-   updateList()
 }
 
 async function updateHidden(id, hidden) {
    await updateUE(id, { hidden })
-   updateList()
 }
 
 const title = ref()
 
 const addUE = async () => {
    await createUE(title.value)
-   await updateList()
    title.value = ''
 }
 
 const edit = async (ue_id, name) => {
-   console.log(ue_id, name)
    await updateUE(ue_id, { name })
 }
 
-const remove = async (id) => {
-   if (window.confirm("Supprimer ?")) {
-      await removeUE(id)
-      await updateList()
+const remove = async (ue) => {
+   if (window.confirm(`Supprimer "${ue.name}" ?`)) {
+      await removeUE(ue.id)
    }
 }
 

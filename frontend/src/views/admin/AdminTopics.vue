@@ -33,12 +33,12 @@
       <main class="flex flex-col gap-6 pb-4">
 
          <div class="flex flex-col gap-3">
-            <div v-for="topic, index in topicList">
+            <div v-for="topic, index in listOfTopics(sub_ue_id)">
                <EditableListItem
-                  field="name" :index="index" :list="topicList"
+                  field="name" :index="index" :list="listOfTopics(sub_ue_id)"
                   @update="(ue1, ue2) => update(ue1, ue2)"
                   @edit="(text) => edit(topic.id, text)"
-                  @remove="remove(topic.id)"
+                  @remove="remove(topic)"
                   @select="select(topic.id)"
                   @show="updateHidden(topic.id, false)"
                   @hide="updateHidden(topic.id, true)"
@@ -62,12 +62,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { mdiPlus } from '@mdi/js'
+import { ref, computed } from 'vue'
 
-import { getUE } from '/src/use/useUE'
-import { getSubUE } from '/src/use/useSubUE'
-import { createTopic, updateTopic, removeTopic, getTopicList } from '/src/use/useTopic'
+import { ueOfId } from '/src/use/useUE'
+import { subUEOfId } from '/src/use/useSubUE'
+import { createTopic, updateTopic, removeTopic, listOfTopics } from '/src/use/useTopic'
 import router from '/src/router'
 
 import EditableListItem from '/src/components/EditableListItem.vue'
@@ -87,37 +86,22 @@ const props = defineProps({
    },
 })
 
-const ue = ref()
-const sub_ue = ref()
-const topicList = ref([])
-
-onMounted(async () => {
-   ue.value = await getUE(props.ue_id)
-   sub_ue.value = await getSubUE(props.sub_ue_id)
-   await updateList()
-})
-
-async function updateList() {
-   const unorderedList = await getTopicList(props.sub_ue_id)
-   topicList.value = unorderedList.sort((e1, e2) => e1.rank - e2.rank)
-}
+const ue = computed(() => ueOfId.value(props.ue_id))
+const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
 
 async function update(e1, e2) {
    await updateTopic(e1.id, { rank: e1.rank })
    await updateTopic(e2.id, { rank: e2.rank })
-   updateList()
 }
 
 async function updateHidden(id, hidden) {
    await updateTopic(id, { hidden })
-   updateList()
 }
 
 const title = ref()
 
 const addTopic = async () => {
    await createTopic(props.sub_ue_id, title.value)
-   await updateList()
    title.value = ''
 }
 
@@ -125,17 +109,12 @@ const edit = async (topic_id, name) => {
    await updateTopic(topic_id, { name })
 }
 
-const remove = async (topicId) => {
-   if (window.confirm("Supprimer ?")) {
-      await removeTopic(topicId)
-      await updateList()
+const remove = async (topic) => {
+   if (window.confirm(`Supprimer "${topic.name}" ?`)) {
+      await removeTopic(topic.id)
    }
 }
 const select = (topicId) => {
    router.push(`/home/${props.userid}/admin-topic/${props.ue_id}/${props.sub_ue_id}/${topicId}`)
-}
-
-const back = () => {
-   router.back()
 }
 </script>

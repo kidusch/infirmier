@@ -31,12 +31,12 @@
       <main class="flex flex-col gap-6 pb-4">
 
          <div class="flex flex-col gap-3">
-            <div v-for="subUE, index in subUEList">
+            <div v-for="subUE, index in listOfSubUEs(ue_id)">
                <EditableListItem
-                  field="name" :index="index" :list="subUEList"
+                  field="name" :index="index" :list="listOfSubUEs(ue_id)"
                   @update="(ue1, ue2) => update(ue1, ue2)"
                   @edit="(text) => edit(subUE.id, text)"
-                  @remove="remove(subUE.id)"
+                  @remove="remove(subUE)"
                   @select="select(subUE.id)"
                   @show="updateHidden(subUE.id, false)"
                   @hide="updateHidden(subUE.id, true)"
@@ -58,10 +58,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 
-import { getUE } from '/src/use/useUE'
-import { createSubUE, updateSubUE, removeSubUE, getSubUEList } from '/src/use/useSubUE'
+import { ueOfId } from '/src/use/useUE'
+import { createSubUE, updateSubUE, removeSubUE, listOfSubUEs } from '/src/use/useSubUE'
 import router from "/src/router"
 
 import EditableListItem from '/src/components/EditableListItem.vue'
@@ -77,34 +77,21 @@ const props = defineProps({
    },
 })
 
-const ue = ref()
-const subUEList = ref([])
-
-onMounted(async () => {
-   ue.value = await getUE(props.ue_id)
-   await updateList()
-})
-
-async function updateList() {
-   subUEList.value = await getSubUEList(props.ue_id)
-}
+const ue = computed(() => ueOfId.value(props.ue_id))
 
 async function update(e1, e2) {
    await updateSubUE(e1.id, { rank: e1.rank })
    await updateSubUE(e2.id, { rank: e2.rank })
-   updateList()
 }
 
 async function updateHidden(id, hidden) {
    await updateSubUE(id, { hidden })
-   updateList()
 }
 
 const title = ref()
 
 const addSubUE = async () => {
    await createSubUE(props.ue_id, title.value)
-   await updateList()
    title.value = ''
 }
 
@@ -112,18 +99,13 @@ const edit = async (subUEId, name) => {
    await updateSubUE(subUEId, { name })
 }
 
-const remove = async (subUEId) => {
-   if (window.confirm("Supprimer ?")) {
-      await removeSubUE(subUEId)
-      await updateList()
+const remove = async (subUE) => {
+   if (window.confirm(`Supprimer "${subUE.name}" ?`)) {
+      await removeSubUE(subUE.id)
    }
 }
 
 const select = (subUEId) => {
    router.push(`/home/${props.userid}/admin-topics/${props.ue_id}/${subUEId}`)
-}
-
-const back = () => {
-   router.back()
 }
 </script>
