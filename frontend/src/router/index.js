@@ -130,6 +130,17 @@ const routes = [
             }),
          },
          {
+            path: 'admin-card-preview/:ue_id/:sub_ue_id/:topic_id/:card_id',
+            component: () => import('/src/views/admin/AdminCardPreview.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+               ue_id: parseInt(route.params.ue_id),
+               sub_ue_id: parseInt(route.params.sub_ue_id),
+               topic_id: parseInt(route.params.topic_id),
+               card_id: parseInt(route.params.card_id),
+            }),
+         },
+         {
             path: 'admin-quiz/:ue_id/:sub_ue_id/:topic_id/:quiz_id',
             component: () => import('/src/views/admin/AdminQuiz.vue'),
             props: route => ({

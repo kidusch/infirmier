@@ -1,5 +1,5 @@
 <template>
-    <main class="flex-1 container max-w-7xl" :class="{ 'page-wrapper': move }">
+    <main class="flex-1 container max-w-7xl">
 
       <!-- Header -->
       <header class="chapter-card my-6">

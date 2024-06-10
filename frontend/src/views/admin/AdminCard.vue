@@ -18,28 +18,32 @@
 
       <main class="flex flex-col gap-3">
          <div>
-            <label for="title">Titre</label>
+            <div class="flex justify-between">
+               <label for="title">Titre</label>
+               <img class="h-5 mb-1" src="/src/assets/edit.svg"  @click="disabledTitle = !disabledTitle">
+            </div>
             <div class="standard-input-container">
                <input placeholder="Titre..." type="text"
                   :value="card ? card.title : ''"
                   @input="debouncedInputTitle"
                   :disabled="disabledTitle"
                />
-               <img src="/src/assets/edit.svg"  @click="disabledTitle = !disabledTitle">
-               <div class="img-placeholder">
-               </div>
             </div>
          </div>
          <div>
-            <label for="title">Contenu</label>
+            <div class="flex justify-between">
+               <label for="title">Contenu</label>
+               <div class="flex gap-2">
+                  <img class="h-5 mb-1" src="/src/assets/preview.svg" @click="preview">
+                  <img class="h-5 mb-1" src="/src/assets/edit.svg" @click="disabledContent = !disabledContent">
+               </div>
+            </div>
             <div class="standard-input-container">
                <textarea placeholder="Contenu..." type="text" rows="50"
                   :value="card ? card.content : ''"
                   @input="debouncedInputContent"
                   :disabled="disabledContent"
                ></textarea>
-               <img src="/src/assets/edit.svg"  @click="disabledContent = !disabledContent">
-               <div class="img-placeholder"></div>
             </div>
          </div>
       </main>
@@ -47,13 +51,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
-import { getUE } from '/src/use/useUE'
-import { getSubUE } from '/src/use/useSubUE'
-import { getTopic } from '/src/use/useTopic'
-import { getCard, updateCard } from '/src/use/useCard'
+import { ueOfId } from '/src/use/useUE'
+import { subUEOfId } from '/src/use/useSubUE'
+import { topicOfId } from '/src/use/useTopic'
+import { cardOfId, updateCard } from '/src/use/useCard'
 import router from '/src/router'
 
 const props = defineProps({
@@ -79,17 +83,10 @@ const props = defineProps({
    },
 })
 
-const ue = ref()
-const subUE = ref()
-const topic = ref()
-const card = ref()
-
-onMounted(async () => {
-   ue.value = await getUE(props.ue_id)
-   subUE.value = await getSubUE(props.sub_ue_id)
-   topic.value = await getTopic(props.topic_id)
-   card.value = await getCard(props.card_id)
-})
+const ue = computed(() => ueOfId.value(props.ue_id))
+const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
+const topic = computed(() => topicOfId.value(props.topic_id))
+const card = computed(() => cardOfId.value(props.card_id))
 
 const onInputTitle = async (ev) => {
    await updateCard(props.card_id, { title: ev.target.value })
@@ -103,11 +100,7 @@ const debouncedInputContent = useDebounceFn(onInputContent, 500)
 const disabledTitle = ref(true)
 const disabledContent = ref(true)
 
-const back = () => {
-   router.back()
-}
-
 const preview = () => {
-   console.log('preview')
+   router.push(`/home/${props.userid}/admin-card-preview/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${props.card_id}`)
 }
 </script>

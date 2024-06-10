@@ -44,8 +44,6 @@
                   @input="debouncedInputContent"
                   :disabled="disabledContent"
                ></textarea>
-               <!-- <img src="/src/assets/edit.svg"  @click="disabledContent = !disabledContent">
-               <div class="img-placeholder"></div> -->
             </div>
          </div>
          <!-- <div>
@@ -56,12 +54,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, computed } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
-import { getUE } from '/src/use/useUE'
-import { getSubUE } from '/src/use/useSubUE'
-import { getTopic } from '/src/use/useTopic'
+import { ueOfId } from '/src/use/useUE'
+import { subUEOfId } from '/src/use/useSubUE'
+import { topicOfId } from '/src/use/useTopic'
 import { courseOfId, updateCourse } from '/src/use/useCourse'
 import router from '/src/router'
 // import parser from '/src/lib/grammar.js'
@@ -90,18 +88,12 @@ const props = defineProps({
    },
 })
 
-const ue = ref()
-const subUE = ref()
-const topic = ref()
-// const errorMessage = ref('')
-
-onMounted(async () => {
-   ue.value = await getUE(props.ue_id)
-   subUE.value = await getSubUE(props.sub_ue_id)
-   topic.value = await getTopic(props.topic_id)
-})
-
+const ue = computed(() => ueOfId.value(props.ue_id))
+const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
+const topic = computed(() => topicOfId.value(props.topic_id))
 const course = computed(() => courseOfId.value(props.course_id))
+
+// const errorMessage = ref('')
 
 // watch(() => course.value?.content, async (content) => {
 //    if (content) {

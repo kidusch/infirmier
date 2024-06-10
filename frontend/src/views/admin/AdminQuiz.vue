@@ -18,28 +18,31 @@
 
       <main class="flex flex-col gap-3">
          <div>
-            <label for="title">Titre</label>
+            <div class="flex justify-between">
+               <label for="title">Titre</label>
+               <img class="h-5 mb-1" src="/src/assets/edit.svg"  @click="disabledTitle = !disabledTitle">
+            </div>
             <div class="standard-input-container">
                <input placeholder="Titre..." type="text"
                   :value="quiz ? quiz.title : ''"
                   @input="debouncedInputTitle"
                   :disabled="disabledTitle"
                />
-               <img src="/src/assets/edit.svg"  @click="disabledTitle = !disabledTitle">
-               <div class="img-placeholder">
-               </div>
             </div>
          </div>
          <div>
-            <label for="title">Texte de la question</label>
+            <div class="flex justify-between">
+               <label for="title">Texte de la question</label>
+               <div class="flex gap-2">
+                  <img class="h-5 mb-1" src="/src/assets/edit.svg" @click="disabledQuestion = !disabledQuestion">
+               </div>
+            </div>
             <div class="standard-input-container">
                <textarea placeholder="Question..." type="text" rows="50"
                   :value="quiz ? quiz.question : ''"
                   @input="debouncedInputQuestion"
                   :disabled="disabledQuestion"
                ></textarea>
-               <img src="/src/assets/edit.svg"  @click="disabledQuestion = !disabledQuestion">
-               <div class="img-placeholder"></div>
             </div>
          </div>
 
@@ -72,14 +75,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
-import { getUE } from '/src/use/useUE'
-import { getSubUE } from '/src/use/useSubUE'
-import { getTopic } from '/src/use/useTopic'
-import { getQuiz, updateQuiz } from '/src/use/useQuiz'
-import { getQuizChoiceList, createQuizChoice, removeQuizChoice } from '/src/use/useQuizChoice'
+import { ueOfId } from '/src/use/useUE'
+import { subUEOfId } from '/src/use/useSubUE'
+import { topicOfId } from '/src/use/useTopic'
+import { quizOfId, updateQuiz } from '/src/use/useQuiz'
+import { listOfQuizChoices, createQuizChoice, removeQuizChoice } from '/src/use/useQuizChoice'
 import router from '/src/router'
 
 import ListItem from '/src/components/ListItem.vue'
@@ -108,19 +111,11 @@ const props = defineProps({
    },
 })
 
-const ue = ref()
-const subUE = ref()
-const topic = ref()
-const quiz = ref()
-const quizChoiceList = ref([])
-
-onMounted(async () => {
-   ue.value = await getUE(props.ue_id)
-   subUE.value = await getSubUE(props.sub_ue_id)
-   topic.value = await getTopic(props.topic_id)
-   quiz.value = await getQuiz(props.quiz_id)
-   quizChoiceList.value = await getQuizChoiceList(props.quiz_id)
-})
+const ue = computed(() => ueOfId.value(props.ue_id))
+const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
+const topic = computed(() => topicOfId.value(props.topic_id))
+const quiz = computed(() => quizOfId.value(props.quiz_id))
+const quizChoiceList = computed(() => listOfQuizChoices.value(props.quiz_id))
 
 const onInputTitle = async (ev) => {
    await updateQuiz(props.quiz_id, { title: ev.target.value })
@@ -157,13 +152,5 @@ const deleteChoice = async (id) => {
       await removeQuizChoice(id)
       await updateChoiceList()
    }
-}
-
-const back = () => {
-   router.back()
-}
-
-const preview = () => {
-   console.log('preview')
 }
 </script>
