@@ -30,6 +30,7 @@
                />
             </div>
          </div>
+         
          <div>
             <div class="flex justify-between">
                <label for="title">Contenu</label>

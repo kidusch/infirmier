@@ -174,6 +174,17 @@ const routes = [
                case_study_id: parseInt(route.params.case_study_id),
             }),
          },
+         {
+            path: 'admin-case-study-preview/:ue_id/:sub_ue_id/:topic_id/:case_study_id',
+            component: () => import('/src/views/admin/AdminCaseStudyPreview.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+               ue_id: parseInt(route.params.ue_id),
+               sub_ue_id: parseInt(route.params.sub_ue_id),
+               topic_id: parseInt(route.params.topic_id),
+               case_study_id: parseInt(route.params.case_study_id),
+            }),
+         },
          
          {
             path: 'welcome-student',
