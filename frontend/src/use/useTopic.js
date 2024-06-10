@@ -87,7 +87,8 @@ export const updateTopic = async (id, data) => {
       data,
    })
    // update cache
-   topicState.value.topicCache[topic.id] = topic
+   topicState.value.topicCache[id] = topic
+   topicState.value.topicStatus[id] = 'ready'
    return topic
 }
 

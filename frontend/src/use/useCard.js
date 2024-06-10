@@ -87,7 +87,8 @@ export const updateCard = async (id, data) => {
       data,
    })
    // update cache
-   cardState.value.cardCache[card.id] = card
+   cardState.value.cardCache[id] = card
+   cardState.value.cardStatus[id] = 'ready'
    return card
 }
 

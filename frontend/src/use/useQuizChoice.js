@@ -91,7 +91,8 @@ export const updateQuizChoice = async (id, data) => {
       data,
    })
    // update cache
-   quizChoiceState.value.quizChoiceCache[quizChoice.id] = quizChoice
+   quizChoiceState.value.quizChoiceCache[id] = quizChoice
+   quizChoiceState.value.quizChoiceStatus[id] = 'ready'
    return quizChoice
 }
 

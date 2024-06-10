@@ -88,7 +88,8 @@ export const updateCaseStudy = async (id, data) => {
       data,
    })
    // update cache
-   caseStudyState.value.caseStudyCache[caseStudy.id] = caseStudy
+   caseStudyState.value.caseStudyCache[id] = caseStudy
+   caseStudyState.value.caseStudyStatus[id] = 'ready'
    return caseStudy
 }
 

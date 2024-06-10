@@ -88,7 +88,8 @@ export const updateQuiz = async (id, data) => {
       data,
    })
    // update cache
-   quizState.value.quizCache[quiz.id] = quiz
+   quizState.value.quizCache[id] = quiz
+   quizState.value.quizStatus[id] = 'ready'
    return quiz
 }
 

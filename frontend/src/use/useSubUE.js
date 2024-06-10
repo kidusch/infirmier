@@ -87,7 +87,8 @@ export const updateSubUE = async (id, data) => {
       data,
    })
    // update cache
-   subUEState.value.subUECache[sub_ue.id] = sub_ue
+   subUEState.value.subUECache[id] = sub_ue
+   subUEState.value.subUEStatus[id] = 'ready'
    return sub_ue
 }
 

@@ -25,13 +25,6 @@
 
       <main class="flex flex-col gap-6 pb-4">
 
-         <!-- <div class="flex justify-between items-center bg-accent py-2 px-4 rounded-xl">
-            <h4 class="text-primary">
-               Cours
-            </h4>
-            <img class="h-4" src="/src/assets/thick-arrow-right.svg" @click="adminCourse">
-         </div> -->
-
          <div class="flex flex-col gap-3">
             <label for="title">Cours</label>
 
@@ -42,8 +35,8 @@
                      @update="(e1, e2) => updateCourses(e1, e2)"
                      @remove="deleteCourse(course.id)"
                      @select="selectCourse(course.id)"
-                     @show="updateCourse(course.id, { hidden: false }); updateCourseList()"
-                     @hide="updateCourse(course.id, { hidden: true }); updateCourseList()"
+                     @show="setCourseHidden(course.id, false)"
+                     @hide="setCourseHidden(course.id, true)"
                   ></ListItem>
                </div>
 
@@ -66,8 +59,8 @@
                      @update="(e1, e2) => updateCards(e1, e2)"
                      @remove="deleteCard(card.id)"
                      @select="selectCard(card.id)"
-                     @show="updateCard(card.id, { hidden: false }); updateCardList()"
-                     @hide="updateCard(card.id, { hidden: true }); updateCardList()"
+                     @show="setCardHidden(card.id, false)"
+                     @hide="setCardHidden(card.id, true)"
                   ></ListItem>
                </div>
 
@@ -90,8 +83,8 @@
                      @update="(e1, e2) => updateQuizs(e1, e2)"
                      @remove="deleteQuiz(quiz.id)"
                      @select="selectQuiz(quiz.id)"
-                     @show="updateQuiz(quiz.id, { hidden: false }); updateQuizList()"
-                     @hide="updateQuiz(quiz.id, { hidden: true }); updateQuizList()"
+                     @show="setQuizHidden(quiz.id, false)"
+                     @hide="setQuizHidden(quiz.id, true)"
                   ></ListItem>
                </div>
 
@@ -114,8 +107,8 @@
                      @update="(e1, e2) => updateCaseStudies(e1, e2)"
                      @remove="deleteCaseStudy(caseStudy.id)"
                      @select="selectCaseStudy(caseStudy.id)"
-                     @show="updateCaseStudy(caseStudy.id, { hidden: false }); updateCaseStudyList()"
-                     @hide="updateCaseStudy(caseStudy.id, { hidden: true }); updateCaseStudyList()"
+                     @show="setCaseStudyHidden(caseStudy.id, false)"
+                     @hide="setCaseStudyHidden(caseStudy.id, true)"
                   ></ListItem>
                </div>
 
@@ -189,12 +182,6 @@ onMounted(async () => {
    await updateCaseStudyList()
 })
 
-const adminCourse = () => {
-   router.push(`/home/${props.userid}/admin-course-ex/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
-}
-
-
-
 async function updateCourseList() {
    courseList.value= await getCourseList(props.topic_id)
 }
@@ -220,6 +207,11 @@ const deleteCourse = async (id) => {
       await removeCourse(id)
       await updateCourseList()
    }
+}
+
+const setCourseHidden = async (id, hidden) => {
+   await updateCourse(id, { hidden })
+   await updateCourseList()
 }
 
 
@@ -250,6 +242,11 @@ const deleteCard = async (id) => {
    }
 }
 
+const setCardHidden = async (id, hidden) => {
+   await updateCard(id, { hidden })
+   await updateCardList()
+}
+
 
 async function updateQuizList() {
    quizList.value = await getQuizList(props.topic_id)
@@ -276,6 +273,11 @@ const deleteQuiz = async (id) => {
       await removeQuiz(id)
       await updateQuizList()
    }
+}
+
+const setQuizHidden = async (id, hidden) => {
+   await updateQuiz(id, { hidden })
+   await updateQuizList()
 }
 
 
@@ -306,7 +308,8 @@ const deleteCaseStudy = async (id) => {
    }
 }
 
-const back = () => {
-   router.back()
+const setCaseStudyHidden = async (id, hidden) => {
+   await updateCaseStudy(id, { hidden })
+   await updateCaseStudyList()
 }
 </script>

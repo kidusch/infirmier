@@ -87,7 +87,8 @@ export const updateCourse = async (id, data) => {
       data,
    })
    // update cache
-   courseState.value.courseCache[course.id] = course
+   courseState.value.courseCache[id] = course
+   courseState.value.courseStatus[id] = 'ready'
    return course
 }
 

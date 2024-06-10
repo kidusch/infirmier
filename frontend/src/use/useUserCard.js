@@ -82,6 +82,6 @@ export const updateUserCard = async (id, data) => {
       data,
    })
    // update cache
-   userCardState.value.userCardCache[userCard.id] = userCard
+   userCardState.value.userCardCache[id] = userCard
    return userCard
 }
