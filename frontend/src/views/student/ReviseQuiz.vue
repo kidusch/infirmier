@@ -138,7 +138,10 @@ const quiz = computed(() => quizOfId.value(props.quiz_id))
 const userQuiz = computed(() => theUserQuiz.value(props.userid, props.quiz_id))
 const quizChoiceList = computed(() => listOfQuizChoices.value(props.quiz_id))
 
-const userQuizChoiceAnswer = computed(() => quiz_choice_id => theUserQuizChoice.value(props.userid, quiz_choice_id).answer)
+const userQuizChoiceAnswer = computed(() => quiz_choice_id => {
+   const userQuizChoice = theUserQuizChoice.value(props.userid, quiz_choice_id)
+   return userQuizChoice?.answer
+})
 
 const onDoneClick = async (done) => {
    await updateUserQuiz(userQuiz.value.id, { done })
