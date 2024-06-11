@@ -318,7 +318,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
    console.log('from', from.path, 'to', to.path)
-   appState.value.isWaiting = false
+   if (appState.value) appState.value.isWaiting = false
 
    if (to.meta.requiresAuth) {
       try {

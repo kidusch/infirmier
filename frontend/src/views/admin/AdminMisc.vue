@@ -4,58 +4,58 @@
       <main class="flex flex-col">
          
          <div class="my-4">
-            <label for="title">Texte de l'email de bienvenue</label>
+            <div class="flex justify-between">
+               <label for="title">Texte de l'email de bienvenue</label>
+               <img class="h-5 mb-1" src="/src/assets/edit.svg"  @click="disabledEmail = !disabledEmail">
+            </div>
             <div class="standard-input-container">
-               <textarea placeholder="Texte..." type="text" rows="50"
+               <textarea placeholder="Texte..." type="text"
                   :value="adminMisc ? adminMisc.email : ''"
                   @input="debouncedInputEmail"
                   :disabled="disabledEmail"
                />
-               <img src="/src/assets/edit.svg" @click="disabledEmail = !disabledEmail">
-               <div class="img-placeholder">
-               </div>
             </div>
          </div>
          
          <div class="my-4">
-            <label for="title">Conditions générales d'utilisation</label>
+            <div class="flex justify-between">
+               <label for="title">Conditions générales d'utilisation</label>
+               <img class="h-5 mb-1" src="/src/assets/edit.svg"  @click="disabledCGU = !disabledCGU">
+            </div>
             <div class="standard-input-container">
-               <textarea placeholder="Texte..." type="text" rows="50"
+               <textarea placeholder="Texte..." type="text"
                   :value="adminMisc ? adminMisc.cgu : ''"
                   @input="debouncedInputCGU"
                   :disabled="disabledCGU"
                />
-               <img src="/src/assets/edit.svg" @click="disabledCGU = !disabledCGU">
-               <div class="img-placeholder">
-               </div>
             </div>
          </div>
          
          <div class="my-4">
-            <label for="title">Texte page d'accueil</label>
+            <div class="flex justify-between">
+               <label for="title">Texte page d'accueil</label>
+               <img class="h-5 mb-1" src="/src/assets/edit.svg"  @click="disabledWelcomeText = !disabledWelcomeText">
+            </div>
             <div class="standard-input-container">
-               <textarea placeholder="Texte..." type="text" rows="50"
+               <textarea placeholder="Texte..." type="text"
                   :value="adminMisc ? adminMisc.welcome_text : ''"
                   @input="debouncedInputWelcomeText"
                   :disabled="disabledWelcomeText"
                />
-               <img src="/src/assets/edit.svg" @click="disabledWelcomeText = !disabledWelcomeText">
-               <div class="img-placeholder">
-               </div>
             </div>
          </div>
          
          <div class="my-4">
-            <label for="title">URL image page d'accueil</label>
+            <div class="flex justify-between">
+               <label for="title">URL image page d'accueil</label>
+               <img class="h-5 mb-1" src="/src/assets/edit.svg"  @click="disabledWelcomeImg = !disabledWelcomeImg">
+            </div>
             <div class="standard-input-container">
-               <textarea placeholder="URL..." type="text" rows="50"
+               <input placeholder="URL..." type="text"
                   :value="adminMisc ? adminMisc.welcome_img : ''"
                   @input="debouncedInputWelcomeImg"
                   :disabled="disabledWelcomeImg"
                />
-               <img src="/src/assets/edit.svg" @click="disabledWelcomeImg = !disabledWelcomeImg">
-               <div class="img-placeholder">
-               </div>
             </div>
          </div>
       </main>

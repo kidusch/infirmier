@@ -38,7 +38,7 @@
                </div>
             </div>
             <div class="standard-input-container">
-               <textarea placeholder="Question..." type="text" rows="50"
+               <textarea placeholder="Question..." type="text"
                   :value="quiz ? quiz.question : ''"
                   @input="debouncedInputQuestion"
                   :disabled="disabledQuestion"

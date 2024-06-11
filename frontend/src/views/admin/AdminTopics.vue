@@ -8,7 +8,7 @@
             /
             <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/admin-sub-ue/${ue_id}`">{{ ue?.name }}</router-link>
             /
-            <span class="font-semibold">{{ sub_ue?.name }}</span>
+            <span class="font-semibold">{{ subUE?.name }}</span>
          </p>
       </header>
 
@@ -16,7 +16,7 @@
       <header class="py-4">
          <div class="flex sm:items-center items-start gap-1.5">
             <h3 class="">
-               {{ sub_ue?.name }}
+               {{ subUE?.name }}
             </h3>
          </div>
       </header>

@@ -40,7 +40,7 @@
                </div>
             </div>
             <div class="standard-input-container">
-               <textarea placeholder="Contenu..." type="text" rows="50"
+               <textarea placeholder="Contenu..." type="text"
                   :value="course ? course.content : ''"
                   @input="debouncedInputContent"
                   :disabled="disabledContent"
