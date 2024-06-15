@@ -9,6 +9,12 @@ Google Developers Console : https://console.cloud.google.com/apis/dashboard?proj
 
 ## BUGS
 
+pg_dump -a --inserts infirmier-prod  --exclude-table-data=user --exclude-table-data=highlighted_part --exclude-table-data=user_action --exclude-table-data=user_topic --exclude-table-data=user_course --exclude-table-data=user_card --exclude-table-data=user_quiz --exclude-table-data=user_quiz_choice --exclude-table-data=user_case_study --exclude-table-data=_prisma_migrations  > xxx.sql
+
+delete from admin_misc, ue, sub_ue, topic, course, card, case_study, quiz, quiz_choice
+
+
+FAUT-IL SUPPRIMER user_topic ? 
 
 
 ## Parsing
