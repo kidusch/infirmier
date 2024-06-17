@@ -35,16 +35,21 @@
             <div class="flex justify-between">
                <label for="title">Contenu</label>
                <div class="flex gap-2">
+                  <img class="h-5 mb-1" src="/src/assets/save.svg" @click="saveContent">
                   <img class="h-5 mb-1" src="/src/assets/preview.svg" @click="preview">
                   <img class="h-5 mb-1" src="/src/assets/edit.svg" @click="disabledContent = !disabledContent">
                </div>
             </div>
             <div class="standard-input-container">
                <textarea placeholder="Contenu..." type="text"
+                  v-model="courseContent"
+                  :disabled="disabledContent"
+               ></textarea>
+               <!-- <textarea placeholder="Contenu..." type="text"
                   :value="course ? course.content : ''"
                   @input="debouncedInputContent"
                   :disabled="disabledContent"
-               ></textarea>
+               ></textarea> -->
             </div>
          </div>
          <!-- <div>
@@ -55,13 +60,13 @@
 </template>
 
 <script setup>
-import { ref, watch, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
 import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
-import { courseOfId, updateCourse } from '/src/use/useCourse'
+import { courseOfId, getCourse, updateCourse } from '/src/use/useCourse'
 import router from '/src/router'
 // import parser from '/src/lib/grammar.js'
 
@@ -93,6 +98,15 @@ const ue = computed(() => ueOfId.value(props.ue_id))
 const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
 const topic = computed(() => topicOfId.value(props.topic_id))
 const course = computed(() => courseOfId.value(props.course_id))
+
+const courseContent = ref('')
+onMounted(async () => {
+   const course = await getCourse(props.course_id)
+   courseContent.value = course.content
+})
+const saveContent = async () => {
+   await updateCourse(props.course_id, { content: courseContent.value })
+}
 
 // const errorMessage = ref('')
 

@@ -1,4 +1,9 @@
+
 # Journal de bord infirmier
+
+- spécification client : https://onedrive.live.com/edit?id=F3D5CD9650AC97DE!4629&resid=F3D5CD9650AC97DE!4629&ithint=file%2cdocx&authkey=!AHjAXRVgmUv7wfw&wdo=2&cid=f3d5cd9650ac97de
+- Figma : https://www.figma.com/design/WMk1ig0gMqx2XVHy664eqP/Devenir-Infirmier?node-id=0-1&t=bznsOdhjUDkAqLcV-0
+
 
 ## Authentification
 
@@ -9,12 +14,18 @@ Google Developers Console : https://console.cloud.google.com/apis/dashboard?proj
 
 ## BUGS
 
-pg_dump -a --inserts infirmier-prod  --exclude-table-data=user --exclude-table-data=highlighted_part --exclude-table-data=user_action --exclude-table-data=user_topic --exclude-table-data=user_course --exclude-table-data=user_card --exclude-table-data=user_quiz --exclude-table-data=user_quiz_choice --exclude-table-data=user_case_study --exclude-table-data=_prisma_migrations  > xxx.sql
+pg_dump -a --inserts infirmier-prod --exclude-table-data=user --exclude-table-data=highlighted_part --exclude-table-data=user_action --exclude-table-data=user_topic --exclude-table-data=user_course --exclude-table-data=user_card --exclude-table-data=user_quiz --exclude-table-data=user_quiz_choice --exclude-table-data=user_case_study --exclude-table-data=_prisma_migrations > xxx.sql
 
-delete from admin_misc, ue, sub_ue, topic, course, card, case_study, quiz, quiz_choice
+delete from admin_misc;
+delete from ue;
+delete from sub_ue;
+delete from topic;
+delete from course;
+delete from card;
+delete from case_study;
+delete from quiz;
+delete from quiz_choice;
 
-
-FAUT-IL SUPPRIMER user_topic ? 
 
 
 ## Parsing

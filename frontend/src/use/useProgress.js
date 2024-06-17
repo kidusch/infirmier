@@ -121,6 +121,6 @@ export const ueReviseProgress = computed(() => (user_id, ue_id) => {
       sum += progress
       count += 1
    }
-   console.log('ueReviseProgress', ue_id, count, sum)
+   // console.log('ueReviseProgress', ue_id, count, sum)
    return (count === 0 ? 0 : Math.round(sum / count))
 })
