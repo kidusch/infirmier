@@ -244,3 +244,14 @@ model user_case_study {
 
   @@unique([user_id, case_study_id])
 }
+
+
+// Care document
+model care {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  name       String
+  content    String?
+  rank       Int
+  hidden     Boolean  @default(false)
+}

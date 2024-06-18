@@ -122,7 +122,7 @@ export const listOfUEs = computed(() => {
          }
          ueState.value.ueListStatus = 'ready'
       }).catch(err => {
-         console.log('listOfSubUEs err', err)
+         console.log('listOfUEs err', err)
          ueState.value.ueListStatus = undefined
       })
    }

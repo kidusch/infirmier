@@ -19,6 +19,9 @@ import userQuizChoiceService from './database/user_quiz_choice/user_quiz_choice.
 import userCaseStudyService from './database/user_case_study/user_case_study.service.js'
 import highlightedPartService from './database/highlighted_part/highlighted_part.service.js'
 
+import careService from './database/care/care.service.js'
+
+
 // custom services
 import mailService from './custom/mail/mail.service.js'
 import authService from './custom/auth/auth.service.js'
@@ -44,6 +47,8 @@ export default function (app) {
    app.configure(userQuizChoiceService)
    app.configure(userCaseStudyService)
    app.configure(highlightedPartService)
+
+   app.configure(careService)
 
    // add custom services
    app.configure(mailService)

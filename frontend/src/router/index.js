@@ -303,6 +303,22 @@ const routes = [
          },
 
          {
+            path: 'care',
+            component: () => import('/src/views/student/Care.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+            }),
+         },
+         {
+            path: 'care/:care_id',
+            component: () => import('/src/views/student/CareDetail.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+               care_id: parseInt(route.params.care_id),
+            }),
+         },
+
+         {
             path: 'lexicon',
             component: () => import('/src/views/student/Lexicon.vue'),
          },

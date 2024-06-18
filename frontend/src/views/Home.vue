@@ -133,8 +133,8 @@ onMounted(async () => {
             iconPath: revisionIconPath,
          },
          {
-            label: "Lexique",
-            path: `/home/${props.userid}/lexicon`,
+            label: "Soins",
+            path: `/home/${props.userid}/care`,
             iconPath: revisionIconPath,
          },
       ]

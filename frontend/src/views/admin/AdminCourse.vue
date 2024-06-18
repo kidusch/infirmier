@@ -99,6 +99,8 @@ const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
 const topic = computed(() => topicOfId.value(props.topic_id))
 const course = computed(() => courseOfId.value(props.course_id))
 
+// Continuous saving of the course content is disabled because of a random bug affecting the cursor position
+// To save the course content, the save icon must be clicked
 const courseContent = ref('')
 onMounted(async () => {
    const course = await getCourse(props.course_id)
