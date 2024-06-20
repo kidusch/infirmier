@@ -29,9 +29,9 @@
             <label for="title">Cours</label>
 
             <div class="flex flex-col gap-3">
-               <div v-for="course, index in listOfCourses(topic_id)">
+               <div v-for="course, index in listOfCourse(topic_id)">
                   <ListItem
-                     :index="index" :list="listOfCourses(topic_id)"
+                     :index="index" :list="listOfCourse(topic_id)"
                      @update="(e1, e2) => updateCourses(e1, e2)"
                      @remove="deleteCourse(course)"
                      @select="selectCourse(course.id)"
@@ -53,9 +53,9 @@
             <label for="title">Fiches</label>
 
             <div class="flex flex-col gap-3">
-               <div v-for="card, index in listOfCards(topic_id)">
+               <div v-for="card, index in listOfCard(topic_id)">
                   <ListItem
-                     :index="index" :list="listOfCards(topic_id)"
+                     :index="index" :list="listOfCard(topic_id)"
                      @update="(e1, e2) => updateCards(e1, e2)"
                      @remove="deleteCard(card)"
                      @select="selectCard(card.id)"
@@ -77,9 +77,9 @@
             <label for="title">QCM</label>
 
             <div class="flex flex-col gap-3">
-               <div v-for="quiz, index in listOfQuizs(topic_id)">
+               <div v-for="quiz, index in listOfQuiz(topic_id)">
                   <ListItem
-                     :index="index" :list="listOfQuizs(topic_id)"
+                     :index="index" :list="listOfQuiz(topic_id)"
                      @update="(e1, e2) => updateQuizs(e1, e2)"
                      @remove="deleteQuiz(quiz)"
                      @select="selectQuiz(quiz.id)"
@@ -101,9 +101,9 @@
             <label for="title">Cas d'étude</label>
 
             <div class="flex flex-col gap-3">
-               <div v-for="caseStudy, index in listOfCaseStudies(topic_id)">
+               <div v-for="caseStudy, index in listOfCaseStudy(topic_id)">
                   <ListItem
-                     :index="index" :list="listOfCaseStudies(topic_id)"
+                     :index="index" :list="listOfCaseStudy(topic_id)"
                      @update="(e1, e2) => updateCaseStudies(e1, e2)"
                      @remove="deleteCaseStudy(caseStudy)"
                      @select="selectCaseStudy(caseStudy.id)"
@@ -133,10 +133,10 @@ import { ref, computed } from 'vue'
 import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
-import { listOfCourses, createCourse, updateCourse, removeCourse } from '/src/use/useCourse'
-import { listOfCards, createCard, updateCard, removeCard } from '/src/use/useCard'
-import { listOfQuizs, createQuiz, updateQuiz, removeQuiz } from '/src/use/useQuiz'
-import { listOfCaseStudies, createCaseStudy, updateCaseStudy, removeCaseStudy } from '/src/use/useCaseStudy'
+import { listOfCourse, createCourse, updateCourse, removeCourse } from '/src/use/useCourse'
+import { listOfCard, createCard, updateCard, removeCard } from '/src/use/useCard'
+import { listOfQuiz, createQuiz, updateQuiz, removeQuiz } from '/src/use/useQuiz'
+import { listOfCaseStudy, createCaseStudy, updateCaseStudy, removeCaseStudy } from '/src/use/useCaseStudy'
 import router from '/src/router'
 
 import ListItem from '/src/components/ListItem.vue'

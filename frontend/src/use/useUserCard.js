@@ -10,8 +10,7 @@ const initialState = () => ({
    theUserCardStatus: {},
 })
 
-const key = 'user-card-state'
-const userCardState = useSessionStorage(key, initialState(), { mergeDefaults: true })
+const userCardState = useSessionStorage('user-card-state', initialState(), { mergeDefaults: true })
 
 export const resetUseUserCard = () => {
    userCardState.value = null
@@ -84,4 +83,16 @@ export const updateUserCard = async (id, data) => {
    // update cache
    userCardState.value.userCardCache[id] = userCard
    return userCard
+}
+
+// used to evaluate progress - prevent lots of single requests
+export const getUserCardList = async (user_id) => {
+   const userCardList = await app.service('user_card').findMany({
+      where: { user_id }
+   })
+   for (const userCard of userCardList) {
+      userCardState.value.userCardCache[userCard.id] = userCard
+      const key = user_id + ':' + userCard.id
+      userCardState.value.theUserCardStatus[key] = 'ready'
+   }
 }

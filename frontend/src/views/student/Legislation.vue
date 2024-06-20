@@ -4,19 +4,19 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p>
-            <span>SOINS</span>
+            <span>LÉGISLATION</span>
          </p>
       </header>
 
-      <!-- Main content -> care list -->
+      <!-- Main content -> legislation list -->
       <main class="flex flex-col gap-6 pb-6">
          
          <div class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
             <div class="progress-list">
-               <template v-for="care in careList">
-                  <div v-if="!care.hidden" class="progress-item cursor-pointer" @click="selectCare(care)">
+               <template v-for="legislation in legislationList">
+                  <div v-if="!legislation.hidden" class="progress-item cursor-pointer" @click="selectLegislation(legislation)">
                      <p>
-                        {{ care?.title }}
+                        {{ legislation?.title }}
                      </p>
                   </div>
                </template>
@@ -32,7 +32,7 @@
 <script setup>
 import { computed } from 'vue'
 
-import { listOfCare } from '/src/use/useCare'
+import { listOfLegislation } from '/src/use/useLegislation'
 import router from "/src/router"
 
 const props = defineProps({
@@ -42,9 +42,9 @@ const props = defineProps({
    },
 })
 
-const careList = computed(() => listOfCare.value)
+const legislationList = computed(() => listOfLegislation.value)
 
-const selectCare = (care) => {
-   router.push(`/home/${props.userid}/care/${care.id}`)
+const selectLegislation = (legislation) => {
+   router.push(`/home/${props.userid}/legislation/${legislation.id}`)
 }
 </script>

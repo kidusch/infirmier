@@ -55,7 +55,7 @@ import { ref, onMounted, computed } from 'vue'
 import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
-import { listOfCourses } from '/src/use/useCourse'
+import { listOfCourse } from '/src/use/useCourse'
 import { courseStudyProgress, topicStudyProgress } from '/src/use/useProgress'
 
 import router from "/src/router"
@@ -83,7 +83,7 @@ const props = defineProps({
 const ue = computed(() => ueOfId.value(props.ue_id))
 const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
 const topic = computed(() => topicOfId.value(props.topic_id))
-const courseList = computed(() => listOfCourses.value(props.topic_id))
+const courseList = computed(() => listOfCourse.value(props.topic_id))
 
 const move = ref(false)
 

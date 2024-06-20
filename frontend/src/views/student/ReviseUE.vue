@@ -11,7 +11,7 @@
       <!-- Main content -> courses list -->
       <main class="flex flex-col gap-6 pb-6">
          
-         <template v-for="ue in listOfUEs">
+         <template v-for="ue in listOfUE">
             <div v-if="!ue.hidden" class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
                <!-- <h2 class="font-semibold">
                   {{ ue.name }}
@@ -24,7 +24,7 @@
                </h3>
 
                <div class="progress-list">
-                  <template v-for="subUE in listOfSubUEs(ue.id)">
+                  <template v-for="subUE in listOfSubUE(ue.id)">
                      <div v-if="!subUE.hidden" class="progress-item cursor-pointer" @click="select(ue, subUE)">
                         <div class="w-12">
                            <jcb-radial class="w-12" :value="subUEReviseProgress(userid, subUE.id)"></jcb-radial>
@@ -44,8 +44,8 @@
 </template>
 
 <script setup>
-import { listOfUEs } from '/src/use/useUE'
-import { listOfSubUEs } from '/src/use/useSubUE'
+import { listOfUE } from '/src/use/useUE'
+import { listOfSubUE } from '/src/use/useSubUE'
 import { subUEReviseProgress, ueReviseProgress } from '/src/use/useProgress'
 import router from "/src/router"
 

@@ -36,6 +36,19 @@ export default function(app) {
     app.service('case_study').publish(async (context) => {
         return context.methodName.startsWith('find') ? [] : ['authenticated']
     })
+    
+
+    app.service('care').publish(async (context) => {
+        return context.methodName.startsWith('find') ? [] : ['authenticated']
+    })
+
+    app.service('document').publish(async (context) => {
+        return context.methodName.startsWith('find') ? [] : ['authenticated']
+    })
+
+    app.service('legislation').publish(async (context) => {
+        return context.methodName.startsWith('find') ? [] : ['authenticated']
+    })
 
         
     app.service('user_course').publish(async (context) => {

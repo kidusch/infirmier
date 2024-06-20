@@ -1,3 +1,4 @@
+import { computed } from 'vue'
 import { useSessionStorage } from '@vueuse/core'
 
 import { app } from '/src/client-app.js'
@@ -7,10 +8,11 @@ import { app } from '/src/client-app.js'
 
 const initialState = () => ({
    userCache: {},
+   userStatus: {},
+   userListStatus: undefined,
 })
 
-const key = 'user-state'
-const userState = useSessionStorage(key, initialState(), { mergeDefaults: true })
+const userState = useSessionStorage('user-state', initialState(), { mergeDefaults: true })
 
 export const resetUseUser = () => {
    userState.value = null
@@ -36,8 +38,24 @@ app.service('user').on('delete', user => {
 export const getUser = async (id) => {
    let user = userState.value.userCache[id]
    if (user) return user
-   console.log('!!!! getUser')
    user = await app.service('user').findUnique({ where: { id }})
    userState.value.userCache[id] = user
+   userState.value.userStatus[id] = 'ready'
    return user
 }
+
+export const userOfId = computed(() => id => {
+   const status = userState.value.userStatus[id]
+   if (status === 'ready') return userState.value.userCache[id]
+   if (status === 'ongoing') return undefined // ongoing request
+   userState.value.userStatus[id] = 'ongoing'
+   app.service('user').findUnique({ where: { id }})
+   .then(ue => {
+      userState.value.userCache[id] = ue
+      userState.value.userStatus[id] = 'ready'
+   })
+   .catch(err => {
+      console.log('userOfId err', id, err)
+      userState.value.userStatus[id] = undefined
+   })
+})

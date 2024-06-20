@@ -20,6 +20,7 @@ export const resetUseUserCourse = () => {
 app.service('user_course').on('create', (userCourse) => {
    console.log('USER_COURSE EVENT created', userCourse)
    userCourseState.value.userCourseCache[userCourse.id] = userCourse
+   userCourseState.value.theUserCourseStatus[userCourse.id] = 'ready'
 })
 
 app.service('user_course').on('update', (userCourse) => {
@@ -63,16 +64,17 @@ export const theUserCourse = computed(() => (user_id, course_id) => {
    app.service('user_course').findMany({
       where: { user_id, course_id },
    }).then((userCourses) => {
-      if (userCourses.length === 0) {
-         app.service('user_course').create({
-            data: { user_id, course_id },
+      if (userCourses.length > 0) {
+         const userCourse = userCourses[0]
+         userCourseState.value.userCourseCache[userCourse.id] = userCourse
+         userCourseState.value.theUserCourseStatus[key] = 'ready'
+      } else {
+         app.service('user_card').create({
+            data: { user_id, card_id },
          }).then(userCourse => {
             userCourseState.value.userCourseCache[userCourse.id] = userCourse
             userCourseState.value.theUserCourseStatus[key] = 'ready'
          })
-      } else {
-         userCourseState.value.userCourseCache[userCourses[0].id] = userCourses[0]
-         userCourseState.value.theUserCourseStatus[key] = 'ready'
       }
    })
 })
@@ -85,4 +87,16 @@ export const updateUserCourse = async (id, data) => {
    // update cache
    userCourseState.value.userCourseCache[userCourse.id] = userCourse
    return userCourse
+}
+
+// used to evaluate progress - prevent lots of single requests
+export const getUserCourseList = async (user_id) => {
+   const userCourseList = await app.service('user_course').findMany({
+      where: { user_id }
+   })
+   for (const userCourse of userCourseList) {
+      userCourseState.value.userCourseCache[userCourse.id] = userCourse
+      const key = user_id + ':' + userCourse.id
+      userCourseState.value.theUserCourseStatus[key] = 'ready'
+   }
 }

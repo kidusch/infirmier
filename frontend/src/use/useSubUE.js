@@ -118,7 +118,7 @@ export const getSubUEList = async (ue_id) => {
    return Object.values(subUEState.value.subUECache).filter(subUE => subUE.ue_id === ue_id).sort((e1, e2) => e1.rank - e2.rank)
 }
 
-export const listOfSubUEs = computed(() => (ue_id) => {
+export const listOfSubUE = computed(() => (ue_id) => {
    if (subUEState.value.subUEListStatus[ue_id] === 'ready') {
       return Object.values(subUEState.value.subUECache).filter(subUE => subUE.ue_id === ue_id).sort((e1, e2) => e1.rank - e2.rank)
    }
@@ -133,7 +133,7 @@ export const listOfSubUEs = computed(() => (ue_id) => {
          }
          subUEState.value.subUEListStatus[ue_id] = 'ready'
       }).catch(err => {
-         console.log('listOfSubUEs err', err)
+         console.log('listOfSubUE err', err)
          subUEState.value.subUEListStatus[ue_id] = undefined
       })
    }

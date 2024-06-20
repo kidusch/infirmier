@@ -185,7 +185,52 @@ const routes = [
                case_study_id: parseInt(route.params.case_study_id),
             }),
          },
-         
+         {
+            path: 'admin-care',
+            component: () => import('/src/views/admin/AdminCare.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+            }),
+         },
+         {
+            path: 'admin-care/:care_id',
+            component: () => import('/src/views/admin/AdminCareDetail.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+               care_id: parseInt(route.params.care_id),
+            }),
+         },
+         {
+            path: 'admin-document',
+            component: () => import('/src/views/admin/AdminDocument.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+            }),
+         },
+         {
+            path: 'admin-document/:document_id',
+            component: () => import('/src/views/admin/AdminDocumentDetail.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+               document_id: parseInt(route.params.document_id),
+            }),
+         },
+         {
+            path: 'admin-legislation',
+            component: () => import('/src/views/admin/AdminLegislation.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+            }),
+         },
+         {
+            path: 'admin-legislation/:legislation_id',
+            component: () => import('/src/views/admin/AdminLegislationDetail.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+               legislation_id: parseInt(route.params.legislation_id),
+            }),
+         },
+  
          {
             path: 'welcome-student',
             component: () => import('/src/views/student/WelcomeStudent.vue'),
@@ -315,6 +360,36 @@ const routes = [
             props: route => ({
                userid: parseInt(route.params.userid),
                care_id: parseInt(route.params.care_id),
+            }),
+         },
+         {
+            path: 'document',
+            component: () => import('/src/views/student/Document.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+            }),
+         },
+         {
+            path: 'document/:document_id',
+            component: () => import('/src/views/student/DocumentDetail.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+               document_id: parseInt(route.params.document_id),
+            }),
+         },
+         {
+            path: 'legislation',
+            component: () => import('/src/views/student/Legislation.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+            }),
+         },
+         {
+            path: 'legislation/:legislation_id',
+            component: () => import('/src/views/student/LegislationDetail.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+               legislation_id: parseInt(route.params.legislation_id),
             }),
          },
 

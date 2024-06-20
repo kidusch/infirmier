@@ -113,7 +113,7 @@ export const getCardList = async (topic_id) => {
    return Object.values(cardState.value.cardCache).filter(card => card.topic_id === topic_id).sort((e1, e2) => e1.rank - e2.rank)
 }
 
-export const listOfCards = computed(() => (topic_id) => {
+export const listOfCard = computed(() => (topic_id) => {
    if (cardState.value.cardListStatus[topic_id] === 'ready') {
       return Object.values(cardState.value.cardCache).filter(card => card.topic_id === topic_id).sort((e1, e2) => e1.rank - e2.rank)
    }

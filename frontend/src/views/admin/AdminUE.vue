@@ -10,21 +10,21 @@
       </header>
 
       <!-- Header -->
-      <header class="py-4">
+      <!-- <header class="py-4">
          <div class="flex sm:items-center items-start gap-1.5">
             <h3 class="lg:opacity-50">
                Unités d'enseignement
             </h3>
          </div>
-      </header>
+      </header> -->
 
       <main class="flex flex-col gap-6 pb-4">
 
          <div class="flex flex-col gap-3">
 
-            <div v-for="ue, index in listOfUEs">
+            <div v-for="ue, index in listOfUE">
                <EditableListItem
-                  field="name" :index="index" :list="listOfUEs"
+                  field="name" :index="index" :list="listOfUE"
                   @update="(ue1, ue2) => update(ue1, ue2)"
                   @edit="(text) => edit(ue.id, text)"
                   @remove="remove(ue)"
@@ -52,7 +52,7 @@
 <script setup>
 import { ref } from 'vue'
 
-import { createUE, updateUE, removeUE, listOfUEs } from '/src/use/useUE'
+import { createUE, updateUE, removeUE, listOfUE } from '/src/use/useUE'
 import router from "/src/router"
 
 import EditableListItem from '/src/components/EditableListItem.vue'

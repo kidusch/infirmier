@@ -10,8 +10,7 @@ const initialState = () => ({
    theUserQuizStatus: {},
 })
 
-const key = 'user-quiz-state'
-const userQuizState = useSessionStorage(key, initialState(), { mergeDefaults: true })
+const userQuizState = useSessionStorage('user-quiz-state', initialState(), { mergeDefaults: true })
 
 export const resetUseUserQuiz = () => {
    userQuizState.value = null
@@ -84,4 +83,16 @@ export const updateUserQuiz = async (id, data) => {
    // update cache
    userQuizState.value.userQuizCache[userQuiz.id] = userQuiz
    return userQuiz
+}
+
+// used to evaluate progress - prevent lots of single requests
+export const getUserQuizList = async (user_id) => {
+   const userQuizList = await app.service('user_quiz').findMany({
+      where: { user_id }
+   })
+   for (const userQuiz of userQuizList) {
+      userQuizState.value.userQuizCache[userQuiz.id] = userQuiz
+      const key = user_id + ':' + userQuiz.id
+      userQuizState.value.theUserQuizStatus[key] = 'ready'
+   }
 }

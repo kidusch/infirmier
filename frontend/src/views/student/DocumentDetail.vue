@@ -4,13 +4,13 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p>
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/care`">SOINS</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/document`">DOCUMENTS</router-link>
             /
-            <span class="font-semibold">{{ care?.title }}</span>
+            <span class="font-semibold">{{ document?.title }}</span>
          </p>
       </header>
 
-      <div v-html="care?.content"></div>
+      <div v-html="document?.content"></div>
 
    </main>
 </template>
@@ -18,18 +18,18 @@
 <script setup>
 import { computed } from 'vue'
 
-import { careOfId } from '/src/use/useCare'
+import { documentOfId } from '/src/use/useDocument'
 
 const props = defineProps({
    userid: {
       type: Number,
       required: true
    },
-   care_id: {
+   document_id: {
       type: Number,
       required: true
    },
 })
 
-const care = computed(() => careOfId.value(props.care_id))
+const document = computed(() => documentOfId.value(props.document_id))
 </script>

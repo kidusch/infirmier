@@ -50,7 +50,7 @@ import { computed } from 'vue'
 
 import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
-import { listOfTopics } from '/src/use/useTopic'
+import { listOfTopic } from '/src/use/useTopic'
 import { topicReviseProgress, subUEReviseProgress } from '/src/use/useProgress'
 import router from "/src/router"
 
@@ -71,7 +71,7 @@ const props = defineProps({
 
 const ue = computed(() => ueOfId.value(props.ue_id))
 const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
-const topicList = computed(() => listOfTopics.value(props.sub_ue_id))
+const topicList = computed(() => listOfTopic.value(props.sub_ue_id))
 
 const selectTopic = (topic) => {
    router.push(`/home/${props.userid}/revise-topic/${props.ue_id}/${props.sub_ue_id}/${topic.id}`)

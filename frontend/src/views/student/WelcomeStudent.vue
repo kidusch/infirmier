@@ -18,6 +18,8 @@
 
          <div class="flex flex-col mt-2">
 
+            <div>{{ loadingProgress }}</div>
+
             <div class="justify-center flex my-8">
                <button class="primary-btn" @click="onClick">
                   Continuer
@@ -30,6 +32,15 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
+import { loadingProgress } from '/src/use/useProgress'
+// import { getUEList } from '/src/use/useUE'
+// import { getSubUEList } from '/src/use/useSubUE'
+// import { getTopicList } from '/src/use/useTopic'
+import { getUserCourseList } from '/src/use/useUserCourse'
+import { getUserCardList } from '/src/use/useUserCard'
+import { getUserQuizList } from '/src/use/useUserQuiz'
+import { getUserCaseStudyList } from '/src/use/useUserCaseStudy'
 import router from '/src/router'
 
 const props = defineProps({
@@ -37,6 +48,30 @@ const props = defineProps({
       type: Number,
       required: true
    },
+})
+
+onMounted(async () => {
+   console.log('starting...')
+   await getUserCourseList(props.userid)
+   await getUserCardList(props.userid)
+   await getUserQuizList(props.userid)
+   await getUserCaseStudyList(props.userid)
+   console.log('...done')
+
+
+   // const ueList = await getUEList()
+   // for (const ue of ueList) {
+   //    const subUEList = await getSubUEList(ue.id)
+   //    for (const subUE of subUEList) {
+   //       const topicList = await getTopicList(subUE.id)
+   //       for (const topic of topicList) {
+   //          const courseList = await getCourseList(topic.id)
+   //          for (const course of courseList) {
+
+   //          }
+   //       }
+   //    }
+   // }
 })
 
 const onClick = () => {

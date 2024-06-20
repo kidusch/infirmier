@@ -113,7 +113,7 @@ export const getTopicList = async (sub_ue_id) => {
    return Object.values(topicState.value.topicCache).filter(topic => topic.sub_ue_id === sub_ue_id).sort((e1, e2) => e1.rank - e2.rank)
 }
 
-export const listOfTopics = computed(() => (sub_ue_id) => {
+export const listOfTopic = computed(() => (sub_ue_id) => {
    if (topicState.value.topicListStatus[sub_ue_id] === 'ready') {
       return Object.values(topicState.value.topicCache).filter(topic => topic.sub_ue_id === sub_ue_id).sort((e1, e2) => e1.rank - e2.rank)
    }

@@ -34,14 +34,14 @@ app.service('care').on('delete', care => {
 })
 
 
-// export const getCare = async (id) => {
-//    let care = careState.value.careCache[id]
-//    if (care) return care
-//    care = await app.service('care').findUnique({ where: { id }})
-//    careState.value.careCache[id] = care
-//    careState.value.careStatus[id] = 'ready'
-//    return care
-// }
+export const getCare = async (id) => {
+   let care = careState.value.careCache[id]
+   if (care) return care
+   care = await app.service('care').findUnique({ where: { id }})
+   careState.value.careCache[id] = care
+   careState.value.careStatus[id] = 'ready'
+   return care
+}
 
 export const careOfId = computed(() => id => {
    const status = careState.value.careStatus[id]
@@ -59,7 +59,7 @@ export const careOfId = computed(() => id => {
    })
 })
 
-export const createCare = async (name) => {
+export const createCare = async (title) => {
    // get highest rank
    const result = await app.service('care').aggregate({
       _max: { rank: true }
@@ -69,7 +69,7 @@ export const createCare = async (name) => {
    // create care with this rank
    const care = await app.service('care').create({
       data: {
-         name,
+         title,
          rank,
       }
    })
@@ -127,3 +127,5 @@ export const listOfCare = computed(() => {
    }
    return []
 })
+
+export const isCareTabVisible = computed(() => listOfCare.value.some(care => !care.hidden))

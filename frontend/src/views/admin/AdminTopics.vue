@@ -33,9 +33,9 @@
       <main class="flex flex-col gap-6 pb-4">
 
          <div class="flex flex-col gap-3">
-            <div v-for="topic, index in listOfTopics(sub_ue_id)">
+            <div v-for="topic, index in listOfTopic(sub_ue_id)">
                <EditableListItem
-                  field="name" :index="index" :list="listOfTopics(sub_ue_id)"
+                  field="name" :index="index" :list="listOfTopic(sub_ue_id)"
                   @update="(ue1, ue2) => update(ue1, ue2)"
                   @edit="(text) => edit(topic.id, text)"
                   @remove="remove(topic)"
@@ -66,7 +66,7 @@ import { ref, computed } from 'vue'
 
 import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
-import { createTopic, updateTopic, removeTopic, listOfTopics } from '/src/use/useTopic'
+import { createTopic, updateTopic, removeTopic, listOfTopic } from '/src/use/useTopic'
 import router from '/src/router'
 
 import EditableListItem from '/src/components/EditableListItem.vue'

@@ -4,19 +4,19 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p>
-            <span>SOINS</span>
+            <span>DOCUMENTS</span>
          </p>
       </header>
 
-      <!-- Main content -> care list -->
+      <!-- Main content -> document list -->
       <main class="flex flex-col gap-6 pb-6">
          
          <div class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
             <div class="progress-list">
-               <template v-for="care in careList">
-                  <div v-if="!care.hidden" class="progress-item cursor-pointer" @click="selectCare(care)">
+               <template v-for="document in documentList">
+                  <div v-if="!document.hidden" class="progress-item cursor-pointer" @click="selectDocument(document)">
                      <p>
-                        {{ care?.title }}
+                        {{ document?.title }}
                      </p>
                   </div>
                </template>
@@ -32,7 +32,7 @@
 <script setup>
 import { computed } from 'vue'
 
-import { listOfCare } from '/src/use/useCare'
+import { listOfDocument } from '/src/use/useDocument'
 import router from "/src/router"
 
 const props = defineProps({
@@ -42,9 +42,9 @@ const props = defineProps({
    },
 })
 
-const careList = computed(() => listOfCare.value)
+const documentList = computed(() => listOfDocument.value)
 
-const selectCare = (care) => {
-   router.push(`/home/${props.userid}/care/${care.id}`)
+const selectDocument = (document) => {
+   router.push(`/home/${props.userid}/document/${document.id}`)
 }
 </script>

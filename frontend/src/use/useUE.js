@@ -11,8 +11,7 @@ const initialState = () => ({
    ueListStatus: undefined,
 })
 
-const key = 'ue-state'
-const ueState = useSessionStorage(key, initialState(), { mergeDefaults: true })
+const ueState = useSessionStorage('ue-state', initialState(), { mergeDefaults: true })
 
 export const resetUseUE = () => {
    ueState.value = null
@@ -108,7 +107,7 @@ export const getUEList = async () => {
    return Object.values(ueState.value.ueCache).sort((e1, e2) => e1.rank - e2.rank)
 }
 
-export const listOfUEs = computed(() => {
+export const listOfUE = computed(() => {
    if (ueState.value.ueListStatus === 'ready') {
       return Object.values(ueState.value.ueCache).sort((e1, e2) => e1.rank - e2.rank)
    }
@@ -122,9 +121,13 @@ export const listOfUEs = computed(() => {
          }
          ueState.value.ueListStatus = 'ready'
       }).catch(err => {
-         console.log('listOfUEs err', err)
+         console.log('listOfUE err', err)
          ueState.value.ueListStatus = undefined
       })
    }
    return []
 })
+
+export const getUserXXX = async (ue_id) => {
+   const list = await app.service('user_course')
+}

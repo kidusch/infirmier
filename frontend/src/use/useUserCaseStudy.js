@@ -87,3 +87,15 @@ export const updateUserCaseStudy = async (id, data) => {
    userCaseStudyState.value.userCaseStudyCache[userCaseStudy.id] = userCaseStudy
    return userCaseStudy
 }
+
+// used to evaluate progress - prevent lots of single requests
+export const getUserCaseStudyList = async (user_id) => {
+   const userCaseStudyList = await app.service('user_case_study').findMany({
+      where: { user_id }
+   })
+   for (const userCaseStudy of userCaseStudyList) {
+      userCaseStudyState.value.userCaseStudyCache[userCaseStudy.id] = userCaseStudy
+      const key = user_id + ':' + userCaseStudy.id
+      userCaseStudyState.value.theUserCaseStudyStatus[key] = 'ready'
+   }
+}

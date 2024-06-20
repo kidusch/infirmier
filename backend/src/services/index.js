@@ -20,6 +20,8 @@ import userCaseStudyService from './database/user_case_study/user_case_study.ser
 import highlightedPartService from './database/highlighted_part/highlighted_part.service.js'
 
 import careService from './database/care/care.service.js'
+import documentService from './database/document/document.service.js'
+import legislationService from './database/legislation/legislation.service.js'
 
 
 // custom services
@@ -49,6 +51,8 @@ export default function (app) {
    app.configure(highlightedPartService)
 
    app.configure(careService)
+   app.configure(documentService)
+   app.configure(legislationService)
 
    // add custom services
    app.configure(mailService)

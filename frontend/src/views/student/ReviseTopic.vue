@@ -89,9 +89,9 @@ import { ref, onMounted, computed } from 'vue'
 import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
-import { listOfCards } from '/src/use/useCard'
-import { listOfQuizs } from '/src/use/useQuiz'
-import { listOfCaseStudies } from '/src/use/useCaseStudy'
+import { listOfCard } from '/src/use/useCard'
+import { listOfQuiz } from '/src/use/useQuiz'
+import { listOfCaseStudy } from '/src/use/useCaseStudy'
 import { theUserCard } from '/src/use/useUserCard'
 import { theUserQuiz } from '/src/use/useUserQuiz'
 import { theUserCaseStudy } from '/src/use/useUserCaseStudy'
@@ -122,9 +122,9 @@ const ue = computed(() => ueOfId.value(props.ue_id))
 const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
 const topic = computed(() => topicOfId.value(props.topic_id))
 
-const cardList = computed(() => listOfCards.value(props.topic_id))
-const quizList = computed(() => listOfQuizs.value(props.topic_id))
-const caseStudyList = computed(() => listOfCaseStudies.value(props.topic_id))
+const cardList = computed(() => listOfCard.value(props.topic_id))
+const quizList = computed(() => listOfQuiz.value(props.topic_id))
+const caseStudyList = computed(() => listOfCaseStudy.value(props.topic_id))
 
 
 const isTheUserCardDone = computed(() => (cardId) => {
