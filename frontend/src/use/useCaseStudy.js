@@ -105,30 +105,39 @@ export const getCaseStudyList = async (topic_id) => {
       const list = await app.service('case_study').findMany({
          where: { topic_id }
       })
-      for (const case_study of list) {
-         caseStudyState.value.caseStudyCache[case_study.id] = case_study
-         caseStudyState.value.caseStudyStatus[case_study.id] = 'ready'
+      for (const caseStudy of list) {
+         caseStudyState.value.caseStudyCache[caseStudy.id] = caseStudy
+         caseStudyState.value.caseStudyStatus[caseStudy.id] = 'ready'
       }
       caseStudyState.value.caseStudyListStatus[topic_id] = 'ready'
    }
-   return Object.values(caseStudyState.value.caseStudyCache).filter(case_study => case_study.topic_id === topic_id).sort((e1, e2) => e1.rank - e2.rank)
+   return Object.values(caseStudyState.value.caseStudyCache).filter(caseStudy => caseStudy.topic_id === topic_id).sort((e1, e2) => e1.rank - e2.rank)
 }
 
 export const listOfCaseStudy = computed(() => (topic_id) => {
    if (caseStudyState.value.caseStudyListStatus[topic_id] === 'ready') {
-      return Object.values(caseStudyState.value.caseStudyCache).filter(case_study => case_study.topic_id === topic_id).sort((e1, e2) => e1.rank - e2.rank)
+      return Object.values(caseStudyState.value.caseStudyCache).filter(caseStudy => caseStudy.topic_id === topic_id).sort((e1, e2) => e1.rank - e2.rank)
    }
    if (caseStudyState.value.caseStudyListStatus[topic_id] !== 'ongoing') {
       caseStudyState.value.caseStudyListStatus[topic_id] = 'ongoing'
       app.service('case_study').findMany({
          where: { topic_id }
       }).then((list) => {
-         for (const case_study of list) {
-            caseStudyState.value.caseStudyCache[case_study.id] = case_study
-            caseStudyState.value.caseStudyStatus[case_study.id] = 'ready'
+         for (const caseStudy of list) {
+            caseStudyState.value.caseStudyCache[caseStudy.id] = caseStudy
+            caseStudyState.value.caseStudyStatus[caseStudy.id] = 'ready'
          }
          caseStudyState.value.caseStudyListStatus[topic_id] = 'ready'
       })
    }
    return []
 })
+
+export const getAllCaseStudy = async () => {
+   const caseStudyList = await app.service('case_study').findMany({})
+   for (const caseStudy of caseStudyList) {
+      caseStudyState.value.caseStudyCache[caseStudy.id] = caseStudy
+      caseStudyState.value.caseStudyStatus[caseStudy.id] = 'ready'
+      caseStudyState.value.caseStudyListStatus[caseStudy.topic_id] = 'ready'
+   }
+}

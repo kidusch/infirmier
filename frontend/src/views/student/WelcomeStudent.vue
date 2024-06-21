@@ -34,9 +34,13 @@
 <script setup>
 import { onMounted } from 'vue'
 import { loadingProgress } from '/src/use/useProgress'
-// import { getUEList } from '/src/use/useUE'
-// import { getSubUEList } from '/src/use/useSubUE'
-// import { getTopicList } from '/src/use/useTopic'
+import { getUEList } from '/src/use/useUE'
+import { getAllSubUE } from '/src/use/useSubUE'
+import { getAllTopic } from '/src/use/useTopic'
+import { getAllCourse } from '/src/use/useCourse'
+import { getAllCard } from '/src/use/useCard'
+import { getAllQuiz } from '/src/use/useQuiz'
+import { getAllCaseStudy } from '/src/use/useCaseStudy'
 import { getUserCourseList } from '/src/use/useUserCourse'
 import { getUserCardList } from '/src/use/useUserCard'
 import { getUserQuizList } from '/src/use/useUserQuiz'
@@ -51,27 +55,20 @@ const props = defineProps({
 })
 
 onMounted(async () => {
-   console.log('starting...')
+
    await getUserCourseList(props.userid)
    await getUserCardList(props.userid)
    await getUserQuizList(props.userid)
    await getUserCaseStudyList(props.userid)
-   console.log('...done')
 
 
-   // const ueList = await getUEList()
-   // for (const ue of ueList) {
-   //    const subUEList = await getSubUEList(ue.id)
-   //    for (const subUE of subUEList) {
-   //       const topicList = await getTopicList(subUE.id)
-   //       for (const topic of topicList) {
-   //          const courseList = await getCourseList(topic.id)
-   //          for (const course of courseList) {
-
-   //          }
-   //       }
-   //    }
-   // }
+   await getUEList()
+   await getAllSubUE()
+   await getAllTopic()
+   await getAllCourse()
+   await getAllCard()
+   await getAllQuiz()
+   await getAllCaseStudy()
 })
 
 const onClick = () => {

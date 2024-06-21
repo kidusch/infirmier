@@ -92,7 +92,7 @@ export const getUserQuizList = async (user_id) => {
    })
    for (const userQuiz of userQuizList) {
       userQuizState.value.userQuizCache[userQuiz.id] = userQuiz
-      const key = user_id + ':' + userQuiz.id
+      const key = user_id + ':' + userQuiz.quiz_id
       userQuizState.value.theUserQuizStatus[key] = 'ready'
    }
 }

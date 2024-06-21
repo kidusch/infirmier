@@ -132,3 +132,12 @@ export const listOfCourse = computed(() => (topic_id) => {
    }
    return []
 })
+
+export const getAllCourse = async () => {
+   const courseList = await app.service('course').findMany({})
+   for (const course of courseList) {
+      courseState.value.courseCache[course.id] = course
+      courseState.value.courseStatus[course.id] = 'ready'
+      courseState.value.courseListStatus[course.topic_id] = 'ready'
+   }
+}

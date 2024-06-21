@@ -131,3 +131,12 @@ export const listOfTopic = computed(() => (sub_ue_id) => {
    }
    return []
 })
+
+export const getAllTopic = async () => {
+   const topicList = await app.service('topic').findMany({})
+   for (const topic of topicList) {
+      topicState.value.topicCache[topic.id] = topic
+      topicState.value.topicStatus[topic.id] = 'ready'
+      topicState.value.topicListStatus[topic.sub_ue_id] = 'ready'
+   }
+}

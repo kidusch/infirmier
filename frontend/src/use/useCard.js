@@ -131,3 +131,12 @@ export const listOfCard = computed(() => (topic_id) => {
    }
    return []
 })
+
+export const getAllCard = async () => {
+   const cardList = await app.service('card').findMany({})
+   for (const card of cardList) {
+      cardState.value.cardCache[card.id] = card
+      cardState.value.cardStatus[card.id] = 'ready'
+      cardState.value.cardListStatus[card.topic_id] = 'ready'
+   }
+}

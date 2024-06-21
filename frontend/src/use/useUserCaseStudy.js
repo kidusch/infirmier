@@ -95,7 +95,7 @@ export const getUserCaseStudyList = async (user_id) => {
    })
    for (const userCaseStudy of userCaseStudyList) {
       userCaseStudyState.value.userCaseStudyCache[userCaseStudy.id] = userCaseStudy
-      const key = user_id + ':' + userCaseStudy.id
+      const key = user_id + ':' + userCaseStudy.case_study_id
       userCaseStudyState.value.theUserCaseStudyStatus[key] = 'ready'
    }
 }

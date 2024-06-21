@@ -96,7 +96,7 @@ export const getUserCourseList = async (user_id) => {
    })
    for (const userCourse of userCourseList) {
       userCourseState.value.userCourseCache[userCourse.id] = userCourse
-      const key = user_id + ':' + userCourse.id
+      const key = user_id + ':' + userCourse.course_id
       userCourseState.value.theUserCourseStatus[key] = 'ready'
    }
 }

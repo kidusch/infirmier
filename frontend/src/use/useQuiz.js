@@ -132,3 +132,12 @@ export const listOfQuiz = computed(() => (topic_id) => {
    }
    return []
 })
+
+export const getAllQuiz = async () => {
+   const quizList = await app.service('quiz').findMany({})
+   for (const quiz of quizList) {
+      quizState.value.quizCache[quiz.id] = quiz
+      quizState.value.quizStatus[quiz.id] = 'ready'
+      quizState.value.quizListStatus[quiz.topic_id] = 'ready'
+   }
+}

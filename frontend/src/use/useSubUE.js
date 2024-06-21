@@ -22,6 +22,7 @@ export const resetUseSubUE = () => {
 app.service('sub_ue').on('create', subUE => {
    console.log('SUB_UE EVENT created', subUE)
    subUEState.value.subUECache[subUE.id] = subUE
+   subUEState.value.subUEStatus[subUE.id] = 'ready'
 })
 
 app.service('sub_ue').on('update', subUE => {
@@ -32,6 +33,7 @@ app.service('sub_ue').on('update', subUE => {
 app.service('sub_ue').on('delete', subUE => {
    console.log('SUB_UE EVENT delete', subUE)
    delete subUEState.value.subUECache[subUE.id]
+   delete subUEState.value.subUEStatus[subUE.id]
 })
 
 
@@ -139,3 +141,12 @@ export const listOfSubUE = computed(() => (ue_id) => {
    }
    return []
 })
+
+export const getAllSubUE = async () => {
+   const subUEList = await app.service('sub_ue').findMany({})
+   for (const subUE of subUEList) {
+      subUEState.value.subUECache[subUE.id] = subUE
+      subUEState.value.subUEStatus[subUE.id] = 'ready'
+      subUEState.value.subUEListStatus[subUE.ue_id] = 'ready'
+   }
+}

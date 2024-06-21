@@ -92,7 +92,7 @@ export const getUserCardList = async (user_id) => {
    })
    for (const userCard of userCardList) {
       userCardState.value.userCardCache[userCard.id] = userCard
-      const key = user_id + ':' + userCard.id
+      const key = user_id + ':' + userCard.card_id
       userCardState.value.theUserCardStatus[key] = 'ready'
    }
 }
