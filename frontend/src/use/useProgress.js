@@ -1,15 +1,17 @@
 import { computed } from 'vue'
-import { theUserCourse } from '/src/use/useUserCourse'
-import { theUserCard } from '/src/use/useUserCard'
-import { theUserQuiz } from '/src/use/useUserQuiz'
-import { theUserCaseStudy } from '/src/use/useUserCaseStudy'
-import { listOfCourse, courseStatus } from '/src/use/useCourse'
-import { listOfCard } from '/src/use/useCard'
-import { listOfQuiz } from '/src/use/useQuiz'
-import { listOfCaseStudy } from '/src/use/useCaseStudy'
-import { listOfTopic } from '/src/use/useTopic'
-import { listOfSubUE } from '/src/use/useSubUE'
-import { listOfUE } from '/src/use/useUE'
+import { theUserCourse, getUserCourseList } from '/src/use/useUserCourse'
+import { theUserCard, getUserCardList } from '/src/use/useUserCard'
+import { theUserQuiz, getUserQuizList } from '/src/use/useUserQuiz'
+import { theUserCaseStudy, getUserCaseStudyList } from '/src/use/useUserCaseStudy'
+import { listOfCourse, courseState } from '/src/use/useCourse'
+import { listOfCard, cardState } from '/src/use/useCard'
+import { listOfQuiz, quizState } from '/src/use/useQuiz'
+import { listOfCaseStudy, caseStudyState } from '/src/use/useCaseStudy'
+import { listOfTopic, topicState } from '/src/use/useTopic'
+import { listOfSubUE, subUEState } from '/src/use/useSubUE'
+import { getUEList } from '/src/use/useUE'
+
+import { app } from '/src/client-app.js'
 
 
 export const courseStudyProgress = computed(() => (user_id, course_id) => {
@@ -63,13 +65,13 @@ export const ueStudyProgress = computed(() => (user_id, ue_id) => {
 export const topicReviseProgress = computed(() => (user_id, topic_id) => {
    let count = 0
    let sum = 0
-   const courseList = listOfCourse.value(topic_id)
-   for (const course of courseList) {
-      const userCourse = theUserCourse.value(user_id, course.id)
-      if (userCourse === undefined) return -1
-      count += 1
-      sum += (userCourse.done ? 100 : 0)
-   }
+   // const courseList = listOfCourse.value(topic_id)
+   // for (const course of courseList) {
+   //    const userCourse = theUserCourse.value(user_id, course.id)
+   //    if (userCourse === undefined) return -1
+   //    count += 1
+   //    sum += (userCourse.done ? 100 : 0)
+   // }
    const cardList = listOfCard.value(topic_id)
    for (const card of cardList) {
       const userCard = theUserCard.value(user_id, card.id)
@@ -125,7 +127,7 @@ export const ueReviseProgress = computed(() => (user_id, ue_id) => {
 
 
 export const courseLoadingProgress = computed(() => (course_id) => {
-   return courseStatus(course_id) === 'ready' ? 1. : 0.
+   return courseState.value.courseStatus(course_id) === 'ready' ? 1. : 0.
 })
 
 export const topicLoadingProgress = computed(() => (topic_id) => {
@@ -152,10 +154,70 @@ export const ueLoadingProgress = computed(() => (ue_id) => {
    return sum / subUEList.length
 })
 
-export const loadingProgress = computed(() => {
-   const ueList = listOfUE.value
-   if (ueList.length === 0) return 0
-   console.log('ueList', ueList)
-   const sum = ueList.reduce((accu, ue) => accu + ueLoadingProgress.value(ue.id), 0)
-   return sum / ueList.length
-})
+
+export const preload = async (userid) => {
+
+   const ueList = await getUEList()
+
+   const subUEList = await app.service('sub_ue').findMany({})
+   for (const subUE of subUEList) {
+      subUEState.value.subUECache[subUE.id] = subUE
+      subUEState.value.subUEStatus[subUE.id] = 'ready'
+   }
+   for (const ue of ueList) {
+      subUEState.value.subUEListStatus[ue.id] = 'ready'
+   }
+
+   const topicList = await app.service('topic').findMany({})
+   for (const topic of topicList) {
+      topicState.value.topicCache[topic.id] = topic
+      topicState.value.topicStatus[topic.id] = 'ready'
+   }
+   for (const subUE of subUEList) {
+      topicState.value.topicListStatus[subUE.id] = 'ready'
+   }
+
+   const courseList = await app.service('course').findMany({})
+   for (const course of courseList) {
+      courseState.value.courseCache[course.id] = course
+      courseState.value.courseStatus[course.id] = 'ready'
+   }
+   for (const topic of topicList) {
+      courseState.value.courseListStatus[topic.id] = 'ready'
+   }
+
+   const cardList = await app.service('card').findMany({})
+   for (const card of cardList) {
+      cardState.value.cardCache[card.id] = card
+      cardState.value.cardStatus[card.id] = 'ready'
+   }
+   for (const topic of topicList) {
+      cardState.value.cardListStatus[topic.id] = 'ready'
+   }
+
+   const quizList = await app.service('quiz').findMany({})
+   for (const quiz of quizList) {
+      quizState.value.quizCache[quiz.id] = quiz
+      quizState.value.quizStatus[quiz.id] = 'ready'
+      quizState.value.quizListStatus[quiz.topic_id] = 'ready'
+   }
+   for (const topic of topicList) {
+      quizState.value.quizListStatus[topic.id] = 'ready'
+   }
+
+   const caseStudyList = await app.service('case_study').findMany({})
+   for (const caseStudy of caseStudyList) {
+      caseStudyState.value.caseStudyCache[caseStudy.id] = caseStudy
+      caseStudyState.value.caseStudyStatus[caseStudy.id] = 'ready'
+      caseStudyState.value.caseStudyListStatus[caseStudy.topic_id] = 'ready'
+   }
+   for (const topic of topicList) {
+      caseStudyState.value.caseStudyListStatus[topic.id] = 'ready'
+   }
+
+   await getUserCourseList(userid)
+   await getUserCardList(userid)
+   await getUserQuizList(userid)
+   await getUserCaseStudyList(userid)
+
+}

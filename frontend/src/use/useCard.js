@@ -11,8 +11,7 @@ const initialState = () => ({
    cardListStatus: {},
 })
 
-const key = 'card-state'
-const cardState = useSessionStorage(key, initialState(), { mergeDefaults: true })
+export const cardState = useSessionStorage('card-state', initialState(), { mergeDefaults: true })
 
 export const resetUseCard = () => {
    cardState.value = null
@@ -131,12 +130,3 @@ export const listOfCard = computed(() => (topic_id) => {
    }
    return []
 })
-
-export const getAllCard = async () => {
-   const cardList = await app.service('card').findMany({})
-   for (const card of cardList) {
-      cardState.value.cardCache[card.id] = card
-      cardState.value.cardStatus[card.id] = 'ready'
-      cardState.value.cardListStatus[card.topic_id] = 'ready'
-   }
-}

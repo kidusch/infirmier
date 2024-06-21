@@ -11,8 +11,7 @@ const initialState = () => ({
    topicListStatus: {},
 })
 
-const key = 'topic-state'
-const topicState = useSessionStorage(key, initialState(), { mergeDefaults: true })
+export const topicState = useSessionStorage('topic-state', initialState(), { mergeDefaults: true })
 
 export const resetUseTopic = () => {
    topicState.value = null
@@ -131,12 +130,3 @@ export const listOfTopic = computed(() => (sub_ue_id) => {
    }
    return []
 })
-
-export const getAllTopic = async () => {
-   const topicList = await app.service('topic').findMany({})
-   for (const topic of topicList) {
-      topicState.value.topicCache[topic.id] = topic
-      topicState.value.topicStatus[topic.id] = 'ready'
-      topicState.value.topicListStatus[topic.sub_ue_id] = 'ready'
-   }
-}

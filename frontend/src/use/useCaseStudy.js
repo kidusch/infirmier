@@ -11,8 +11,7 @@ const initialState = () => ({
    caseStudyListStatus: {},
 })
 
-const key = 'case-study-state'
-const caseStudyState = useSessionStorage(key, initialState(), { mergeDefaults: true })
+export const caseStudyState = useSessionStorage('case-study-state', initialState(), { mergeDefaults: true })
 
 export const resetUseCaseStudy = () => {
    caseStudyState.value = null
@@ -132,12 +131,3 @@ export const listOfCaseStudy = computed(() => (topic_id) => {
    }
    return []
 })
-
-export const getAllCaseStudy = async () => {
-   const caseStudyList = await app.service('case_study').findMany({})
-   for (const caseStudy of caseStudyList) {
-      caseStudyState.value.caseStudyCache[caseStudy.id] = caseStudy
-      caseStudyState.value.caseStudyStatus[caseStudy.id] = 'ready'
-      caseStudyState.value.caseStudyListStatus[caseStudy.topic_id] = 'ready'
-   }
-}

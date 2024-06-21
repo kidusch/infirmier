@@ -89,6 +89,7 @@ export const updateUserCourse = async (id, data) => {
    return userCourse
 }
 
+
 // used to evaluate progress - prevent lots of single requests
 export const getUserCourseList = async (user_id) => {
    const userCourseList = await app.service('user_course').findMany({

@@ -17,35 +17,49 @@
          </section>
 
          <div class="flex flex-col mt-2">
-
-            <div>{{ loadingProgress }}</div>
-
             <div class="justify-center flex my-8">
                <button class="primary-btn" @click="onClick">
                   Continuer
                </button>
             </div>
-
          </div>
       </section>
    </div>
+
+
+   <!-- computing... modal spinner-->
+   <div class="fixed inset-0 flex items-center justify-center" v-if="perc > 0">
+      <div class="fixed inset-0 bg-black opacity-50"></div>
+      <div class="w-96 h-96 border-t-8 border-white border-solid rounded-full mx-auto animate-spin"></div>
+      <div class="absolute inset-0 flex items-center justify-center">
+         <div>
+            <div class="text-center font-bold text-white text-2xl">Préchargement...</div>
+            <div class="text-center font-bold text-white text-3xl mt-4">{{ perc }} %</div>
+         </div>
+      </div>
+   </div>
+
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
-import { loadingProgress } from '/src/use/useProgress'
-import { getUEList } from '/src/use/useUE'
-import { getAllSubUE } from '/src/use/useSubUE'
-import { getAllTopic } from '/src/use/useTopic'
-import { getAllCourse } from '/src/use/useCourse'
-import { getAllCard } from '/src/use/useCard'
-import { getAllQuiz } from '/src/use/useQuiz'
-import { getAllCaseStudy } from '/src/use/useCaseStudy'
+import { onMounted, ref } from 'vue'
+
+// import { preload } from '/src/use/useProgress'
 import { getUserCourseList } from '/src/use/useUserCourse'
 import { getUserCardList } from '/src/use/useUserCard'
 import { getUserQuizList } from '/src/use/useUserQuiz'
 import { getUserCaseStudyList } from '/src/use/useUserCaseStudy'
+import { courseState } from '/src/use/useCourse'
+import { cardState } from '/src/use/useCard'
+import { quizState } from '/src/use/useQuiz'
+import { caseStudyState } from '/src/use/useCaseStudy'
+import { topicState } from '/src/use/useTopic'
+import { subUEState } from '/src/use/useSubUE'
+import { getUEList } from '/src/use/useUE'
+
 import router from '/src/router'
+import { app } from '/src/client-app.js'
+
 
 const props = defineProps({
    userid: {
@@ -54,21 +68,93 @@ const props = defineProps({
    },
 })
 
+const perc = ref(0)
+
 onMounted(async () => {
+   // await preload(props.userid)
 
-   await getUserCourseList(props.userid)
-   await getUserCardList(props.userid)
-   await getUserQuizList(props.userid)
-   await getUserCaseStudyList(props.userid)
+   const userid = props.userid
 
+   try {
+      const ueList = await getUEList()
+      perc.value = 10
 
-   await getUEList()
-   await getAllSubUE()
-   await getAllTopic()
-   await getAllCourse()
-   await getAllCard()
-   await getAllQuiz()
-   await getAllCaseStudy()
+      const subUEList = await app.service('sub_ue').findMany({})
+      for (const subUE of subUEList) {
+         subUEState.value.subUECache[subUE.id] = subUE
+         subUEState.value.subUEStatus[subUE.id] = 'ready'
+      }
+      for (const ue of ueList) {
+         subUEState.value.subUEListStatus[ue.id] = 'ready'
+      }
+      perc.value = 20
+
+      const topicList = await app.service('topic').findMany({})
+      for (const topic of topicList) {
+         topicState.value.topicCache[topic.id] = topic
+         topicState.value.topicStatus[topic.id] = 'ready'
+      }
+      for (const subUE of subUEList) {
+         topicState.value.topicListStatus[subUE.id] = 'ready'
+      }
+      perc.value = 30
+
+      const courseList = await app.service('course').findMany({})
+      for (const course of courseList) {
+         courseState.value.courseCache[course.id] = course
+         courseState.value.courseStatus[course.id] = 'ready'
+      }
+      for (const topic of topicList) {
+         courseState.value.courseListStatus[topic.id] = 'ready'
+      }
+      perc.value = 40
+
+      const cardList = await app.service('card').findMany({})
+      for (const card of cardList) {
+         cardState.value.cardCache[card.id] = card
+         cardState.value.cardStatus[card.id] = 'ready'
+      }
+      for (const topic of topicList) {
+         cardState.value.cardListStatus[topic.id] = 'ready'
+      }
+      perc.value = 50
+
+      const quizList = await app.service('quiz').findMany({})
+      for (const quiz of quizList) {
+         quizState.value.quizCache[quiz.id] = quiz
+         quizState.value.quizStatus[quiz.id] = 'ready'
+         quizState.value.quizListStatus[quiz.topic_id] = 'ready'
+      }
+      for (const topic of topicList) {
+         quizState.value.quizListStatus[topic.id] = 'ready'
+      }
+      perc.value = 60
+
+      const caseStudyList = await app.service('case_study').findMany({})
+      for (const caseStudy of caseStudyList) {
+         caseStudyState.value.caseStudyCache[caseStudy.id] = caseStudy
+         caseStudyState.value.caseStudyStatus[caseStudy.id] = 'ready'
+         caseStudyState.value.caseStudyListStatus[caseStudy.topic_id] = 'ready'
+      }
+      for (const topic of topicList) {
+         caseStudyState.value.caseStudyListStatus[topic.id] = 'ready'
+      }
+      perc.value = 70
+
+      await getUserCourseList(userid)
+      perc.value = 80
+      await getUserCardList(userid)
+      perc.value = 90
+      await getUserQuizList(userid)
+      perc.value = 95
+      await getUserCaseStudyList(userid)
+      perc.value = 100
+
+   } catch(err) {
+      console.log('err', err)
+   } finally {
+      perc.value = 0
+   }
 })
 
 const onClick = () => {

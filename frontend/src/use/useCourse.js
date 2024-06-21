@@ -11,7 +11,7 @@ const initialState = () => ({
    courseListStatus: {},
 })
 
-const courseState = useSessionStorage('course-state', initialState(), { mergeDefaults: true })
+export const courseState = useSessionStorage('course-state', initialState(), { mergeDefaults: true })
 
 export const resetUseCourse = () => {
    courseState.value = null
@@ -34,7 +34,7 @@ app.service('course').on('delete', course => {
 })
 
 
-export const courseStatus = (course_id) => courseState.value.courseStatus[course_id]
+// export const courseStatus = (course_id) => courseState.value.courseStatus[course_id]
 
 export const getCourse = async (id) => {
    let course = courseState.value.courseCache[id]
@@ -132,12 +132,3 @@ export const listOfCourse = computed(() => (topic_id) => {
    }
    return []
 })
-
-export const getAllCourse = async () => {
-   const courseList = await app.service('course').findMany({})
-   for (const course of courseList) {
-      courseState.value.courseCache[course.id] = course
-      courseState.value.courseStatus[course.id] = 'ready'
-      courseState.value.courseListStatus[course.topic_id] = 'ready'
-   }
-}

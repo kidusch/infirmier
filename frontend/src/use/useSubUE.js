@@ -11,8 +11,7 @@ const initialState = () => ({
    subUEListStatus: {},
 })
 
-const key = 'sub-ue-state'
-const subUEState = useSessionStorage(key, initialState(), { mergeDefaults: true })
+export const subUEState = useSessionStorage('sub-ue-state', initialState(), { mergeDefaults: true })
 
 export const resetUseSubUE = () => {
    subUEState.value = null
@@ -141,12 +140,3 @@ export const listOfSubUE = computed(() => (ue_id) => {
    }
    return []
 })
-
-export const getAllSubUE = async () => {
-   const subUEList = await app.service('sub_ue').findMany({})
-   for (const subUE of subUEList) {
-      subUEState.value.subUECache[subUE.id] = subUE
-      subUEState.value.subUEStatus[subUE.id] = 'ready'
-      subUEState.value.subUEListStatus[subUE.ue_id] = 'ready'
-   }
-}

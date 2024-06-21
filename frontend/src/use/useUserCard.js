@@ -85,6 +85,7 @@ export const updateUserCard = async (id, data) => {
    return userCard
 }
 
+
 // used to evaluate progress - prevent lots of single requests
 export const getUserCardList = async (user_id) => {
    const userCardList = await app.service('user_card').findMany({
