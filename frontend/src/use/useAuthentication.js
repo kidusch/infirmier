@@ -18,6 +18,9 @@ import { resetUseUserQuiz } from '/src/use/useUserQuiz'
 import { resetUseUserQuizChoice } from '/src/use/useUserQuizChoice'
 import { resetUseUserCaseStudy } from '/src/use/useUserCaseStudy'
 import { resetUseHighlightedPart } from '/src/use/useHighlightedPart'
+import { resetUseCare } from '/src/use/useCare'
+import { resetUseDocument } from '/src/use/useDocument'
+import { resetUseLegislation } from '/src/use/useLegislation'
 
 import router from '/src/router'
 
@@ -39,20 +42,23 @@ export function clearSessionStorage() {
    resetUseAuthentication()
    resetUseAppState()
    resetUseUser()
-   // resetUseUE()
-   // resetUseSubUE()
-   // resetUseTopic()
-   // resetUseCourse()
-   // resetUseCard()
-   // resetUseCaseStudy()
-   // resetUseQuiz()
-   // resetUseQuizChoice()
-   // resetUseUserCourse()
-   // resetUseUserCard()
-   // resetUseUserQuiz()
-   // resetUseUserQuizChoice()
-   // resetUseUserCaseStudy()
-   // resetUseHighlightedPart()
+   resetUseUE()
+   resetUseSubUE()
+   resetUseTopic()
+   resetUseCourse()
+   resetUseCard()
+   resetUseQuiz()
+   resetUseCaseStudy()
+   resetUseQuizChoice()
+   resetUseUserCourse()
+   resetUseUserCard()
+   resetUseUserQuiz()
+   resetUseUserQuizChoice()
+   resetUseUserCaseStudy()
+   resetUseHighlightedPart()
+   resetUseCare()
+   resetUseDocument()
+   resetUseLegislation()
 }
 
 export const restartApp = async () => {
