@@ -9,8 +9,7 @@ const initialState = () => ({
    highlightedPartCache: {},
 })
 
-const key = 'highlighted-part-state'
-const highlightedPartState = useSessionStorage(key, initialState(), { mergeDefaults: true })
+const highlightedPartState = useSessionStorage('highlighted-part-state', initialState(), { mergeDefaults: true })
 
 export const resetUseHighlightedPart = () => {
    highlightedPartState.value = null
@@ -23,8 +22,8 @@ app.service('highlighted_part').on('create', highlightedPart => {
 })
 
 
-export const getOrCreateHighlightedPart = async (userid, topic_id, card_id, case_study_id, text, color) => {
-   const hash = stringHash(`${userid},${topic_id},${card_id},${case_study_id},${text}`) + ''
+export const getOrCreateHighlightedPart = async (key, text, color) => {
+   const hash = stringHash(`${key},${text}`) + ''
    let highlightedPart = highlightedPartState.value.highlightedPartCache[hash]
    if (highlightedPart) return highlightedPart
    highlightedPart = await app.service('highlighted_part').upsert({

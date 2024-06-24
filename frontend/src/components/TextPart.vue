@@ -1,62 +1,67 @@
 <template>
-   <div
-      :class="{
-         'inline': isSpan || isBoldSpan,
+   <template v-if="part?.type === 'Text'">
+      <span @click="onClick">
+         {{ part?.value }}
+      </span>
+   </template>
 
-         'font-bold': isTitle || isBoldSpan,
-         'text-2xl': isTitle1, 'lg:text-4xl': isTitle1,
-         'text-xl': isTitle2, 'lg:text-3xl': isTitle2,
-         'text-lg': isTitle3, 'lg:text-2xl': isTitle3,
-         'text-normal': isTitle4, 'lg:text-xl': isTitle4,
+   <template v-if="part?.type === 'Element' && part?.name === 'h3'">
+      <h3>
+         <template v-for="child in part.children">
+            <TextPart :uuid="uuid" :part="child" :highlight="highlight"></TextPart>
+         </template>
+      </h3>
+   </template>
 
-         'text-red-600': isLexicon, underline: isLexicon,
-         'hover:cursor-pointer': isLexicon,
 
-         'bg-yellow-200': highlightedPart?.color === 'yellow',
-         'bg-orange-200': highlightedPart?.color === 'orange',
-         'bg-purple-200': highlightedPart?.color === 'purple',
+   <!-- <template v-else>
+      <template v-if="part?.name === 'div'">
+         <div>
+            <template v-for="child in part.children">
+               <TextPart :uuid="uuid" :part="child" :highlight="highlight"></TextPart>
+            </template>
+         </div>
+      </template>
+      <template v-if="part?.name === 'h1'">
+         <h1>
+            <template v-for="child in part.children">
+               <TextPart :uuid="uuid" :part="child" :highlight="highlight"></TextPart>
+            </template>
+         </h1>
+      </template>
+      <template v-if="part?.name === 'h2'">
+         <h2>
+            <template v-for="child in part.children">
+               <TextPart :uuid="uuid" :part="child" :highlight="highlight"></TextPart>
+            </template>
+         </h2>
+      </template>
+      <template v-if="part?.name === 'h3'">
+         <h3>
+            <template v-for="child in part.children">
+               <TextPart :uuid="uuid" :part="child" :highlight="highlight"></TextPart>
+            </template>
+         </h3>
+      </template>
+   </template> -->
 
-         'text-red-600': isTitle1,
-         'text-blue-600': isTitle2,
-         'text-red-600': isTitle3,
-         'text-blue-600': isTitle4,
 
-         'py-4': isTitle1,
-         'py-3': isTitle2,
-         'py-2': isTitle3,
-         'py-1': isTitle4,
-
-         'list-disc': isLi,
-         'pl-5': isLi,
-         'space-y-2': isLi,
-      }"
-      @click="onClick"
-
-      v-html="highlightedPart?.text"
-   ></div>
-
-   <slot></slot>
+   <template v-for="child in part.children">
+      <TextPart :uuid="uuid" :part="child" :highlight="highlight"></TextPart>
+   </template>
 </template>
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 
 import { getOrCreateHighlightedPart, updateHighlightedPart } from '/src/use/useHighlightedPart.js'
+import TextParts from '/src/components/TextParts.vue'
 
 
 const props = defineProps({
-   userid: {
-      type: Number,
+   uuid: {
+      type: String,
       required: true
-   },
-   topic_id: {
-      type: Number,
-   },
-   card_id: {
-      type: Number,
-   },
-   case_study_id: {
-      type: Number,
    },
    part: {
       type: Object,
@@ -71,22 +76,13 @@ const props = defineProps({
 const highlightedPart = ref()
 
 onMounted(async () => {
-   highlightedPart.value = await getOrCreateHighlightedPart(props.userid, props.topic_id, props.card_id, props.case_study_id, props.part.text, 'black')
+   // highlightedPart.value = await getOrCreateHighlightedPart(props.uuid, props.part.text, 'black')
 })
 
-const type = computed(() => props.part.type)
-
-const isSpan = computed(() => type.value === 'span')
-const isTitle = computed(() => type.value === 'title')
-const isTitle1 = computed(() => isTitle.value && props.part.cat === 1)
-const isTitle2 = computed(() => isTitle.value && props.part.cat === 2)
-const isTitle3 = computed(() => isTitle.value && props.part.cat === 3)
-const isTitle4 = computed(() => isTitle.value && props.part.cat === 4)
-const isBoldSpan = computed(() => type.value === 'bold-span')
-const isLexicon = computed(() => type.value === 'lexicon')
-const isLi = computed(() => type.value === 'li')
 
 async function onClick() {
+   console.log('click')
+   return
    const color = highlightedPart.value.color === props.highlight ? 'none' : props.highlight
    highlightedPart.value = await updateHighlightedPart(highlightedPart.value.hash, { color })
 }

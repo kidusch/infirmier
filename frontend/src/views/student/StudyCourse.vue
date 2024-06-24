@@ -36,12 +36,12 @@
       </section>
 
       <!-- Course content -->
-      <main class="mt-4">
-         <div v-html="course?.content"></div>
-      </main>
       <!-- <main class="mt-4">
-         <TextParts :userid="userid" :topic_id="topic_id" :card_id="undefined" :parts="parts" :highlight="highlight"></TextParts>
+         <div v-html="course?.content"></div>
       </main> -->
+      <main class="mt-4">
+         <TextParts :uuid="`course-${userid}-${topic_id}-${course_id}`" :parts="parts" :highlight="highlight"></TextParts>
+      </main>
 
       <!-- Highlight pens -->
       <ul class="menu menu-horizontal bg-slate-50 rounded-box fixed right-0 bottom-0">
@@ -146,6 +146,8 @@ const course = computed(() => courseOfId.value(props.course_id))
 const userCourse = computed(() => theUserCourse.value(props.userid, props.course_id))
 
 const parts = ref([])
+const hash = computed(() => stringHash(`course-${userid},${topic_id},${course_id},${text}`) + '')
+
 
 onMounted(async () => {
    try {
