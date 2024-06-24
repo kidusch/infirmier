@@ -44,7 +44,7 @@
       </main> -->
 
       <!-- Highlight pens -->
-      <!-- <ul class="menu menu-horizontal bg-slate-50 rounded-box fixed right-0 bottom-0">
+      <ul class="menu menu-horizontal bg-slate-50 rounded-box fixed right-0 bottom-0">
          <li>
             <a :class="{ active: highlight === 'yellow' }" @click="highlight = 'yellow'">
                <img class="h-6 w-6" src="/src/assets/highlighter-yellow.svg">
@@ -65,7 +65,7 @@
                <img class="h-6 w-6" src="/src/assets/eraser.svg">
             </a>
          </li>
-      </ul> -->
+      </ul>
 
 
       <!-- Note button -->
@@ -111,8 +111,9 @@ import { theUserCourse, updateUserCourse } from '/src/use/useUserCourse'
 
 import router from "/src/router"
 
-import parser from '/src/lib/grammar.js'
-// import TextParts from '/src/components/TextParts.vue'
+// import parser from '/src/lib/grammar.js'
+import parser from '/src/lib/html.js'
+import TextParts from '/src/components/TextParts.vue'
 
 
 const props = defineProps({
@@ -144,15 +145,15 @@ const topic = computed(() => topicOfId.value(props.topic_id))
 const course = computed(() => courseOfId.value(props.course_id))
 const userCourse = computed(() => theUserCourse.value(props.userid, props.course_id))
 
-// const parts = ref([])
+const parts = ref([])
 
 onMounted(async () => {
-   // try {
-   //    parts.value = parser.parse(course.value.content)
-   //    console.log('parts', parts.value)
-   // } catch(err) {
-   //    parts.value = ''
-   // }
+   try {
+      parts.value = parser.parse(course.value.content)
+      console.log('parts', parts.value)
+   } catch(err) {
+      parts.value = ''
+   }
 })
 
 const onDoneClick = async (prevValue) => {

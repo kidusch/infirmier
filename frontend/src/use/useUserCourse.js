@@ -69,8 +69,8 @@ export const theUserCourse = computed(() => (user_id, course_id) => {
          userCourseState.value.userCourseCache[userCourse.id] = userCourse
          userCourseState.value.theUserCourseStatus[key] = 'ready'
       } else {
-         app.service('user_card').create({
-            data: { user_id, card_id },
+         app.service('user_course').create({
+            data: { user_id, course_id },
          }).then(userCourse => {
             userCourseState.value.userCourseCache[userCourse.id] = userCourse
             userCourseState.value.theUserCourseStatus[key] = 'ready'

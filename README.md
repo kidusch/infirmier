@@ -49,6 +49,7 @@ https://omrelli.ug/nearley-playground/
 Nom : Fantone
 Prénom : Charlene
 Email : devenir.linfirmier.que.tu.veux.etre@gmail.com
+admin@journaldebordide.com
 
 Téléphone : +41767338336
 

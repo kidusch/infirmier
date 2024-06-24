@@ -8,7 +8,7 @@
 
             <a class="flex items-center gap-4 lg:flex-1 lg:px-12" href="#">
                <img class="h-12" src="/src/assets/logo.svg" alt="Logo">
-               <h3 class="max-lg:hidden">Journal de bord infirmier</h3>
+               <h3 class="max-lg:hidden">Journal de bord IDE</h3>
             </a>
 
             <button>
@@ -30,7 +30,7 @@
 
             <div class="flex flex-col gap-4">
                <h1>
-                  Journal de bord infirmier
+                  Journal de bord IDE
                </h1>
                <p v-html="adminMisc?.welcome_text"></p>
             </div>

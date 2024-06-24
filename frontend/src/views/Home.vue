@@ -11,7 +11,7 @@
 
             <router-link class="flex items-center gap-4 lg:flex-1 lg:px-12" :to="`/home/${userid}/study-ue`">
                <img class="h-12" src="/src/assets/logo.svg" alt="Logo">
-               <h3 class="max-lg:hidden">Journal de bord infirmier</h3>
+               <h3 class="max-lg:hidden">Journal de bord IDE</h3>
             </router-link>
 
             <div class="cursor-pointer link hover:text-red-600 text-blue-600" @click="signout">
