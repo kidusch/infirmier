@@ -21,16 +21,22 @@ export const resetUseUserCaseStudy = () => {
 app.service('user_case_study').on('create', (userCaseStudy) => {
    console.log('USER_CASE_STUDY EVENT created', userCaseStudy)
    userCaseStudyState.value.userCaseStudyCache[userCaseStudy.id] = userCaseStudy
+   const key = userCaseStudy.user_id + ':' + userCaseStudy.case_study_id
+   userCaseStudyState.value.theUserCaseStudyStatus[key] = 'ready'
 })
 
 app.service('user_case_study').on('update', (userCaseStudy) => {
    console.log('USER_CASE_STUDY EVENT update', userCaseStudy)
    userCaseStudyState.value.userCaseStudyCache[userCaseStudy.id] = userCaseStudy
+   const key = userCaseStudy.user_id + ':' + userCaseStudy.case_study_id
+   userCaseStudyState.value.theUserCaseStudyStatus[key] = 'ready'
 })
 
 app.service('user_case_study').on('delete', (userCaseStudy) => {
    console.log('USER_CASE_STUDY EVENT delete', userCaseStudy)
    delete userCaseStudyState.value.userCaseStudyCache[userCaseStudy.id]
+   const key = userCaseStudy.user_id + ':' + userCaseStudy.case_study_id
+   delete userCaseStudyState.value.theUserCaseStudyStatus[key]
 })
 
 

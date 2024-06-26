@@ -21,16 +21,19 @@ export const resetUseCaseStudy = () => {
 app.service('case_study').on('create', caseStudy => {
    console.log('CASE_STUDY EVENT created', caseStudy)
    caseStudyState.value.caseStudyCache[caseStudy.id] = caseStudy
+   caseStudyState.value.caseStudyStatus[caseStudy.id] = 'ready'
 })
 
 app.service('case_study').on('update', caseStudy => {
    console.log('CASE_STUDY EVENT update', caseStudy)
    caseStudyState.value.caseStudyCache[caseStudy.id] = caseStudy
+   caseStudyState.value.caseStudyStatus[caseStudy.id] = 'ready'
 })
 
 app.service('case_study').on('delete', caseStudy => {
    console.log('CASE_STUDY EVENT delete', caseStudy)
    delete caseStudyState.value.caseStudyCache[caseStudy.id]
+   delete caseStudyState.value.caseStudyStatus[caseStudy.id]
 })
 
 
@@ -55,7 +58,7 @@ export const caseStudyOfId = computed(() => id => {
    })
    .catch(err => {
       console.log('caseStudyOfId err', id, err)
-      caseStudyState.value.caseStudyStatus[id] = undefined
+      delete caseStudyState.value.caseStudyStatus[id]
    })
 })
 
@@ -96,6 +99,7 @@ export const updateCaseStudy = async (id, data) => {
 export const removeCaseStudy = async (id) => {
    await app.service('case_study').delete({ where: { id }})
    delete caseStudyState.value.caseStudyCache[id]
+   delete caseStudyState.value.caseStudyStatus[id]
 }
 
 export const getCaseStudyList = async (topic_id) => {

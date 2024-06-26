@@ -22,16 +22,19 @@ export const resetUseUser = () => {
 app.service('user').on('create', user => {
    console.log('USER EVENT created', user)
    userState.value.userCache[user.id] = user
+   userState.value.userStatus[user.id] = 'ready'
 })
 
 app.service('user').on('update', user => {
    console.log('USER EVENT update', user)
    userState.value.userCache[user.id] = user
+   userState.value.userStatus[user.id] = 'ready'
 })
 
 app.service('user').on('delete', user => {
    console.log('USER EVENT delete', user)
    delete userState.value.userCache[user.id]
+   delete userState.value.userStatus[user.id]
 })
 
 
@@ -56,6 +59,6 @@ export const userOfId = computed(() => id => {
    })
    .catch(err => {
       console.log('userOfId err', id, err)
-      userState.value.userStatus[id] = undefined
+      delete userState.value.userStatus[id]
    })
 })

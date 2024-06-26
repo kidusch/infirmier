@@ -21,16 +21,19 @@ export const resetUseTopic = () => {
 app.service('topic').on('create', topic => {
    console.log('TOPIC EVENT created', topic)
    topicState.value.topicCache[topic.id] = topic
+   topicState.value.topicStatus[topic.id] = 'ready'
 })
 
 app.service('topic').on('update', topic => {
    console.log('TOPIC EVENT update', topic)
    topicState.value.topicCache[topic.id] = topic
+   topicState.value.topicStatus[topic.id] = 'ready'
 })
 
 app.service('topic').on('delete', topic => {
    console.log('TOPIC EVENT delete', topic)
    delete topicState.value.topicCache[topic.id]
+   delete topicState.value.topicStatus[topic.id]
 })
 
 

@@ -39,8 +39,11 @@
       <!-- <main class="mt-4">
          <div v-html="course?.content"></div>
       </main> -->
-      <main class="mt-4">
+      <!-- <main class="mt-4">
          <TextParts :uuid="`course-${userid}-${topic_id}-${course_id}`" :parts="parts" :highlight="highlight"></TextParts>
+      </main> -->
+      <main class="mt-4">
+         <DOMNode :uuid="`course-${userid}-${topic_id}-${course_id}`" :node="node" :highlight="highlight"></DOMNode>
       </main>
 
       <!-- Highlight pens -->
@@ -113,7 +116,8 @@ import router from "/src/router"
 
 // import parser from '/src/lib/grammar.js'
 import parser from '/src/lib/html.js'
-import TextParts from '/src/components/TextParts.vue'
+// import TextParts from '/src/components/TextParts.vue'
+import DOMNode from '/src/components/DOMNode.vue'
 
 
 const props = defineProps({
@@ -145,16 +149,16 @@ const topic = computed(() => topicOfId.value(props.topic_id))
 const course = computed(() => courseOfId.value(props.course_id))
 const userCourse = computed(() => theUserCourse.value(props.userid, props.course_id))
 
-const parts = ref([])
-const hash = computed(() => stringHash(`course-${userid},${topic_id},${course_id},${text}`) + '')
+// const parts = ref([])
+const node = ref()
 
 
 onMounted(async () => {
    try {
-      parts.value = parser.parse(course.value.content)
-      console.log('parts', parts.value)
+      node.value = parser.parse(course.value.content)
+      console.log('node', node.value)
    } catch(err) {
-      parts.value = ''
+      node.value = undefined
    }
 })
 

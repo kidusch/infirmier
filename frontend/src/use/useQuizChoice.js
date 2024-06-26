@@ -22,16 +22,19 @@ export const resetUseQuizChoice = () => {
 app.service('quiz_choice').on('create', (quizChoice) => {
    console.log('QUIZ_CHOICE EVENT created', quizChoice)
    quizChoiceState.value.quizChoiceCache[quizChoice.id] = quizChoice
+   quizChoiceState.value.quizChoiceStatus[quizChoice.id] = 'ready'
 })
 
 app.service('quiz_choice').on('update', (quizChoice) => {
    console.log('QUIZ_CHOICE EVENT update', quizChoice)
    quizChoiceState.value.quizChoiceCache[quizChoice.id] = quizChoice
+   quizChoiceState.value.quizChoiceStatus[quizChoice.id] = 'ready'
 })
 
 app.service('quiz_choice').on('delete', (quizChoice) => {
    console.log('QUIZ_CHOICE EVENT delete', quizChoice)
    delete quizChoiceState.value.quizChoiceCache[quizChoice.id]
+   delete quizChoiceState.value.quizChoiceStatus[quizChoice.id]
 })
 
 
@@ -56,7 +59,7 @@ export const quizChoiceOfId = computed(() => (id) => {
    })
    .catch(err => {
       console.log('quizChoiceOfId err', id, err)
-      quizChoiceState.value.quizChoiceStatus[id] = undefined
+      delete quizChoiceState.value.quizChoiceStatus[id]
    })
 })
 

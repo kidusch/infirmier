@@ -21,6 +21,7 @@ export const resetUseCard = () => {
 app.service('card').on('create', card => {
    console.log('CARD EVENT created', card)
    cardState.value.cardCache[card.id] = card
+   cardState.value.cardStatus[id] = 'ready'
 })
 
 app.service('card').on('update', card => {
@@ -31,6 +32,7 @@ app.service('card').on('update', card => {
 app.service('card').on('delete', card => {
    console.log('CARD EVENT delete', card)
    delete cardState.value.cardCache[card.id]
+   delete cardState.value.cardStatus[id]
 })
 
 
@@ -39,6 +41,7 @@ export const getCard = async (id) => {
    if (card) return card
    card = await app.service('card').findUnique({ where: { id }})
    cardState.value.cardCache[id] = card
+   cardState.value.cardStatus[id] = 'ready'
    return card
 }
 
@@ -95,6 +98,7 @@ export const updateCard = async (id, data) => {
 export const removeCard = async (id) => {
    await app.service('card').delete({ where: { id }})
    delete cardState.value.cardCache[id]
+   delete cardState.value.cardStatus[id]
 }
 
 export const getCardList = async (topic_id) => {

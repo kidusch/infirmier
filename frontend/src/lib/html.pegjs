@@ -8,7 +8,8 @@
 }
 
 start
-  = element*
+  = children:element*
+  { return makeNode('body', [], children); }
 
 element
   = openTag:openTag children:element* closeTag?

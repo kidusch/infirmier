@@ -21,16 +21,19 @@ export const resetUseQuiz = () => {
 app.service('quiz').on('create', quiz => {
    console.log('QUIZ EVENT created', quiz)
    quizState.value.quizCache[quiz.id] = quiz
+   quizState.value.quizStatus[quiz.id] = 'ready'
 })
 
 app.service('quiz').on('update', quiz => {
    console.log('QUIZ EVENT update', quiz)
    quizState.value.quizCache[quiz.id] = quiz
+   quizState.value.quizStatus[quiz.id] = 'ready'
 })
 
 app.service('quiz').on('delete', quiz => {
    console.log('QUIZ EVENT delete', quiz)
    delete quizState.value.quizCache[quiz.id]
+   delete quizState.value.quizStatus[quiz.id]
 })
 
 

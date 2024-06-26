@@ -21,16 +21,19 @@ export const resetUseCourse = () => {
 app.service('course').on('create', course => {
    console.log('COURSE EVENT created', course)
    courseState.value.courseCache[course.id] = course
+   courseState.value.courseStatus[course.id] = 'ready'
 })
 
 app.service('course').on('update', course => {
    console.log('COURSE EVENT update', course)
    courseState.value.courseCache[course.id] = course
+   courseState.value.courseStatus[course.id] = 'ready'
 })
 
 app.service('course').on('delete', course => {
    console.log('COURSE EVENT delete', course)
    delete courseState.value.courseCache[course.id]
+   delete courseState.value.courseStatus[course.id]
 })
 
 
@@ -41,6 +44,7 @@ export const getCourse = async (id) => {
    if (course) return course
    course = await app.service('course').findUnique({ where: { id }})
    courseState.value.courseCache[id] = course
+   courseState.value.courseStatus[id] = 'ready'
    return course
 }
 
@@ -56,7 +60,7 @@ export const courseOfId = computed(() => (id) => {
    })
    .catch(err => {
       console.log('courseOfId err', id, err)
-      courseState.value.courseStatus[id] = undefined
+      delete courseState.value.courseStatus[id]
    })
 })
 

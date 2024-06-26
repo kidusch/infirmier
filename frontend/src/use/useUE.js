@@ -21,16 +21,19 @@ export const resetUseUE = () => {
 app.service('ue').on('create', ue => {
    console.log('UE EVENT created', ue)
    ueState.value.ueCache[ue.id] = ue
+   ueState.value.ueStatus[ue.id] = 'ready'
 })
 
 app.service('ue').on('update', ue => {
    console.log('UE EVENT update', ue)
    ueState.value.ueCache[ue.id] = ue
+   ueState.value.ueStatus[ue.id] = 'ready'
 })
 
 app.service('ue').on('delete', ue => {
    console.log('UE EVENT delete', ue)
    delete ueState.value.ueCache[ue.id]
+   delete ueState.value.ueStatus[ue.id]
 })
 
 
@@ -55,7 +58,7 @@ export const ueOfId = computed(() => id => {
    })
    .catch(err => {
       console.log('ueOfId err', id, err)
-      ueState.value.ueStatus[id] = undefined
+      delete ueState.value.ueStatus[id]
    })
 })
 

@@ -112,7 +112,7 @@ export const getSubUEList = async (ue_id) => {
          }
          subUEState.value.subUEListStatus[ue_id] = 'ready'
       } catch(err) {
-         subUEState.value.subUEListStatus[ue_id] = undefined
+         delete subUEState.value.subUEListStatus[ue_id]
          throw err
       }
    }

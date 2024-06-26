@@ -20,16 +20,22 @@ export const resetUseUserCard = () => {
 app.service('user_card').on('create', (userCard) => {
    console.log('USER_CARD EVENT created', userCard)
    userCardState.value.userCardCache[userCard.id] = userCard
+   const key = userCard.user_id + ':' + userCard.card_id
+   userCardState.value.theUserCardStatus[key] = 'ready'
 })
 
 app.service('user_card').on('update', (userCard) => {
    console.log('USER_CARD EVENT update', userCard)
    userCardState.value.userCardCache[userCard.id] = userCard
+   const key = userCard.user_id + ':' + userCard.card_id
+   userCardState.value.theUserCardStatus[key] = 'ready'
 })
 
 app.service('user_card').on('delete', (userCard) => {
    console.log('USER_CARD EVENT delete', userCard)
    delete userCardState.value.userCardCache[userCard.id]
+   const key = userCard.user_id + ':' + userCard.card_id
+   delete userCardState.value.theUserCardStatus[key]
 })
 
 // get or create the unique user_card associated to (user_id, card_id)

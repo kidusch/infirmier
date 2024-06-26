@@ -21,16 +21,19 @@ export const resetUseLegislation = () => {
 app.service('legislation').on('create', legislation => {
    console.log('LEGISLATION EVENT created', legislation)
    legislationState.value.legislationCache[legislation.id] = legislation
+   legislationState.value.legislationStatus[legislation.id] = 'ready'
 })
 
 app.service('legislation').on('update', legislation => {
    console.log('LEGISLATION EVENT update', legislation)
    legislationState.value.legislationCache[legislation.id] = legislation
+   legislationState.value.legislationStatus[legislation.id] = 'ready'
 })
 
 app.service('legislation').on('delete', legislation => {
    console.log('LEGISLATION EVENT delete', legislation)
    delete legislationState.value.legislationCache[legislation.id]
+   delete legislationState.value.legislationStatus[legislation.id]
 })
 
 
@@ -55,7 +58,7 @@ export const legislationOfId = computed(() => id => {
    })
    .catch(err => {
       console.log('legislationOfId err', id, err)
-      legislationState.value.legislationStatus[id] = undefined
+      delete legislationState.value.legislationStatus[id]
    })
 })
 

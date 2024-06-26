@@ -21,16 +21,19 @@ export const resetUseCare = () => {
 app.service('care').on('create', care => {
    console.log('CARE EVENT created', care)
    careState.value.careCache[care.id] = care
+   careState.value.careStatus[care.id] = 'ready'
 })
 
 app.service('care').on('update', care => {
    console.log('CARE EVENT update', care)
    careState.value.careCache[care.id] = care
+   careState.value.careStatus[care.id] = 'ready'
 })
 
 app.service('care').on('delete', care => {
    console.log('CARE EVENT delete', care)
    delete careState.value.careCache[care.id]
+   delete careState.value.careStatus[care.id]
 })
 
 
@@ -55,7 +58,7 @@ export const careOfId = computed(() => id => {
    })
    .catch(err => {
       console.log('careOfId err', id, err)
-      careState.value.careStatus[id] = undefined
+      delete careState.value.careStatus[id]
    })
 })
 
@@ -93,6 +96,7 @@ export const updateCare = async (id, data) => {
 export const removeCare = async (id) => {
    await app.service('care').delete({ where: { id }})
    delete careState.value.careCache[id]
+   delete careState.value.careStatus[id]
 }
 
 // export const getCareList = async () => {
@@ -122,7 +126,7 @@ export const listOfCare = computed(() => {
          careState.value.careListStatus = 'ready'
       }).catch(err => {
          console.log('listOfCare err', err)
-         careState.value.careListStatus = undefined
+         delete careState.value.careListStatus
       })
    }
    return []

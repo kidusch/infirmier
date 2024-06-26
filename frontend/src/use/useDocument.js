@@ -21,6 +21,7 @@ export const resetUseDocument = () => {
 app.service('document').on('create', document => {
    console.log('DOCUMENT EVENT created', document)
    documentState.value.documentCache[document.id] = document
+   documentState.value.documentStatus[document.id] = 'ready'
 })
 
 app.service('document').on('update', document => {
@@ -55,7 +56,7 @@ export const documentOfId = computed(() => id => {
    })
    .catch(err => {
       console.log('documentOfId err', id, err)
-      documentState.value.documentStatus[id] = undefined
+      delete documentState.value.documentStatus[id]
    })
 })
 

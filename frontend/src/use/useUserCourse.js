@@ -20,17 +20,22 @@ export const resetUseUserCourse = () => {
 app.service('user_course').on('create', (userCourse) => {
    console.log('USER_COURSE EVENT created', userCourse)
    userCourseState.value.userCourseCache[userCourse.id] = userCourse
-   userCourseState.value.theUserCourseStatus[userCourse.id] = 'ready'
+   const key = userCourse.user_id + ':' + userCourse.course_id
+   userCourseState.value.theUserCourseStatus[key] = 'ready'
 })
 
 app.service('user_course').on('update', (userCourse) => {
    console.log('USER_COURSE EVENT update', userCourse)
    userCourseState.value.userCourseCache[userCourse.id] = userCourse
+   const key = userCourse.user_id + ':' + userCourse.course_id
+   userCourseState.value.theUserCourseStatus[key] = 'ready'
 })
 
 app.service('user_course').on('delete', (userCourse) => {
    console.log('USER_COURSE EVENT delete', userCourse)
    delete userCourseState.value.userCourseCache[userCourse.id]
+   const key = userCourse.user_id + ':' + userCourse.course_id
+   delete userCourseState.value.theUserCourseStatus[key]
 })
 
 // get or create the unique user_course associated to (user_id, course_id)
