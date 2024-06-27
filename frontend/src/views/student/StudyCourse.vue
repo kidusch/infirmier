@@ -36,35 +36,29 @@
       </section>
 
       <!-- Course content -->
-      <!-- <main class="mt-4">
-         <div v-html="course?.content"></div>
-      </main> -->
-      <!-- <main class="mt-4">
-         <TextParts :uuid="`course-${userid}-${topic_id}-${course_id}`" :parts="parts" :highlight="highlight"></TextParts>
-      </main> -->
       <main class="mt-4">
-         <DOMNode :uuid="`course-${userid}-${topic_id}-${course_id}`" :node="node" :highlight="highlight"></DOMNode>
+         <div v-html="userCourse?.highlighted_content || course?.content" ref="doc" @click="onClick"></div>
       </main>
 
       <!-- Highlight pens -->
       <ul class="menu menu-horizontal bg-slate-50 rounded-box fixed right-0 bottom-0">
          <li>
-            <a :class="{ active: highlight === 'yellow' }" @click="highlight = 'yellow'">
+            <a :class="{ active: highlightColor === 'yellow' }" @click="highlightColor = 'yellow'">
                <img class="h-6 w-6" src="/src/assets/highlighter-yellow.svg">
             </a>
          </li>
          <li>
-            <a :class="{ active: highlight === 'orange' }" @click="highlight = 'orange'">
+            <a :class="{ active: highlightColor === 'orange' }" @click="highlightColor = '#FFCC66'">
                <img class="h-6 w-6" src="/src/assets/highlighter-orange.svg">
             </a>
          </li>
          <li>
-            <a :class="{ active: highlight === 'purple' }" @click="highlight = 'purple'">
+            <a :class="{ active: highlightColor === 'purple' }" @click="highlightColor = '#FF99CC'">
                <img class="h-6 w-6" src="/src/assets/highlighter-purple.svg">
             </a>
          </li>
          <li>
-            <a :class="{ active: highlight === 'none' }" @click="highlight = 'none'">
+            <a :class="{ active: highlightColor === null }" @click="highlightColor = null">
                <img class="h-6 w-6" src="/src/assets/eraser.svg">
             </a>
          </li>
@@ -103,7 +97,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
 import { ueOfId } from '/src/use/useUE'
@@ -114,10 +108,7 @@ import { theUserCourse, updateUserCourse } from '/src/use/useUserCourse'
 
 import router from "/src/router"
 
-// import parser from '/src/lib/grammar.js'
-import parser from '/src/lib/html.js'
-// import TextParts from '/src/components/TextParts.vue'
-import DOMNode from '/src/components/DOMNode.vue'
+const doc = ref(null)
 
 
 const props = defineProps({
@@ -149,18 +140,7 @@ const topic = computed(() => topicOfId.value(props.topic_id))
 const course = computed(() => courseOfId.value(props.course_id))
 const userCourse = computed(() => theUserCourse.value(props.userid, props.course_id))
 
-// const parts = ref([])
-const node = ref()
-
-
-onMounted(async () => {
-   try {
-      node.value = parser.parse(course.value.content)
-      console.log('node', node.value)
-   } catch(err) {
-      node.value = undefined
-   }
-})
+const highlightColor = ref()
 
 const onDoneClick = async (prevValue) => {
    await updateUserCourse(userCourse.value.id, { done: !prevValue })
@@ -190,4 +170,20 @@ const onInputText = async (ev) => {
    userCourse.value = await updateUserCourse(userCourse.value.id, { note: ev.target.value })
 }
 const debouncedInputText = useDebounceFn(onInputText, 500)
+
+const onClick = async (event) => {
+   console.log('onClick', event.target.nodeName, event.target.nodeType, event.target.style)
+   if (highlightColor.value) {
+      // pen color
+      if (!event.target.getAttribute('data-background-color')) {
+         // store the original background color
+         event.target.setAttribute('data-background-color', event.target.style.backgroundColor)
+      }
+      event.target.style.backgroundColor = highlightColor.value
+   } else {
+      // eraser
+      event.target.style.backgroundColor = event.target.getAttribute('data-background-color')
+   }
+   await updateUserCourse(userCourse.value.id, { highlighted_content: doc.value.outerHTML })
+}
 </script>

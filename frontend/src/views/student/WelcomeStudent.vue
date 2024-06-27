@@ -44,7 +44,6 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 
-// import { preload } from '/src/use/useProgress'
 import { getUserCourseList } from '/src/use/useUserCourse'
 import { getUserCardList } from '/src/use/useUserCard'
 import { getUserQuizList } from '/src/use/useUserQuiz'
@@ -71,8 +70,6 @@ const props = defineProps({
 const perc = ref(0)
 
 onMounted(async () => {
-   // await preload(props.userid)
-
    const userid = props.userid
 
    try {
