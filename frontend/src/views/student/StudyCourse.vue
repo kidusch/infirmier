@@ -37,13 +37,14 @@
 
       <!-- Course content -->
       <main class="mt-4">
-         <div v-html="userCourse?.highlighted_content || course?.content" ref="doc" @click="onClick"></div>
+         <!-- <div v-html="userCourse?.highlighted_content || course?.content" ref="doc" @click="onClick"></div> -->
+         <div v-html="courseContent" ref="doc" @click="onClick"></div>
       </main>
 
       <!-- Highlight pens -->
       <ul class="menu menu-horizontal bg-slate-50 rounded-box fixed right-0 bottom-0">
          <li>
-            <a :class="{ active: highlightColor === 'yellow' }" @click="highlightColor = 'yellow'">
+            <a :class="{ active: highlightColor === 'yellow' }" @click="highlightColor = '#FFFF66'">
                <img class="h-6 w-6" src="/src/assets/highlighter-yellow.svg">
             </a>
          </li>
@@ -140,6 +141,14 @@ const topic = computed(() => topicOfId.value(props.topic_id))
 const course = computed(() => courseOfId.value(props.course_id))
 const userCourse = computed(() => theUserCourse.value(props.userid, props.course_id))
 
+// annotations are lost when more recent course content is available
+const courseContent = computed(() => {
+   if (!course.value?.content) return undefined
+   if (!userCourse.value?.highlighted_content || !userCourse.value?.highlighted_content_time) return course.value.content
+   if (userCourse.value.highlighted_content_time <= course.value.last_modified_at) return course.value.content
+   return userCourse.value.highlighted_content
+})
+
 const highlightColor = ref()
 
 const onDoneClick = async (prevValue) => {
@@ -184,6 +193,9 @@ const onClick = async (event) => {
       // eraser
       event.target.style.backgroundColor = event.target.getAttribute('data-background-color')
    }
-   await updateUserCourse(userCourse.value.id, { highlighted_content: doc.value.outerHTML })
+   await updateUserCourse(userCourse.value.id, {
+      highlighted_content: doc.value.outerHTML,
+      highlighted_content_time: new Date(),
+   })
 }
 </script>

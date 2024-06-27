@@ -94,6 +94,7 @@ model highlighted_part {
 model course {
   id         Int      @id @default(autoincrement())
   created_at DateTime @default(now()) @db.Timestamptz(6)
+  last_modified_at DateTime?
   topic_id   Int
   rank       Int
   title      String
@@ -181,6 +182,7 @@ model user_course {
   course_id  Int
   done       Boolean  @default(false) // = le cours est acquis par l'utilisateur
   highlighted_content String? // modified course content
+  highlighted_content_time DateTime?
   note       String?
 
   user user @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)

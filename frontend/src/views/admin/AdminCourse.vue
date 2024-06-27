@@ -107,7 +107,10 @@ onMounted(async () => {
    courseContent.value = course.content
 })
 const saveContent = async () => {
-   await updateCourse(props.course_id, { content: courseContent.value })
+   await updateCourse(props.course_id, {
+      content: courseContent.value,
+      last_modified_at: new Date(),
+   })
 }
 
 // const errorMessage = ref('')
