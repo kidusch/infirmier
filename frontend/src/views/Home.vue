@@ -103,6 +103,7 @@ const user = computed(() => userOfId.value(props.userid))
 
 const menuItems = computed(() => {
    const items = []
+
    if (user.value?.admin) {
       items.push({
          label: "Contenu",
@@ -125,10 +126,16 @@ const menuItems = computed(() => {
          iconPath: revisionIconPath,
       })
       items.push({
+         label: "Lexique",
+         path: `/home/${props.userid}/admin-lexicon`,
+         iconPath: revisionIconPath,
+      })
+      items.push({
          label: "Divers",
          path: `/home/${props.userid}/admin-misc`,
          iconPath: revisionIconPath,
       })
+
    } else {
       items.push({
          label: "Cours",

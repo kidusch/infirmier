@@ -8,8 +8,7 @@ const initialState = () => ({
    isWaiting: false,
 })
 
-const key = 'app-state'
-export const appState = useSessionStorage(key, initialState(), { mergeDefaults: true })
+export const appState = useSessionStorage('app-state', initialState(), { mergeDefaults: true })
 
 export const resetUseAppState = () => {
    appState.value = null

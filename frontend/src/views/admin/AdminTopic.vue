@@ -30,14 +30,14 @@
 
             <div class="flex flex-col gap-3">
                <div v-for="course, index in listOfCourse(topic_id)">
-                  <ListItem
+                  <SortableListItem
                      :index="index" :list="listOfCourse(topic_id)"
                      @update="(e1, e2) => updateCourses(e1, e2)"
                      @remove="deleteCourse(course)"
                      @select="selectCourse(course.id)"
                      @show="setCourseHidden(course.id, false)"
                      @hide="setCourseHidden(course.id, true)"
-                  ></ListItem>
+                  ></SortableListItem>
                </div>
 
                <div class="flex gap-3 items-center">
@@ -54,14 +54,14 @@
 
             <div class="flex flex-col gap-3">
                <div v-for="card, index in listOfCard(topic_id)">
-                  <ListItem
+                  <SortableListItem
                      :index="index" :list="listOfCard(topic_id)"
                      @update="(e1, e2) => updateCards(e1, e2)"
                      @remove="deleteCard(card)"
                      @select="selectCard(card.id)"
                      @show="setCardHidden(card.id, false)"
                      @hide="setCardHidden(card.id, true)"
-                  ></ListItem>
+                  ></SortableListItem>
                </div>
 
                <div class="flex gap-3 items-center">
@@ -78,14 +78,14 @@
 
             <div class="flex flex-col gap-3">
                <div v-for="quiz, index in listOfQuiz(topic_id)">
-                  <ListItem
+                  <SortableListItem
                      :index="index" :list="listOfQuiz(topic_id)"
                      @update="(e1, e2) => updateQuizs(e1, e2)"
                      @remove="deleteQuiz(quiz)"
                      @select="selectQuiz(quiz.id)"
                      @show="setQuizHidden(quiz.id, false)"
                      @hide="setQuizHidden(quiz.id, true)"
-                  ></ListItem>
+                  ></SortableListItem>
                </div>
 
                <div class="flex gap-3 items-center">
@@ -102,14 +102,14 @@
 
             <div class="flex flex-col gap-3">
                <div v-for="caseStudy, index in listOfCaseStudy(topic_id)">
-                  <ListItem
+                  <SortableListItem
                      :index="index" :list="listOfCaseStudy(topic_id)"
                      @update="(e1, e2) => updateCaseStudies(e1, e2)"
                      @remove="deleteCaseStudy(caseStudy)"
                      @select="selectCaseStudy(caseStudy.id)"
                      @show="setCaseStudyHidden(caseStudy.id, false)"
                      @hide="setCaseStudyHidden(caseStudy.id, true)"
-                  ></ListItem>
+                  ></SortableListItem>
                </div>
 
                <div class="flex gap-3 items-center">
@@ -139,7 +139,7 @@ import { listOfQuiz, createQuiz, updateQuiz, removeQuiz } from '/src/use/useQuiz
 import { listOfCaseStudy, createCaseStudy, updateCaseStudy, removeCaseStudy } from '/src/use/useCaseStudy'
 import router from '/src/router'
 
-import ListItem from '/src/components/ListItem.vue'
+import SortableListItem from '/src/components/SortableListItem.vue'
 
 const props = defineProps({
    userid: {

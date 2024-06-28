@@ -230,7 +230,23 @@ const routes = [
                legislation_id: parseInt(route.params.legislation_id),
             }),
          },
-  
+
+         {
+            path: 'admin-lexicon',
+            component: () => import('/src/views/admin/AdminLexicon.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+            }),
+         },
+         {
+            path: 'admin-lexicon/:lexicon_id',
+            component: () => import('/src/views/admin/AdminLexiconDetail.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+               lexicon_id: parseInt(route.params.lexicon_id),
+            }),
+         },
+
          {
             path: 'welcome-student',
             component: () => import('/src/views/student/WelcomeStudent.vue'),

@@ -51,13 +51,13 @@
 
             <div class="flex flex-col gap-3">
                <div v-for="choice, index in quizChoiceList">
-                  <ListItem
+                  <SortableListItem
                      field="text"
                      :index="index" :list="quizChoiceList"
                      @update="updateChoiceList"
                      @remove="deleteChoice(choice.id)"
                      @select="selectChoice(choice.id)"
-                  ></ListItem>
+                  ></SortableListItem>
                </div>
 
                <div class="flex gap-3 items-center">
@@ -85,7 +85,7 @@ import { quizOfId, updateQuiz } from '/src/use/useQuiz'
 import { listOfQuizChoices, createQuizChoice, removeQuizChoice } from '/src/use/useQuizChoice'
 import router from '/src/router'
 
-import ListItem from '/src/components/ListItem.vue'
+import SortableListItem from '/src/components/SortableListItem.vue'
 
 
 const props = defineProps({

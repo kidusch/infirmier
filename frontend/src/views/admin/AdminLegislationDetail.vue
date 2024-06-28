@@ -2,7 +2,7 @@
    <main class="flex-1 container max-w-7xl">
 
       <!-- Header -->
-      <header class="chapter-course my-6">
+      <header class="chapter-card my-6">
          <p class="leading-loose">
             <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/admin-legislation`">Législation</router-link>
             /
