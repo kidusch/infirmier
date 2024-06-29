@@ -162,6 +162,12 @@ const menuItems = computed(() => {
          path: `/home/${props.userid}/legislation`,
          iconPath: revisionIconPath,
       })
+
+      items.push({
+         label: "Lexique",
+         path: `/home/${props.userid}/lexicon`,
+         iconPath: revisionIconPath,
+      })
    }
    return items
 })

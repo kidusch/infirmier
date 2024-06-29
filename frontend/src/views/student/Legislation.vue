@@ -13,7 +13,7 @@
          
          <div class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
             <div class="progress-list">
-               <template v-for="legislation in legislationList">
+               <template v-for="legislation in listOfLegislation">
                   <div v-if="!legislation.hidden" class="progress-item cursor-pointer" @click="selectLegislation(legislation)">
                      <p>
                         {{ legislation?.title }}
@@ -30,8 +30,6 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-
 import { listOfLegislation } from '/src/use/useLegislation'
 import router from "/src/router"
 
@@ -41,8 +39,6 @@ const props = defineProps({
       required: true
    },
 })
-
-const legislationList = computed(() => listOfLegislation.value)
 
 const selectLegislation = (legislation) => {
    router.push(`/home/${props.userid}/legislation/${legislation.id}`)

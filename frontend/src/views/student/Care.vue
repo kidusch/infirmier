@@ -13,7 +13,7 @@
          
          <div class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
             <div class="progress-list">
-               <template v-for="care in careList">
+               <template v-for="care in listOfCare">
                   <div v-if="!care.hidden" class="progress-item cursor-pointer" @click="selectCare(care)">
                      <p>
                         {{ care?.title }}
@@ -30,8 +30,6 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-
 import { listOfCare } from '/src/use/useCare'
 import router from "/src/router"
 
@@ -41,8 +39,6 @@ const props = defineProps({
       required: true
    },
 })
-
-const careList = computed(() => listOfCare.value)
 
 const selectCare = (care) => {
    router.push(`/home/${props.userid}/care/${care.id}`)

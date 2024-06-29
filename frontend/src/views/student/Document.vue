@@ -13,7 +13,7 @@
          
          <div class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
             <div class="progress-list">
-               <template v-for="document in documentList">
+               <template v-for="document in listOfDocument">
                   <div v-if="!document.hidden" class="progress-item cursor-pointer" @click="selectDocument(document)">
                      <p>
                         {{ document?.title }}
@@ -30,8 +30,6 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-
 import { listOfDocument } from '/src/use/useDocument'
 import router from "/src/router"
 
@@ -41,8 +39,6 @@ const props = defineProps({
       required: true
    },
 })
-
-const documentList = computed(() => listOfDocument.value)
 
 const selectDocument = (document) => {
    router.push(`/home/${props.userid}/document/${document.id}`)
