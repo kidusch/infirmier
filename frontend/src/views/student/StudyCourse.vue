@@ -44,17 +44,17 @@
       <!-- Highlight pens -->
       <ul class="menu menu-horizontal bg-slate-50 rounded-box fixed right-0 bottom-0">
          <li>
-            <a :class="{ active: highlightColor === 'yellow' }" @click="highlightColor = '#FFFF66'">
+            <a :class="{ active: highlightColor === '#FFFF66' }" @click="highlightColor = '#FFFF66'">
                <img class="h-6 w-6" src="/src/assets/highlighter-yellow.svg">
             </a>
          </li>
          <li>
-            <a :class="{ active: highlightColor === 'orange' }" @click="highlightColor = '#FFCC66'">
+            <a :class="{ active: highlightColor === '#FFCC66' }" @click="highlightColor = '#FFCC66'">
                <img class="h-6 w-6" src="/src/assets/highlighter-orange.svg">
             </a>
          </li>
          <li>
-            <a :class="{ active: highlightColor === 'purple' }" @click="highlightColor = '#FF99CC'">
+            <a :class="{ active: highlightColor === '#FF99CC' }" @click="highlightColor = '#FF99CC'">
                <img class="h-6 w-6" src="/src/assets/highlighter-purple.svg">
             </a>
          </li>
