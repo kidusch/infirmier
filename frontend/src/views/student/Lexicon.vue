@@ -9,7 +9,7 @@
       </header>
 
       <header class="w-16">
-         <div class="form-control">
+         <!-- <div class="form-control">
             <label class="label cursor-pointer">
                <span class="label-text"><img class="h-6 cursor-pointer" src="/src/assets/flag_fr.svg"></span>
                <input type="radio" name="radio-10" class="radio checked:bg-blue-400" :checked="lang === 'fr'" @change="lang = 'fr'" />
@@ -19,6 +19,14 @@
             <label class="label cursor-pointer">
                <span class="label-text"><img class="h-6 cursor-pointer" src="/src/assets/flag_en.svg"></span>
                <input type="radio" name="radio-10" class="radio checked:bg-blue-400" :checked="lang === 'en'" @change="lang = 'en'" />
+            </label>
+         </div> -->
+
+         <div class="form-control w-36">
+            <label class="label cursor-pointer">
+               <span class="label-text"><img class="h-6 cursor-pointer" src="/src/assets/flag_fr.svg"></span>
+               <input type="checkbox" class="toggle toggle-primary" :checked="lang === 'en'" @change="ev => ev.target.checked ? lang = 'en' : lang = 'fr'" />
+               <span class="label-text"><img class="h-6 cursor-pointer" src="/src/assets/flag_en.svg"></span>
             </label>
          </div>
       </header>
@@ -56,7 +64,7 @@ const props = defineProps({
 })
 
 const checkedId = ref()
-const lang = ref('en')
+const lang = ref('fr')
 
 const lexiconList = computed(() => {
    if (lang.value === 'fr') {
