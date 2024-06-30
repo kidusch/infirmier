@@ -26,7 +26,7 @@
 
             <div>
                <div class="flex gap-3 items-center">
-                  <input v-model="newFrenchTerm" class="standard-input flex-1" placeholder="Titre nouveau soin" type="text">
+                  <input v-model="newFrenchTerm" class="standard-input flex-1" placeholder="Nouveau terme" type="text">
                   <div class="flex gap-1.5" @click="addLexicon">
                      <img class="h-4 cursor-pointer" src="/src/assets/add.svg" alt="delete">
                   </div>
