@@ -181,17 +181,15 @@ const onInputText = async (ev) => {
 const debouncedInputText = useDebounceFn(onInputText, 500)
 
 const onClick = async (event) => {
-   console.log('onClick', event.target.nodeName, event.target.nodeType, event.target.style)
+   if (!event.target.getAttribute('data-background-color')) {
+      event.target.setAttribute('data-background-color', event.target.style.backgroundColor || 'none')
+   }
    if (highlightColor.value) {
       // pen color
-      if (!event.target.getAttribute('data-background-color')) {
-         // store the original background color
-         event.target.setAttribute('data-background-color', event.target.style.backgroundColor)
-      }
       event.target.style.backgroundColor = highlightColor.value
    } else {
       // eraser
-      event.target.style.backgroundColor = event.target.getAttribute('data-background-color')
+      event.target.style.backgroundColor = event.target.getAttribute('data-background-color') === 'none' ? null : event.target.getAttribute('data-background-color')
    }
    await updateUserCourse(userCourse.value.id, {
       highlighted_content: doc.value.outerHTML,
