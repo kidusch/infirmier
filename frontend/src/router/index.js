@@ -253,6 +253,13 @@ const routes = [
                lexicon_id: parseInt(route.params.lexicon_id),
             }),
          },
+         {
+            path: 'admin-messages',
+            component: () => import('/src/views/admin/AdminMessages.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+            }),
+         },
 
          {
             path: 'welcome-student',

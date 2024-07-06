@@ -136,6 +136,12 @@ const menuItems = computed(() => {
          iconPath: revisionIconPath,
       })
 
+      items.push({
+         label: "Messagerie",
+         path: `/home/${props.userid}/admin-messages`,
+         iconPath: revisionIconPath,
+      })
+
    } else {
       items.push({
          label: "Cours",
