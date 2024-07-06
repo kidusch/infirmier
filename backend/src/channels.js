@@ -74,5 +74,9 @@ export default function(app) {
     app.service('lexicon').publish(async (context) => {
         return context.methodName.startsWith('find') ? [] : ['authenticated']
     })
+        
+    app.service('message').publish(async (context) => {
+        return context.methodName.startsWith('find') ? [] : ['authenticated']
+    })
 
 }

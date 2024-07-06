@@ -8,7 +8,7 @@
 
    <div class="form-control">
       <div class="relative">
-         <textarea class="textarea h-20 textarea-bordered w-full pr-16 leading-5" v-model="messageText" placeholder="Tapez votre message..."></textarea> 
+         <textarea class="h-20 textarea-bordered w-full pr-16 leading-5" v-model="messageText" placeholder="Tapez votre message..."></textarea> 
          <button class="absolute top-0 right-0 rounded-l-none btn btn-primary h-20" :disabled="!messageText"
                @click="sendMessage">
             Envoyer

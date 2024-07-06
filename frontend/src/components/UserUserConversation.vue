@@ -2,7 +2,7 @@
    <div class="bg-gray-100 relative">
 
       <div class="space-y-6 grid grid-cols-1">
-         <template v-for="message in messageListOfConversation(userid, userId)" :key="message.id">
+         <template v-for="message in messageList" :key="message.id">
             <div :class="{'place-self-start': message.from_id != userid, 'place-self-end': message.from_id == userid}"
                   :id="message.id">
                <MessageBubble :message="message" :reader_id="userid"></MessageBubble>
@@ -14,6 +14,8 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
+
 import { messageListOfConversation } from "/src/use/useMessage"
 
 import MessageBubble from "@/components/MessageBubble.vue"
@@ -32,4 +34,5 @@ const props = defineProps({
    },
 })
 
+const messageList = computed(() => messageListOfConversation.value(props.userid, props.userId))
 </script>
