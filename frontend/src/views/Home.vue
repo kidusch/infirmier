@@ -168,6 +168,12 @@ const menuItems = computed(() => {
          path: `/home/${props.userid}/lexicon`,
          iconPath: revisionIconPath,
       })
+
+      items.push({
+         label: "Messagerie",
+         path: `/home/${props.userid}/messages`,
+         iconPath: revisionIconPath,
+      })
    }
    return items
 })

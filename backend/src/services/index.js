@@ -23,6 +23,7 @@ import documentService from './database/document/document.service.js'
 import legislationService from './database/legislation/legislation.service.js'
 
 import lexiconService from './database/lexicon/lexicon.service.js'
+import messageService from './database/message/message.service.js'
 
 // custom services
 import mailService from './custom/mail/mail.service.js'
@@ -54,6 +55,7 @@ export default function (app) {
    app.configure(legislationService)
 
    app.configure(lexiconService)
+   app.configure(messageService)
 
    // add custom services
    app.configure(mailService)

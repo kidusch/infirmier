@@ -21,6 +21,7 @@ import { resetUseCare } from '/src/use/useCare'
 import { resetUseDocument } from '/src/use/useDocument'
 import { resetUseLegislation } from '/src/use/useLegislation'
 import { resetUseLexicon } from '/src/use/useLexicon'
+import { resetUseMessage } from '/src/use/useMessage'
 
 import router from '/src/router'
 
@@ -59,6 +60,7 @@ export function clearSessionStorage() {
    resetUseDocument()
    resetUseLegislation()
    resetUseLexicon()
+   resetUseMessage()
 }
 
 export const restartApp = async () => {

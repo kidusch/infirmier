@@ -56,6 +56,13 @@ const routes = [
       }),
       children: [
          {
+            path: 'messages',
+            component: () => import('/src/views/student/Messages.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+            }),
+         },
+         {
             path: 'admin-misc',
             component: () => import('/src/views/admin/AdminMisc.vue'),
             props: route => ({
