@@ -1,5 +1,6 @@
 <template>
-   <UserUserMessagesWithScroll v-if="adminId" :userid="userid" :userId="adminId" :offset="0">
+   <UserUserMessagesWithScroll v-if="adminId"
+      :userid="userid" :userId="adminId" :offset="0">
    </UserUserMessagesWithScroll>
 </template>
 

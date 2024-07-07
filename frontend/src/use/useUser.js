@@ -62,3 +62,24 @@ export const userOfId = computed(() => id => {
       delete userState.value.userStatus[id]
    })
 })
+
+export const listOfUser = computed(() => {
+   if (userState.value.userListStatus === 'ready') {
+      return Object.values(userState.value.userCache).sort((e1, e2) => e1.rank - e2.rank)
+   }
+   if (userState.value.userListStatus !== 'ongoing') {
+      userState.value.userListStatus = 'ongoing'
+      app.service('user').findMany({})
+      .then(list => {
+         for (const user of list) {
+            userState.value.userCache[user.id] = user
+            userState.value.userStatus[user.id] = 'ready'
+         }
+         userState.value.userListStatus = 'ready'
+      }).catch(err => {
+         console.log('listOfUser err', err)
+         delete userState.value.userListStatus
+      })
+   }
+   return []
+})
