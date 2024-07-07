@@ -4,11 +4,15 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p class="leading-loose">
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/admin-care`">Messagerie</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/admin-messages`">Messagerie</router-link>
             /
             <span class="font-semibold">{{ student?.name }}</span>
          </p>
       </header>
+
+      <UserUserMessagesWithScroll
+         :userid="userid" :userId="studentId" :offset="280">
+      </UserUserMessagesWithScroll>
 
    </main>
 </template>
@@ -17,6 +21,7 @@
 import { computed } from 'vue'
 
 import { userOfId } from '/src/use/useUser'
+import UserUserMessagesWithScroll from '/src/components/UserUserMessagesWithScroll.vue'
 
 
 const props = defineProps({

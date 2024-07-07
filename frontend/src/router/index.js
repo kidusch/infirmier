@@ -265,7 +265,7 @@ const routes = [
             component: () => import('/src/views/admin/AdminMessagesStudent.vue'),
             props: route => ({
                userid: parseInt(route.params.userid),
-               studentId: parseInt(route.params.userid),
+               studentId: parseInt(route.params.studentId),
             }),
          },
 
