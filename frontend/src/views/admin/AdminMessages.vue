@@ -36,9 +36,17 @@
 
 <script setup>
 import { listOfUser } from '/src/use/useUser'
+import router from "/src/router"
+
+const props = defineProps({
+   userid: {
+      type: Number,
+      required: true
+   },
+})
 
 const select = (user) => {
-
+   router.push(`/home/${props.userid}/admin-messages-student/${user.id}`)
 }
 
 </script>

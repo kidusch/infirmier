@@ -260,6 +260,14 @@ const routes = [
                userid: parseInt(route.params.userid),
             }),
          },
+         {
+            path: 'admin-messages-student/:studentId',
+            component: () => import('/src/views/admin/AdminMessagesStudent.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+               studentId: parseInt(route.params.userid),
+            }),
+         },
 
          {
             path: 'welcome-student',
