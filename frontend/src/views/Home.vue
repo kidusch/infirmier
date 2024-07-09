@@ -99,6 +99,7 @@ import { isDocumentTabVisible } from '/src/use/useDocument'
 import { isLegislationTabVisible } from '/src/use/useLegislation'
 
 import { courseIconPath, revisionIconPath } from '/src/lib/icons.mjs'
+import { getWebPushSubscription } from '/src/lib/utilities.mjs'
 import router from '/src/router'
 import { VERSION } from '/src/version'
 
