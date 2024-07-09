@@ -18,7 +18,9 @@ export default function (app) {
       addSubscription: async (userId, subscription) => {
          // get user's subscription list
          const user = await prisma.user.findUnique({ where: { id: userId }})
+         console.log('user', user)
          const subscriptionList = JSON.parse(user.subscription_list)
+         console.log('subscriptionList', subscriptionList)
          // look for an existing substription with the same endpoint as `subscription`
          const existingSubscription = subscriptionList.find(s => s.endpoint == subscription.endpoint)
          if (existingSubscription) {
@@ -28,10 +30,12 @@ export default function (app) {
             // add new subscription
             subscriptionList.push(subscription)
          }
-         prisma.user.update({
+         console.log('subscriptionList apres', subscriptionList)
+         const updatedUser = await prisma.user.update({
             where: { id: userId },
             data: { subscription_list: JSON.stringify(subscriptionList) }
          })
+         console.log('updatedUser', updatedUser)
       },
 
       // remove all subscriptions with the same endpoint as `subscription`
