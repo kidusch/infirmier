@@ -10,12 +10,14 @@ webpush.setVapidDetails(
 
 export default function (app) {
 
+   const prisma = app.get('prisma')
+
    app.createService('notification', {
 
       // add a new subscription (= notification recipient address) for `userId`, or update an existing one
       addSubscription: async (userId, subscription) => {
          // get user's subscription list
-         const user = await app.service('user').findUnique({ where: { id: userId }})
+         const user = await prisma.user.findUnique({ where: { id: userId }})
          const subscriptionList = JSON.parse(user.subscription_list)
          // look for an existing substription with the same endpoint as `subscription`
          const existingSubscription = subscriptionList.find(s => s.endpoint == subscription.endpoint)
@@ -26,7 +28,7 @@ export default function (app) {
             // add new subscription
             subscriptionList.push(subscription)
          }
-         app.service('user').update({
+         prisma.user.update({
             where: { id: userId },
             data: { subscription_list: JSON.stringify(subscriptionList) }
          })
@@ -35,9 +37,9 @@ export default function (app) {
       // remove all subscriptions with the same endpoint as `subscription`
       deleteSubscription: async (userId, subscription) => {
          // get user's subscription list
-         const user = await app.service('user').findUnique({ where: { id: userId }})
+         const user = await prisma.user.findUnique({ where: { id: userId }})
          const subscriptionList = JSON.parse(user.subscription_list).filter(s => s.endpoint !== subscription.endpoint)
-         app.service('user').update({
+         prisma.user.update({
             where: { id: userId },
             data: { subscription_list: JSON.stringify(subscriptionList) }
          })
@@ -45,7 +47,7 @@ export default function (app) {
 
       // send a notification to all devices connected with `userId`
       pushNotification: async (userId, payload) => {
-         const user = await app.service('user').findUnique({ where: { id: userId }})
+         const user = await prisma.user.findUnique({ where: { id: userId }})
          if (!user) return
          const subscriptionList = JSON.parse(user.subscription_list)
          subscriptionList.forEach(subscription => {
