@@ -72,7 +72,7 @@ const sendMessage = async () => {
    messageText.value = ''
    scrollToEnd()
    // send notification
-   await app.service('notification').pushNotification(props.userid, { title: "Devenir Infirmier", text: "Vous avez un nouveau message" })
+   await app.service('notification').pushNotification(props.userId, { title: "Devenir Infirmier", text: "Vous avez un nouveau message" })
 
 }
 </script>

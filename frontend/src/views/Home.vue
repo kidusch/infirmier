@@ -201,6 +201,17 @@ const menuItems = computed(() => {
 
 onMounted(async () => {
    const user_ = await getUser(props.userid)
+         
+   // subscribe to notifications
+   if ('Notification' in window) {
+      try {
+         const subscription = await getWebPushSubscription()
+         await app.service('notification').addSubscription(props.userid, subscription)
+      } catch(err) {
+         console.log('err subscription', err)
+      }
+   }
+
    if (user_.admin) {
       // go to UE admin page
       router.push(`/home/${props.userid}/admin-ue`)
@@ -209,17 +220,6 @@ onMounted(async () => {
       // document.addEventListener('copy', (event) => {
       //    event.preventDefault()
       // })
-      
-      // subscribe to notifications
-      if ('Notification' in window) {
-         try {
-            const subscription = await getWebPushSubscription()
-            console.log('subscription', subscription)
-            await app.service('notification').addSubscription(props.userid, subscription)
-         } catch(err) {
-            console.log('err subscr', err)
-         }
-      }
       
       // go to student welcome page
       router.push(`/home/${props.userid}/welcome-student`)
