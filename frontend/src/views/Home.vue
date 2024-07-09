@@ -103,6 +103,8 @@ import { getWebPushSubscription } from '/src/lib/utilities.mjs'
 import router from '/src/router'
 import { VERSION } from '/src/version'
 
+import { app } from '/src/client-app.js'
+
 
 const props = defineProps({
    userid: {
