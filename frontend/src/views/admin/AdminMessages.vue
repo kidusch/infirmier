@@ -10,11 +10,27 @@
       </header>
 
 
+      <!-- Search input -->
+      <label class="input input-bordered flex items-center gap-2 my-2">
+         <input v-model="searchTerms" type="text" class="grow" placeholder="Rechercher un utilisateur..." />
+         <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            class="h-6 w-6 opacity-70">
+            <path
+               fill-rule="evenodd"
+               d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+               clip-rule="evenodd" />
+         </svg>
+      </label>
+
+
       <main class="flex flex-col gap-6 pb-4">
 
          <div class="flex flex-col gap-3">
 
-            <template v-for="user in listOfUser">
+            <template v-for="user in userList">
                <div class="flex gap-3 items-center border-b-2 justify-between">
                   <div class="flex items-center justify-start gap-3">
                      <!-- circle red/white -->
@@ -40,7 +56,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 import { listOfUser } from '/src/use/useUser'
 import { unreadMessagesCountOfUser2ByUser1 } from '/src/use/useMessage'
@@ -51,6 +67,17 @@ const props = defineProps({
       type: Number,
       required: true
    },
+})
+
+const searchTerms = ref('')
+
+const userList = computed(() => {
+   const unfilteredList = listOfUser.value
+   if (searchTerms.value.trim().length <= 2) return unfilteredList
+   const terms = searchTerms.value.trim().toLowerCase()
+   return unfilteredList.filter(user => {
+      return (user.name.toLowerCase().includes(terms))
+   })
 })
 
 const select = (user) => {

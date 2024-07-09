@@ -104,6 +104,6 @@ en utilisant la subscription qui a été mémorisée pour lui
 Les mêmes 'vapid-keys' sont utilisées pour le serveur et pour tous les clients.
 - la demande d'autorisation d'utiliser les notifications est faite dans `main.js`
 
-Vapid keys
-Public Key: BEPcGTfssUbvy3ul9nnoQUTu4TeLAj5kqrYN5_pBuMgXcKnETIkyydMz9Qws08bByDmuJclZ65bsmwTYbo_fOBY
-Private Key: M_sfHnvszxX-A1mwdFrLDAAzzL6gs1XmbMY-XWYJ0Yw
+Vapid keys (création : scrips/create-valid-keys.js)
+Public Key: BCb26MnBWZp7X38igiSV-JZp4EIqRJ9NeiIGhjpFM_3Rs3y_6C08YNA7d1IVKR64uqmP0csnS7KmLVkn4bAiHuQ
+Private Key: dh5acZXqHarphMNw6pDOgtgIG8fbxvC4qdprsnbkedg

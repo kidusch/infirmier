@@ -28,6 +28,7 @@ import messageService from './database/message/message.service.js'
 // custom services
 import mailService from './custom/mail/mail.service.js'
 import authService from './custom/auth/auth.service.js'
+import notificationService from './custom/notification/notification.service.mjs'
 
 
 export default function (app) {
@@ -60,4 +61,5 @@ export default function (app) {
    // add custom services
    app.configure(mailService)
    app.configure(authService)
+   app.configure(notificationService)
 }

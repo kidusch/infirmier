@@ -4,7 +4,7 @@
       <!-- navbar -->
       <nav class="lg:border-b lg:pb-2">
 
-         <main class="flex w-full justify-between items-center container max-w-7xl">
+         <main class="flex w-full items-center container max-w-7xl">
             <button @click="toggleSideMenu">
                <img class="w-6" src="/src/assets/menu.svg" alt="menu">
             </button>
@@ -14,8 +14,18 @@
                <h3 class="max-lg:hidden">Journal de bord IDE</h3>
             </router-link>
 
-            <div class="cursor-pointer link hover:text-red-600 text-blue-600" @click="signout">
-               Sortie
+            <div class="flex gap-8">
+               <div v-if="unreadMessagesCount > 0" @click="goToMessages">
+                  <svg width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+                     <rect x="4.83334" y="7.25" width="19.3333" height="14.5" rx="2" stroke="#33363F" stroke-width="2"/>
+                     <path d="M4.83334 10.875L13.6056 15.2611C14.1686 15.5426 14.8314 15.5426 15.3944 15.2611L24.1667 10.875" stroke="#33363F" stroke-width="2"/>
+                     <circle cx="24.1667" cy="7.25" r="3.625" fill="#FF0000"/>
+                  </svg>
+               </div>
+
+               <div class="cursor-pointer link hover:text-red-600 text-blue-600" @click="signout">
+                  Sortie
+               </div>
             </div>
 
          </main>
@@ -82,7 +92,8 @@
 import { onMounted, ref, computed } from 'vue'
 
 import { logout, clearSessionStorage } from '/src/use/useAuthentication'
-import { userOfId, getUser } from '/src/use/useUser'
+import { userOfId, getUser, listOfUser } from '/src/use/useUser'
+import { unreadMessagesCountOfUser2ByUser1 } from '/src/use/useMessage'
 import { isCareTabVisible } from '/src/use/useCare'
 import { isDocumentTabVisible } from '/src/use/useDocument'
 import { isLegislationTabVisible } from '/src/use/useLegislation'
@@ -195,6 +206,11 @@ onMounted(async () => {
       // document.addEventListener('copy', (event) => {
       //    event.preventDefault()
       // })
+      // subscribe to notifications
+      if ('Notification' in window) {
+         const subscription = await getWebPushSubscription()
+         await app.service('notification').addSubscription(props.userid, subscription)
+      }
       // go to student welcome page
       router.push(`/home/${props.userid}/welcome-student`)
    }
@@ -241,4 +257,15 @@ const signout = async () => {
    // await logout(props.userid)
    clearSessionStorage()
 }
+
+const unreadMessagesCount = computed(() => {
+   if (!user.value) return 0
+   const userList = user.value.admin ? listOfUser.value : listOfUser.value.filter(user => user.admin)
+   console.log('userList', userList)
+   return userList.reduce((accu, user) => {
+      return accu + unreadMessagesCountOfUser2ByUser1.value(props.userid, user.id)
+   }, 0)
+})
+
+const goToMessages = () => router.push(user.value.admin ? `/home/${props.userid}/admin-messages` : `/home/${props.userid}/messages`)
 </script>

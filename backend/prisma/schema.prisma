@@ -15,6 +15,7 @@ model user {
   type       UserType   @default(student)  // REMOVE THIS or 'admin' boolean
   accept_cgu Boolean?
   admin      Boolean    @default(false)
+  subscription_list  String    @default("[]")   // push notification 'adresses', comma-separated
 
   google_id String?     @unique(map: "uses_google_id_unique")
   name      String?

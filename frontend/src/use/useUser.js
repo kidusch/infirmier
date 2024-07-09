@@ -48,7 +48,7 @@ export const getUser = async (id) => {
 }
 
 export const userOfId = computed(() => id => {
-   const status = userState.value.userStatus[id]
+   const status = userState.value?.userStatus[id]
    if (status === 'ready') return userState.value.userCache[id]
    if (status === 'ongoing') return undefined // ongoing request
    userState.value.userStatus[id] = 'ongoing'
