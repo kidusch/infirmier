@@ -73,9 +73,11 @@ const lexiconList = computed(() => (lang) => {
    const unfilteredList = lang === 'fr' ?
       listOfLexicon.value.sort((l1, l2) => l1.french_word > l2.french_word ? 1 : l1.french_word < l2.french_word ? -1 : 0) :
       listOfLexicon.value.sort((l1, l2) => l1.english_word > l2.english_word ? 1 : l1.english_word < l2.english_word ? -1 : 0)
-      if (searchTerms.value.trim().length <= 2) return unfilteredList
-      const terms = searchTerms.value.trim().toLowerCase().split(' ')
-      return unfilteredList.filter(lexicon => {
+
+   if (searchTerms.value.trim().length <= 2) return unfilteredList
+   
+   const terms = searchTerms.value.trim().toLowerCase().split(' ')
+   return unfilteredList.filter(lexicon => {
       if (lang === 'fr') {
          if (terms.some(term => lexicon.french_word.toLowerCase().includes(term))) return true
          if (terms.some(term => lexicon.french_desc.toLowerCase().includes(term))) return true

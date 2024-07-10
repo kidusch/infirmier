@@ -1,5 +1,8 @@
+// https://vueuse.org/integrations/useIDBKeyval/
+
 import { computed } from 'vue'
 import { useSessionStorage } from '@vueuse/core'
+import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 
 import { app } from '/src/client-app.js'
 
@@ -11,10 +14,12 @@ const initialState = () => ({
    lexiconListStatus: undefined,
 })
 
-const lexiconState = useSessionStorage('lexicon-state', initialState(), { mergeDefaults: true })
+// const lexiconState = useSessionStorage('lexicon-state', initialState(), { mergeDefaults: true })
+const { data: lexiconState } = useIDBKeyval('lexicon-state', initialState(), { mergeDefaults: true })
+
 
 export const resetUseLexicon = () => {
-   lexiconState.value = null
+   // lexiconState.value = null
 }
 
 

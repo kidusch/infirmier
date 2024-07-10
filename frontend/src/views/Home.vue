@@ -4,7 +4,7 @@
       <!-- navbar -->
       <nav class="lg:border-b lg:pb-2">
 
-         <main class="flex w-full items-center container max-w-7xl">
+         <main class="flex w-full items-center justify-between container max-w-7xl">
             <button @click="toggleSideMenu">
                <img class="w-6" src="/src/assets/menu.svg" alt="menu">
             </button>

@@ -1,5 +1,6 @@
 import { computed } from 'vue'
 import { useSessionStorage } from '@vueuse/core'
+import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 
 import { app } from '/src/client-app.js'
 
@@ -11,10 +12,11 @@ const initialState = () => ({
    courseListStatus: {},
 })
 
-export const courseState = useSessionStorage('course-state', initialState(), { mergeDefaults: true })
+// export const courseState = useSessionStorage('course-state', initialState(), { mergeDefaults: true })
+export const { data: courseState } = useIDBKeyval('course-state', initialState(), { mergeDefaults: true })
 
 export const resetUseCourse = () => {
-   courseState.value = null
+   // courseState.value = null
 }
 
 
