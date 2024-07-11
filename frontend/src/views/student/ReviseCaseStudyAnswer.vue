@@ -19,7 +19,7 @@
       <!-- Header -->
       <section class="w-full flex justify-between">
          <h3 class="opacity-50">
-            Étude de cas
+            Étude de cas : correction standard
          </h3>
 
          <div class="flex gap-6">
@@ -69,48 +69,12 @@
       </main>
 
       <footer class="flex-1 flex flex-col justify-end pb-8">
-         <button class="primary-btn px-4" @click="getStandardCorrection" :disabled="userCaseStudy?.answer?.length === 0">
-            Obtenir une correction standard
-         </button>
-         <button class="primary-btn px-4 mt-3" @click="getCustomCorrection" :disabled="userCaseStudy?.answer?.length === 0">
-            Obtenir une correction personnalisée
+         <button class="primary-btn px-4 mt-3" @click="" :disabled="userCaseStudy?.answer?.length === 0">
+            Continuer
          </button>
       </footer>
 
    </main>
-
-   <!-- ASK PREMIUM SUBSCRIPTION MODAL -->
-   <div class="modal modal-middle" :class="{'modal-open': premiumModal}">
-      <div class="modal-box max-w-xl">
-         <div class="text-large mt-2 mb-4 font-semibold">
-            Pour obtenir une correction personnalisée, vous devez souscrire à la version premium de l’application
-         </div>
-
-         <div class="modal-action">
-            <button class="karan-btn secondary-btn" @click="">
-               Souscrire à la version premium
-            </button>
-            <button class="karan-btn secondary-btn" @click="premiumModal = false">
-               Annuler
-            </button>
-         </div>
-      </div>
-   </div>
-
-   <!-- PREMIUM TRANSMIT MODAL -->
-   <div class="modal modal-middle" :class="{'modal-open': transmitModal}">
-      <div class="modal-box max-w-xl">
-         <div class="text-large mt-2 mb-4 font-semibold">
-            Votre réponse a été transmise et une correction personnalisée vous sera envoyée dans les meilleurs délais
-         </div>
-
-         <div class="modal-action">
-            <button class="karan-btn secondary-btn" @click="transmitModal = false">
-               Continuer
-            </button>
-         </div>
-      </div>
-   </div>
 
 </template>
 
@@ -187,7 +151,7 @@ const onInputText = async (ev) => {
 const debouncedInputText = useDebounceFn(onInputText, 500)
 
 const getStandardCorrection = () => {
-   router.push(`/home/${props.userid}/revise-case-study-answer/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${caseStudy.value.id}`)
+   router.push(`/home/${props.userid}/revise-case-study-answer/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${caseStudy.id}`)
 }
 
 const premiumModal = ref(false)

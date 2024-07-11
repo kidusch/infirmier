@@ -206,7 +206,7 @@ onMounted(async () => {
    if ('Notification' in window) {
       try {
          const subscription = await getWebPushSubscription()
-         await app.service('notification').addSubscription(props.userid, subscription)
+         if (subscription) await app.service('notification').addSubscription(props.userid, subscription)
       } catch(err) {
          console.log('err subscription', err)
       }

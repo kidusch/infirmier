@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { useSessionStorage } from '@vueuse/core'
+// import { useSessionStorage } from '@vueuse/core'
 import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 
 import { app } from '/src/client-app.js'
@@ -16,6 +16,7 @@ const initialState = () => ({
 export const { data: courseState } = useIDBKeyval('course-state', initialState(), { mergeDefaults: true })
 
 export const resetUseCourse = () => {
+   // PAUSE PROBLÈME AVEC INDEXEDB
    // courseState.value = null
 }
 

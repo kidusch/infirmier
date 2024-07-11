@@ -67,7 +67,7 @@ export const messageListOfConversation = computed(() => (user1Id, user2Id) => {
 
 export const unreadMessagesCountOfUser2ByUser1 = computed(() => (user1Id, user2Id) => {
    const messageList = messageListOfConversation.value(user1Id, user2Id)
-   console.log('messageList', user1Id, user2Id, messageList)
+   // console.log('messageList', user1Id, user2Id, messageList)
    return messageList.reduce((accu, message) => {
       return message.from_id == user2Id && !message.read_on ? accu + 1 : accu
    }, 0)
