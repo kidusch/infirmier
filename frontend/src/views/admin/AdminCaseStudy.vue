@@ -47,6 +47,24 @@
                ></textarea>
             </div>
          </div>
+         
+         <div>
+            <div class="flex justify-between">
+               <label for="title">Correction standard</label>
+               <div class="flex gap-2">
+                  <img class="h-5 mb-1" src="/src/assets/preview.svg" @click="previewCorrection">
+                  <img class="h-5 mb-1" src="/src/assets/edit.svg" @click="disabledCorrection = !disabledCorrection">
+               </div>
+            </div>
+            <div class="standard-input-container">
+               <textarea placeholder="Contenu..." type="text"
+                  :value="caseStudy ? caseStudy.standard_correction : ''"
+                  @input="debouncedInputCorrection"
+                  :disabled="disabledCorrection"
+               ></textarea>
+            </div>
+         </div>
+
       </main>
    </main>
 </template>
@@ -95,13 +113,21 @@ const onInputTitle = async (ev) => {
 const onInputContent = async (ev) => {
    await updateCaseStudy(props.case_study_id, { content: ev.target.value })
 }
+const onInputCorrection = async (ev) => {
+   await updateCaseStudy(props.case_study_id, { standard_correction: ev.target.value })
+}
 const debouncedInputTitle = useDebounceFn(onInputTitle, 500)
 const debouncedInputContent = useDebounceFn(onInputContent, 500)
+const debouncedInputCorrection = useDebounceFn(onInputCorrection, 500)
 
 const disabledTitle = ref(true)
 const disabledContent = ref(true)
+const disabledCorrection = ref(true)
 
 const preview = () => {
    router.push(`/home/${props.userid}/admin-case-study-preview/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${props.case_study_id}`)
+}
+const previewCorrection = () => {
+   router.push(`/home/${props.userid}/admin-case-study-preview-correction/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${props.case_study_id}`)
 }
 </script>
