@@ -12,7 +12,9 @@
             /
             <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-topic/${ue_id}/${sub_ue_id}/${topic_id}`">{{ topic?.name }}</router-link>
             /
-            <span class="font-semibold">Étude de cas : {{ caseStudy?.title }}</span>
+            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-topic/${ue_id}/${sub_ue_id}/${topic_id}`">{{ caseStudy?.title }}</router-link>
+            /
+            <span class="font-semibold">Correction standard</span>
          </p>
       </header>
 
@@ -45,31 +47,12 @@
       <main class="pt-4 w-full">
 
          <!-- Case study desciption -->
-         <!-- <TextParts :userid="userid" :case_study_id="case_study_id" :parts="parts"></TextParts> -->
-         <div v-html="caseStudy?.content"></div>
-
-         <!-- Student's answer -->
-         <div class="py-4">
-            <div class="flex justify-between">
-               <label for="title">Ma réponse</label>
-               <div class="flex gap-2">
-                  <img class="cursor-pointer h-5 mb-1" src="/src/assets/edit.svg" @click="disabledText = !disabledText">
-               </div>
-            </div>
-
-            <div class="standard-input-container">
-               <textarea placeholder="Écrivez votre réponse ici..." type="text"
-                  :value="userCaseStudy?.answer"
-                  @input="debouncedInputText"
-                  :disabled="disabledText"
-               ></textarea>
-            </div>
-         </div>
+         <div v-html="caseStudy?.standard_correction"></div>
 
       </main>
 
       <footer class="flex-1 flex flex-col justify-end pb-8">
-         <button class="primary-btn px-4 mt-3" @click="" :disabled="userCaseStudy?.answer?.length === 0">
+         <button class="primary-btn px-4 mt-3" @click="">
             Continuer
          </button>
       </footer>

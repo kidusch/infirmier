@@ -12,7 +12,7 @@
             /
             <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-topic/${ue_id}/${sub_ue_id}/${topic_id}`">{{ topic?.name }}</router-link>
             /
-            <span class="font-semibold">Étude de cas : {{ caseStudy?.title }}</span>
+            <span class="font-semibold">{{ caseStudy?.title }}</span>
          </p>
       </header>
 
@@ -44,8 +44,7 @@
       <!-- Main content -->
       <main class="pt-4 w-full">
 
-         <!-- Case study desciption -->
-         <!-- <TextParts :userid="userid" :case_study_id="case_study_id" :parts="parts"></TextParts> -->
+         <!-- Case study description -->
          <div v-html="caseStudy?.content"></div>
 
          <!-- Student's answer -->
@@ -80,7 +79,7 @@
    </main>
 
    <!-- ASK PREMIUM SUBSCRIPTION MODAL -->
-   <div class="modal modal-middle" :class="{'modal-open': premiumModal}">
+   <dialog ref="premiumModal" class="modal modal-middle">
       <div class="modal-box max-w-xl">
          <div class="text-large mt-2 mb-4 font-semibold">
             Pour obtenir une correction personnalisée, vous devez souscrire à la version premium de l’application
@@ -90,32 +89,32 @@
             <button class="karan-btn secondary-btn" @click="">
                Souscrire à la version premium
             </button>
-            <button class="karan-btn secondary-btn" @click="premiumModal = false">
+            <button class="karan-btn secondary-btn" @click="premiumModal.close">
                Annuler
             </button>
          </div>
       </div>
-   </div>
+   </dialog>
 
    <!-- PREMIUM TRANSMIT MODAL -->
-   <div class="modal modal-middle" :class="{'modal-open': transmitModal}">
+   <dialog ref="transmitModal" class="modal modal-middle">
       <div class="modal-box max-w-xl">
          <div class="text-large mt-2 mb-4 font-semibold">
             Votre réponse a été transmise et une correction personnalisée vous sera envoyée dans les meilleurs délais
          </div>
 
          <div class="modal-action">
-            <button class="karan-btn secondary-btn" @click="transmitModal = false">
+            <button class="karan-btn secondary-btn" @click="transmitModal.close">
                Continuer
             </button>
          </div>
       </div>
-   </div>
+   </dialog>
 
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
 import { userOfId } from '/src/use/useUser'
@@ -125,9 +124,6 @@ import { topicOfId } from '/src/use/useTopic'
 import { caseStudyOfId } from '/src/use/useCaseStudy'
 import { theUserCaseStudy, updateUserCaseStudy } from '/src/use/useUserCaseStudy'
 import router from "/src/router"
-
-// import parser from '/src/lib/grammar.js'
-// import TextParts from '/src/components/TextParts.vue'
 
 
 const props = defineProps({
@@ -160,18 +156,7 @@ const topic = computed(() => topicOfId.value(props.topic_id))
 const caseStudy = computed(() => caseStudyOfId.value(props.case_study_id))
 const userCaseStudy = computed(() => theUserCaseStudy.value(props.userid, props.case_study_id))
 
-// const parts = ref([])
-
 const disabledText = ref(true)
-
-onMounted(async () => {
-   // try {
-   //    parts.value = parser.parse(caseStudy.value.content)
-   //    console.log('parts', parts.value)
-   // } catch(err) {
-   //    parts.value = ''
-   // }
-})
 
 const onDoneClick = async (done) => {
    await updateUserCaseStudy(userCaseStudy.value.id, { done })
@@ -190,14 +175,14 @@ const getStandardCorrection = () => {
    router.push(`/home/${props.userid}/revise-case-study-answer/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${caseStudy.value.id}`)
 }
 
-const premiumModal = ref(false)
+const premiumModal = ref(null)
 const transmitModal = ref(false)
 
 const getCustomCorrection = () => {
    if (user.value.premium) {
-      transmitModal.value = true
+      transmitModal.value.showModal()
    } else {
-      premiumModal.value = true
+      premiumModal.value.showModal()
    }
 }
 </script>
