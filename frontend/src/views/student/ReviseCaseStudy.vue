@@ -86,7 +86,7 @@
          </div>
 
          <div class="modal-action">
-            <button class="karan-btn secondary-btn" @click="">
+            <button class="karan-btn secondary-btn" @click="subscribe">
                Souscrire à la version premium
             </button>
             <button class="karan-btn secondary-btn" @click="premiumModal.close">
@@ -114,7 +114,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, createApp } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
 import { userOfId } from '/src/use/useUser'
@@ -124,6 +124,8 @@ import { topicOfId } from '/src/use/useTopic'
 import { caseStudyOfId } from '/src/use/useCaseStudy'
 import { theUserCaseStudy, updateUserCaseStudy } from '/src/use/useUserCaseStudy'
 import router from "/src/router"
+
+import { app } from '/src/client-app.js'
 
 
 const props = defineProps({
@@ -184,5 +186,11 @@ const getCustomCorrection = () => {
    } else {
       premiumModal.value.showModal()
    }
+}
+
+const subscribe = async () => {
+   const session = await app.service('stripe').createSession()
+   console.log('session', session)
+   window.location.href = session.url
 }
 </script>

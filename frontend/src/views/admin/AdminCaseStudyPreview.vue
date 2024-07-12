@@ -9,9 +9,6 @@
       </section>
 
       <!-- Course content -->
-      <!-- <main class="mt-4">
-         <TextParts :userid="userid" :topic_id="topic_id" :card_id="undefined" :parts="parts" highlight="none"></TextParts>
-      </main> -->
       <main class="mt-4">
          <div v-html="caseStudy?.content"></div>
       </main>
@@ -20,12 +17,9 @@
 </template>
 
 <script setup>
-import { onMounted, computed } from 'vue'
+import { computed } from 'vue'
 
 import { caseStudyOfId } from '/src/use/useCaseStudy'
-
-// import parser from '/src/lib/grammar.js'
-// import TextParts from '/src/components/TextParts.vue'
 
 import router from "/src/router"
 
@@ -53,18 +47,7 @@ const props = defineProps({
    },
 })
 
-// const parts = ref([])
-
 const caseStudy = computed(() => caseStudyOfId.value(props.case_study_id))
-
-onMounted(async () => {
-   // try {
-   //    parts.value = parser.parse(caseStudy.value.content)
-   //    console.log('parts', parts.value)
-   // } catch(err) {
-   //    parts.value = ''
-   // }
-})
 
 const back = () => {
    router.back()

@@ -46,6 +46,11 @@ const routes = [
       component: () => import('/src/views/auth/ForgottenPassword.vue'),
    },
 
+   {
+      path: '/payment_cancel',
+      component: () => import('/src/views/PaymentCancel.vue'),
+   },
+
 
    {
       path: '/home/:userid',

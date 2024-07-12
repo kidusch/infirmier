@@ -17,7 +17,7 @@
 </template>
 
 <script setup>
-import { onMounted, computed } from 'vue'
+import { computed } from 'vue'
 
 import { caseStudyOfId } from '/src/use/useCaseStudy'
 
@@ -47,18 +47,7 @@ const props = defineProps({
    },
 })
 
-// const parts = ref([])
-
 const caseStudy = computed(() => caseStudyOfId.value(props.case_study_id))
-
-onMounted(async () => {
-   // try {
-   //    parts.value = parser.parse(caseStudy.value.content)
-   //    console.log('parts', parts.value)
-   // } catch(err) {
-   //    parts.value = ''
-   // }
-})
 
 const back = () => {
    router.back()
