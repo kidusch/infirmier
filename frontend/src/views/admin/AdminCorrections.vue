@@ -5,7 +5,7 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p class="leading-loose">
-            <span class="font-semibold">CORRECTIONS</span>
+            <span class="font-semibold">Corrections</span>
          </p>
       </header>
 
@@ -22,7 +22,7 @@
                         <div class="text-sm text-blue-300">{{ userCaseStudy.user_id }}, {{ userCaseStudy.case_study_id }}</div>
                      </div>
                   </div>
-                  <img class="h-4 cursor-pointer" src="/src/assets/thick-arrow-right.svg" @click="select(user)">
+                  <img class="h-4 cursor-pointer" src="/src/assets/thick-arrow-right.svg" @click="selectUserCaseStudy(userCaseStudy)">
                </div>
 
             </template>
@@ -55,8 +55,8 @@ const listOfUncorrectedUserCaseStudyForPremium = computed(() => {
    })
 })
 
-const select = (user) => {
-   router.push(`/home/${props.userid}/admin-correction-case-study/${user.id}`)
+const selectUserCaseStudy = (userCaseStudy) => {
+   router.push(`/home/${props.userid}/admin-correction-case-study/${userCaseStudy.user_id}/${userCaseStudy.case_study_id}`)
 }
 
 </script>

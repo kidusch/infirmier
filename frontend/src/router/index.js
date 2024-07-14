@@ -298,11 +298,12 @@ const routes = [
             }),
          },
          {
-            path: 'admin-correction-case-study/:studentId',
+            path: 'admin-correction-case-study/:userId/:caseStudyId',
             component: () => import('/src/views/admin/AdminCorrectionCaseStudy.vue'),
             props: route => ({
                userid: parseInt(route.params.userid),
-               studentId: parseInt(route.params.studentId),
+               userId: parseInt(route.params.userId),
+               caseStudyId: parseInt(route.params.caseStudyId),
             }),
          },
 

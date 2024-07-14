@@ -133,12 +133,17 @@ export const getUserCaseStudyList = async (user_id) => {
 
 export const listOfUncorrectedUserCaseStudy = computed(() => {
    if (userCaseStudyState.value.uncorrectedUserCaseStudyListStatus === 'ready') {
-      return Object.values(userCaseStudyState.value.theUserCaseStudyCache).filter(userCaseStudy => !userCaseStudy.answer)
+      return Object.values(userCaseStudyState.value.theUserCaseStudyCache).filter(userCaseStudy => userCaseStudy.answer && !userCaseStudy.custom_answer)
    }
    if (userCaseStudyState.value.uncorrectedUserCaseStudyListStatus !== 'ongoing') {
       userCaseStudyState.value.uncorrectedUserCaseStudyListStatus = 'ongoing'
       app.service('user_case_study').findMany({
-         where: { answer: null }
+         where: {
+            NOT: {
+               answer: null,
+            },
+            custom_answer: null,
+         }
       }).then(list => {
          for (const userCaseStudy of list) {
             const key = userCaseStudy.user_id + ':' + userCaseStudy.case_study_id
