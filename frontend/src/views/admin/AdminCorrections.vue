@@ -27,6 +27,19 @@
 
             </template>
 
+            <template v-for="userQuiz in listOfUncorrectedUserQuizForPremium">
+               <div class="flex gap-3 items-center border-b-2 justify-between">
+                  <div class="flex items-center justify-start gap-3">
+                     <div>
+                        <div class="">{{ userOfId(userQuiz.user_id).name }}</div>
+                        <div class="text-sm text-blue-300">{{ userQuiz.user_id }}, {{ userQuiz.quiz_id }}</div>
+                     </div>
+                  </div>
+                  <img class="h-4 cursor-pointer" src="/src/assets/thick-arrow-right.svg" @click="selectUserQuiz(userQuiz)">
+               </div>
+
+            </template>
+
          </div>
       </main>
    </main>
@@ -38,6 +51,7 @@ import { computed, ref } from 'vue'
 
 import { userOfId } from '/src/use/useUser'
 import { listOfUncorrectedUserCaseStudy } from '/src/use/useUserCaseStudy'
+import { listOfUncorrectedUserQuiz } from '/src/use/useUserQuiz'
 
 import router from "/src/router"
 
@@ -57,6 +71,17 @@ const listOfUncorrectedUserCaseStudyForPremium = computed(() => {
 
 const selectUserCaseStudy = (userCaseStudy) => {
    router.push(`/home/${props.userid}/admin-correction-case-study/${userCaseStudy.user_id}/${userCaseStudy.case_study_id}`)
+}
+
+const listOfUncorrectedUserQuizForPremium = computed(() => {
+   return listOfUncorrectedUserQuiz.value.filter(userQuiz => {
+      const user = userOfId.value(userQuiz.user_id)
+      return (user?.premium)
+   })
+})
+
+const selectUserQuiz = (userQuiz) => {
+   router.push(`/home/${props.userid}/admin-correction-quiz/${userQuiz.user_id}/${userQuiz.quiz_id}`)
 }
 
 </script>

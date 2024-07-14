@@ -180,8 +180,9 @@ const getStandardCorrection = () => {
 const premiumModal = ref(null)
 const transmitModal = ref(false)
 
-const getCustomCorrection = () => {
+const getCustomCorrection = async () => {
    if (user.value.premium) {
+      await updateUserCaseStudy(userCaseStudy.value.id, { correction_required: true })
       transmitModal.value.showModal()
    } else {
       premiumModal.value.showModal()

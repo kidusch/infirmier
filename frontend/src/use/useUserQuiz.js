@@ -8,6 +8,7 @@ import { app } from '/src/client-app.js'
 const initialState = () => ({
    theUserQuizCache: {},
    theUserQuizStatus: {},
+   uncorrectedUserQuizListStatus: undefined,
 })
 
 const userQuizState = useSessionStorage('user-quiz-state', initialState(), { mergeDefaults: true })
@@ -103,3 +104,28 @@ export const getUserQuizList = async (user_id) => {
       userQuizState.value.theUserQuizStatus[key] = 'ready'
    }
 }
+
+export const listOfUncorrectedUserQuiz = computed(() => {
+   if (userQuizState.value.uncorrectedUserQuizListStatus === 'ready') {
+      return Object.values(userQuizState.value.theUserQuizCache).filter(userQuiz => userQuiz.correction_required)
+   }
+   if (userQuizState.value.uncorrectedUserQuizListStatus !== 'ongoing') {
+      userQuizState.value.uncorrectedUserQuizListStatus = 'ongoing'
+      app.service('user_quiz').findMany({
+         where: {
+            correction_required: true
+         }
+      }).then(list => {
+         for (const userQuiz of list) {
+            const key = userQuiz.user_id + ':' + userQuiz.case_study_id
+            userQuizState.value.theUserQuizCache[key] = userQuiz
+            userQuizState.value.theUserCaseStudyStatus[key] = 'ready'
+         }
+         userQuizState.value.uncorrectedUserQuizListStatus = 'ready'
+      }).catch(err => {
+         console.log('listOfUserCaseStudy err', err)
+         userQuizState.value.uncorrectedUserQuizListStatus = undefined
+      })
+   }
+   return []
+})
