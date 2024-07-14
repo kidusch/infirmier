@@ -46,11 +46,6 @@ const routes = [
       component: () => import('/src/views/auth/ForgottenPassword.vue'),
    },
 
-   {
-      path: '/payment_cancel',
-      component: () => import('/src/views/PaymentCancel.vue'),
-   },
-
 
    {
       path: '/home/:userid',
@@ -60,6 +55,15 @@ const routes = [
          userid: parseInt(route.params.userid),
       }),
       children: [
+         {
+            path: 'subscription-success',
+            component: () => import('/src/views/SubscriptionSuccess.vue'),
+         },
+         {
+            path: 'subscription-failure',
+            component: () => import('/src/views/SubscriptionFailure.vue'),
+         },
+
          {
             path: 'messages',
             component: () => import('/src/views/student/Messages.vue'),
@@ -269,6 +273,7 @@ const routes = [
                lexicon_id: parseInt(route.params.lexicon_id),
             }),
          },
+         
          {
             path: 'admin-messages',
             component: () => import('/src/views/admin/AdminMessages.vue'),
@@ -279,6 +284,22 @@ const routes = [
          {
             path: 'admin-messages-student/:studentId',
             component: () => import('/src/views/admin/AdminMessagesStudent.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+               studentId: parseInt(route.params.studentId),
+            }),
+         },
+         
+         {
+            path: 'admin-corrections',
+            component: () => import('/src/views/admin/AdminCorrections.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+            }),
+         },
+         {
+            path: 'admin-correction-case-study/:studentId',
+            component: () => import('/src/views/admin/AdminCorrectionCaseStudy.vue'),
             props: route => ({
                userid: parseInt(route.params.userid),
                studentId: parseInt(route.params.studentId),

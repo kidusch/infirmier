@@ -8,7 +8,7 @@ export default function(app) {
 
    app.createService('stripe', {
 
-      createSession: async () => {
+      createSession: async (userid) => {
          const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [
@@ -16,7 +16,7 @@ export default function(app) {
                   price_data: {
                      currency: 'eur',
                      product_data: {
-                        name: 'Abonnement mensuel',
+                        name: 'Abonnement mensuel à "Devenir Infirmier"',
                      },
                      recurring: {
                         interval: 'month',
@@ -27,8 +27,8 @@ export default function(app) {
                },
             ],
             mode: 'subscription',
-            success_url: `${process.env.CLIENT_URL}/payment_success`,
-            cancel_url: `${process.env.CLIENT_URL}/payment_cancel`,
+            success_url: `${process.env.CLIENT_URL}/home/${userid}/subscription-success`,
+            cancel_url: `${process.env.CLIENT_URL}/home/${userid}/subscription-failure`,
          })
          return session
       }

@@ -41,7 +41,7 @@
 
                      <div>
                         <div class="">{{ user.name }}</div>
-                        <div class="text-sm text-blue-300">{{ 'abonné' }}</div>
+                        <div class="text-sm text-blue-300">{{ user.premium ? 'abonné' : '-' }}</div>
                      </div>
                   </div>
                   <img class="h-4 cursor-pointer" src="/src/assets/thick-arrow-right.svg" @click="select(user)">
