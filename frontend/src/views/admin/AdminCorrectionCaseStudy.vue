@@ -40,7 +40,7 @@
 
             <div class="standard-input-container">
                <textarea placeholder="Écrivez votre réponse ici..." type="text"
-                  :value="userCaseStudy?.custom_answer"
+                  :value="userCaseStudy?.custom_correction"
                   @input="debouncedInputText"
                   :disabled="disabledText"
                ></textarea>
@@ -91,7 +91,7 @@ const userCaseStudy = computed(() => theUserCaseStudy.value(props.userId, props.
 const disabledText = ref(true)
 
 const onInputText = async (ev) => {
-   userCaseStudy.value = await updateUserCaseStudy(userCaseStudy.value.id, { custom_answer: ev.target.value })
+   userCaseStudy.value = await updateUserCaseStudy(userCaseStudy.value.id, { custom_correction: ev.target.value })
 }
 const debouncedInputText = useDebounceFn(onInputText, 500)
 

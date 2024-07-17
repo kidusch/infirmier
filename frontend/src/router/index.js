@@ -58,10 +58,16 @@ const routes = [
          {
             path: 'subscription-success',
             component: () => import('/src/views/SubscriptionSuccess.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+            }),
          },
          {
             path: 'subscription-failure',
             component: () => import('/src/views/SubscriptionFailure.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+            }),
          },
 
          {
