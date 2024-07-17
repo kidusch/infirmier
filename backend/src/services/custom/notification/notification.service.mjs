@@ -11,7 +11,8 @@ webpush.setVapidDetails(
 export default function (app) {
 
    const prisma = app.get('prisma')
-
+   const logger = app.get('logger')
+   
    app.createService('notification', {
 
       // add a new subscription (= notification recipient address) for `userId`, or update an existing one
@@ -52,11 +53,10 @@ export default function (app) {
       // send a notification to all devices connected with `userId`
       pushNotification: async (userId, payload) => {
          const user = await prisma.user.findUnique({ where: { id: userId }})
-         if (!user) return
          const subscriptionList = JSON.parse(user.subscription_list)
-         subscriptionList.forEach(subscription => {
-            webpush.sendNotification(subscription, JSON.stringify(payload))
-         })
+         for (const subscription of subscriptionList) {
+            await webpush.sendNotification(subscription, JSON.stringify(payload))
+         }
       },
 
    })

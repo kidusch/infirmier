@@ -1,7 +1,19 @@
 <template>
-   <UserUserMessagesWithScroll v-if="adminId"
-      :userid="userid" :userId="adminId" :offset="0">
-   </UserUserMessagesWithScroll>
+   <main class="ffflex-1 container max-w-7xl">
+
+      <!-- Header -->
+      <header class="chapter-card mt-6 mb-2">
+         <p class="leading-loose">
+            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/admin-messages`">Messagerie</router-link>
+         </p>
+      </header>
+
+      <UserUserMessagesWithScroll v-if="adminId"
+         :userid="userid" :userId="adminId"
+         :offset="210">
+      </UserUserMessagesWithScroll>
+
+   </main>
 </template>
 
 <script setup>

@@ -2,7 +2,7 @@
    <div class="py-4 flex flex-col h-screen">
 
       <!-- navbar -->
-      <nav class="lg:border-b lg:pb-2">
+      <nav class="border-b pb-2 fixed top-0 w-full bg-white">
 
          <main class="flex w-full items-center justify-between container max-w-7xl">
             <button @click="toggleSideMenu">
@@ -29,61 +29,61 @@
             </div>
 
          </main>
-
-         <!-- side menu -->
-         <aside ref="sidebarMenu"
-            class="hidden fixed bg-black/70 h-screen w-screen top-0 left-0 transition-all z-50">
-
-            <main ref="sidebarMenuArea"
-                  class="fixed h-screen top-0 -left-full w-1/5 max-lg:w-1/3 max-sm:w-2/3 bg-white p-5 flex flex-col transition-all">
-
-               <div class="w-full flex justify-end">
-                  <button @click="toggleSideMenu()">
-                     <img src="/src/assets/cancel.svg" alt="cancel">
-                  </button>
-               </div>
-
-               <div class="flex justify-center">
-                  <img class="w-36" src="/src/assets/logo.svg" alt="logo">
-               </div>
-
-               <div class="py-8 mx-4 flex-1 flex flex-col gap-2">
-
-                  <template v-for="item, index in menuItems">
-                     <div @click="selectItem(index)" class="cursor-pointer flex gap-4 items-center w-full p-3 rounded-lg"
-                           :class="{'bg-primary': isCurrentItem(item), 'opacity-50': !isCurrentItem(item)}">
-                        <svg class="w-5 h-5" :stroke="isCurrentItem(item) ? 'white' : 'black'">
-                           <path fill="white" :d="item.iconPath"></path>
-                        </svg>
-
-                        <p class="font-medium" :class="{ 'text-white': isCurrentItem(item)}">
-                           {{ item.label }}
-                        </p>
-                     </div>
-                  </template>
-               </div>
-
-
-               <div class="mx-4 ">
-                  <p class="p-3 opacity-50">Version {{ VERSION }}</p>
-                  <button class="flex gap-4 items-center w-full p-3 rounded-lg opacity-50" @click="signout">
-                     <img class="w-5" src="/src/assets/logout.svg" alt="logout">
-                     <p class="font-medium">
-                        Déconnexion
-                     </p>
-                  </button>
-               </div>
-
-            </main>
-
-            <div id="sidebarMenuSpace" @click="toggleSideMenu"
-               class="fixed h-screen top-0 right-0 w-4/5 max-lg:w-2/3 max-sm:w-1/3">
-            </div>
-
-         </aside>
       </nav>
 
-      <router-view></router-view>
+      <!-- side menu -->
+      <aside ref="sidebarMenu"
+         class="hidden fixed bg-black/70 h-screen w-screen top-0 left-0 transition-all z-50">
+
+         <main ref="sidebarMenuArea"
+               class="fixed h-screen top-0 -left-full w-1/5 max-lg:w-1/3 max-sm:w-2/3 bg-white p-5 flex flex-col transition-all">
+
+            <div class="w-full flex justify-end">
+               <button @click="toggleSideMenu()">
+                  <img src="/src/assets/cancel.svg" alt="cancel">
+               </button>
+            </div>
+
+            <div class="flex justify-center">
+               <img class="w-36" src="/src/assets/logo.svg" alt="logo">
+            </div>
+
+            <div class="py-8 mx-4 flex-1 flex flex-col gap-2">
+
+               <template v-for="item, index in menuItems">
+                  <div @click="selectItem(index)" class="cursor-pointer flex gap-4 items-center w-full p-3 rounded-lg"
+                        :class="{'bg-primary': isCurrentItem(item), 'opacity-50': !isCurrentItem(item)}">
+                     <svg class="w-5 h-5" :stroke="isCurrentItem(item) ? 'white' : 'black'">
+                        <path fill="white" :d="item.iconPath"></path>
+                     </svg>
+
+                     <p class="font-medium" :class="{ 'text-white': isCurrentItem(item)}">
+                        {{ item.label }}
+                     </p>
+                  </div>
+               </template>
+            </div>
+
+
+            <div class="mx-4">
+               <p class="p-3 opacity-50">Version {{ VERSION }}</p>
+               <button class="flex gap-4 items-center w-full p-3 rounded-lg opacity-50" @click="signout">
+                  <img class="w-5" src="/src/assets/logout.svg" alt="logout">
+                  <p class="font-medium">
+                     Déconnexion
+                  </p>
+               </button>
+            </div>
+
+         </main>
+
+         <div id="sidebarMenuSpace" @click="toggleSideMenu"
+            class="fixed h-screen top-0 right-0 w-4/5 max-lg:w-2/3 max-sm:w-1/3">
+         </div>
+
+      </aside>
+
+      <router-view class="mt-6"></router-view>
 
    </div>
 </template>
