@@ -182,7 +182,7 @@ const transmitModal = ref(false)
 
 const getCustomCorrection = async () => {
    if (user.value.premium) {
-      await updateUserCaseStudy(userCaseStudy.value.id, { correction_required: true })
+      await updateUserCaseStudy(userCaseStudy.value.id, { correction_status: 'waiting-for-correction' })
       transmitModal.value.showModal()
    } else {
       premiumModal.value.showModal()

@@ -133,13 +133,13 @@ export const getUserCaseStudyList = async (user_id) => {
 
 export const listOfUncorrectedUserCaseStudy = computed(() => {
    if (userCaseStudyState.value.uncorrectedUserCaseStudyListStatus === 'ready') {
-      return Object.values(userCaseStudyState.value.theUserCaseStudyCache).filter(userCaseStudy => userCaseStudy.correction_required)
+      return Object.values(userCaseStudyState.value.theUserCaseStudyCache).filter(userCaseStudy => (userCaseStudy.correction_status === 'waiting-for-correction'))
    }
    if (userCaseStudyState.value.uncorrectedUserCaseStudyListStatus !== 'ongoing') {
       userCaseStudyState.value.uncorrectedUserCaseStudyListStatus = 'ongoing'
       app.service('user_case_study').findMany({
          where: {
-            correction_required: true,
+            correction_status: 'waiting-for-correction',
          }
       }).then(list => {
          for (const userCaseStudy of list) {

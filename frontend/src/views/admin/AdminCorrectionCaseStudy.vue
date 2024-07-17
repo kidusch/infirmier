@@ -49,7 +49,7 @@
 
          <label class="inline-flex gap-3 items-center cursor-pointer mb-4">
             <p class="font-semibold text-black">Correction valide</p>
-            <input type="checkbox" class="sr-only peer" :checked="!userCaseStudy?.correction_required" @input="ev => onValidateClick(!ev.target.checked)">
+            <input type="checkbox" class="sr-only peer" :checked="userCaseStudy?.correction_status === 'corrected'" @input="ev => onValidateClick(ev.target.checked)">
             <div
                class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#76EE59]">
             </div>
@@ -95,9 +95,9 @@ const onInputText = async (ev) => {
 }
 const debouncedInputText = useDebounceFn(onInputText, 500)
 
-const onValidateClick = async (correction_required) => {
-   await updateUserCaseStudy(userCaseStudy.value.id, { correction_required })
-   if (!correction_required) {
+const onValidateClick = async (isValidate) => {
+   if (isValidate) {
+      await updateUserCaseStudy(userCaseStudy.value.id, { correction_status: 'corrected' })
       await app.service('notification').pushNotification(student.id, { title: "Devenir Infirmier", text: "Vous avez reçu une correction personnalisée" })
    }
 }
