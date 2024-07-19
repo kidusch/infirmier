@@ -79,37 +79,10 @@
    </main>
 
    <!-- ASK PREMIUM SUBSCRIPTION MODAL -->
-   <dialog ref="premiumModal" class="modal modal-middle">
-      <div class="modal-box max-w-xl">
-         <div class="text-large mt-2 mb-4 font-semibold">
-            Pour obtenir une correction personnalisée, vous devez souscrire à la version premium de l’application
-         </div>
+   <PremiumDialog ref="premiumModal" @cancel="premiumModal?.close" @subscribe="subscribe" />
 
-         <div class="modal-action">
-            <button class="karan-btn secondary-btn" @click="subscribe">
-               Souscrire à la version premium
-            </button>
-            <button class="karan-btn secondary-btn" @click="premiumModal.close">
-               Annuler
-            </button>
-         </div>
-      </div>
-   </dialog>
-
-   <!-- PREMIUM TRANSMIT MODAL -->
-   <dialog ref="transmitModal" class="modal modal-middle">
-      <div class="modal-box max-w-xl">
-         <div class="text-large mt-2 mb-4 font-semibold">
-            Votre réponse a été transmise et une correction personnalisée vous sera envoyée dans les meilleurs délais
-         </div>
-
-         <div class="modal-action">
-            <button class="karan-btn secondary-btn" @click="transmitModal.close">
-               Continuer
-            </button>
-         </div>
-      </div>
-   </dialog>
+   <!-- TRANSMIT MODAL -->
+   <CaseStudyAnswerDialog ref="transmitModal" @closed="onClosed" />
 
 </template>
 
@@ -123,9 +96,12 @@ import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
 import { caseStudyOfId } from '/src/use/useCaseStudy'
 import { theUserCaseStudy, updateUserCaseStudy } from '/src/use/useUserCaseStudy'
-import router from "/src/router"
 
+import router from "/src/router"
 import { app } from '/src/client-app.js'
+
+import PremiumDialog from '/src/components/PremiumDialog.vue'
+import CaseStudyAnswerDialog from '/src/components/CaseStudyAnswerDialog.vue'
 
 
 const props = defineProps({
@@ -177,7 +153,7 @@ const getStandardCorrection = () => {
    router.push(`/home/${props.userid}/revise-case-study-answer/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${caseStudy.value.id}`)
 }
 
-const premiumModal = ref(null)
+const premiumModal = ref()
 const transmitModal = ref(false)
 
 const getCustomCorrection = async () => {
@@ -193,5 +169,9 @@ const subscribe = async () => {
    const session = await app.service('stripe').createSession(props.userid)
    console.log('session', session)
    window.location.href = session.url
+}
+
+const onClosed = () => {
+   router.push(`/home/${props.userid}/revise-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
 }
 </script>

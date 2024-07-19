@@ -55,15 +55,23 @@
          <button class="primary-btn px-4 mt-3" @click="goOn">
             Continuer
          </button>
+         <button class="primary-btn px-4 mt-3" @click="getCustomCorrection">
+            Obtenir une correction personnalisée
+         </button>
       </footer>
 
    </main>
+
+   <!-- ASK PREMIUM SUBSCRIPTION MODAL -->
+   <PremiumDialog ref="premiumModal" @cancel="premiumModal?.close" @subscribe="subscribe" />
+
+   <!-- TRANSMIT MODAL -->
+   <CaseStudyAnswerDialog ref="transmitModal" @closed="goOn" />
 
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
-import { useDebounceFn } from '@vueuse/core'
 
 import { userOfId } from '/src/use/useUser'
 import { ueOfId } from '/src/use/useUE'
@@ -114,5 +122,23 @@ const gotoStudy = () => {
 
 const goOn = () => {
    router.push(`/home/${props.userid}/revise-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
+}
+
+const premiumModal = ref()
+const transmitModal = ref(false)
+
+const getCustomCorrection = async () => {
+   if (user.value.premium) {
+      await updateUserCaseStudy(userCaseStudy.value.id, { correction_status: 'waiting-for-correction' })
+      transmitModal.value.showModal()
+   } else {
+      premiumModal.value.showModal()
+   }
+}
+
+const subscribe = async () => {
+   const session = await app.service('stripe').createSession(props.userid)
+   console.log('session', session)
+   window.location.href = session.url
 }
 </script>
