@@ -52,7 +52,7 @@
       </main>
 
       <footer class="flex-1 flex flex-col justify-end pb-8">
-         <button class="primary-btn px-4 mt-3" @click="">
+         <button class="primary-btn px-4 mt-3" @click="goOn">
             Continuer
          </button>
       </footer>
@@ -62,7 +62,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
 import { userOfId } from '/src/use/useUser'
@@ -72,9 +72,6 @@ import { topicOfId } from '/src/use/useTopic'
 import { caseStudyOfId } from '/src/use/useCaseStudy'
 import { theUserCaseStudy, updateUserCaseStudy } from '/src/use/useUserCaseStudy'
 import router from "/src/router"
-
-// import parser from '/src/lib/grammar.js'
-// import TextParts from '/src/components/TextParts.vue'
 
 
 const props = defineProps({
@@ -107,19 +104,6 @@ const topic = computed(() => topicOfId.value(props.topic_id))
 const caseStudy = computed(() => caseStudyOfId.value(props.case_study_id))
 const userCaseStudy = computed(() => theUserCaseStudy.value(props.userid, props.case_study_id))
 
-// const parts = ref([])
-
-const disabledText = ref(true)
-
-onMounted(async () => {
-   // try {
-   //    parts.value = parser.parse(caseStudy.value.content)
-   //    console.log('parts', parts.value)
-   // } catch(err) {
-   //    parts.value = ''
-   // }
-})
-
 const onDoneClick = async (done) => {
    await updateUserCaseStudy(userCaseStudy.value.id, { done })
 }
@@ -128,23 +112,7 @@ const gotoStudy = () => {
    router.push(`/home/${props.userid}/study-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
 }
 
-const onInputText = async (ev) => {
-   userCaseStudy.value = await updateUserCaseStudy(userCaseStudy.value.id, { answer: ev.target.value })
-}
-const debouncedInputText = useDebounceFn(onInputText, 500)
-
-const getStandardCorrection = () => {
-   router.push(`/home/${props.userid}/revise-case-study-answer/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${caseStudy.id}`)
-}
-
-const premiumModal = ref(false)
-const transmitModal = ref(false)
-
-const getCustomCorrection = () => {
-   if (user.value.premium) {
-      transmitModal.value = true
-   } else {
-      premiumModal.value = true
-   }
+const goOn = () => {
+   router.push(`/home/${props.userid}/revise-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
 }
 </script>

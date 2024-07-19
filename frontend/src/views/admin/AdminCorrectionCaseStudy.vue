@@ -47,13 +47,9 @@
             </div>
          </div>
 
-         <label class="inline-flex gap-3 items-center cursor-pointer mb-4">
-            <p class="font-semibold text-black">Correction valide</p>
-            <input type="checkbox" class="sr-only peer" :checked="userCaseStudy?.correction_status === 'corrected'" @input="ev => onValidateClick(ev.target.checked)">
-            <div
-               class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#76EE59]">
-            </div>
-         </label>
+         <button class="primary-btn px-10 mb-4" @click="onValidate">
+            Valider correction
+         </button>
 
       </main>
 
@@ -67,6 +63,9 @@ import { useDebounceFn } from '@vueuse/core'
 import { userOfId } from '/src/use/useUser'
 import { caseStudyOfId } from '/src/use/useCaseStudy'
 import { theUserCaseStudy, updateUserCaseStudy } from '/src/use/useUserCaseStudy'
+
+import { app } from '/src/client-app.js'
+import router from "/src/router"
 
 
 const props = defineProps({
@@ -95,10 +94,17 @@ const onInputText = async (ev) => {
 }
 const debouncedInputText = useDebounceFn(onInputText, 500)
 
-const onValidateClick = async (isValidate) => {
-   if (isValidate) {
+const onValidate = async () => {
+   try {
       await updateUserCaseStudy(userCaseStudy.value.id, { correction_status: 'corrected' })
-      await app.service('notification').pushNotification(student.id, { title: "Devenir Infirmier", text: "Vous avez reçu une correction personnalisée" })
+   } catch(err) {
+      alert("Erreur lors de l'enregistrement")
    }
+   try {
+      await app.service('notification').pushNotification(student.value.id, { title: "Devenir Infirmier", text: "Vous avez reçu une correction personnalisée" })
+   } catch(err) {
+      alert("Erreur lors de l'envoi de la notification à l'étudiant")
+   }
+   await router.push(`/home/${props.userid}/admin-corrections`)
 }
 </script>

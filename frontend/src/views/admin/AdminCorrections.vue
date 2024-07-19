@@ -24,7 +24,6 @@
                   </div>
                   <img class="h-4 cursor-pointer" src="/src/assets/thick-arrow-right.svg" @click="selectUserCaseStudy(userCaseStudy)">
                </div>
-
             </template>
 
             <template v-for="userQuiz in listOfUncorrectedUserQuizForPremium">
@@ -37,7 +36,10 @@
                   </div>
                   <img class="h-4 cursor-pointer" src="/src/assets/thick-arrow-right.svg" @click="selectUserQuiz(userQuiz)">
                </div>
+            </template>
 
+            <template v-if="listOfUncorrectedUserCaseStudyForPremium.length + listOfUncorrectedUserQuizForPremium.length === 0">
+               <div>Aucune correction à faire</div>
             </template>
 
          </div>
