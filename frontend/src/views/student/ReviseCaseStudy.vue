@@ -68,10 +68,10 @@
       </main>
 
       <footer class="flex-1 flex flex-col justify-end pb-8">
-         <button class="primary-btn px-4" @click="getStandardCorrection" :disabled="userCaseStudy?.answer?.length === 0">
-            Obtenir une correction standard
+         <button class="primary-btn px-4" @click="getStandardCorrection">
+            {{ userCaseStudy?.correction_status === 'corrected' ? "Voir les corrections standard et personnalisée" : "Voir la correction standard" }}
          </button>
-         <button class="primary-btn px-4 mt-3" @click="getCustomCorrection" :disabled="userCaseStudy?.answer?.length === 0">
+         <button class="primary-btn px-4 mt-3" v-if="userCaseStudy?.correction_status === 'idle'" @click="getCustomCorrection">
             Obtenir une correction personnalisée
          </button>
       </footer>
@@ -163,6 +163,9 @@ const getCustomCorrection = async () => {
    } else {
       premiumModal.value.showModal()
    }
+}
+
+const gotoCustomCorrection = async () => {
 }
 
 const subscribe = async () => {

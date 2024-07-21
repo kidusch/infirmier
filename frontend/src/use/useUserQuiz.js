@@ -119,11 +119,11 @@ export const listOfUncorrectedUserQuiz = computed(() => {
          for (const userQuiz of list) {
             const key = userQuiz.user_id + ':' + userQuiz.case_study_id
             userQuizState.value.theUserQuizCache[key] = userQuiz
-            userQuizState.value.theUserCaseStudyStatus[key] = 'ready'
+            userQuizState.value.theUserQuizStatus[key] = 'ready'
          }
          userQuizState.value.uncorrectedUserQuizListStatus = 'ready'
       }).catch(err => {
-         console.log('listOfUserCaseStudy err', err)
+         console.log('listOfUncorrectedUserQuiz err', err)
          userQuizState.value.uncorrectedUserQuizListStatus = undefined
       })
    }

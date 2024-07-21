@@ -21,7 +21,7 @@
       <!-- Header -->
       <section class="w-full flex justify-between">
          <h3 class="opacity-50">
-            Étude de cas : correction standard
+            Correction de l'étude de cas
          </h3>
 
          <div class="flex gap-6">
@@ -46,17 +46,24 @@
       <!-- Main content -->
       <main class="pt-4 w-full">
 
-         <!-- Case study desciption -->
+         <!-- standard correction -->
+         <label for="title">Correction standard</label>
          <div v-html="caseStudy?.standard_correction"></div>
+
+         <!-- custom correction -->
+         <div class="mt-4" v-if="userCaseStudy?.correction_status === 'corrected'">
+            <label for="title">Correction personnalisée</label>
+            <div v-html="userCaseStudy?.custom_correction"></div>
+         </div>
 
       </main>
 
       <footer class="flex-1 flex flex-col justify-end pb-8">
+         <button class="primary-btn px-4 mt-3" v-if="userCaseStudy?.correction_status === 'idle'" @click="getCustomCorrection">
+            Obtenir une correction personnalisée
+         </button>
          <button class="primary-btn px-4 mt-3" @click="goOn">
             Continuer
-         </button>
-         <button class="primary-btn px-4 mt-3" @click="getCustomCorrection">
-            Obtenir une correction personnalisée
          </button>
       </footer>
 

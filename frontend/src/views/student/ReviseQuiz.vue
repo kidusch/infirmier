@@ -1,5 +1,5 @@
 <template>
-    <main class="flex-1 container max-w-7xl">
+   <main class="flex-1 container max-w-7xl">
 
       <!-- Header -->
       <header class="chapter-card my-6">
@@ -41,62 +41,73 @@
       </section>
 
 
+      <!-- Main content -->
+      <main class="py-4 w-full">
+         <h4 class="py-2 font-semibold">
+            {{ quiz?.question }}
+         </h4>
+         <p class="opacity-50">(Sélectionnez toutes les réponses correctes)</p>
 
-        <!-- Main content -->
-        <main class="py-4 w-full">
-            <h4 class="py-2 font-semibold">
-               {{ quiz?.question }}
-            </h4>
-            <p class="opacity-50">(Sélectionnez toutes les réponses correctes)</p>
+         <!-- MCQ / QCM -->
+         
+         <div v-for="choice, index in quizChoiceList">
+            <div class="py-5 flex items-center">
+               <div>
+                  <div class="flex items-center pb-1.5">
+                     <label class="font-normal me-2 w-6">
+                        <p class="text-sm text-black">
+                           Oui
+                        </p>
+                     </label>
 
-            <!-- MCQ / QCM -->
-            
-            <div v-for="choice, index in quizChoiceList">
-               <div class="py-5 flex items-center">
-                  <div>
-                     <div class="flex items-center pb-1.5">
-                        <label class="font-normal me-2 w-6">
-                           <p class="text-sm text-black">
-                              Oui
-                           </p>
-                        </label>
+                     <input type="checkbox" :checked="userQuizChoiceAnswer(choice.id) === true" @click="(ev) => setAnswer(choice.id, true, ev.target.checked)" class="checkbox checkbox-primary" />
 
-                        <input type="checkbox" :checked="userQuizChoiceAnswer(choice.id) === true" @click="(ev) => setAnswer(choice.id, true, ev.target.checked)" class="checkbox checkbox-primary" />
-
-                     </div>
-                     <div class="flex items-center">
-                        <label class="font-normal me-2 w-6">
-                           <p class="text-sm text-black">
-                              Non
-                           </p>
-                        </label>
-
-                        <input type="checkbox" :checked="userQuizChoiceAnswer(choice.id) === false" @click="(ev) => setAnswer(choice.id, false, ev.target.checked)" class="checkbox checkbox-primary" />
-                     </div>
                   </div>
-                  <label class="font-normal ml-4">
-                     <p class="text-sm max-sm:text-xs text-black">
-                        {{ "ABCDEFGHIJK".charAt(index) }} - {{ choice.text }}
-                     </p>
-                  </label>
+                  <div class="flex items-center">
+                     <label class="font-normal me-2 w-6">
+                        <p class="text-sm text-black">
+                           Non
+                        </p>
+                     </label>
 
+                     <input type="checkbox" :checked="userQuizChoiceAnswer(choice.id) === false" @click="(ev) => setAnswer(choice.id, false, ev.target.checked)" class="checkbox checkbox-primary" />
+                  </div>
                </div>
-            </div>
-            
-        </main>
+               <label class="font-normal ml-4">
+                  <p class="text-sm max-sm:text-xs text-black">
+                     {{ "ABCDEFGHIJK".charAt(index) }} - {{ choice.text }}
+                  </p>
+               </label>
 
-        <footer class="flex-1 flex flex-col justify-end pb-8">
-            <button class="primary-btn px-4" @click="gotoResults">
-               Vérifier mes réponses
-            </button>
-        </footer>
+            </div>
+         </div>
+         
+      </main>
+
+      <footer class="flex-1 flex flex-col justify-end pb-8">
+         <button class="primary-btn px-4" @click="getStandardCorrection">
+            {{ userQuiz?.correction_status === 'corrected' ? "Voir les corrections standard et personnalisée" : "Voir la correction standard" }}
+         </button>
+         <button class="primary-btn px-4 mt-3" v-if="userQuiz?.correction_status === 'idle'" @click="getCustomCorrection">
+            Obtenir une correction personnalisée
+         </button>
+      </footer>
 
    </main>
+
+
+   <!-- ASK PREMIUM SUBSCRIPTION MODAL -->
+   <PremiumDialog ref="premiumModal" @cancel="premiumModal?.close" @subscribe="subscribe" />
+
+   <!-- TRANSMIT MODAL -->
+   <CaseStudyAnswerDialog ref="transmitModal" @closed="onClosed" />
+
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 
+import { userOfId } from '/src/use/useUser'
 import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
@@ -106,6 +117,10 @@ import { listOfQuizChoices } from '/src/use/useQuizChoice'
 import { theUserQuizChoice, updateUserQuizChoice } from '/src/use/useUserQuizChoice'
 
 import router from "/src/router"
+import { app } from '/src/client-app.js'
+
+import PremiumDialog from '/src/components/PremiumDialog.vue'
+import CaseStudyAnswerDialog from '/src/components/CaseStudyAnswerDialog.vue'
 
 
 const props = defineProps({
@@ -131,6 +146,7 @@ const props = defineProps({
    },
 })
 
+const user = computed(() => userOfId.value(props.userid))
 const ue = computed(() => ueOfId.value(props.ue_id))
 const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
 const topic = computed(() => topicOfId.value(props.topic_id))
@@ -157,7 +173,29 @@ const gotoStudy = () => {
    router.push(`/home/${props.userid}/study-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
 }
 
-const gotoResults = () => {
+const getStandardCorrection = () => {
    router.push(`/home/${props.userid}/revise-quiz-results/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${props.quiz_id}`)
+}
+
+const premiumModal = ref()
+const transmitModal = ref(false)
+
+const getCustomCorrection = async () => {
+   if (user.value.premium) {
+      await updateUserQuiz(userQuiz.value.id, { correction_status: 'waiting-for-correction' })
+      transmitModal.value.showModal()
+   } else {
+      premiumModal.value.showModal()
+   }
+}
+
+const subscribe = async () => {
+   const session = await app.service('stripe').createSession(props.userid)
+   console.log('session', session)
+   window.location.href = session.url
+}
+
+const onClosed = () => {
+   router.push(`/home/${props.userid}/revise-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
 }
 </script>

@@ -312,6 +312,15 @@ const routes = [
                caseStudyId: parseInt(route.params.caseStudyId),
             }),
          },
+         {
+            path: 'admin-correction-quiz/:userId/:quizId',
+            component: () => import('/src/views/admin/AdminCorrectionQuiz.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+               userId: parseInt(route.params.userId),
+               quizId: parseInt(route.params.quizId),
+            }),
+         },
 
          {
             path: 'welcome-student',

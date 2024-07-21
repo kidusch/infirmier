@@ -253,7 +253,7 @@ model user_case_study {
   time            DateTime @default(now()) @db.Timestamptz(6)
   user_id         Int
   case_study_id   Int
-  answer          String?
+  answer          String?  // réponse de l'étudiant
   done                Boolean  @default(false) // = le cas d'étude est acquis par l'utilisateur
   // correction_required Boolean  @default(false) // = l'étudiant demande une correction
   // custom_answer       String?

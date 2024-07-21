@@ -39,13 +39,9 @@
 
 
       <!-- Main content -->
-      <main class="py-4 w-full">
+      <main class="w-full">
 
-         <!-- <h4 class="py-2 font-semibold text-gray-500">
-            SCORE : {{ score > 0 ? '+' : '' }}{{ score }}
-         </h4> -->
-
-         <h4 class="py-2 font-semibold">
+         <h4 class="font-semibold">
             {{ quiz.question }}
          </h4>
 
@@ -68,9 +64,15 @@
             </div>
          </div>
 
+         <!-- custom correction -->
+         <div class="mt-4" v-if="userQuiz?.correction_status === 'corrected'">
+            <label for="title">Correction personnalisée</label>
+            <div v-html="userQuiz?.custom_correction"></div>
+         </div>
+
       </main>
 
-      <footer class="flex-1 flex flex-col justify-end pb-8">
+      <footer class="flex-1 flex flex-col justify-end py-8">
          <router-link class="primary-btn px-4" :to="`/home/${userid}/revise-topic/${ue_id}/${sub_ue_id}/${topic_id}`">
             Continuer
          </router-link>

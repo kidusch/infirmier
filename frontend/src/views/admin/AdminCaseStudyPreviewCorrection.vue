@@ -2,7 +2,7 @@
     <main class="flex-1 container max-w-7xl">
 
       <!-- Settings -->
-      <section class="w-full flex justify-end">
+      <section class="w-full flex justify-end mt-8">
          <div class="link hover:text-red-600 text-blue-600" @click="back">
             Retour
          </div>

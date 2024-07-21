@@ -55,7 +55,7 @@
                <template v-for="quiz in quizList">
                   <div v-if="!quiz.hidden" class="progress-item cursor-pointer" @click="selectQuiz(quiz)">
                      <div class="w-14">
-                        {{ isTheUserQuizDone(quiz.id) ? "✔️": "" }}
+                        {{ isTheUserQuizDone(quiz.id) ? "✔️": "" }} {{ isTheUserQuizWaiting(quiz.id) ? "⏰": "" }}
                      </div>
                      <p>
                         QCM : {{ quiz?.title }}
@@ -68,7 +68,7 @@
                <template v-for="caseStudy in caseStudyList">
                   <div v-if="!caseStudy.hidden" class="progress-item cursor-pointer" @click="selectCaseStudy(caseStudy)">
                      <div class="w-14">
-                        {{ isTheUserCaseStudyDone(caseStudy.id) ? "✔️": "" }}
+                        {{ isTheUserCaseStudyDone(caseStudy.id) ? "✔️": "" }} {{ isTheUserCaseStudyWaiting(caseStudy.id) ? "⏰": "" }}
                      </div>
                      <p>
                         Étude de cas : {{ caseStudy?.title }}
@@ -129,17 +129,27 @@ const caseStudyList = computed(() => listOfCaseStudy.value(props.topic_id))
 
 const isTheUserCardDone = computed(() => (cardId) => {
    const userCard = theUserCard.value(props.userid, cardId)
-   return userCard && userCard.done
+   return userCard?.done
 })
 
 const isTheUserQuizDone = computed(() => (quizId) => {
    const userQuiz = theUserQuiz.value(props.userid, quizId)
-   return userQuiz && userQuiz.done
+   return userQuiz?.done
+})
+
+const isTheUserQuizWaiting = computed(() => (quizId) => {
+   const userQuiz = theUserQuiz.value(props.userid, quizId)
+   return userQuiz?.correction_status === 'waiting-for-correction'
 })
 
 const isTheUserCaseStudyDone = computed(() => (caseStudyId) => {
    const userCaseStudy = theUserCaseStudy.value(props.userid, caseStudyId)
-   return userCaseStudy && userCaseStudy.done
+   return userCaseStudy?.done
+})
+
+const isTheUserCaseStudyWaiting = computed(() => (caseStudyId) => {
+   const userCaseStudy = theUserCaseStudy.value(props.userid, caseStudyId)
+   return userCaseStudy?.correction_status === 'waiting-for-correction'
 })
 
 const selectCard = (card) => {
