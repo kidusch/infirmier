@@ -19,6 +19,7 @@ import { resetUseUserQuizChoice } from '/src/use/useUserQuizChoice'
 import { resetUseUserCaseStudy } from '/src/use/useUserCaseStudy'
 import { resetUseCare } from '/src/use/useCare'
 import { resetUseDocument } from '/src/use/useDocument'
+import { resetUseAnatomy } from '/src/use/useAnatomy'
 import { resetUseLegislation } from '/src/use/useLegislation'
 import { resetUseLexicon } from '/src/use/useLexicon'
 import { resetUseMessage } from '/src/use/useMessage'
@@ -58,6 +59,7 @@ export function clearSessionStorage() {
    resetUseUserCaseStudy()
    resetUseCare()
    resetUseDocument()
+   resetUseAnatomy()
    resetUseLegislation()
    resetUseLexicon()
    resetUseMessage()

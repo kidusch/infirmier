@@ -279,6 +279,22 @@ const routes = [
                lexicon_id: parseInt(route.params.lexicon_id),
             }),
          },
+
+         {
+            path: 'admin-anatomy',
+            component: () => import('/src/views/admin/AdminAnatomy.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+            }),
+         },
+         {
+            path: 'admin-anatomy/:anatomy_id',
+            component: () => import('/src/views/admin/AdminAnatomyDetail.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+               anatomy_id: parseInt(route.params.anatomy_id),
+            }),
+         },
          
          {
             path: 'admin-messages',
@@ -498,6 +514,17 @@ const routes = [
          {
             path: 'lexicon',
             component: () => import('/src/views/student/Lexicon.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+            }),
+         },
+
+         {
+            path: 'anatomy',
+            component: () => import('/src/views/student/Anatomy.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+            }),
          },
       ],
    },

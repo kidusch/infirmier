@@ -156,6 +156,11 @@ const menuItems = computed(() => {
          iconPath: revisionIconPath,
       })
       items.push({
+         label: "Anatomie",
+         path: `/home/${props.userid}/admin-anatomy`,
+         iconPath: revisionIconPath,
+      })
+      items.push({
          label: "Divers",
          path: `/home/${props.userid}/admin-misc`,
          iconPath: revisionIconPath,
@@ -209,6 +214,12 @@ const menuItems = computed(() => {
       items.push({
          label: "Messagerie",
          path: `/home/${props.userid}/messages`,
+         iconPath: revisionIconPath,
+      })
+
+      items.push({
+         label: "Anatomie",
+         path: `/home/${props.userid}/anatomy`,
          iconPath: revisionIconPath,
       })
    }

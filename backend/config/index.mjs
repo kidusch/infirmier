@@ -4,6 +4,7 @@ export default {
    PORT: process.env.PORT,
    LOGS_DIR: process.env.LOGS_DIR,
    DATABASE_URL: process.env.DATABASE_URL,
+   UPLOADS_DIR: process.env.UPLOADS_DIR,
    CLIENT_URL: process.env.CLIENT_URL,
 
    WS_TRANSPORT: true,

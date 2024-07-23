@@ -21,6 +21,7 @@ import userCaseStudyService from './database/user_case_study/user_case_study.ser
 import careService from './database/care/care.service.js'
 import documentService from './database/document/document.service.js'
 import legislationService from './database/legislation/legislation.service.js'
+import anatomyService from './database/anatomy/anatomy.service.js'
 
 import lexiconService from './database/lexicon/lexicon.service.js'
 import messageService from './database/message/message.service.js'
@@ -30,6 +31,7 @@ import mailService from './custom/mail/mail.service.js'
 import authService from './custom/auth/auth.service.js'
 import notificationService from './custom/notification/notification.service.mjs'
 import stripeService from './custom/stripe/stripe.service.mjs'
+import fileUploadService from './custom/file-upload/file-upload.service.mjs'
 
 
 export default function (app) {
@@ -55,6 +57,7 @@ export default function (app) {
    app.configure(careService)
    app.configure(documentService)
    app.configure(legislationService)
+   app.configure(anatomyService)
 
    app.configure(lexiconService)
    app.configure(messageService)
@@ -64,4 +67,5 @@ export default function (app) {
    app.configure(authService)
    app.configure(notificationService)
    app.configure(stripeService)
+   app.configure(fileUploadService)
 }

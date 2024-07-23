@@ -39,11 +39,6 @@
                   v-model="content"
                   :disabled="disabledContent"
                ></textarea>
-               <!-- <textarea placeholder="Contenu..." type="text"
-                  :value="course ? course.content : ''"
-                  @input="debouncedInputContent"
-                  :disabled="disabledContent"
-               ></textarea> -->
             </div>
          </div>
          <!-- <div>
@@ -84,21 +79,6 @@ onMounted(async () => {
 const saveContent = async () => {
    await updateDocument(props.document_id, { content: content.value })
 }
-
-// const errorMessage = ref('')
-
-// watch(() => course.value?.content, async (content) => {
-//    if (content) {
-//       try {
-//          const parts = parser.parse(content)
-//          console.log('parts', parts)
-//          errorMessage.value = ''
-//       } catch(err) {
-//          console.log('err', err)
-//          errorMessage.value = err.toString()
-//       }
-//    }
-// }, { immediate: true })
 
 const onInputTitle = async (ev) => {
    await updateDocument(props.document_id, { title: ev.target.value })

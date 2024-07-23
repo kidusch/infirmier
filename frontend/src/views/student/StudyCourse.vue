@@ -37,7 +37,6 @@
 
       <!-- Course content -->
       <main class="mt-4">
-         <!-- <div v-html="userCourse?.highlighted_content || course?.content" ref="doc" @click="onClick"></div> -->
          <div v-html="courseContent" ref="doc" @click="onClick"></div>
       </main>
 

@@ -305,3 +305,12 @@ model lexicon {
   english_word  String?
   english_desc  String?
 }
+
+model anatomy {
+  id           Int      @id @default(autoincrement())
+  created_at   DateTime @default(now()) @db.Timestamptz(6)
+  name         String
+  content      String?  // svg content, with 'data-' attributes
+  rank         Int
+  hidden       Boolean  @default(false)
+}

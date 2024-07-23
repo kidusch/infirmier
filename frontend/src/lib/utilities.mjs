@@ -113,3 +113,35 @@ export function generateUID(length) {
    }
    return uid
 }
+
+export function readFileAsyncAsText(file) {
+   return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      
+      reader.onload = function(e) {
+         resolve(e.target.result)
+      }
+
+      reader.onerror = function(e) {
+         reject(new Error('Error reading file'))
+      };
+
+      reader.readAsText(file) // Read file content as text
+   })
+}
+
+export function readFileAsyncAsArrayBuffer(file) {
+   return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      
+      reader.onload = function(e) {
+         resolve(e.target.result)
+      }
+
+      reader.onerror = function(e) {
+         reject(new Error('Error reading file'))
+      };
+
+      reader.readAsArrayBuffer(file)
+   })
+}

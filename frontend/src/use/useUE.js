@@ -130,7 +130,3 @@ export const listOfUE = computed(() => {
    }
    return []
 })
-
-export const getUserXXX = async (ue_id) => {
-   const list = await app.service('user_course')
-}
