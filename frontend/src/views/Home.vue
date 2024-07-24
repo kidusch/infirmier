@@ -222,6 +222,12 @@ const menuItems = computed(() => {
          path: `/home/${props.userid}/anatomy`,
          iconPath: revisionIconPath,
       })
+
+      items.push({
+         label: "Agenda",
+         path: `/home/${props.userid}/agenda`,
+         iconPath: revisionIconPath,
+      })
    }
    return items
 })

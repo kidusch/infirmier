@@ -8,23 +8,29 @@
          </p>
       </header>
 
-      <!-- Main content -->
+      <!-- Main content -> anatomy map list -->
       <main class="flex flex-col gap-6 pb-6">
-
-         <svg id="mySvg" width="200" height="200">
-            <path id="path1" d="M10 10 H 90 V 90 H 10 Z" fill="red"/>
-            <path id="path2" d="M110 10 H 190 V 90 H 110 Z" fill="blue"/>
-         </svg>
-
-         <div v-html="svg4"></div>
          
+         <div class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
+            <div class="progress-list">
+               <template v-for="anatomy in listOfAnatomy">
+                  <div class="progress-item cursor-pointer" @click="selectAnatomy(anatomy)">
+                     <p>
+                        {{ anatomy?.name }}
+                     </p>
+                  </div>
+               </template>
+            </div>
+         </div>
+
       </main>
 
    </main>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { listOfAnatomy } from '/src/use/useAnatomy'
+import router from "/src/router"
 
 const props = defineProps({
    userid: {
@@ -33,27 +39,7 @@ const props = defineProps({
    },
 })
 
-const svg4 = ref()
-
-onMounted(async () => {
-
-   const rep = await fetch('/src/assets/france.svg')
-   svg4.value = await rep.text()
-
-   // const paths = document.querySelectorAll('path')
-   // for (const path of paths) {
-   //    console.log('path', path)
-   //    path.addEventListener('mouseover', (event) => {
-   //       console.log('path listener', event.target)
-   //    })
-   // }
-
-   document.addEventListener('click', function (event) {
-      console.log('document click', event.target)
-   }, false);
-
-   document.addEventListener('mouseover', function (event) {
-      console.log('document mouseover', event.target)
-   }, false);
-})
+const selectAnatomy = (anatomy) => {
+   router.push(`/home/${props.userid}/anatomy/${anatomy.id}`)
+}
 </script>

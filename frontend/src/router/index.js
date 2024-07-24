@@ -526,6 +526,22 @@ const routes = [
                userid: parseInt(route.params.userid),
             }),
          },
+         {
+            path: 'anatomy/:anatomy_id',
+            component: () => import('/src/views/student/AnatomyDetail.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+               anatomy_id: parseInt(route.params.anatomy_id),
+            }),
+         },
+
+         {
+            path: 'agenda',
+            component: () => import('/src/views/student/Agenda.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+            }),
+         },
       ],
    },
 ]
