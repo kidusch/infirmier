@@ -22,6 +22,7 @@ import careService from './database/care/care.service.js'
 import documentService from './database/document/document.service.js'
 import legislationService from './database/legislation/legislation.service.js'
 import anatomyService from './database/anatomy/anatomy.service.js'
+import agendaService from './database/agenda/agenda.service.js'
 
 import lexiconService from './database/lexicon/lexicon.service.js'
 import messageService from './database/message/message.service.js'
@@ -58,6 +59,7 @@ export default function (app) {
    app.configure(documentService)
    app.configure(legislationService)
    app.configure(anatomyService)
+   app.configure(agendaService)
 
    app.configure(lexiconService)
    app.configure(messageService)

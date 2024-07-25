@@ -88,7 +88,7 @@ const featuredPaths = ref([])
 
 function updateSelectedPaths() {
    const result = []
-   for (const path of svg.value.querySelectorAll('path')) {
+   for (const path of svg.value.querySelectorAll('path, ellipse, circle, rect')) {
       if (!path.dataset.rank) continue
       result.push(path)
    }

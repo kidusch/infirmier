@@ -29,6 +29,7 @@ model user {
   user_quizes           user_quiz[] // actually a 1:1 relationship
   user_case_studies     user_case_study[] // actually a 1:1 relationship
   user_quiz_choices     user_quiz_choice[]
+  agendas               agenda[]
 }
 
 model message {
@@ -313,4 +314,15 @@ model anatomy {
   content      String?  // svg content, with 'data-' attributes
   rank         Int
   hidden       Boolean  @default(false)
+}
+
+model agenda {
+  id           Int      @id @default(autoincrement())
+  created_at   DateTime @default(now()) @db.Timestamptz(6)
+  user_id      Int
+  title        String
+  start        String
+  end          String
+
+  user         user       @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
