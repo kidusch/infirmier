@@ -24,7 +24,7 @@ import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 
-import { createAgenda } from '/src/use/useAgenda'
+import { createAgenda, deleteAgenda, userListOfAgenda } from '/src/use/useAgenda'
 
 
 const props = defineProps({
@@ -32,6 +32,15 @@ const props = defineProps({
       type: Number,
       required: true
    },
+})
+
+const events = computed(() => {
+   const agendaList = userListOfAgenda.value(props.userid)
+   return agendaList.map(agenda => ({
+      title: agenda.title,
+      start: new Date(agenda.start),
+      // end: new Date(agenda.end),
+   }))
 })
 
 const calendarOptions = ref({
@@ -42,6 +51,8 @@ const calendarOptions = ref({
    selectable: true,
    select: handleDateSelect,
    eventClick: handleEventClick,
+
+   events,
 })
 
 let idNo = 1
@@ -60,13 +71,14 @@ async function handleDateSelect(selectInfo) {
          end: selectInfo.endStr,
          allDay: selectInfo.allDay
       })
-      await createAgenda(title, selectInfo.startStr, selectInfo.endStr)
+      await createAgenda(props.userid, title, selectInfo.startStr, selectInfo.endStr)
    }
 }
 
-function handleEventClick(clickInfo) {
+async function handleEventClick(clickInfo) {
    if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
       clickInfo.event.remove()
+      await deleteAgenda(clickInfo.event.agendaId)
    }
 }
 </script>
