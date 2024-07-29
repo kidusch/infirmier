@@ -86,9 +86,9 @@
 
       <footer class="flex-1 flex flex-col justify-end pb-8">
          <button class="primary-btn px-4" @click="getStandardCorrection">
-            {{ userQuiz?.correction_status === 'corrected' ? "Voir les corrections standard et personnalisée" : "Voir la correction standard" }}
+            {{ userQuiz?.custom_correction_status === 'corrected' ? "Voir les corrections standard et personnalisée" : "Voir la correction standard" }}
          </button>
-         <button class="primary-btn px-4 mt-3" v-if="userQuiz?.correction_status === 'idle'" @click="getCustomCorrection">
+         <button class="primary-btn px-4 mt-3" v-if="userQuiz?.custom_correction_status === 'idle'" @click="getCustomCorrection">
             Obtenir une correction personnalisée
          </button>
       </footer>
@@ -182,7 +182,7 @@ const transmitModal = ref(false)
 
 const getCustomCorrection = async () => {
    if (user.value.premium) {
-      await updateUserQuiz(userQuiz.value.id, { correction_status: 'waiting-for-correction' })
+      await updateUserQuiz(userQuiz.value.id, { custom_correction_status: 'waiting-for-correction' })
       transmitModal.value.showModal()
    } else {
       premiumModal.value.showModal()

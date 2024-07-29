@@ -139,7 +139,7 @@ const isTheUserQuizDone = computed(() => (quizId) => {
 
 const isTheUserQuizWaiting = computed(() => (quizId) => {
    const userQuiz = theUserQuiz.value(props.userid, quizId)
-   return userQuiz?.correction_status === 'waiting-for-correction'
+   return userQuiz?.custom_correction_status === 'waiting-for-correction'
 })
 
 const isTheUserCaseStudyDone = computed(() => (caseStudyId) => {
@@ -149,7 +149,7 @@ const isTheUserCaseStudyDone = computed(() => (caseStudyId) => {
 
 const isTheUserCaseStudyWaiting = computed(() => (caseStudyId) => {
    const userCaseStudy = theUserCaseStudy.value(props.userid, caseStudyId)
-   return userCaseStudy?.correction_status === 'waiting-for-correction'
+   return userCaseStudy?.custom_correction_status === 'waiting-for-correction'
 })
 
 const selectCard = (card) => {

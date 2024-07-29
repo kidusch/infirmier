@@ -65,7 +65,7 @@
          </div>
 
          <!-- custom correction -->
-         <div class="mt-4" v-if="userQuiz?.correction_status === 'corrected'">
+         <div class="mt-4" v-if="userQuiz?.custom_correction_status === 'corrected'">
             <label for="title">Correction personnalisée</label>
             <div v-html="userQuiz?.custom_correction"></div>
          </div>

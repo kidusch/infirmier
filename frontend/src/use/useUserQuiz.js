@@ -107,13 +107,13 @@ export const getUserQuizList = async (user_id) => {
 
 export const listOfUncorrectedUserQuiz = computed(() => {
    if (userQuizState.value.uncorrectedUserQuizListStatus === 'ready') {
-      return Object.values(userQuizState.value.theUserQuizCache).filter(userQuiz => (userQuiz.correction_status === 'waiting-for-correction'))
+      return Object.values(userQuizState.value.theUserQuizCache).filter(userQuiz => (userQuiz.custom_correction_status === 'waiting-for-correction'))
    }
    if (userQuizState.value.uncorrectedUserQuizListStatus !== 'ongoing') {
       userQuizState.value.uncorrectedUserQuizListStatus = 'ongoing'
       app.service('user_quiz').findMany({
          where: {
-            correction_status: 'waiting-for-correction'
+            custom_correction_status: 'waiting-for-correction'
          }
       }).then(list => {
          for (const userQuiz of list) {

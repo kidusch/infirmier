@@ -114,7 +114,7 @@ const debouncedInputText = useDebounceFn(onInputText, 500)
 
 const onValidate = async () => {
    try {
-      await updateUserQuiz(userQuiz.value.id, { correction_status: 'corrected' })
+      await updateUserQuiz(userQuiz.value.id, { custom_correction_status: 'corrected' })
    } catch(err) {
       alert("Erreur lors de l'enregistrement")
    }

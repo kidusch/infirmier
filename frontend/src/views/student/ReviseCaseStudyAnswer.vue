@@ -51,7 +51,7 @@
          <div v-html="caseStudy?.standard_correction"></div>
 
          <!-- custom correction -->
-         <div class="mt-4" v-if="userCaseStudy?.correction_status === 'corrected'">
+         <div class="mt-4" v-if="userCaseStudy?.custom_correction_status === 'corrected'">
             <label for="title">Correction personnalisée</label>
             <div v-html="userCaseStudy?.custom_correction"></div>
          </div>
@@ -59,7 +59,7 @@
       </main>
 
       <footer class="flex-1 flex flex-col justify-end pb-8">
-         <button class="primary-btn px-4 mt-3" v-if="userCaseStudy?.correction_status === 'idle'" @click="getCustomCorrection">
+         <button class="primary-btn px-4 mt-3" v-if="userCaseStudy?.custom_correction_status === 'idle'" @click="getCustomCorrection">
             Obtenir une correction personnalisée
          </button>
          <button class="primary-btn px-4 mt-3" @click="goOn">
@@ -136,7 +136,7 @@ const transmitModal = ref(false)
 
 const getCustomCorrection = async () => {
    if (user.value.premium) {
-      await updateUserCaseStudy(userCaseStudy.value.id, { correction_status: 'waiting-for-correction' })
+      await updateUserCaseStudy(userCaseStudy.value.id, { custom_correction_status: 'waiting-for-correction' })
       transmitModal.value.showModal()
    } else {
       premiumModal.value.showModal()

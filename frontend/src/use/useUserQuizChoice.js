@@ -133,13 +133,13 @@ export const getUserQuizChoiceList = async (user_id) => {
 
 export const listOfUncorrectedUserQuizChoice = computed(() => {
    if (userQuizChoiceState.value.uncorrectedUserQuizChoiceListStatus === 'ready') {
-      return Object.values(userQuizChoiceState.value.theUserQuizChoiceCache).filter(userQuizChoice => (userQuizChoice.correction_status === 'waiting-for-correction'))
+      return Object.values(userQuizChoiceState.value.theUserQuizChoiceCache).filter(userQuizChoice => (userQuizChoice.custom_correction_status === 'waiting-for-correction'))
    }
    if (userQuizChoiceState.value.uncorrectedUserQuizChoiceListStatus !== 'ongoing') {
       userQuizChoiceState.value.uncorrectedUserQuizChoiceListStatus = 'ongoing'
       app.service('user_quiz_choice').findMany({
          where: {
-            correction_status: 'waiting-for-correction',
+            custom_correction_status: 'waiting-for-correction',
          }
       }).then(list => {
          for (const userQuizChoice of list) {

@@ -69,9 +69,9 @@
 
       <footer class="flex-1 flex flex-col justify-end pb-8">
          <button class="primary-btn px-4" @click="getStandardCorrection">
-            {{ userCaseStudy?.correction_status === 'corrected' ? "Voir les corrections standard et personnalisée" : "Voir la correction standard" }}
+            {{ userCaseStudy?.custom_correction_status === 'corrected' ? "Voir les corrections standard et personnalisée" : "Voir la correction standard" }}
          </button>
-         <button class="primary-btn px-4 mt-3" v-if="userCaseStudy?.correction_status === 'idle'" @click="getCustomCorrection">
+         <button class="primary-btn px-4 mt-3" v-if="userCaseStudy?.custom_correction_status === 'idle'" @click="getCustomCorrection">
             Obtenir une correction personnalisée
          </button>
       </footer>
@@ -158,7 +158,10 @@ const transmitModal = ref(false)
 
 const getCustomCorrection = async () => {
    if (user.value.premium) {
-      await updateUserCaseStudy(userCaseStudy.value.id, { correction_status: 'waiting-for-correction' })
+      await updateUserCaseStudy(userCaseStudy.value.id, {
+         custom_correction_status: 'waiting-for-correction',
+         custom_correction_date: new Date(),
+      })
       transmitModal.value.showModal()
    } else {
       premiumModal.value.showModal()
