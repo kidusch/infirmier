@@ -17,6 +17,7 @@
     "@mdi/js": "^7.4.47",
     "@vueuse/core": "^10.9.0",
     "@vueuse/integrations": "^10.11.0",
+    "aframe": "^1.6.0",
     "date-fns": "^3.6.0",
     "idb-keyval": "^6.2.1",
     "jcb-radial": "^1.0.6",

@@ -52,9 +52,6 @@
                ></textarea> -->
             </div>
          </div>
-         <!-- <div>
-            <p class="text-red-600">{{ errorMessage }}</p>
-         </div> -->
       </main>
    </main>
 </template>
@@ -68,7 +65,6 @@ import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
 import { courseOfId, getCourse, updateCourse } from '/src/use/useCourse'
 import router from '/src/router'
-// import parser from '/src/lib/grammar.js'
 
 
 const props = defineProps({
@@ -113,32 +109,19 @@ const saveContent = async () => {
    })
 }
 
-// const errorMessage = ref('')
-
-// watch(() => course.value?.content, async (content) => {
-//    if (content) {
-//       try {
-//          const parts = parser.parse(content)
-//          console.log('parts', parts)
-//          errorMessage.value = ''
-//       } catch(err) {
-//          console.log('err', err)
-//          errorMessage.value = err.toString()
-//       }
-//    }
-// }, { immediate: true })
-
 const onInputTitle = async (ev) => {
    await updateCourse(props.course_id, { title: ev.target.value })
 }
+const debouncedInputTitle = useDebounceFn(onInputTitle, 500)
+const disabledTitle = ref(true)
+
+
 const onInputContent = async (ev) => {
    await updateCourse(props.course_id, { content: ev.target.value })
 }
-const debouncedInputTitle = useDebounceFn(onInputTitle, 500)
 const debouncedInputContent = useDebounceFn(onInputContent, 500)
-
-const disabledTitle = ref(true)
 const disabledContent = ref(true)
+
 
 const preview = () => {
    router.push(`/home/${props.userid}/admin-course-preview/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${props.course_id}`)

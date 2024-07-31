@@ -28,20 +28,20 @@ import { resetUseAgenda } from '/src/use/useAgenda'
 import router from '/src/router'
 
 
-// state backed in SessionStorage
-const initialState = () => ({
-   user: null,
-})
+// // state backed in SessionStorage
+// const initialState = () => ({
+//    user: null,
+// })
 
-const authenticationState = useSessionStorage('authentication-state', initialState(), { mergeDefaults: true })
+// const authenticationState = useSessionStorage('authentication-state', initialState(), { mergeDefaults: true })
 
-export const resetUseAuthentication = () => {
-   authenticationState.value = initialState()
-}
+// export const resetUseAuthentication = () => {
+//    authenticationState.value = initialState()
+// }
 
 export function clearSessionStorage() {
    console.log('clearSessionStorage')
-   resetUseAuthentication()
+   // resetUseAuthentication()
    resetUseAppState()
    resetUseUser()
    resetUseUE()

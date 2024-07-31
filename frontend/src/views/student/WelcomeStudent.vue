@@ -26,6 +26,30 @@
       </section>
    </div>
 
+   <!-- <div class="w-64 h-64">
+      <a-scene embedded>
+         <a-camera position="0 1.6 3" look-controls wasd-controls></a-camera>
+
+         <a-light type="ambient" color="#888"></a-light>
+         <a-light type="directional" position="-1 2 1" intensity="1"></a-light>
+
+         <a-entity
+            position="0 1.6 0"
+            scale="0.5 0.5 0.5"
+            rotation="0 180 0"
+            gltf-model="#model"
+         ></a-entity>
+
+         <a-assets>
+            <a-asset-item id="model" src="/src/3D/basket_ball.gltf"></a-asset-item>
+         </a-assets>
+      </a-scene>
+   </div> -->
+
+   <!-- <a-scene>
+      <a-cylinder color="#FFC65D"></a-cylinder>
+   </a-scene> -->
+
 
    <!-- computing... modal spinner-->
    <div class="fixed inset-0 flex items-center justify-center" v-if="perc > 0">
@@ -72,6 +96,7 @@ const perc = ref(0)
 onMounted(async () => {
    const userid = props.userid
 
+   // preload ues, topics, courses, etc. by blocks to prevent hundreds of small backend requests
    try {
       const ueList = await getUEList()
       perc.value = 10
@@ -96,11 +121,13 @@ onMounted(async () => {
       }
       perc.value = 30
 
+      // read courses by batches of 10
       const courseList = await app.service('course').findMany({})
       for (const course of courseList) {
          courseState.value.courseCache[course.id] = course
          courseState.value.courseStatus[course.id] = 'ready'
       }
+      
       for (const topic of topicList) {
          courseState.value.courseListStatus[topic.id] = 'ready'
       }

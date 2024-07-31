@@ -148,7 +148,7 @@ const courseContent = computed(() => {
    return userCourse.value.highlighted_content
 })
 
-const highlightColor = ref()
+const highlightColor = ref() // undefined: nothing, null: eraser, other: hightlight color
 
 const onDoneClick = async (prevValue) => {
    await updateUserCourse(userCourse.value.id, { done: !prevValue })
@@ -180,6 +180,7 @@ const onInputText = async (ev) => {
 const debouncedInputText = useDebounceFn(onInputText, 500)
 
 const onClick = async (event) => {
+   if (highlightColor.value === undefined) return
    if (!event.target.getAttribute('data-background-color')) {
       event.target.setAttribute('data-background-color', event.target.style.backgroundColor || 'none')
    }
