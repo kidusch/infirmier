@@ -53,8 +53,12 @@
                   </p>
                </div>
 
-               <div :class="{'text-green-600': isGoodAnswer(quizChoice, answersDict[quizChoice.id]), 'text-red-600': !isGoodAnswer(quizChoice, answersDict[quizChoice.id])}">
+               <!-- <div :class="{'text-green-600': isGoodAnswer(quizChoice, answersDict[quizChoice.id]), 'text-red-600': !isGoodAnswer(quizChoice, answersDict[quizChoice.id])}">
                   {{ answerLabel(quizChoice, answersDict[quizChoice.id]) }}
+               </div> -->
+
+               <div :class="{'text-green-600': isGoodAnswer(quizChoice, answerOfQuizChoice(quizChoice.id)), 'text-red-600': !isGoodAnswer(quizChoice, answerOfQuizChoice(quizChoice.id))}">
+                  {{ answerLabel(quizChoice, answerOfQuizChoice(quizChoice.id)) }}
                </div>
 
                <div class="text-gray-500">
@@ -84,9 +88,9 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 
-import { getUE } from '/src/use/useUE'
-import { getSubUE } from '/src/use/useSubUE'
-import { getTopic } from '/src/use/useTopic'
+import { getUE, ueOfId } from '/src/use/useUE'
+import { getSubUE, subUEOfId } from '/src/use/useSubUE'
+import { getTopic, topicOfId } from '/src/use/useTopic'
 // import { getQuiz } from '/src/use/useQuiz'
 // import { getTheUserQuiz } from '/src/use/useUserQuiz'
 // import { getQuizChoiceList } from '/src/use/useQuizChoice'
@@ -123,44 +127,39 @@ const props = defineProps({
    },
 })
 
-const ue = ref()
-const subUE = ref()
-const topic = ref([])
-// const quiz = ref([])
-// const userQuiz = ref([])
-// const quizChoiceList = ref([])
-
+const ue = computed(() => ueOfId.value(props.ue_id))
+const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
+const topic = computed(() => topicOfId.value(props.topic_id))
 const quiz = computed(() => quizOfId.value(props.quiz_id))
 const userQuiz = computed(() => theUserQuiz.value(props.userid, props.quiz_id))
 const quizChoiceList = computed(() => listOfQuizChoices.value(props.quiz_id))
 
 
 const answersDict = ref({})
-const score = ref(0)
+// const score = ref(0)
 
 
 onMounted(async () => {
-   ue.value = await getUE(props.ue_id)
-   subUE.value = await getSubUE(props.sub_ue_id)
-   topic.value = await getTopic(props.topic_id)
+   // ue.value = await getUE(props.ue_id)
+   // subUE.value = await getSubUE(props.sub_ue_id)
+   // topic.value = await getTopic(props.topic_id)
    // quiz.value = await getQuiz(props.quiz_id)
    // quizChoiceList.value = await getQuizChoiceList(props.quiz_id)
-   for (const quizChoice of quizChoiceList.value) {
-      const userQuizeChoice = await getTheUserQuizChoice(props.userid, quizChoice.id)
-      answersDict.value[quizChoice.id] = userQuizeChoice.answer
-      if (isGoodAnswer(quizChoice, userQuizeChoice.answer)) {
-         score.value += quizChoice.positive_points
-      } else if (isWrongAnswer(quizChoice, userQuizeChoice.answer)) {
-         score.value -= quizChoice.negative_points
-      }
-   }
-
-   userQuiz.value = await getTheUserQuiz(props.userid, props.quiz_id)
+   // for (const quizChoice of quizChoiceList.value) {
+   //    const userQuizChoice = await getTheUserQuizChoice(props.userid, quizChoice.id)
+   //    answersDict.value[quizChoice.id] = userQuizChoice.answer
+   //    if (isGoodAnswer(quizChoice, userQuizChoice.answer)) {
+   //       score.value += quizChoice.positive_points
+   //    } else if (isWrongAnswer(quizChoice, userQuizChoice.answer)) {
+   //       score.value -= quizChoice.negative_points
+   //    }
+   // }
+   // userQuiz.value = await getTheUserQuiz(props.userid, props.quiz_id)
 })
 
 const answerOfQuizChoice = computed(() => (quizChoiceId) => {
    const userQuizChoice = theUserQuizChoice.value(props.userid, quizChoiceId)
-   return userQuizChoice.value?.answer
+   return userQuizChoice?.answer
 })
 
 function isGoodAnswer(quizChoice, studentAnswer) {
@@ -180,6 +179,16 @@ const answerLabel = (quizChoice, studentAnswer) => {
    if (studentAnswer === quizChoice.answer) return `Bonne réponse (${quizChoice.positive_points} points)`
    return `Mauvaise réponse (-${quizChoice.negative_points} points)`
 }
+
+const score = computed(() => quizChoiceList.value.reduce((accu, quizChoice) => {
+   const userQuizChoice = theUserQuizChoice.value(props.userid, quizChoice.id)
+   if (isGoodAnswer(quizChoice, userQuizChoice.answer)) {
+      accu += quizChoice.positive_points
+   } else if (isWrongAnswer(quizChoice, userQuizChoice.answer)) {
+      accu -= quizChoice.negative_points
+   }
+   return accu
+}, 0))
 
 const gotoStudy = () => {
    router.push(`/home/${props.userid}/study-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)

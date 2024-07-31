@@ -180,7 +180,7 @@ const onInputText = async (ev) => {
 const debouncedInputText = useDebounceFn(onInputText, 500)
 
 const onClick = async (event) => {
-   console.log('highlightColor.value', highlightColor.value)
+   console.log('highlightColor.value', highlightColor.value) // NÉCESSAIRE ???
    if (highlightColor.value === undefined) return
    if (!event.target.getAttribute('data-background-color')) {
       event.target.setAttribute('data-background-color', event.target.style.backgroundColor || 'none')
