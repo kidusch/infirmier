@@ -82,15 +82,20 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 
 import { getUE } from '/src/use/useUE'
 import { getSubUE } from '/src/use/useSubUE'
 import { getTopic } from '/src/use/useTopic'
-import { getQuiz } from '/src/use/useQuiz'
-import { getTheUserQuiz } from '/src/use/useUserQuiz'
-import { getQuizChoiceList } from '/src/use/useQuizChoice'
-import { getTheUserQuizChoice } from '/src/use/useUserQuizChoice'
+// import { getQuiz } from '/src/use/useQuiz'
+// import { getTheUserQuiz } from '/src/use/useUserQuiz'
+// import { getQuizChoiceList } from '/src/use/useQuizChoice'
+// import { getTheUserQuizChoice } from '/src/use/useUserQuizChoice'
+
+import { quizOfId } from '/src/use/useQuiz'
+import { theUserQuiz, updateUserQuiz } from '/src/use/useUserQuiz'
+import { listOfQuizChoices } from '/src/use/useQuizChoice'
+import { theUserQuizChoice } from '/src/use/useUserQuizChoice'
 
 import router from "/src/router"
 
@@ -121,9 +126,14 @@ const props = defineProps({
 const ue = ref()
 const subUE = ref()
 const topic = ref([])
-const quiz = ref([])
-const userQuiz = ref([])
-const quizChoiceList = ref([])
+// const quiz = ref([])
+// const userQuiz = ref([])
+// const quizChoiceList = ref([])
+
+const quiz = computed(() => quizOfId.value(props.quiz_id))
+const userQuiz = computed(() => theUserQuiz.value(props.userid, props.quiz_id))
+const quizChoiceList = computed(() => listOfQuizChoices.value(props.quiz_id))
+
 
 const answersDict = ref({})
 const score = ref(0)
@@ -133,8 +143,8 @@ onMounted(async () => {
    ue.value = await getUE(props.ue_id)
    subUE.value = await getSubUE(props.sub_ue_id)
    topic.value = await getTopic(props.topic_id)
-   quiz.value = await getQuiz(props.quiz_id)
-   quizChoiceList.value = await getQuizChoiceList(props.quiz_id)
+   // quiz.value = await getQuiz(props.quiz_id)
+   // quizChoiceList.value = await getQuizChoiceList(props.quiz_id)
    for (const quizChoice of quizChoiceList.value) {
       const userQuizeChoice = await getTheUserQuizChoice(props.userid, quizChoice.id)
       answersDict.value[quizChoice.id] = userQuizeChoice.answer
@@ -146,6 +156,11 @@ onMounted(async () => {
    }
 
    userQuiz.value = await getTheUserQuiz(props.userid, props.quiz_id)
+})
+
+const answerOfQuizChoice = computed(() => (quizChoiceId) => {
+   const userQuizChoice = theUserQuizChoice.value(props.userid, quizChoiceId)
+   return userQuizChoice.value?.answer
 })
 
 function isGoodAnswer(quizChoice, studentAnswer) {

@@ -26,7 +26,7 @@
                </div>
 
                <!-- there are uncorrected case studies or quizzes -->
-               <div v-if="user.admin && uncorrectedCount > 0" class="cursor-pointer" @click="goToAdminCorrections">
+               <div v-if="user?.admin && uncorrectedCount > 0" class="cursor-pointer" @click="goToAdminCorrections">
                   ⏰
                </div>
                

@@ -26,7 +26,7 @@
                         </p>
                      </label>
 
-                     <input type="checkbox" :checked="userQuizChoiceAnswer(choice.id) === true" class="checkbox checkbox-primary" />
+                     <input type="checkbox" :checked="userQuizChoiceAnswer(choice.id) === true" class="checkbox checkbox-primary" disabled />
 
                   </div>
                   <div class="flex items-center">
@@ -36,7 +36,7 @@
                         </p>
                      </label>
 
-                     <input type="checkbox" :checked="userQuizChoiceAnswer(choice.id) === false" class="checkbox checkbox-primary" />
+                     <input type="checkbox" :checked="userQuizChoiceAnswer(choice.id) === false" class="checkbox checkbox-primary" disabled />
                   </div>
                </div>
                <label class="font-normal ml-4">
@@ -81,6 +81,8 @@ import { useDebounceFn } from '@vueuse/core'
 import { userOfId } from '/src/use/useUser'
 import { quizOfId } from '/src/use/useQuiz'
 import { theUserQuiz, updateUserQuiz } from '/src/use/useUserQuiz'
+import { listOfQuizChoices } from '/src/use/useQuizChoice'
+import { theUserQuizChoice } from '/src/use/useUserQuizChoice'
 
 import { app } from '/src/client-app.js'
 import router from "/src/router"
@@ -104,6 +106,12 @@ const props = defineProps({
 const student = computed(() => userOfId.value(props.userId))
 const quiz = computed(() => quizOfId.value(props.quizId))
 const userQuiz = computed(() => theUserQuiz.value(props.userId, props.quizId))
+const quizChoiceList = computed(() => listOfQuizChoices.value(props.quizId))
+
+const userQuizChoiceAnswer = computed(() => (quiz_choice_id) => {
+   const userQuizChoice = theUserQuizChoice.value(props.userId, quiz_choice_id)
+   return userQuizChoice?.answer
+})
 
 const disabledText = ref(true)
 

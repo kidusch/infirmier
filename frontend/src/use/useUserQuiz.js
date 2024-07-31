@@ -117,7 +117,7 @@ export const listOfUncorrectedUserQuiz = computed(() => {
          }
       }).then(list => {
          for (const userQuiz of list) {
-            const key = userQuiz.user_id + ':' + userQuiz.case_study_id
+            const key = userQuiz.user_id + ':' + userQuiz.quiz_id
             userQuizState.value.theUserQuizCache[key] = userQuiz
             userQuizState.value.theUserQuizStatus[key] = 'ready'
          }

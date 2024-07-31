@@ -108,28 +108,28 @@ export const getUserQuizChoiceList = async (user_id) => {
    }
 }
 
-// export const listOfUserQuizChoice = computed(() => (user_id) => {
-//    if (userQuizChoiceState.value.userQuizChoiceListStatus[user_id] === 'ready') {
-//       return Object.values(userQuizChoiceState.value.theUserQuizChoiceCache).filter(userQuizChoice => userQuizChoice.user_id === user_id)
-//    }
-//    if (userQuizChoiceState.value.userQuizChoiceListStatus[user_id] !== 'ongoing') {
-//       userQuizChoiceState.value.userQuizChoiceListStatus[user_id] = 'ongoing'
-//       app.service('user_quiz_choice').findMany({
-//          where: { user_id }
-//       }).then(list => {
-//          for (const userQuizChoice of list) {
-//             const key = user_id + ':' + userQuizChoice.quiz_choice_id
-//             userQuizChoiceState.value.theUserQuizChoiceCache[key] = userQuizChoice
-//             userQuizChoiceState.value.theUserQuizChoiceStatus[key] = 'ready'
-//          }
-//          userQuizChoiceState.value.userQuizChoiceListStatus[user_id] = 'ready'
-//       }).catch(err => {
-//          console.log('listOfUserQuizChoice err', err)
-//          userQuizChoiceState.value.userQuizChoiceListStatus[user_id] = undefined
-//       })
-//    }
-//    return []
-// })
+export const listOfUserQuizChoice = computed(() => (user_id) => {
+   if (userQuizChoiceState.value.userQuizChoiceListStatus[user_id] === 'ready') {
+      return Object.values(userQuizChoiceState.value.theUserQuizChoiceCache).filter(userQuizChoice => userQuizChoice.user_id === user_id)
+   }
+   if (userQuizChoiceState.value.userQuizChoiceListStatus[user_id] !== 'ongoing') {
+      userQuizChoiceState.value.userQuizChoiceListStatus[user_id] = 'ongoing'
+      app.service('user_quiz_choice').findMany({
+         where: { user_id }
+      }).then(list => {
+         for (const userQuizChoice of list) {
+            const key = user_id + ':' + userQuizChoice.quiz_choice_id
+            userQuizChoiceState.value.theUserQuizChoiceCache[key] = userQuizChoice
+            userQuizChoiceState.value.theUserQuizChoiceStatus[key] = 'ready'
+         }
+         userQuizChoiceState.value.userQuizChoiceListStatus[user_id] = 'ready'
+      }).catch(err => {
+         console.log('listOfUserQuizChoice err', err)
+         userQuizChoiceState.value.userQuizChoiceListStatus[user_id] = undefined
+      })
+   }
+   return []
+})
 
 export const listOfUncorrectedUserQuizChoice = computed(() => {
    if (userQuizChoiceState.value.uncorrectedUserQuizChoiceListStatus === 'ready') {

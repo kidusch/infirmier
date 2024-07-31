@@ -39,6 +39,7 @@ app.service('user').on('delete', user => {
 
 
 export const getUser = async (id) => {
+   if (!userState.value) return undefined
    let user = userState.value.userCache[id]
    if (user) return user
    user = await app.service('user').findUnique({ where: { id }})
@@ -48,6 +49,7 @@ export const getUser = async (id) => {
 }
 
 export const userOfId = computed(() => id => {
+   if (!userState.value) return undefined
    const status = userState.value?.userStatus[id]
    if (status === 'ready') return userState.value.userCache[id]
    if (status === 'ongoing') return undefined // ongoing request
@@ -64,6 +66,7 @@ export const userOfId = computed(() => id => {
 })
 
 export const listOfUser = computed(() => {
+   if (!userState.value) return []
    if (userState.value.userListStatus === 'ready') {
       return Object.values(userState.value.userCache).sort((e1, e2) => e1.rank - e2.rank)
    }
