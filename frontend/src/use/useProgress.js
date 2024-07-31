@@ -9,9 +9,6 @@ import { listOfQuiz, quizState } from '/src/use/useQuiz'
 import { listOfCaseStudy, caseStudyState } from '/src/use/useCaseStudy'
 import { listOfTopic, topicState } from '/src/use/useTopic'
 import { listOfSubUE, subUEState } from '/src/use/useSubUE'
-import { getUEList } from '/src/use/useUE'
-
-import { app } from '/src/client-app.js'
 
 
 export const courseStudyProgress = computed(() => (user_id, course_id) => {

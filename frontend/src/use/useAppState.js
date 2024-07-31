@@ -1,5 +1,6 @@
 
-import { useSessionStorage } from '@vueuse/core'
+// import { useSessionStorage } from '@vueuse/core'
+import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 
 // state backed in SessionStorage
 const initialState = () => ({
@@ -8,8 +9,9 @@ const initialState = () => ({
    isWaiting: false,
 })
 
-export const appState = useSessionStorage('app-state', initialState(), { mergeDefaults: true })
+// export const appState = useSessionStorage('app-state', initialState(), { mergeDefaults: true })
+export const { data: appState } = useIDBKeyval('app-state', initialState(), { mergeDefaults: true })
 
 export const resetUseAppState = () => {
-   appState.value = null
+   appState.value = initialState()
 }

@@ -1,5 +1,6 @@
 import { computed } from 'vue'
-import { useSessionStorage } from '@vueuse/core'
+// import { useSessionStorage } from '@vueuse/core'
+import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 
 import { app } from '/src/client-app.js'
 
@@ -11,10 +12,11 @@ const initialState = () => ({
    careListStatus: undefined,
 })
 
-const careState = useSessionStorage('care-state', initialState(), { mergeDefaults: true })
+// const careState = useSessionStorage('care-state', initialState(), { mergeDefaults: true })
+const { data: careState } = useIDBKeyval('care-state', initialState(), { mergeDefaults: true })
 
 export const resetUseCare = () => {
-   careState.value = null
+   careState.value = initialState()
 }
 
 

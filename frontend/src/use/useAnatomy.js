@@ -1,5 +1,6 @@
 import { computed } from 'vue'
-import { useSessionStorage } from '@vueuse/core'
+// import { useSessionStorage } from '@vueuse/core'
+import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 
 import { app } from '/src/client-app.js'
 
@@ -11,10 +12,11 @@ const initialState = () => ({
    anatomyListStatus: undefined,
 })
 
-const anatomyState = useSessionStorage('anatomy-state', initialState(), { mergeDefaults: true })
+// const anatomyState = useSessionStorage('anatomy-state', initialState(), { mergeDefaults: true })
+const { data: anatomyState } = useIDBKeyval('anatomy-state', initialState(), { mergeDefaults: true })
 
 export const resetUseAnatomy = () => {
-   anatomyState.value = null
+   anatomyState.value = initialState()
 }
 
 

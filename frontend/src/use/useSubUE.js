@@ -1,5 +1,6 @@
 import { computed } from 'vue'
-import { useSessionStorage } from '@vueuse/core'
+// import { useSessionStorage } from '@vueuse/core'
+import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 
 import { app } from '/src/client-app.js'
 
@@ -11,10 +12,11 @@ const initialState = () => ({
    subUEListStatus: {},
 })
 
-export const subUEState = useSessionStorage('sub-ue-state', initialState(), { mergeDefaults: true })
+// export const subUEState = useSessionStorage('sub-ue-state', initialState(), { mergeDefaults: true })
+export const { data: subUEState } = useIDBKeyval('sub-ue-state', initialState(), { mergeDefaults: true })
 
 export const resetUseSubUE = () => {
-   subUEState.value = null
+   subUEState.value = initialState()
 }
 
 

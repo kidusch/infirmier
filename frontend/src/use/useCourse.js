@@ -16,8 +16,7 @@ const initialState = () => ({
 export const { data: courseState } = useIDBKeyval('course-state', initialState(), { mergeDefaults: true })
 
 export const resetUseCourse = () => {
-   // PAUSE PROBLÈME AVEC INDEXEDB
-   // courseState.value = null
+   courseState.value = initialState()
 }
 
 

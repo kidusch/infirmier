@@ -1,5 +1,6 @@
 import { computed } from 'vue'
-import { useSessionStorage } from '@vueuse/core'
+// import { useSessionStorage } from '@vueuse/core'
+import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 
 import { app } from '/src/client-app.js'
 
@@ -11,10 +12,11 @@ const initialState = () => ({
    topicListStatus: {},
 })
 
-export const topicState = useSessionStorage('topic-state', initialState(), { mergeDefaults: true })
+// export const topicState = useSessionStorage('topic-state', initialState(), { mergeDefaults: true })
+export const { data: topicState } = useIDBKeyval('topic-state', initialState(), { mergeDefaults: true })
 
 export const resetUseTopic = () => {
-   topicState.value = null
+   topicState.value = initialState()
 }
 
 

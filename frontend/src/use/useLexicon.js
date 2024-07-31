@@ -19,8 +19,7 @@ const { data: lexiconState } = useIDBKeyval('lexicon-state', initialState(), { m
 
 
 export const resetUseLexicon = () => {
-   // PAUSE PROBLÈME AVEC INDEXEDB
-   // lexiconState.value = null
+   lexiconState.value = initialState()
 }
 
 

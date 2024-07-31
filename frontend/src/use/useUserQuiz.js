@@ -1,5 +1,6 @@
 import { computed } from 'vue'
-import { useSessionStorage } from '@vueuse/core'
+// import { useSessionStorage } from '@vueuse/core'
+import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 
 import { app } from '/src/client-app.js'
 
@@ -11,7 +12,8 @@ const initialState = () => ({
    uncorrectedUserQuizListStatus: undefined,
 })
 
-const userQuizState = useSessionStorage('user-quiz-state', initialState(), { mergeDefaults: true })
+// const userQuizState = useSessionStorage('user-quiz-state', initialState(), { mergeDefaults: true })
+const { data: userQuizState } = useIDBKeyval('user-quiz-state', initialState(), { mergeDefaults: true })
 
 export const resetUseUserQuiz = () => {
    userQuizState.value = null

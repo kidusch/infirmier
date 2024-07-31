@@ -1,5 +1,6 @@
 import { computed } from 'vue'
-import { useSessionStorage } from '@vueuse/core'
+// import { useSessionStorage } from '@vueuse/core'
+import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 
 import { app } from '/src/client-app.js'
 
@@ -12,10 +13,11 @@ const initialState = () => ({
    agendaListStatus: {},
 })
 
-const agendaState = useSessionStorage('agenda-state', initialState(), { mergeDefaults: true })
+// const agendaState = useSessionStorage('agenda-state', initialState(), { mergeDefaults: true })
+export const { data: agendaState } = useIDBKeyval('agenda-state', initialState(), { mergeDefaults: true })
 
 export const resetUseAgenda = () => {
-   agendaState.value = null
+   agendaState.value = initialState()
 }
 
 

@@ -1,5 +1,6 @@
 import { computed } from 'vue'
-import { useSessionStorage } from '@vueuse/core'
+// import { useSessionStorage } from '@vueuse/core'
+import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 
 import { app } from '/src/client-app.js'
 
@@ -11,11 +12,11 @@ const initialState = () => ({
    quizChoiceListStatus: {},
 })
 
-const key = 'quiz-choice-state'
-const quizChoiceState = useSessionStorage(key, initialState(), { mergeDefaults: true })
+// const quizChoiceState = useSessionStorage('quiz-choice-state', initialState(), { mergeDefaults: true })
+const { data: quizChoiceState } = useIDBKeyval('quiz-choice-state', initialState(), { mergeDefaults: true })
 
 export const resetUseQuizChoice = () => {
-   quizChoiceState.value = null
+   quizChoiceState.value = initialState()
 }
 
 

@@ -1,5 +1,6 @@
 import { computed } from 'vue'
-import { useSessionStorage } from '@vueuse/core'
+// import { useSessionStorage } from '@vueuse/core'
+import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 
 import { app } from '/src/client-app.js'
 
@@ -11,10 +12,11 @@ const initialState = () => ({
    documentListStatus: undefined,
 })
 
-const documentState = useSessionStorage('document-state', initialState(), { mergeDefaults: true })
+// const documentState = useSessionStorage('document-state', initialState(), { mergeDefaults: true })
+const { data: documentState } = useIDBKeyval('document-state', initialState(), { mergeDefaults: true })
 
 export const resetUseDocument = () => {
-   documentState.value = null
+   documentState.value = initialState()
 }
 
 

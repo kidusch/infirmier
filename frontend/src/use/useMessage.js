@@ -1,6 +1,7 @@
 
 import { computed } from "vue"
-import { useSessionStorage } from '@vueuse/core'
+// import { useSessionStorage } from '@vueuse/core'
+import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 
 import { app } from '/src/client-app.js'
 
@@ -14,10 +15,11 @@ const initialState = () => ({
    userMessagesListReady: {},
 })
 
-const stateMessages = useSessionStorage('state-messages', initialState())
+// const stateMessages = useSessionStorage('state-messages', initialState())
+const { data: stateMessages } = useIDBKeyval('state-messages', initialState())
 
 export const resetUseMessage = () => {
-   stateMessages.value = null
+   stateMessages.value = initialState()
 }
 
 

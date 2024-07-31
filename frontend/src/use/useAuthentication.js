@@ -33,11 +33,10 @@ const initialState = () => ({
    user: null,
 })
 
-const key = 'authentication-state'
-const authenticationState = useSessionStorage(key, initialState(), { mergeDefaults: true })
+const authenticationState = useSessionStorage('authentication-state', initialState(), { mergeDefaults: true })
 
 export const resetUseAuthentication = () => {
-   authenticationState.value = null
+   authenticationState.value = initialState()
 }
 
 export function clearSessionStorage() {
