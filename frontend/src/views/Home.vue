@@ -160,12 +160,6 @@ const menuItems = computed(() => {
          iconPath: revisionIconPath,
       })
       items.push({
-         label: "Divers",
-         path: `/home/${props.userid}/admin-misc`,
-         iconPath: revisionIconPath,
-      })
-
-      items.push({
          label: "Messagerie",
          path: `/home/${props.userid}/admin-messages`,
          iconPath: revisionIconPath,
@@ -174,6 +168,11 @@ const menuItems = computed(() => {
       items.push({
          label: "Corrections",
          path: `/home/${props.userid}/admin-corrections`,
+         iconPath: revisionIconPath,
+      })
+      items.push({
+         label: "Divers",
+         path: `/home/${props.userid}/admin-misc`,
          iconPath: revisionIconPath,
       })
 
