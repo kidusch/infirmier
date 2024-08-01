@@ -89,7 +89,8 @@
          <textarea class="min-h-[65vh] h-[65vh] px-4 text-black/70 font-normal text-base"
             placeholder="Écrivez vos notes ici"
             :value="userCourse?.note"
-            @input="debouncedInputText"
+            @input="onNoteInputDebounced"
+            v-position="notePosition"
          ></textarea>
       </div>
 
@@ -174,10 +175,21 @@ function closeNoteModal() {
    noteBox.value.style.right = "-100%"
 }
 
-const onInputText = async (ev) => {
-   userCourse.value = await updateUserCourse(userCourse.value.id, { note: ev.target.value })
+// handle note editing
+const notePosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
+const onNoteInput = async (ev) => {
+   notePosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
+   await updateUserCourse(userCourse.value.id, { note: ev.target.value })
 }
-const debouncedInputText = useDebounceFn(onInputText, 500)
+const onNoteInputDebounced = useDebounceFn(onNoteInput, 500)
+
+// custom directive (v-position on <input> or <textarea>) which restores cursor position
+const vPosition = {
+   updated: (el, binding) => {
+      // binding.value is the directive argument, here the cursor position ref { start, end }
+      el.selectionStart, el.selectionEnd = binding.value.start, binding.value.end
+   }
+}
 
 const onClick = async (event) => {
    console.log('highlightColor.value', highlightColor.value) // NÉCESSAIRE ???
