@@ -279,6 +279,14 @@ const routes = [
                legislation_id: parseInt(route.params.legislation_id),
             }),
          },
+         {
+            path: 'admin-legislation-preview/:legislation_id',
+            component: () => import('/src/views/admin/AdminLegislationPreview.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+               legislation_id: parseInt(route.params.legislation_id),
+            }),
+         },
 
          {
             path: 'admin-lexicon',

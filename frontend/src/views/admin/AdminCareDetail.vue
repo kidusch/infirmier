@@ -32,8 +32,8 @@
          <div>
             <div class="flex justify-between">
                <label for="title">Contenu</label>
-               <div class="flex gap-2">
-                  <img class="h-5 mb-1" src="/src/assets/preview.svg" @click="preview">
+               <div class="flex gap-2 mb-1">
+                  <img class="h-5 cursor-pointer" src="/src/assets/preview.svg" @click="preview">
                   <img class="h-5 cursor-pointer" src="/src/assets/edit.svg" v-if="!isContentDisabled" @click="isContentDisabled = !isContentDisabled">
                   <img class="h-5 cursor-pointer" src="/src/assets/edit-off.svg" v-if="isContentDisabled" @click="isContentDisabled = !isContentDisabled">
                </div>
