@@ -24,18 +24,21 @@ export const resetUseLexicon = () => {
 
 
 app.service('lexicon').on('create', lexicon => {
+   if (!lexiconState.value) return
    console.log('LEXICON EVENT created', lexicon)
    lexiconState.value.lexiconCache[lexicon.id] = lexicon
    lexiconState.value.lexiconStatus[lexicon.id] = 'ready'
 })
 
 app.service('lexicon').on('update', lexicon => {
+   if (!lexiconState.value) return
    console.log('LEXICON EVENT update', lexicon)
    lexiconState.value.lexiconCache[lexicon.id] = lexicon
    lexiconState.value.lexiconStatus[lexicon.id] = 'ready'
 })
 
 app.service('lexicon').on('delete', lexicon => {
+   if (!lexiconState.value) return
    console.log('LEXICON EVENT delete', lexicon)
    delete lexiconState.value.lexiconCache[lexicon.id]
    delete lexiconState.value.lexiconStatus[lexicon.id]
@@ -43,6 +46,7 @@ app.service('lexicon').on('delete', lexicon => {
 
 
 export const getLexicon = async (id) => {
+   if (!lexiconState.value) return
    let lexicon = lexiconState.value.lexiconCache[id]
    if (lexicon) return lexicon
    lexicon = await app.service('lexicon').findUnique({ where: { id }})
@@ -52,6 +56,7 @@ export const getLexicon = async (id) => {
 }
 
 export const lexiconOfId = computed(() => id => {
+   if (!lexiconState.value) return
    const status = lexiconState.value.lexiconStatus[id]
    if (status === 'ready') return lexiconState.value.lexiconCache[id]
    if (status === 'ongoing') return undefined // ongoing request
@@ -97,6 +102,7 @@ export const removeLexicon = async (id) => {
 }
 
 export const listOfLexicon = computed(() => {
+   if (!lexiconState.value) return
    if (lexiconState.value.lexiconListStatus === 'ready') {
       return Object.values(lexiconState.value.lexiconCache).sort((e1, e2) => (e1.french_word > e2.french_word ? 1 : e1.french_word < e2.french_word ? -1 : 0 ))
    }

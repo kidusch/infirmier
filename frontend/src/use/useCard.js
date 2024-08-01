@@ -21,24 +21,29 @@ export const resetUseCard = () => {
 
 
 app.service('card').on('create', card => {
+   if (!cardState.value) return
    console.log('CARD EVENT created', card)
    cardState.value.cardCache[card.id] = card
-   cardState.value.cardStatus[id] = 'ready'
+   cardState.value.cardStatus[card.id] = 'ready'
 })
 
 app.service('card').on('update', card => {
+   if (!cardState.value) return
    console.log('CARD EVENT update', card)
    cardState.value.cardCache[card.id] = card
+   cardState.value.cardStatus[card.id] = 'ready'
 })
 
 app.service('card').on('delete', card => {
+   if (!cardState.value) return
    console.log('CARD EVENT delete', card)
    delete cardState.value.cardCache[card.id]
-   delete cardState.value.cardStatus[id]
+   delete cardState.value.cardStatus[card.id]
 })
 
 
 export const getCard = async (id) => {
+   if (!cardState.value) return
    let card = cardState.value.cardCache[id]
    if (card) return card
    card = await app.service('card').findUnique({ where: { id }})
@@ -48,6 +53,7 @@ export const getCard = async (id) => {
 }
 
 export const cardOfId = computed(() => (id) => {
+   if (!cardState.value) return
    const status = cardState.value.cardStatus[id]
    if (status === 'ready') return cardState.value.cardCache[id]
    if (status === 'ongoing') return undefined // ongoing request
@@ -104,6 +110,7 @@ export const removeCard = async (id) => {
 }
 
 export const getCardList = async (topic_id) => {
+   if (!cardState.value) return []
    if (cardState.value.cardListStatus[topic_id] !== 'ready') {
       cardState.value.cardListStatus[topic_id] = 'ongoing'
       const list = await app.service('card').findMany({
@@ -119,6 +126,7 @@ export const getCardList = async (topic_id) => {
 }
 
 export const listOfCard = computed(() => (topic_id) => {
+   if (!cardState.value) return []
    if (cardState.value.cardListStatus[topic_id] === 'ready') {
       return Object.values(cardState.value.cardCache).filter(card => card.topic_id === topic_id).sort((e1, e2) => e1.rank - e2.rank)
    }

@@ -21,23 +21,27 @@ export const resetUseDocument = () => {
 
 
 app.service('document').on('create', document => {
+   if (!documentState.value) return
    console.log('DOCUMENT EVENT created', document)
    documentState.value.documentCache[document.id] = document
    documentState.value.documentStatus[document.id] = 'ready'
 })
 
 app.service('document').on('update', document => {
+   if (!documentState.value) return
    console.log('DOCUMENT EVENT update', document)
    documentState.value.documentCache[document.id] = document
 })
 
 app.service('document').on('delete', document => {
+   if (!documentState.value) return
    console.log('DOCUMENT EVENT delete', document)
    delete documentState.value.documentCache[document.id]
 })
 
 
 export const getDocument = async (id) => {
+   if (!documentState.value) return
    let document = documentState.value.documentCache[id]
    if (document) return document
    document = await app.service('document').findUnique({ where: { id }})
@@ -47,6 +51,7 @@ export const getDocument = async (id) => {
 }
 
 export const documentOfId = computed(() => id => {
+   if (!documentState.value) return
    const status = documentState.value.documentStatus[id]
    if (status === 'ready') return documentState.value.documentCache[id]
    if (status === 'ongoing') return undefined // ongoing request
@@ -111,6 +116,7 @@ export const removeDocument = async (id) => {
 // }
 
 export const listOfDocument = computed(() => {
+   if (!documentState.value) return
    if (documentState.value.documentListStatus === 'ready') {
       return Object.values(documentState.value.documentCache).sort((e1, e2) => e1.rank - e2.rank)
    }

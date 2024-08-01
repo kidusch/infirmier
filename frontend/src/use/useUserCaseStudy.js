@@ -22,6 +22,7 @@ export const resetUseUserCaseStudy = () => {
 
 
 app.service('user_case_study').on('create', (userCaseStudy) => {
+   if (!userCaseStudyState.value) return
    console.log('USER_CASE_STUDY EVENT created', userCaseStudy)
    const key = userCaseStudy.user_id + ':' + userCaseStudy.case_study_id
    userCaseStudyState.value.theUserCaseStudyCache[key] = userCaseStudy
@@ -29,6 +30,7 @@ app.service('user_case_study').on('create', (userCaseStudy) => {
 })
 
 app.service('user_case_study').on('update', (userCaseStudy) => {
+   if (!userCaseStudyState.value) return
    console.log('USER_CASE_STUDY EVENT update', userCaseStudy)
    const key = userCaseStudy.user_id + ':' + userCaseStudy.case_study_id
    userCaseStudyState.value.theUserCaseStudyCache[key] = userCaseStudy
@@ -36,6 +38,7 @@ app.service('user_case_study').on('update', (userCaseStudy) => {
 })
 
 app.service('user_case_study').on('delete', (userCaseStudy) => {
+   if (!userCaseStudyState.value) return
    console.log('USER_CASE_STUDY EVENT delete', userCaseStudy)
    const key = userCaseStudy.user_id + ':' + userCaseStudy.case_study_id
    delete userCaseStudyState.value.theUserCaseStudyCache[key]
@@ -63,6 +66,7 @@ app.service('user_case_study').on('delete', (userCaseStudy) => {
 // }
 
 export const theUserCaseStudy = computed(() => (user_id, case_study_id) => {
+   if (!userCaseStudyState.value) return
    const key = user_id + ':' + case_study_id
    const status = userCaseStudyState.value.theUserCaseStudyStatus[key]
    if (status === 'ready') return userCaseStudyState.value.theUserCaseStudyCache[key]
@@ -134,6 +138,7 @@ export const getUserCaseStudyList = async (user_id) => {
 // })
 
 export const listOfUncorrectedUserCaseStudy = computed(() => {
+   if (!userCaseStudyState.value) return []
    if (userCaseStudyState.value.uncorrectedUserCaseStudyListStatus === 'ready') {
       return Object.values(userCaseStudyState.value.theUserCaseStudyCache).filter(userCaseStudy => (userCaseStudy.custom_correction_status === 'waiting-for-correction'))
    }

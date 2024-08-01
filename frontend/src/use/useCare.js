@@ -21,18 +21,21 @@ export const resetUseCare = () => {
 
 
 app.service('care').on('create', care => {
+   if (!careState.value) return
    console.log('CARE EVENT created', care)
    careState.value.careCache[care.id] = care
    careState.value.careStatus[care.id] = 'ready'
 })
 
 app.service('care').on('update', care => {
+   if (!careState.value) return
    console.log('CARE EVENT update', care)
    careState.value.careCache[care.id] = care
    careState.value.careStatus[care.id] = 'ready'
 })
 
 app.service('care').on('delete', care => {
+   if (!careState.value) return
    console.log('CARE EVENT delete', care)
    delete careState.value.careCache[care.id]
    delete careState.value.careStatus[care.id]
@@ -40,6 +43,7 @@ app.service('care').on('delete', care => {
 
 
 export const getCare = async (id) => {
+   if (!careState.value) return
    let care = careState.value.careCache[id]
    if (care) return care
    care = await app.service('care').findUnique({ where: { id }})
@@ -49,6 +53,7 @@ export const getCare = async (id) => {
 }
 
 export const careOfId = computed(() => id => {
+   if (!careState.value) return
    const status = careState.value.careStatus[id]
    if (status === 'ready') return careState.value.careCache[id]
    if (status === 'ongoing') return undefined // ongoing request
@@ -114,6 +119,7 @@ export const removeCare = async (id) => {
 // }
 
 export const listOfCare = computed(() => {
+   if (!careState.value) return []
    if (careState.value.careListStatus === 'ready') {
       return Object.values(careState.value.careCache).sort((e1, e2) => e1.rank - e2.rank)
    }

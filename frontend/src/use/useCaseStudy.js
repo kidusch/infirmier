@@ -21,18 +21,21 @@ export const resetUseCaseStudy = () => {
 
 
 app.service('case_study').on('create', caseStudy => {
+   if (!caseStudyState.value) return
    console.log('CASE_STUDY EVENT created', caseStudy)
    caseStudyState.value.caseStudyCache[caseStudy.id] = caseStudy
    caseStudyState.value.caseStudyStatus[caseStudy.id] = 'ready'
 })
 
 app.service('case_study').on('update', caseStudy => {
+   if (!caseStudyState.value) return
    console.log('CASE_STUDY EVENT update', caseStudy)
    caseStudyState.value.caseStudyCache[caseStudy.id] = caseStudy
    caseStudyState.value.caseStudyStatus[caseStudy.id] = 'ready'
 })
 
 app.service('case_study').on('delete', caseStudy => {
+   if (!caseStudyState.value) return
    console.log('CASE_STUDY EVENT delete', caseStudy)
    delete caseStudyState.value.caseStudyCache[caseStudy.id]
    delete caseStudyState.value.caseStudyStatus[caseStudy.id]
@@ -40,6 +43,7 @@ app.service('case_study').on('delete', caseStudy => {
 
 
 export const getCaseStudy = async (id) => {
+   if (!caseStudyState.value) return
    let caseStudy = caseStudyState.value.caseStudyCache[id]
    if (caseStudy) return caseStudy
    caseStudy = await app.service('case_study').findUnique({ where: { id }})
@@ -49,6 +53,7 @@ export const getCaseStudy = async (id) => {
 }
 
 export const caseStudyOfId = computed(() => id => {
+   if (!caseStudyState.value) return
    const status = caseStudyState.value.caseStudyStatus[id]
    if (status === 'ready') return caseStudyState.value.caseStudyCache[id]
    if (status === 'ongoing') return undefined // ongoing request
@@ -105,6 +110,7 @@ export const removeCaseStudy = async (id) => {
 }
 
 export const getCaseStudyList = async (topic_id) => {
+   if (!caseStudyState.value) return []
    if (caseStudyState.value.caseStudyListStatus[topic_id] !== 'ready') {
       caseStudyState.value.caseStudyListStatus[topic_id] = 'ongoing'
       const list = await app.service('case_study').findMany({
@@ -120,6 +126,7 @@ export const getCaseStudyList = async (topic_id) => {
 }
 
 export const listOfCaseStudy = computed(() => (topic_id) => {
+   if (!caseStudyState.value) return []
    if (caseStudyState.value.caseStudyListStatus[topic_id] === 'ready') {
       return Object.values(caseStudyState.value.caseStudyCache).filter(caseStudy => caseStudy.topic_id === topic_id).sort((e1, e2) => e1.rank - e2.rank)
    }

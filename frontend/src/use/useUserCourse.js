@@ -19,6 +19,7 @@ export const resetUseUserCourse = () => {
 }
 
 app.service('user_course').on('create', (userCourse) => {
+   if (!userCourseState.value) return
    console.log('USER_COURSE EVENT created', userCourse)
    const key = userCourse.user_id + ':' + userCourse.course_id
    userCourseState.value.theUserCourseCache[key] = userCourse
@@ -26,6 +27,7 @@ app.service('user_course').on('create', (userCourse) => {
 })
 
 app.service('user_course').on('update', (userCourse) => {
+   if (!userCourseState.value) return
    console.log('USER_COURSE EVENT update', userCourse)
    const key = userCourse.user_id + ':' + userCourse.course_id
    userCourseState.value.theUserCourseCache[key] = userCourse
@@ -33,6 +35,7 @@ app.service('user_course').on('update', (userCourse) => {
 })
 
 app.service('user_course').on('delete', (userCourse) => {
+   if (!userCourseState.value) return
    console.log('USER_COURSE EVENT delete', userCourse)
    const key = userCourse.user_id + ':' + userCourse.course_id
    delete userCourseState.value.theUserCourseCache[key]
@@ -58,6 +61,7 @@ app.service('user_course').on('delete', (userCourse) => {
 // }
 
 export const theUserCourse = computed(() => (user_id, course_id) => {
+   if (!userCourseState.value) return
    const key = user_id + ':' + course_id
    const status = userCourseState.value.theUserCourseStatus[key]
    if (status === 'ready') return userCourseState.value.theUserCourseCache[key]

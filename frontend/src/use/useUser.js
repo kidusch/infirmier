@@ -22,18 +22,21 @@ export const resetUseUser = () => {
 
 
 app.service('user').on('create', user => {
+   if (!userState.value) return
    console.log('USER EVENT created', user)
    userState.value.userCache[user.id] = user
    userState.value.userStatus[user.id] = 'ready'
 })
 
 app.service('user').on('update', user => {
+   if (!userState.value) return
    console.log('USER EVENT update', user)
    userState.value.userCache[user.id] = user
    userState.value.userStatus[user.id] = 'ready'
 })
 
 app.service('user').on('delete', user => {
+   if (!userState.value) return
    console.log('USER EVENT delete', user)
    delete userState.value.userCache[user.id]
    delete userState.value.userStatus[user.id]
@@ -41,6 +44,7 @@ app.service('user').on('delete', user => {
 
 
 export const getUser = async (id) => {
+   if (!userState.value) return
    if (!userState.value) return undefined
    let user = userState.value.userCache[id]
    if (user) return user
@@ -51,6 +55,7 @@ export const getUser = async (id) => {
 }
 
 export const userOfId = computed(() => id => {
+   if (!userState.value) return
    if (!userState.value) return undefined
    const status = userState.value?.userStatus[id]
    if (status === 'ready') return userState.value.userCache[id]

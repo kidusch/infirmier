@@ -1,5 +1,5 @@
 <template>
-    <main class="flex-1 container max-w-7xl mt-12">
+    <main class="flex-1 container max-w-7xl mt-14">
 
       <!-- Settings -->
       <section class="w-full flex justify-end">

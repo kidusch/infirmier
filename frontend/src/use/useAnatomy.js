@@ -21,18 +21,21 @@ export const resetUseAnatomy = () => {
 
 
 app.service('anatomy').on('create', anatomy => {
+   if (!anatomyState.value) return
    console.log('ANATOMY EVENT created', anatomy)
    anatomyState.value.anatomyCache[anatomy.id] = anatomy
    anatomyState.value.anatomyStatus[anatomy.id] = 'ready'
 })
 
 app.service('anatomy').on('update', anatomy => {
+   if (!anatomyState.value) return
    console.log('ANATOMY EVENT update', anatomy)
    anatomyState.value.anatomyCache[anatomy.id] = anatomy
    anatomyState.value.anatomyStatus[anatomy.id] = 'ready'
 })
 
 app.service('anatomy').on('delete', anatomy => {
+   if (!anatomyState.value) return
    console.log('ANATOMY EVENT delete', anatomy)
    delete anatomyState.value.anatomyCache[anatomy.id]
    delete anatomyState.value.anatomyStatus[anatomy.id]
@@ -40,6 +43,7 @@ app.service('anatomy').on('delete', anatomy => {
 
 
 export const getAnatomy = async (id) => {
+   if (!anatomyState.value) return
    let anatomy = anatomyState.value.anatomyCache[id]
    if (anatomy) return anatomy
    anatomy = await app.service('anatomy').findUnique({ where: { id }})
@@ -49,6 +53,7 @@ export const getAnatomy = async (id) => {
 }
 
 export const anatomyOfId = computed(() => id => {
+   if (!anatomyState.value) return
    const status = anatomyState.value.anatomyStatus[id]
    if (status === 'ready') return anatomyState.value.anatomyCache[id]
    if (status === 'ongoing') return undefined // ongoing request
@@ -101,6 +106,7 @@ export const removeAnatomy = async (id) => {
 }
 
 export const getAnatomyList = async () => {
+   if (!anatomyState.value) return []
    if (!anatomyState.value.isListReady) {
       const list = await app.service('anatomy').findMany()
       for (const anatomy of list) {
@@ -113,6 +119,7 @@ export const getAnatomyList = async () => {
 }
 
 export const listOfAnatomy = computed(() => {
+   if (!anatomyState.value) return []
    if (anatomyState.value.anatomyListStatus === 'ready') {
       return Object.values(anatomyState.value.anatomyCache).sort((e1, e2) => e1.rank - e2.rank)
    }

@@ -21,18 +21,21 @@ export const resetUseCourse = () => {
 
 
 app.service('course').on('create', course => {
+   if (!courseState.value) return
    console.log('COURSE EVENT created', course)
    courseState.value.courseCache[course.id] = course
    courseState.value.courseStatus[course.id] = 'ready'
 })
 
 app.service('course').on('update', course => {
+   if (!courseState.value) return
    console.log('COURSE EVENT update', course)
    courseState.value.courseCache[course.id] = course
    courseState.value.courseStatus[course.id] = 'ready'
 })
 
 app.service('course').on('delete', course => {
+   if (!courseState.value) return
    console.log('COURSE EVENT delete', course)
    delete courseState.value.courseCache[course.id]
    delete courseState.value.courseStatus[course.id]
@@ -42,6 +45,7 @@ app.service('course').on('delete', course => {
 // export const courseStatus = (course_id) => courseState.value.courseStatus[course_id]
 
 export const getCourse = async (id) => {
+   if (!courseState.value) return
    let course = courseState.value.courseCache[id]
    if (course) return course
    course = await app.service('course').findUnique({ where: { id }})
@@ -51,6 +55,7 @@ export const getCourse = async (id) => {
 }
 
 export const courseOfId = computed(() => (id) => {
+   if (!courseState.value) return
    const status = courseState.value.courseStatus[id]
    if (status === 'ready') return courseState.value.courseCache[id]
    if (status === 'ongoing') return undefined // ongoing request
@@ -106,6 +111,7 @@ export const removeCourse = async (id) => {
 }
 
 export const getCourseList = async (topic_id) => {
+   if (!courseState.value) return []
    if (courseState.value.courseListStatus[topic_id] !== 'ready') {
       courseState.value.courseListStatus[topic_id] = 'ongoing'
       const list = await app.service('course').findMany({
@@ -121,6 +127,7 @@ export const getCourseList = async (topic_id) => {
 }
 
 export const listOfCourse = computed(() => (topic_id) => {
+   if (!courseState.value) return []
    if (courseState.value.courseListStatus[topic_id] === 'ready') {
       return Object.values(courseState.value.courseCache).filter(course => course.topic_id === topic_id).sort((e1, e2) => e1.rank - e2.rank)
    }

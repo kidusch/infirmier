@@ -21,18 +21,21 @@ export const resetUseLegislation = () => {
 
 
 app.service('legislation').on('create', legislation => {
+   if (!legislationState.value) return
    console.log('LEGISLATION EVENT created', legislation)
    legislationState.value.legislationCache[legislation.id] = legislation
    legislationState.value.legislationStatus[legislation.id] = 'ready'
 })
 
 app.service('legislation').on('update', legislation => {
+   if (!legislationState.value) return
    console.log('LEGISLATION EVENT update', legislation)
    legislationState.value.legislationCache[legislation.id] = legislation
    legislationState.value.legislationStatus[legislation.id] = 'ready'
 })
 
 app.service('legislation').on('delete', legislation => {
+   if (!legislationState.value) return
    console.log('LEGISLATION EVENT delete', legislation)
    delete legislationState.value.legislationCache[legislation.id]
    delete legislationState.value.legislationStatus[legislation.id]
@@ -40,6 +43,7 @@ app.service('legislation').on('delete', legislation => {
 
 
 export const getLegislation = async (id) => {
+   if (!legislationState.value) return
    let legislation = legislationState.value.legislationCache[id]
    if (legislation) return legislation
    legislation = await app.service('legislation').findUnique({ where: { id }})
@@ -49,6 +53,7 @@ export const getLegislation = async (id) => {
 }
 
 export const legislationOfId = computed(() => id => {
+   if (!legislationState.value) return
    const status = legislationState.value.legislationStatus[id]
    if (status === 'ready') return legislationState.value.legislationCache[id]
    if (status === 'ongoing') return undefined // ongoing request
@@ -113,6 +118,7 @@ export const removeLegislation = async (id) => {
 // }
 
 export const listOfLegislation = computed(() => {
+   if (!legislationState.value) return
    if (legislationState.value.legislationListStatus === 'ready') {
       return Object.values(legislationState.value.legislationCache).sort((e1, e2) => e1.rank - e2.rank)
    }

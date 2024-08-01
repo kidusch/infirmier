@@ -21,6 +21,7 @@ export const resetUseUserQuiz = () => {
 
 
 app.service('user_quiz').on('create', (userQuiz) => {
+   if (!userQuizState.value) return
    console.log('USER_QUIZ EVENT created', userQuiz)
    const key = userQuiz.user_id + ':' + userQuiz.quiz_id
    userQuizState.value.theUserQuizCache[key] = userQuiz
@@ -28,6 +29,7 @@ app.service('user_quiz').on('create', (userQuiz) => {
 })
 
 app.service('user_quiz').on('update', (userQuiz) => {
+   if (!userQuizState.value) return
    console.log('USER_QUIZ EVENT update', userQuiz)
    const key = userQuiz.user_id + ':' + userQuiz.quiz_id
    userQuizState.value.theUserQuizCache[key] = userQuiz
@@ -35,6 +37,7 @@ app.service('user_quiz').on('update', (userQuiz) => {
 })
 
 app.service('user_quiz').on('delete', (userQuiz) => {
+   if (!userQuizState.value) return
    console.log('USER_QUIZ EVENT delete', userQuiz)
    const key = userQuiz.user_id + ':' + userQuiz.quiz_id
    delete userQuizState.value.theUserQuizCache[key]
@@ -43,6 +46,7 @@ app.service('user_quiz').on('delete', (userQuiz) => {
 
 // get or create the unique user_quiz associated to (user_id, quiz_id)
 export const getTheUserQuiz = async (user_id, quiz_id) => {
+   if (!userQuizState.value) return
    const key = user_id + ':' + quiz_id
    const status = userQuizState.value.theUserQuizStatus[key]
    if (status === 'ready') return userQuizState.value.theUserQuizCache[key]
@@ -61,6 +65,7 @@ export const getTheUserQuiz = async (user_id, quiz_id) => {
 }
 
 export const theUserQuiz = computed(() => (user_id, quiz_id) => {
+   if (!userQuizState.value) return
    const key = user_id + ':' + quiz_id
    const status = userQuizState.value.theUserQuizStatus[key]
    if (status === 'ready') return userQuizState.value.theUserQuizCache[key]
@@ -108,6 +113,7 @@ export const getUserQuizList = async (user_id) => {
 }
 
 export const listOfUncorrectedUserQuiz = computed(() => {
+   if (!userQuizState.value) return []
    if (userQuizState.value.uncorrectedUserQuizListStatus === 'ready') {
       return Object.values(userQuizState.value.theUserQuizCache).filter(userQuiz => (userQuiz.custom_correction_status === 'waiting-for-correction'))
    }

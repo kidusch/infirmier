@@ -7,7 +7,8 @@
       <input class="standard-input flex-1" placeholder="Nom" type="text" :value="element.dataset.name" @input="debouncedInput" :disabled="disabled">
       <div class="flex gap-1.5">
          <img class="h-4 cursor-pointer" src="/src/assets/preview.svg" @click="select">
-         <img class="h-4 cursor-pointer" src="/src/assets/edit.svg" @click="disabled = !disabled">
+         <img class="h-4 cursor-pointer" src="/src/assets/edit.svg" v-if="!disabled" @click="disabled = !disabled">
+         <img class="h-4 cursor-pointer" src="/src/assets/edit-off.svg" v-if="disabled" @click="disabled = !disabled">
          <img class="h-4 cursor-pointer" src="/src/assets/delete.svg" @click="remove">
       </div>
    </div>

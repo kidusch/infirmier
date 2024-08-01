@@ -21,18 +21,21 @@ export const resetUseTopic = () => {
 
 
 app.service('topic').on('create', topic => {
+   if (!topicState.value) return
    console.log('TOPIC EVENT created', topic)
    topicState.value.topicCache[topic.id] = topic
    topicState.value.topicStatus[topic.id] = 'ready'
 })
 
 app.service('topic').on('update', topic => {
+   if (!topicState.value) return
    console.log('TOPIC EVENT update', topic)
    topicState.value.topicCache[topic.id] = topic
    topicState.value.topicStatus[topic.id] = 'ready'
 })
 
 app.service('topic').on('delete', topic => {
+   if (!topicState.value) return
    console.log('TOPIC EVENT delete', topic)
    delete topicState.value.topicCache[topic.id]
    delete topicState.value.topicStatus[topic.id]
@@ -40,6 +43,7 @@ app.service('topic').on('delete', topic => {
 
 
 export const getTopic = async (id) => {
+   if (!topicState.value) return
    let topic = topicState.value.topicCache[id]
    if (topic) return topic
    topic = await app.service('topic').findUnique({ where: { id }})
@@ -49,6 +53,7 @@ export const getTopic = async (id) => {
 }
 
 export const topicOfId = computed(() => (id) => {
+   if (!topicState.value) return
    const status = topicState.value.topicStatus[id]
    if (status === 'ready') return topicState.value.topicCache[id]
    if (status === 'ongoing') return undefined // ongoing request
@@ -103,6 +108,7 @@ export const removeTopic = async (id) => {
 }
 
 export const getTopicList = async (sub_ue_id) => {
+   if (!topicState.value) return []
    if (topicState.value.topicListStatus[sub_ue_id] !== 'ready') {
       topicState.value.topicListStatus[sub_ue_id] = 'ongoing'
       const list = await app.service('topic').findMany({
@@ -118,6 +124,7 @@ export const getTopicList = async (sub_ue_id) => {
 }
 
 export const listOfTopic = computed(() => (sub_ue_id) => {
+   if (!topicState.value) return []
    if (topicState.value.topicListStatus[sub_ue_id] === 'ready') {
       return Object.values(topicState.value.topicCache).filter(topic => topic.sub_ue_id === sub_ue_id).sort((e1, e2) => e1.rank - e2.rank)
    }

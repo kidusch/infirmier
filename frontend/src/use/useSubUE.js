@@ -21,17 +21,21 @@ export const resetUseSubUE = () => {
 
 
 app.service('sub_ue').on('create', subUE => {
+   if (!subUEState.value) return
    console.log('SUB_UE EVENT created', subUE)
    subUEState.value.subUECache[subUE.id] = subUE
    subUEState.value.subUEStatus[subUE.id] = 'ready'
 })
 
 app.service('sub_ue').on('update', subUE => {
+   if (!subUEState.value) return
    console.log('SUB_UE EVENT update', subUE)
    subUEState.value.subUECache[subUE.id] = subUE
+   subUEState.value.subUEStatus[subUE.id] = 'ready'
 })
 
 app.service('sub_ue').on('delete', subUE => {
+   if (!subUEState.value) return
    console.log('SUB_UE EVENT delete', subUE)
    delete subUEState.value.subUECache[subUE.id]
    delete subUEState.value.subUEStatus[subUE.id]
@@ -39,6 +43,7 @@ app.service('sub_ue').on('delete', subUE => {
 
 
 export const getSubUE = async (id) => {
+   if (!subUEState.value) return
    let ue = subUEState.value.subUECache[id]
    if (ue) return ue
    ue = await app.service('sub_ue').findUnique({ where: { id }})
@@ -48,6 +53,7 @@ export const getSubUE = async (id) => {
 }
 
 export const subUEOfId = computed(() => id => {
+   if (!subUEState.value) return
    const status = subUEState.value.subUEStatus[id]
    if (status === 'ready') return subUEState.value.subUECache[id]
    if (status === 'ongoing') return undefined // ongoing request
@@ -102,6 +108,7 @@ export const removeSubUE = async (id) => {
 }
 
 export const getSubUEList = async (ue_id) => {
+   if (!subUEState.value) return []
    if (subUEState.value.subUEListStatus[ue_id] === undefined) {
       subUEState.value.subUEListStatus[ue_id] = 'ongoing'
       try {
@@ -122,6 +129,7 @@ export const getSubUEList = async (ue_id) => {
 }
 
 export const listOfSubUE = computed(() => (ue_id) => {
+   if (!subUEState.value) return []
    if (subUEState.value.subUEListStatus[ue_id] === 'ready') {
       return Object.values(subUEState.value.subUECache).filter(subUE => subUE.ue_id === ue_id).sort((e1, e2) => e1.rank - e2.rank)
    }

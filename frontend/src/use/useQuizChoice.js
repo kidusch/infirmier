@@ -21,18 +21,21 @@ export const resetUseQuizChoice = () => {
 
 
 app.service('quiz_choice').on('create', (quizChoice) => {
+   if (!quizChoiceState.value) return
    console.log('QUIZ_CHOICE EVENT created', quizChoice)
    quizChoiceState.value.quizChoiceCache[quizChoice.id] = quizChoice
    quizChoiceState.value.quizChoiceStatus[quizChoice.id] = 'ready'
 })
 
 app.service('quiz_choice').on('update', (quizChoice) => {
+   if (!quizChoiceState.value) return
    console.log('QUIZ_CHOICE EVENT update', quizChoice)
    quizChoiceState.value.quizChoiceCache[quizChoice.id] = quizChoice
    quizChoiceState.value.quizChoiceStatus[quizChoice.id] = 'ready'
 })
 
 app.service('quiz_choice').on('delete', (quizChoice) => {
+   if (!quizChoiceState.value) return
    console.log('QUIZ_CHOICE EVENT delete', quizChoice)
    delete quizChoiceState.value.quizChoiceCache[quizChoice.id]
    delete quizChoiceState.value.quizChoiceStatus[quizChoice.id]
@@ -40,6 +43,7 @@ app.service('quiz_choice').on('delete', (quizChoice) => {
 
 
 export const getQuizChoice = async (id) => {
+   if (!quizChoiceState.value) return
    let quizChoice = quizChoiceState.value.quizChoiceCache[id]
    if (quizChoice) return quizChoice
    quizChoice = await app.service('quiz_choice').findUnique({ where: { id }})
@@ -49,6 +53,7 @@ export const getQuizChoice = async (id) => {
 }
 
 export const quizChoiceOfId = computed(() => (id) => {
+   if (!quizChoiceState.value) return
    const status = quizChoiceState.value.quizChoiceStatus[id]
    if (status === 'ready') return quizChoiceState.value.quizChoiceCache[id]
    if (status === 'ongoing') return undefined // ongoing request
@@ -107,6 +112,7 @@ export const removeQuizChoice = async (id) => {
 }
 
 export const getQuizChoiceList = async (quiz_id) => {
+   if (!quizChoiceState.value) return []
    if (quizChoiceState.value.quizChoiceListStatus[quiz_id] !== 'ready') {
       const list = await app.service('quiz_choice').findMany({
          where: { quiz_id }
@@ -121,6 +127,7 @@ export const getQuizChoiceList = async (quiz_id) => {
 }
 
 export const listOfQuizChoices = computed(() => (quiz_id) => {
+   if (!quizChoiceState.value) return []
    if (quizChoiceState.value.quizChoiceListStatus[quiz_id] === 'ready') {
       return Object.values(quizChoiceState.value.quizChoiceCache).filter(quiz => quiz.quiz_id === quiz_id).sort((e1, e2) => e1.rank - e2.rank)
    }

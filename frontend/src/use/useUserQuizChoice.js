@@ -22,6 +22,7 @@ export const resetUseUserQuizChoice = () => {
 
 
 app.service('user_quiz_choice').on('create', (userQuizChoice) => {
+   if (!userQuizChoiceState.value) return
    console.log('USER_QUIZ_CHOICE EVENT created', userQuizChoice)
    const key = userQuizChoice.user_id + ':' + userQuizChoice.quiz_choice_id
    userQuizChoiceState.value.theUserQuizChoiceCache[key] = userQuizChoice
@@ -29,6 +30,7 @@ app.service('user_quiz_choice').on('create', (userQuizChoice) => {
 })
 
 app.service('user_quiz_choice').on('update', (userQuizChoice) => {
+   if (!userQuizChoiceState.value) return
    console.log('USER_QUIZ_CHOICE EVENT update', userQuizChoice)
    const key = userQuizChoice.user_id + ':' + userQuizChoice.quiz_choice_id
    userQuizChoiceState.value.theUserQuizChoiceCache[key] = userQuizChoice
@@ -36,6 +38,7 @@ app.service('user_quiz_choice').on('update', (userQuizChoice) => {
 })
 
 app.service('user_quiz_choice').on('delete', (userQuizChoice) => {
+   if (!userQuizChoiceState.value) return
    console.log('USER_QUIZ_CHOICE EVENT delete', userQuizChoice)
    const key = userQuizChoice.user_id + ':' + userQuizChoice.quiz_choice_id
    delete userQuizChoiceState.value.theUserQuizChoiceCache[key]
@@ -45,6 +48,7 @@ app.service('user_quiz_choice').on('delete', (userQuizChoice) => {
 
 // get or create the unique user_quiz_choice associated to (user_id, quiz_choice_id)
 export const getTheUserQuizChoice = async (user_id, quiz_choice_id) => {
+   if (!userQuizChoiceState.value) return
    const key = user_id + ':' + quiz_choice_id
    const status = userQuizChoiceState.value.theUserQuizChoiceStatus[key]
    if (status === 'ready') return userQuizChoiceState.value.theUserQuizChoiceCache[key]
@@ -63,6 +67,7 @@ export const getTheUserQuizChoice = async (user_id, quiz_choice_id) => {
 }
 
 export const theUserQuizChoice = computed(() => (user_id, quiz_choice_id) => {
+   if (!userQuizChoiceState.value) return
    const key = user_id + ':' + quiz_choice_id
    const status = userQuizChoiceState.value.theUserQuizChoiceStatus[key]
    if (status === 'ready') return userQuizChoiceState.value.theUserQuizChoiceCache[key]
@@ -111,6 +116,7 @@ export const getUserQuizChoiceList = async (user_id) => {
 }
 
 export const listOfUserQuizChoice = computed(() => (user_id) => {
+   if (!userQuizChoiceState.value) return []
    if (userQuizChoiceState.value.userQuizChoiceListStatus[user_id] === 'ready') {
       return Object.values(userQuizChoiceState.value.theUserQuizChoiceCache).filter(userQuizChoice => userQuizChoice.user_id === user_id)
    }
@@ -134,6 +140,7 @@ export const listOfUserQuizChoice = computed(() => (user_id) => {
 })
 
 export const listOfUncorrectedUserQuizChoice = computed(() => {
+   if (!userQuizChoiceState.value) return []
    if (userQuizChoiceState.value.uncorrectedUserQuizChoiceListStatus === 'ready') {
       return Object.values(userQuizChoiceState.value.theUserQuizChoiceCache).filter(userQuizChoice => (userQuizChoice.custom_correction_status === 'waiting-for-correction'))
    }

@@ -22,18 +22,21 @@ export const resetUseAgenda = () => {
 
 
 app.service('agenda').on('create', agenda => {
+   if (!agendaState.value) return
    console.log('AGENDA EVENT created', agenda)
    agendaState.value.agendaCache[agenda.id] = agenda
    agendaState.value.agendaStatus[agenda.id] = 'ready'
 })
 
 app.service('agenda').on('update', agenda => {
+   if (!agendaState.value) return
    console.log('AGENDA EVENT update', agenda)
    agendaState.value.agendaCache[agenda.id] = agenda
    agendaState.value.agendaStatus[agenda.id] = 'ready'
 })
 
 app.service('agenda').on('delete', agenda => {
+   if (!agendaState.value) return
    console.log('AGENDA EVENT delete', agenda)
    delete agendaState.value.agendaCache[agenda.id]
    delete agendaState.value.agendaStatus[agenda.id]
@@ -74,6 +77,7 @@ export const deleteAgenda = async (id) => {
 // })
 
 export const userListOfAgenda = computed(() => (user_id) => {
+   if (!agendaState.value) return []
    if (agendaState.value.agendaListStatus[user_id] === 'ready') {
       return Object.values(agendaState.value.agendaCache).filter(agenda => agenda.user_id === user_id).sort((e1, e2) => e1.rank - e2.rank)
    }

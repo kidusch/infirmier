@@ -20,6 +20,7 @@ export const resetUseUserCard = () => {
 
 
 app.service('user_card').on('create', (userCard) => {
+   if (!userCardState.value) return
    console.log('USER_CARD EVENT created', userCard)
    const key = userCard.user_id + ':' + userCard.card_id
    userCardState.value.theUserCardCache[key] = userCard
@@ -27,6 +28,7 @@ app.service('user_card').on('create', (userCard) => {
 })
 
 app.service('user_card').on('update', (userCard) => {
+   if (!userCardState.value) return
    console.log('USER_CARD EVENT update', userCard)
    const key = userCard.user_id + ':' + userCard.card_id
    userCardState.value.theUserCardCache[key] = userCard
@@ -34,6 +36,7 @@ app.service('user_card').on('update', (userCard) => {
 })
 
 app.service('user_card').on('delete', (userCard) => {
+   if (!userCardState.value) return
    console.log('USER_CARD EVENT delete', userCard)
    const key = userCard.user_id + ':' + userCard.card_id
    delete userCardState.value.theUserCardCache[key]
@@ -60,6 +63,7 @@ app.service('user_card').on('delete', (userCard) => {
 // }
 
 export const theUserCard = computed(() => (user_id, card_id) => {
+   if (!userCardState.value) return
    const key = user_id + ':' + card_id
    const status = userCardState.value.theUserCardStatus[key]
    if (status === 'ready') return userCardState.value.theUserCardCache[key]

@@ -6,7 +6,8 @@
       </div>
       <input class="standard-input flex-1" placeholder="Titre" type="text" :value="element[field]" @input="debouncedInput" :disabled="disabled">
       <div class="flex gap-1.5">
-         <img class="h-4 cursor-pointer" src="/src/assets/edit.svg" @click="disabled = !disabled">
+         <img class="h-4 cursor-pointer" src="/src/assets/edit.svg" v-if="!disabled" @click="disabled = !disabled">
+         <img class="h-4 cursor-pointer" src="/src/assets/edit-off.svg" v-if="disabled" @click="disabled = !disabled">
          <img class="h-4 cursor-pointer" src="/src/assets/eye-close.svg" v-if="element?.hidden" @click="show">
          <img class="h-4 cursor-pointer" src="/src/assets/eye-open.svg" v-if="!element?.hidden" @click="hide">
          <img class="h-4 cursor-pointer" src="/src/assets/delete.svg" @click="remove">

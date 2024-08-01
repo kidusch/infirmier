@@ -21,18 +21,21 @@ export const resetUseQuiz = () => {
 
 
 app.service('quiz').on('create', quiz => {
+   if (!quizState.value) return
    console.log('QUIZ EVENT created', quiz)
    quizState.value.quizCache[quiz.id] = quiz
    quizState.value.quizStatus[quiz.id] = 'ready'
 })
 
 app.service('quiz').on('update', quiz => {
+   if (!quizState.value) return
    console.log('QUIZ EVENT update', quiz)
    quizState.value.quizCache[quiz.id] = quiz
    quizState.value.quizStatus[quiz.id] = 'ready'
 })
 
 app.service('quiz').on('delete', quiz => {
+   if (!quizState.value) return
    console.log('QUIZ EVENT delete', quiz)
    delete quizState.value.quizCache[quiz.id]
    delete quizState.value.quizStatus[quiz.id]
@@ -40,6 +43,7 @@ app.service('quiz').on('delete', quiz => {
 
 
 export const getQuiz = async (id) => {
+   if (!quizState.value) return
    let quiz = quizState.value.quizCache[id]
    if (quiz) return quiz
    quiz = await app.service('quiz').findUnique({ where: { id }})
@@ -49,6 +53,7 @@ export const getQuiz = async (id) => {
 }
 
 export const quizOfId = computed(() => (id) => {
+   if (!quizState.value) return
    const status = quizState.value.quizStatus[id]
    if (status === 'ready') return quizState.value.quizCache[id]
    if (status === 'ongoing') return undefined // ongoing request
@@ -104,6 +109,7 @@ export const removeQuiz = async (id) => {
 }
 
 export const getQuizList = async (topic_id) => {
+   if (!quizState.value) return []
    if (quizState.value.quizListStatus[topic_id] !== 'ready') {
       quizState.value.quizListStatus[topic_id] = 'ongoing'
       const list = await app.service('quiz').findMany({
@@ -119,6 +125,7 @@ export const getQuizList = async (topic_id) => {
 }
 
 export const listOfQuiz = computed(() => (topic_id) => {
+   if (!quizState.value) return []
    if (quizState.value.quizListStatus[topic_id] === 'ready') {
       return Object.values(quizState.value.quizCache).filter(quiz => quiz.topic_id === topic_id).sort((e1, e2) => e1.rank - e2.rank)
    }

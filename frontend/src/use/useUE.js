@@ -21,18 +21,21 @@ export const resetUseUE = () => {
 
 
 app.service('ue').on('create', ue => {
+   if (!ueState.value) return
    console.log('UE EVENT created', ue)
    ueState.value.ueCache[ue.id] = ue
    ueState.value.ueStatus[ue.id] = 'ready'
 })
 
 app.service('ue').on('update', ue => {
+   if (!ueState.value) return
    console.log('UE EVENT update', ue)
    ueState.value.ueCache[ue.id] = ue
    ueState.value.ueStatus[ue.id] = 'ready'
 })
 
 app.service('ue').on('delete', ue => {
+   if (!ueState.value) return
    console.log('UE EVENT delete', ue)
    delete ueState.value.ueCache[ue.id]
    delete ueState.value.ueStatus[ue.id]
@@ -40,6 +43,7 @@ app.service('ue').on('delete', ue => {
 
 
 export const getUE = async (id) => {
+   if (!ueState.value) return
    let ue = ueState.value.ueCache[id]
    if (ue) return ue
    ue = await app.service('ue').findUnique({ where: { id }})
@@ -49,6 +53,7 @@ export const getUE = async (id) => {
 }
 
 export const ueOfId = computed(() => id => {
+   if (!ueState.value) return
    const status = ueState.value.ueStatus[id]
    if (status === 'ready') return ueState.value.ueCache[id]
    if (status === 'ongoing') return undefined // ongoing request
@@ -101,6 +106,7 @@ export const removeUE = async (id) => {
 }
 
 export const getUEList = async () => {
+   if (!ueState.value) return []
    if (!ueState.value.isListReady) {
       const list = await app.service('ue').findMany()
       for (const ue of list) {
@@ -113,6 +119,7 @@ export const getUEList = async () => {
 }
 
 export const listOfUE = computed(() => {
+   if (!ueState.value) return []
    if (ueState.value.ueListStatus === 'ready') {
       return Object.values(ueState.value.ueCache).sort((e1, e2) => e1.rank - e2.rank)
    }

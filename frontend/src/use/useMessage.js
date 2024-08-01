@@ -24,21 +24,25 @@ export const resetUseMessage = () => {
 
 
 app.service('message').on('create', async message => {
+   if (!stateMessages.value) return
    console.log('MESSAGE EVENT create', message)
    stateMessages.value.messages[message.id] = message
 })
 
 app.service('message').on('update', message => {
+   if (!stateMessages.value) return
    console.log('MESSAGE EVENT update', message)
    stateMessages.value.messages[message.id] = message
 })
 
 app.service('message').on('delete', message => {
+   if (!stateMessages.value) return
    console.log('MESSAGE EVENT delete', message)
    delete stateMessages.value.messages[message.id]
 })
 
 export const messageListOfConversation = computed(() => (user1Id, user2Id) => {
+   if (!stateMessages.value) return []
    if (!stateMessages.value.userMessagesListReady[user1Id]) {
       app.service('message').findMany({ where: {
          OR: [
@@ -68,6 +72,7 @@ export const messageListOfConversation = computed(() => (user1Id, user2Id) => {
 })
 
 export const unreadMessagesCountOfUser2ByUser1 = computed(() => (user1Id, user2Id) => {
+   if (!stateMessages.value) return 0
    const messageList = messageListOfConversation.value(user1Id, user2Id)
    // console.log('messageList', user1Id, user2Id, messageList)
    return messageList.reduce((accu, message) => {
