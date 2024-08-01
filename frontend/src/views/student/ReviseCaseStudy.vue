@@ -51,16 +51,18 @@
          <div class="py-4">
             <div class="flex justify-between">
                <label for="title">Ma réponse</label>
-               <div class="flex gap-2">
-                  <img class="cursor-pointer h-5 mb-1" src="/src/assets/edit.svg" @click="disabledText = !disabledText">
+               <div class="flex gap-2 mb-1">
+                  <img class="h-5 cursor-pointer" src="/src/assets/edit.svg" v-if="!isAnswerDisabled" @click="isAnswerDisabled = !isAnswerDisabled">
+                  <img class="h-5 cursor-pointer" src="/src/assets/edit-off.svg" v-if="isAnswerDisabled" @click="isAnswerDisabled = !isAnswerDisabled">
                </div>
             </div>
 
             <div class="standard-input-container">
                <textarea placeholder="Écrivez votre réponse ici..." type="text"
                   :value="userCaseStudy?.answer"
-                  @input="debouncedInputText"
-                  :disabled="disabledText"
+                  @input="onAnswerInputDebounced"
+                  v-position="answerPosition"
+                  :disabled="isAnswerDisabled"
                ></textarea>
             </div>
          </div>
@@ -134,7 +136,22 @@ const topic = computed(() => topicOfId.value(props.topic_id))
 const caseStudy = computed(() => caseStudyOfId.value(props.case_study_id))
 const userCaseStudy = computed(() => theUserCaseStudy.value(props.userid, props.case_study_id))
 
-const disabledText = ref(true)
+// handle title editing
+const answerPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
+const onAnswerInput = async (ev) => {
+   answerPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
+   await updateUserCaseStudy(userCaseStudy.value.id, { answer: ev.target.value })
+}
+const onAnswerInputDebounced = useDebounceFn(onAnswerInput, 500)
+const isAnswerDisabled = ref(true)
+
+// custom directive (v-position on <input> or <textarea>) which restores cursor position
+   const vPosition = {
+   updated: (el, binding) => {
+      // binding.value is the directive argument, here the cursor position ref { start, end }
+      el.selectionStart, el.selectionEnd = binding.value.start, binding.value.end
+   }
+}
 
 const onDoneClick = async (done) => {
    await updateUserCaseStudy(userCaseStudy.value.id, { done })
@@ -143,11 +160,6 @@ const onDoneClick = async (done) => {
 const gotoStudy = () => {
    router.push(`/home/${props.userid}/study-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
 }
-
-const onInputText = async (ev) => {
-   userCaseStudy.value = await updateUserCaseStudy(userCaseStudy.value.id, { answer: ev.target.value })
-}
-const debouncedInputText = useDebounceFn(onInputText, 500)
 
 const getStandardCorrection = () => {
    router.push(`/home/${props.userid}/revise-case-study-answer/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${caseStudy.value.id}`)
@@ -166,9 +178,6 @@ const getCustomCorrection = async () => {
    } else {
       premiumModal.value.showModal()
    }
-}
-
-const gotoCustomCorrection = async () => {
 }
 
 const subscribe = async () => {
