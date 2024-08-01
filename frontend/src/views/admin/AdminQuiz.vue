@@ -20,28 +20,34 @@
          <div>
             <div class="flex justify-between">
                <label for="title">Titre</label>
-               <img class="h-5 mb-1" src="/src/assets/edit.svg"  @click="disabledTitle = !disabledTitle">
+               <div class="flex gap-2 mb-1">
+                  <img class="h-5 cursor-pointer" src="/src/assets/edit.svg" v-if="!isTitleDisabled" @click="isTitleDisabled = !isTitleDisabled">
+                  <img class="h-5 cursor-pointer" src="/src/assets/edit-off.svg" v-if="isTitleDisabled" @click="isTitleDisabled = !isTitleDisabled">
+               </div>
             </div>
             <div class="standard-input-container">
                <input placeholder="Titre..." type="text"
-                  :value="quiz ? quiz.title : ''"
-                  @input="debouncedInputTitle"
-                  :disabled="disabledTitle"
+                  :value="quiz?.title"
+                  @input="onTitleInputDebounced"
+                  v-position="titlePosition"
+                  :disabled="isTitleDisabled"
                />
             </div>
          </div>
          <div>
             <div class="flex justify-between">
                <label for="title">Texte de la question</label>
-               <div class="flex gap-2">
-                  <img class="h-5 mb-1" src="/src/assets/edit.svg" @click="disabledQuestion = !disabledQuestion">
+               <div class="flex gap-2 mb-1">
+                  <img class="h-5 cursor-pointer" src="/src/assets/edit.svg" v-if="!isQuestionDisabled" @click="isQuestionDisabled = !isQuestionDisabled">
+                  <img class="h-5 cursor-pointer" src="/src/assets/edit-off.svg" v-if="isQuestionDisabled" @click="isQuestionDisabled = !isQuestionDisabled">
                </div>
             </div>
             <div class="standard-input-container">
                <textarea placeholder="Question..." type="text"
-                  :value="quiz ? quiz.question : ''"
-                  @input="debouncedInputQuestion"
-                  :disabled="disabledQuestion"
+                  :value="quiz?.question"
+                  @input="onQuestionInputDebounced"
+                  v-position="questionPosition"
+                  :disabled="isQuestionDisabled"
                ></textarea>
             </div>
          </div>
@@ -82,7 +88,7 @@ import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
 import { quizOfId, updateQuiz } from '/src/use/useQuiz'
-import { listOfQuizChoices, createQuizChoice, removeQuizChoice } from '/src/use/useQuizChoice'
+import { listOfQuizChoices, getQuizChoiceList, createQuizChoice, removeQuizChoice } from '/src/use/useQuizChoice'
 import router from '/src/router'
 
 import SortableListItem from '/src/components/SortableListItem.vue'
@@ -117,22 +123,30 @@ const topic = computed(() => topicOfId.value(props.topic_id))
 const quiz = computed(() => quizOfId.value(props.quiz_id))
 const quizChoiceList = computed(() => listOfQuizChoices.value(props.quiz_id))
 
-const onInputTitle = async (ev) => {
+// handle title editing
+const titlePosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
+const onTitleInput = async (ev) => {
+   titlePosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    await updateQuiz(props.quiz_id, { title: ev.target.value })
 }
-const debouncedInputTitle = useDebounceFn(onInputTitle, 500)
+const onTitleInputDebounced = useDebounceFn(onTitleInput, 500)
+const isTitleDisabled = ref(true)
 
-const disabledTitle = ref(true)
-
-const onInputQuestion = async (ev) => {
+// handle question editing
+const questionPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
+const onQuestionInput = async (ev) => {
+   questionPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    await updateQuiz(props.quiz_id, { question: ev.target.value })
 }
-const debouncedInputQuestion = useDebounceFn(onInputQuestion, 500)
+const onQuestionInputDebounced = useDebounceFn(onQuestionInput, 500)
+const isQuestionDisabled = ref(true)
 
-const disabledQuestion = ref(true)
-
-async function updateChoiceList() {
-   quizChoiceList.value = await getQuizChoiceList(props.quiz_id)
+// custom directive (v-position on <input> or <textarea>) which restores cursor position
+   const vPosition = {
+   updated: (el, binding) => {
+      // binding.value is the directive argument, here the cursor position ref { start, end }
+      el.selectionStart, el.selectionEnd = binding.value.start, binding.value.end
+   }
 }
 
 const selectChoice = (quiz_choice_id) => {
@@ -143,14 +157,12 @@ const newQuizChoiceTitle = ref('')
 
 const addQuizChoice = async () => {
    await createQuizChoice(props.quiz_id, newQuizChoiceTitle.value)
-   await updateChoiceList()
    newQuizChoiceTitle.value = ''
 }
 
 const deleteChoice = async (id) => {
    if (window.confirm("Supprimer ?")) {
       await removeQuizChoice(id)
-      await updateChoiceList()
    }
 }
 </script>

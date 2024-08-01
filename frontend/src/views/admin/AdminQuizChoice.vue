@@ -41,13 +41,17 @@
          <div>
             <div class="flex justify-between">
                <label for="title">Texte du choix</label>
-               <img class="h-5 mb-1" src="/src/assets/edit.svg"  @click="disabledText = !disabledText">
+               <div class="flex gap-2 mb-1">
+                  <img class="h-5 cursor-pointer" src="/src/assets/edit.svg" v-if="!isTextDisabled" @click="isTextDisabled = !isTextDisabled">
+                  <img class="h-5 cursor-pointer" src="/src/assets/edit-off.svg" v-if="isTextDisabled" @click="isTextDisabled = !isTextDisabled">
+               </div>
             </div>
             <div class="standard-input-container">
                <input placeholder="Texte du choix..." type="text"
-               :value="quizChoice ? quizChoice.text : ''"
-                  @input="debouncedInputText"
-                  :disabled="disabledText"
+                  :value="quizChoice?.text"
+                  @input="onTextInputDebounced"
+                  v-position="textPosition"
+                  :disabled="isTextDisabled"
                />
             </div>
          </div>
@@ -80,13 +84,17 @@
          <div>
             <div class="flex justify-between">
                <label for="title">Commentaire en cas d'erreur</label>
-               <img class="h-5 mb-1" src="/src/assets/edit.svg"  @click="disabledComment = !disabledComment">
+               <div class="flex gap-2 mb-1">
+                  <img class="h-5 cursor-pointer" src="/src/assets/edit.svg" v-if="!isCommentDisabled" @click="isCommentDisabled = !isCommentDisabled">
+                  <img class="h-5 cursor-pointer" src="/src/assets/edit-off.svg" v-if="isCommentDisabled" @click="isCommentDisabled = !isCommentDisabled">
+               </div>
             </div>
             <div class="standard-input-container">
                <input placeholder="Commentaire..." type="text"
-                  :value="quizChoice ? quizChoice.comment : ''"
-                  @input="debouncedInputComment"
-                  :disabled="disabledComment"
+                  :value="quizChoice?.comment"
+                  @input="onCommentInputDebounced"
+                  v-position="commentPosition"
+                  :disabled="isCommentDisabled"
                />
             </div>
          </div>
@@ -155,23 +163,35 @@ const topic = computed(() => topicOfId.value(props.topic_id))
 const quiz = computed(() => quizOfId.value(props.quiz_id))
 const quizChoice = computed(() => quizChoiceOfId.value(props.quiz_choice_id))
 
-const onInputText = async (ev) => {
+// handle text editing
+const textPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
+const onTextInput = async (ev) => {
+   textPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    await updateQuizChoice(props.quiz_choice_id, { text: ev.target.value })
 }
-const debouncedInputText = useDebounceFn(onInputText, 500)
+const onTextInputDebounced = useDebounceFn(onTextInput, 500)
+const isTextDisabled = ref(true)
 
-const disabledText = ref(true)
+// handle comment editing
+const commentPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
+const onCommentInput = async (ev) => {
+   commentPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
+   await updateQuizChoice(props.quiz_choice_id, { comment: ev.target.value })
+}
+const onCommentInputDebounced = useDebounceFn(onCommentInput, 500)
+const isCommentDisabled = ref(true)
+
+// custom directive (v-position on <input> or <textarea>) which restores cursor position
+   const vPosition = {
+   updated: (el, binding) => {
+      // binding.value is the directive argument, here the cursor position ref { start, end }
+      el.selectionStart, el.selectionEnd = binding.value.start, binding.value.end
+   }
+}
 
 const answerIs = async (answer) => {
    await updateQuizChoice(props.quiz_choice_id, { answer })
 }
-
-const onInputComment = async (ev) => {
-   await updateQuizChoice(props.quiz_choice_id, { comment: ev.target.value })
-}
-const debouncedInputComment = useDebounceFn(onInputComment, 500)
-
-const disabledComment = ref(true)
 
 const updatePositivePoints = async (ev) => {
    const positive_points = parseInt(ev.target.value)
