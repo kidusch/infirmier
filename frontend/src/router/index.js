@@ -257,6 +257,14 @@ const routes = [
             }),
          },
          {
+            path: 'admin-document-preview/:document_id',
+            component: () => import('/src/views/admin/AdminDocumentPreview.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+               document_id: parseInt(route.params.document_id),
+            }),
+         },
+         {
             path: 'admin-legislation',
             component: () => import('/src/views/admin/AdminLegislation.vue'),
             props: route => ({

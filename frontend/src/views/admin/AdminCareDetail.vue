@@ -72,7 +72,7 @@ const props = defineProps({
 
 const care = computed(() => careOfId.value(props.care_id))
 
-
+// handle title editing
 const titlePosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onTitleInput = async (ev) => {
    titlePosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
@@ -81,7 +81,7 @@ const onTitleInput = async (ev) => {
 const onTitleInputDebounced = useDebounceFn(onTitleInput, 500)
 const isTitleDisabled = ref(true)
 
-
+// handle content editing
 const contentPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onContentInput = async (ev) => {
    contentPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }

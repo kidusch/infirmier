@@ -94,6 +94,7 @@ const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
 const topic = computed(() => topicOfId.value(props.topic_id))
 const card = computed(() => cardOfId.value(props.card_id))
 
+// handle title editing
 const titlePosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onTitleInput = async (ev) => {
    titlePosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
@@ -102,7 +103,7 @@ const onTitleInput = async (ev) => {
 const onTitleInputDebounced = useDebounceFn(onTitleInput, 500)
 const isTitleDisabled = ref(true)
 
-
+// handle content editing
 const contentPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onContentInput = async (ev) => {
    contentPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }

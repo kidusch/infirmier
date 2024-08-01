@@ -51,16 +51,18 @@
          <div class="py-4">
             <div class="flex justify-between">
                <label for="title">Réponse personnalisée</label>
-               <div class="flex gap-2">
-                  <img class="cursor-pointer h-5 mb-1" src="/src/assets/edit.svg" @click="disabledText = !disabledText">
+               <div class="flex gap-2 mb-1">
+                  <img class="h-5 cursor-pointer" src="/src/assets/edit.svg" v-if="!isCorrectionDisabled" @click="isCorrectionDisabled = !isCorrectionDisabled">
+                  <img class="h-5 cursor-pointer" src="/src/assets/edit-off.svg" v-if="isCorrectionDisabled" @click="isCorrectionDisabled = !isCorrectionDisabled">
                </div>
             </div>
 
             <div class="standard-input-container">
                <textarea placeholder="Écrivez votre réponse ici..." type="text"
                   :value="userQuiz?.custom_correction"
-                  @input="debouncedInputText"
-                  :disabled="disabledText"
+                  @input="onCorrectionInputDebounced"
+                  v-position="correctionPosition"
+                  :disabled="isCorrectionDisabled"
                ></textarea>
             </div>
          </div>
@@ -113,12 +115,14 @@ const userQuizChoiceAnswer = computed(() => (quiz_choice_id) => {
    return userQuizChoice?.answer
 })
 
-const disabledText = ref(true)
-
-const onInputText = async (ev) => {
-   userQuiz.value = await updateUserQuiz(userQuiz.value.id, { custom_correction: ev.target.value })
+const correctionPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
+const onCorrectionInput = async (ev) => {
+   correctionPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
+   await updateUserQuiz(userQuiz.value.id, { custom_correction: ev.target.value })
 }
-const debouncedInputText = useDebounceFn(onInputText, 500)
+const onCorrectionInputDebounced  = useDebounceFn(onCorrectionInput, 500)
+const isCorrectionDisabled = ref(true)
+
 
 const onValidate = async () => {
    try {

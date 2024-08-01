@@ -33,16 +33,18 @@
          <div class="py-4">
             <div class="flex justify-between">
                <label for="title">Réponse personnalisée</label>
-               <div class="flex gap-2">
-                  <img class="cursor-pointer h-5 mb-1" src="/src/assets/edit.svg" @click="disabledText = !disabledText">
+               <div class="flex gap-2 mb-1">
+                  <img class="h-5 cursor-pointer" src="/src/assets/edit.svg" v-if="!isContentDisabled" @click="isContentDisabled = !isContentDisabled">
+                  <img class="h-5 cursor-pointer" src="/src/assets/edit-off.svg" v-if="isContentDisabled" @click="isContentDisabled = !isContentDisabled">
                </div>
             </div>
 
             <div class="standard-input-container">
                <textarea placeholder="Écrivez votre réponse ici..." type="text"
                   :value="userCaseStudy?.custom_correction"
-                  @input="debouncedInputText"
-                  :disabled="disabledText"
+                  @input="onContentInputDebounced"
+                  v-position="contentPosition"
+                  :disabled="isContentDisabled"
                ></textarea>
             </div>
          </div>
@@ -87,12 +89,21 @@ const student = computed(() => userOfId.value(props.userId))
 const caseStudy = computed(() => caseStudyOfId.value(props.caseStudyId))
 const userCaseStudy = computed(() => theUserCaseStudy.value(props.userId, props.caseStudyId))
 
-const disabledText = ref(true)
-
-const onInputText = async (ev) => {
-   userCaseStudy.value = await updateUserCaseStudy(userCaseStudy.value.id, { custom_correction: ev.target.value })
+const contentPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
+const onContentInput = async (ev) => {
+   contentPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
+   await updateUserCaseStudy(userCaseStudy.value.id, { custom_correction: ev.target.value })
 }
-const debouncedInputText = useDebounceFn(onInputText, 500)
+const onContentInputDebounced = useDebounceFn(onContentInput, 500)
+const isContentDisabled = ref(true)
+
+// custom directive (v-position on <input> or <textarea>) which restores cursor position
+const vPosition = {
+   updated: (el, binding) => {
+      // binding.value is the directive argument, here the cursor position ref { start, end }
+      el.selectionStart, el.selectionEnd = binding.value.start, binding.value.end
+   }
+}
 
 const onValidate = async () => {
    try {
