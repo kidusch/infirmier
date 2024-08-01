@@ -21,16 +21,16 @@
             <div class="flex justify-between">
                <label for="title">Titre</label>
                <div class="flex gap-2 mb-1">
-                  <img class="h-5 cursor-pointer" src="/src/assets/edit.svg" v-if="!disabledTitle" @click="disabledTitle = !disabledTitle">
-                  <img class="h-5 cursor-pointer" src="/src/assets/edit-off.svg" v-if="disabledTitle" @click="disabledTitle = !disabledTitle">
+                  <img class="h-5 cursor-pointer" src="/src/assets/edit.svg" v-if="!isTitleDisabled" @click="isTitleDisabled = !isTitleDisabled">
+                  <img class="h-5 cursor-pointer" src="/src/assets/edit-off.svg" v-if="isTitleDisabled" @click="isTitleDisabled = !isTitleDisabled">
                </div>
             </div>
             <div class="standard-input-container">
                <input placeholder="Titre..." type="text"
-                  :value="course ? course.title : ''"
+                  :value="course?.title"
                   @input="debouncedInputTitle"
                   v-position="titlePosition"
-                  :disabled="disabledTitle"
+                  :disabled="isTitleDisabled"
                />
             </div>
          </div>
@@ -40,17 +40,17 @@
                <label for="title">Contenu</label>
                <div class="flex gap-2 mb-1">
                   <img class="h-5 cursor-pointer" src="/src/assets/preview.svg" @click="preview">
-                  <img class="h-5 cursor-pointer" src="/src/assets/edit.svg" v-if="!disabledContent" @click="disabledContent = !disabledContent">
-                  <img class="h-5 cursor-pointer" src="/src/assets/edit-off.svg" v-if="disabledContent" @click="disabledContent = !disabledContent">
+                  <img class="h-5 cursor-pointer" src="/src/assets/edit.svg" v-if="!isContentDisabled" @click="isContentDisabled = !isContentDisabled">
+                  <img class="h-5 cursor-pointer" src="/src/assets/edit-off.svg" v-if="isContentDisabled" @click="isContentDisabled = !isContentDisabled">
                </div>
             </div>
 
             <div class="standard-input-container">
                <textarea placeholder="Contenu..." type="text"
                   :value="course?.content"
-                  @input="handleContentInputDebounced"
+                  @input="onContentInputDebounced"
                   v-position="contentPosition"
-                  :disabled="disabledContent"
+                  :disabled="isContentDisabled"
                ></textarea>
             </div>
 
@@ -66,7 +66,7 @@ import { useDebounceFn } from '@vueuse/core'
 import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
-import { courseOfId, getCourse, updateCourse } from '/src/use/useCourse'
+import { courseOfId, updateCourse } from '/src/use/useCourse'
 import router from '/src/router'
 
 
@@ -99,24 +99,24 @@ const topic = computed(() => topicOfId.value(props.topic_id))
 const course = computed(() => courseOfId.value(props.course_id))
 
 
-const titlePosition = ref({}) // cursor position is saved before a save, and restored after DOM change
+const titlePosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onInputTitle = async (ev) => {
    titlePosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    await updateCourse(props.course_id, { title: ev.target.value })
 }
 const debouncedInputTitle = useDebounceFn(onInputTitle, 500)
-const disabledTitle = ref(true)
+const isTitleDisabled = ref(true)
 
 
-const contentPosition = ref({}) // cursor position is saved before a save, and restored after DOM change
-const handleContentInput = async (ev) => {
+const contentPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
+const onContentInput = async (ev) => {
    contentPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    await updateCourse(props.course_id, { content: ev.target.value })
 }
-const handleContentInputDebounced = useDebounceFn(handleContentInput, 500)
-const disabledContent = ref(true)
+const onContentInputDebounced = useDebounceFn(onContentInput, 500)
+const isContentDisabled = ref(true)
 
-// custom directive (v-position on <input>) which restores cursor position on <input> and <textarea>
+// custom directive (v-position on <input> or <textarea>) which restores cursor position
 const vPosition = {
    updated: (el, binding) => {
       // binding.value is the directive argument, here the cursor position ref { start, end }

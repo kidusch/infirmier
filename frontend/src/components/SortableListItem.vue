@@ -4,7 +4,7 @@
          <img class="h-8 cursor-pointer" src="/src/assets/sort_up_light.svg" v-if="!isFirst" @click="up">
          <img class="h-8 cursor-pointer" src="/src/assets/sort_down_light.svg" v-if="!isLast" @click="down">
       </div>
-      <input class="standard-input flex-1" placeholder="Titre" type="text" :value="element[field]" @input="debouncedInput" disabled>
+      <input class="standard-input flex-1" placeholder="Titre" type="text" :value="element[field]" disabled>
       <div class="flex gap-1.5">
          <img class="h-4 cursor-pointer" src="/src/assets/eye-close.svg" v-if="element?.hidden" @click="show">
          <img class="h-4 cursor-pointer" src="/src/assets/eye-open.svg" v-if="!element?.hidden" @click="hide">

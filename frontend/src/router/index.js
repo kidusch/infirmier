@@ -234,6 +234,14 @@ const routes = [
             }),
          },
          {
+            path: 'admin-care-preview/:care_id',
+            component: () => import('/src/views/admin/AdminCarePreview.vue'),
+            props: route => ({
+               userid: parseInt(route.params.userid),
+               care_id: parseInt(route.params.care_id),
+            }),
+         },
+         {
             path: 'admin-document',
             component: () => import('/src/views/admin/AdminDocument.vue'),
             props: route => ({
