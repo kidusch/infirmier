@@ -41,9 +41,11 @@
       </section>
 
       <!-- Revision Card -->
-      <main class="my-6 relative flex justify-center">
+      <main class="mt-4">
+         <div v-html="card?.content"></div>
+      </main>
+      <!-- <main class="my-6 relative flex justify-center">
 
-         <!-- contenu -->
          <div class="bg-accent-darker py-4 px-6 rounded-3xl w-full max-lg:max-w-xl z-30 relative">
             <div v-html="card?.content"></div>
          </div>
@@ -56,7 +58,7 @@
             class="bg-accent-darker/30 absolute -bottom-10 left-0 right-0 mr-auto ml-auto w-full scale-75 h-20  rounded-3xl max-lg:max-w-xl z-10">
          </div>
 
-      </main>
+      </main> -->
 
       <section class="py-6 w-full flex flex-col justify-end flex-1 items-center">
          <button class="primary-btn px-12" @click="back">
