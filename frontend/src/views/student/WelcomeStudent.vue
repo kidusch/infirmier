@@ -64,6 +64,7 @@
    <vue3dLoader
       height="200"
       filePath="/src/3D/model.dae"
+      fffilePath="https://ftp.jcbuisson.dev/3d-models/chair.dae"
    ></vue3dLoader>
 
 
@@ -116,6 +117,7 @@ onMounted(async () => {
    const userid = props.userid
 
    // preload ues, topics, courses, etc. by blocks to prevent hundreds of small backend requests
+   const BATCHSIZE = 10
    try {
       const ueList = await getUEList()
       perc.value = 10
@@ -141,10 +143,21 @@ onMounted(async () => {
       perc.value = 30
 
       // read courses by batches of 10
-      const courseList = await app.service('course').findMany({})
-      for (const course of courseList) {
-         courseState.value.courseCache[course.id] = course
-         courseState.value.courseStatus[course.id] = 'ready'
+      let hasMoreCourse = true
+      let courseCursor = null
+      while (hasMoreCourse) {
+         const courseList = await app.service('course').findMany({
+            take: BATCHSIZE,
+            skip: courseCursor ? 1 : 0,
+            cursor: courseCursor ? { id: courseCursor } : undefined,
+            orderBy: { id: 'asc' },
+         })
+         for (const course of courseList) {
+            courseState.value.courseCache[course.id] = course
+            courseState.value.courseStatus[course.id] = 'ready'
+         }
+         courseCursor = courseList[courseList.length - 1].id
+         if (courseList.length < BATCHSIZE) hasMoreCourse = false
       }
       
       for (const topic of topicList) {
@@ -162,12 +175,25 @@ onMounted(async () => {
       }
       perc.value = 50
 
-      const quizList = await app.service('quiz').findMany({})
-      for (const quiz of quizList) {
-         quizState.value.quizCache[quiz.id] = quiz
-         quizState.value.quizStatus[quiz.id] = 'ready'
-         quizState.value.quizListStatus[quiz.topic_id] = 'ready'
+      // read quizzes by batches of 10
+      let hasMoreQuiz = true
+      let quizCursor = null
+      while (hasMoreQuiz) {
+         const quizList = await app.service('quiz').findMany({
+            take: BATCHSIZE,
+            skip: quizCursor ? 1 : 0,
+            cursor: quizCursor ? { id: quizCursor } : undefined,
+            orderBy: { id: 'asc' },
+         })
+         for (const quiz of quizList) {
+            quizState.value.quizCache[quiz.id] = quiz
+            quizState.value.quizStatus[quiz.id] = 'ready'
+            quizState.value.quizListStatus[quiz.topic_id] = 'ready'
+         }
+         quizCursor = quizList[quizList.length - 1].id
+         if (quizList.length < BATCHSIZE) hasMoreQuiz = false
       }
+
       for (const topic of topicList) {
          quizState.value.quizListStatus[topic.id] = 'ready'
       }
