@@ -111,7 +111,10 @@ const isTitleDisabled = ref(true)
 const contentPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onContentInput = async (ev) => {
    contentPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
-   await updateCourse(props.course_id, { content: ev.target.value })
+   await updateCourse(props.course_id, {
+      content: ev.target.value,
+      last_modified_at: new Date(),
+   })
 }
 const onContentInputDebounced = useDebounceFn(onContentInput, 500)
 const isContentDisabled = ref(true)

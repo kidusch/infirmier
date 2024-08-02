@@ -2,7 +2,8 @@ import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
 
-import 'aframe'
+// import 'aframe'
+import vue3dLoader from "vue-3d-loader"
 
 import router from './router'
 
@@ -12,4 +13,5 @@ import 'jcb-radial'
 
 createApp(App)
    .use(router)
+   .use(vue3dLoader)
    .mount('#app')

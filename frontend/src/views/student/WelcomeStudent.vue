@@ -41,7 +41,7 @@
          ></a-entity>
 
          <a-assets>
-            <a-asset-item id="model" src="/src/3D/basket_ball.gltf"></a-asset-item>
+            <a-asset-item id="model" src="/src/3D/model.dae"></a-asset-item>
          </a-assets>
       </a-scene>
    </div> -->
@@ -49,6 +49,23 @@
    <!-- <a-scene>
       <a-cylinder color="#FFC65D"></a-cylinder>
    </a-scene> -->
+
+   <!-- <model-collada
+      :backgroundAlpha="0"
+      :rotation="{
+         x: - Math.PI / 2,
+         y: 0,
+         z: 0,
+      }"
+      src="/model.dae"
+   /> -->
+
+
+   <vue3dLoader
+      height="200"
+      filePath="/src/3D/model.dae"
+      backgroundColor="#edf"
+   ></vue3dLoader>
 
 
    <!-- computing... modal spinner-->
@@ -67,6 +84,9 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
+
+import 'aframe'
+// import { ModelCollada } from 'vue-3d-model'
 
 import { getUserCourseList } from '/src/use/useUserCourse'
 import { getUserCardList } from '/src/use/useUserCard'

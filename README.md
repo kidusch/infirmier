@@ -108,8 +108,16 @@ Vapid keys (création : scrips/create-valid-keys.js)
 Public Key: BCb26MnBWZp7X38igiSV-JZp4EIqRJ9NeiIGhjpFM_3Rs3y_6C08YNA7d1IVKR64uqmP0csnS7KmLVkn4bAiHuQ
 Private Key: dh5acZXqHarphMNw6pDOgtgIG8fbxvC4qdprsnbkedg
 
-# Anatomie
+
+# Anatomie 2D (abandonné)
 
 A partir d'un fichier SVG chargé par l'admin, le contenu HTML/SVG est stocké dans la BD.
 Les éléments 'path' du SVG qu'on souhaite mettre en valeur sont enrichis d'attributs 'data-rank' et 'data-name'.
 Le innerHTML correspondant est stocké dans la BD et contient toute l'information nécessaire.
+
+
+# Modèles 3D
+
+https://vue-3d-model.netlify.app/en/guide/installation/
+
+

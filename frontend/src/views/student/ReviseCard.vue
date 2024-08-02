@@ -45,7 +45,6 @@
 
          <!-- contenu -->
          <div class="bg-accent-darker py-4 px-6 rounded-3xl w-full max-lg:max-w-xl z-30 relative">
-            <!-- <TextParts :userid="userid" :topic_id="topic_id" :card_id="card_id" :parts="parts"></TextParts> -->
             <div v-html="card?.content"></div>
          </div>
 
@@ -69,7 +68,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { computed } from 'vue'
 
 import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
@@ -77,9 +76,6 @@ import { topicOfId } from '/src/use/useTopic'
 import { cardOfId } from '/src/use/useCard'
 import { theUserCard, updateUserCard } from '/src/use/useUserCard'
 import router from "/src/router"
-
-// import parser from '/src/lib/grammar.js'
-// import TextParts from '/src/components/TextParts.vue'
 
 
 const props = defineProps({
@@ -110,17 +106,6 @@ const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
 const topic = computed(() => topicOfId.value(props.topic_id))
 const card = computed(() => cardOfId.value(props.card_id))
 const userCard = computed(() => theUserCard.value(props.userid, props.card_id))
-
-// const parts = ref('')
-
-onMounted(async () => {
-   // try {
-   //    parts.value = parser.parse(card.value.content)
-   //    console.log('parts', parts.value)
-   // } catch(err) {
-   //    parts.value = ''
-   // }
-})
 
 const onDoneClick = async (prevValue) => {
    await updateUserCard(userCard.value.id, { done: !prevValue })
