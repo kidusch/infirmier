@@ -159,7 +159,7 @@ onMounted(async () => {
          courseCursor = courseList[courseList.length - 1].id
          if (courseList.length < BATCHSIZE) hasMoreCourse = false
 
-         perc.value += 1
+         perc.value += 0.1
       }
       
       for (const topic of topicList) {
@@ -195,7 +195,7 @@ onMounted(async () => {
          quizCursor = quizList[quizList.length - 1].id
          if (quizList.length < BATCHSIZE) hasMoreQuiz = false
 
-         perc.value += 1
+         perc.value += 0.1
       }
 
       for (const topic of topicList) {
