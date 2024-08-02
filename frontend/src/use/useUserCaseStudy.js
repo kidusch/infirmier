@@ -14,7 +14,7 @@ const initialState = () => ({
 })
 
 // const userCaseStudyState = useSessionStorage('user-case-study-state', initialState(), { mergeDefaults: true })
-const { data: userCaseStudyState } = useIDBKeyval('user-case-study-state', initialState(), { mergeDefaults: true })
+export const { data: userCaseStudyState } = useIDBKeyval('user-case-study-state', initialState(), { mergeDefaults: true })
 
 export const resetUseUserCaseStudy = () => {
    userCaseStudyState.value = initialState()
@@ -100,18 +100,6 @@ export const updateUserCaseStudy = async (id, data) => {
    const key = userCaseStudy.user_id + ':' + userCaseStudy.case_study_id
    userCaseStudyState.value.theUserCaseStudyCache[key] = userCaseStudy
    return userCaseStudy
-}
-
-// used to evaluate progress - prevent lots of single requests
-export const getUserCaseStudyList = async (user_id) => {
-   const userCaseStudyList = await app.service('user_case_study').findMany({
-      where: { user_id }
-   })
-   for (const userCaseStudy of userCaseStudyList) {
-      const key = user_id + ':' + userCaseStudy.case_study_id
-      userCaseStudyState.value.theUserCaseStudyCache[key] = userCaseStudy
-      userCaseStudyState.value.theUserCaseStudyStatus[key] = 'ready'
-   }
 }
 
 // export const listOfUserCaseStudy = computed(() => (user_id) => {

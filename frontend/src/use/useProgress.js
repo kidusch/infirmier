@@ -1,14 +1,14 @@
 import { computed } from 'vue'
-import { theUserCourse, getUserCourseList } from '/src/use/useUserCourse'
-import { theUserCard, getUserCardList } from '/src/use/useUserCard'
-import { theUserQuiz, getUserQuizList } from '/src/use/useUserQuiz'
-import { theUserCaseStudy, getUserCaseStudyList } from '/src/use/useUserCaseStudy'
+import { theUserCourse } from '/src/use/useUserCourse'
+import { theUserCard } from '/src/use/useUserCard'
+import { theUserQuiz } from '/src/use/useUserQuiz'
+import { theUserCaseStudy } from '/src/use/useUserCaseStudy'
 import { listOfCourse, courseState } from '/src/use/useCourse'
-import { listOfCard, cardState } from '/src/use/useCard'
-import { listOfQuiz, quizState } from '/src/use/useQuiz'
-import { listOfCaseStudy, caseStudyState } from '/src/use/useCaseStudy'
-import { listOfTopic, topicState } from '/src/use/useTopic'
-import { listOfSubUE, subUEState } from '/src/use/useSubUE'
+import { listOfCard } from '/src/use/useCard'
+import { listOfQuiz } from '/src/use/useQuiz'
+import { listOfCaseStudy } from '/src/use/useCaseStudy'
+import { listOfTopic } from '/src/use/useTopic'
+import { listOfSubUE } from '/src/use/useSubUE'
 
 
 export const courseStudyProgress = computed(() => (user_id, course_id) => {

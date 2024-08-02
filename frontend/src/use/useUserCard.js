@@ -12,7 +12,7 @@ const initialState = () => ({
 })
 
 // const userCardState = useSessionStorage('user-card-state', initialState(), { mergeDefaults: true })
-const { data: userCardState } = useIDBKeyval('user-card-state', initialState(), { mergeDefaults: true })
+export const { data: userCardState } = useIDBKeyval('user-card-state', initialState(), { mergeDefaults: true })
 
 export const resetUseUserCard = () => {
    userCardState.value = initialState()
@@ -96,16 +96,4 @@ export const updateUserCard = async (id, data) => {
    const key = userCard.user_id + ':' + userCard.card_id
    userCardState.value.theUserCardCache[key] = userCard
    return userCard
-}
-
-// used in WelcomeStudent/preload
-export const getUserCardList = async (user_id) => {
-   const userCardList = await app.service('user_card').findMany({
-      where: { user_id }
-   })
-   for (const userCard of userCardList) {
-      const key = user_id + ':' + userCard.card_id
-      userCardState.value.theUserCardCache[key] = userCard
-      userCardState.value.theUserCardStatus[key] = 'ready'
-   }
 }

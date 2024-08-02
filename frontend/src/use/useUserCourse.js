@@ -12,7 +12,7 @@ const initialState = () => ({
 })
 
 // const userCourseState = useSessionStorage('user-course-state', initialState(), { mergeDefaults: true })
-const { data: userCourseState } = useIDBKeyval('user-course-state', initialState(), { mergeDefaults: true })
+export const { data: userCourseState } = useIDBKeyval('user-course-state', initialState(), { mergeDefaults: true })
 
 export const resetUseUserCourse = () => {
    userCourseState.value = initialState()
@@ -94,16 +94,4 @@ export const updateUserCourse = async (id, data) => {
    const key = userCourse.user_id + ':' + userCourse.course_id
    userCourseState.value.theUserCourseCache[key] = userCourse
    return userCourse
-}
-
-// used in WelcomeStudent/preload
-export const getUserCourseList = async (user_id) => {
-   const userCourseList = await app.service('user_course').findMany({
-      where: { user_id }
-   })
-   for (const userCourse of userCourseList) {
-      const key = user_id + ':' + userCourse.course_id
-      userCourseState.value.theUserCourseCache[key] = userCourse
-      userCourseState.value.theUserCourseStatus[key] = 'ready'
-   }
 }

@@ -13,7 +13,7 @@ const initialState = () => ({
 })
 
 // const userQuizState = useSessionStorage('user-quiz-state', initialState(), { mergeDefaults: true })
-const { data: userQuizState } = useIDBKeyval('user-quiz-state', initialState(), { mergeDefaults: true })
+export const { data: userQuizState } = useIDBKeyval('user-quiz-state', initialState(), { mergeDefaults: true })
 
 export const resetUseUserQuiz = () => {
    userQuizState.value = null
@@ -98,18 +98,6 @@ export const updateUserQuiz = async (id, data) => {
    const key = userQuiz.user_id + ':' + userQuiz.quiz_id
    userQuizState.value.theUserQuizCache[key] = userQuiz
    return userQuiz
-}
-
-// used in WelcomeStudent/preload
-export const getUserQuizList = async (user_id) => {
-   const userQuizList = await app.service('user_quiz').findMany({
-      where: { user_id }
-   })
-   for (const userQuiz of userQuizList) {
-      const key = user_id + ':' + userQuiz.quiz_id
-      userQuizState.value.theUserQuizCache[key] = userQuiz
-      userQuizState.value.theUserQuizStatus[key] = 'ready'
-   }
 }
 
 export const listOfUncorrectedUserQuiz = computed(() => {
