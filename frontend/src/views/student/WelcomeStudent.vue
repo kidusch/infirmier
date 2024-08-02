@@ -64,7 +64,6 @@
    <vue3dLoader
       height="200"
       filePath="/src/3D/model.dae"
-      backgroundColor="#edf"
    ></vue3dLoader>
 
 
