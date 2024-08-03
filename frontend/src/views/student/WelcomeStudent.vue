@@ -114,8 +114,6 @@ const props = defineProps({
 const perc = ref(0)
 
 onMounted(async () => {
-   return
-   
    // preload ues, topics, courses, etc. by batches to prevent hundreds of small backend requests
    const BATCHSIZE = 20
    try {
@@ -149,8 +147,11 @@ onMounted(async () => {
          for (const subUE of subUEList) {
             topicState.value.topicListStatus[subUE.id] = 'ready'
          }
-         topicCursor = topicList[topicList.length - 1].id
-         if (topicList.length < BATCHSIZE) hasMoreTopîc = false
+         if (topicList.length < BATCHSIZE) {
+            hasMoreTopîc = false
+         } else {
+            topicCursor = topicList[topicList.length - 1].id
+         }
       }
       perc.value = 30
 
@@ -171,10 +172,13 @@ onMounted(async () => {
             courseState.value.courseCache[course.id] = course
             courseState.value.courseStatus[course.id] = 'ready'
          }
-         courseCursor = courseList[courseList.length - 1].id
-         if (courseList.length < BATCHSIZE) hasMoreCourse = false
+         if (courseList.length < BATCHSIZE) {
+            hasMoreCourse = false
+         } else {
+            courseCursor = courseList[courseList.length - 1].id
+         }
       }
-      
+      // update list status for topics
       for (const topic of topicList) {
          courseState.value.courseListStatus[topic.id] = 'ready'
       }
@@ -197,8 +201,11 @@ onMounted(async () => {
          for (const topic of topicList) {
             cardState.value.cardListStatus[topic.id] = 'ready'
          }
-         cardCursor = cardList[cardList.length - 1].id
-         if (cardList.length < BATCHSIZE) hasMoreCard = false
+         if (cardList.length < BATCHSIZE) {
+            hasMoreCard = false
+         } else {
+            cardCursor = cardList[cardList.length - 1].id
+         }
       }
       perc.value = 50
 
@@ -217,10 +224,13 @@ onMounted(async () => {
             quizState.value.quizStatus[quiz.id] = 'ready'
             quizState.value.quizListStatus[quiz.topic_id] = 'ready'
          }
-         quizCursor = quizList[quizList.length - 1].id
-         if (quizList.length < BATCHSIZE) hasMoreQuiz = false
+         if (quizList.length < BATCHSIZE) {
+            hasMoreQuiz = false
+         } else {
+            quizCursor = quizList[quizList.length - 1].id
+         }
       }
-
+      // update list status for topics
       for (const topic of topicList) {
          quizState.value.quizListStatus[topic.id] = 'ready'
       }
@@ -244,8 +254,11 @@ onMounted(async () => {
          for (const topic of topicList) {
             caseStudyState.value.caseStudyListStatus[topic.id] = 'ready'
          }
-         caseStudyCursor = caseStudyList[caseStudyList.length - 1].id
-         if (caseStudyList.length < BATCHSIZE) hasMoreCaseStudy = false
+         if (caseStudyList.length < BATCHSIZE) {
+            hasMoreCaseStudy = false
+         } else {
+            caseStudyCursor = caseStudyList[caseStudyList.length - 1].id
+         }
       }
       perc.value = 70
 
@@ -265,8 +278,11 @@ onMounted(async () => {
             userCourseState.value.theUserCourseCache[key] = userCourse
             userCourseState.value.theUserCourseStatus[key] = 'ready'
          }
-         userCourseCursor = userCourseList[userCourseList.length - 1].id
-         if (userCourseList.length < BATCHSIZE) hasMoreUserCourse = false
+         if (userCourseList.length < BATCHSIZE) {
+            hasMoreUserCourse = false
+         } else {
+            userCourseCursor = userCourseList[userCourseList.length - 1].id
+         }
       }
       perc.value = 80
 
@@ -286,8 +302,11 @@ onMounted(async () => {
             userCardState.value.theUserCardCache[key] = userCard
             userCardState.value.theUserCardStatus[key] = 'ready'
          }
-         userCardCursor = userCardList[userCardList.length - 1].id
-         if (userCardList.length < BATCHSIZE) hasMoreUserCard = false
+         if (userCardList.length < BATCHSIZE) {
+            hasMoreUserCard = false
+         } else {
+            userCardCursor = userCardList[userCardList.length - 1].id
+         }
       }
       perc.value = 90
 
@@ -307,8 +326,11 @@ onMounted(async () => {
             userQuizState.value.theUserQuizCache[key] = userQuiz
             userQuizState.value.theUserQuizStatus[key] = 'ready'
          }
-         userQuizCursor = userQuizList[userQuizList.length - 1].id
-         if (userQuizList.length < BATCHSIZE) hasMoreUserQuiz = false
+         if (userQuizList.length < BATCHSIZE) {
+            hasMoreUserQuiz = false
+         } else {
+            userQuizCursor = userQuizList[userQuizList.length - 1].id
+         }
       }
       perc.value = 95
 
@@ -328,8 +350,11 @@ onMounted(async () => {
             userCaseStudyState.value.theUserCaseStudyCache[key] = userCaseStudy
             userCaseStudyState.value.theUserCaseStudyStatus[key] = 'ready'
          }
-         userCaseStudyCursor = userCaseStudyList[userCaseStudyList.length - 1].id
-         if (userCaseStudyList.length < BATCHSIZE) hasMoreUserCaseStudy = false
+         if (userCaseStudyList.length < BATCHSIZE) {
+            hasMoreUserCaseStudy = false
+         } else {
+            userCaseStudyCursor = userCaseStudyList[userCaseStudyList.length - 1].id
+         }
       }
       perc.value = 100
 
