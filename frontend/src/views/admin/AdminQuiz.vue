@@ -27,7 +27,7 @@
             </div>
             <div class="standard-input-container">
                <input placeholder="Titre..." type="text"
-                  :value="quiz?.title"
+                  :value="title"
                   @input="onTitleInputDebounced"
                   v-position="titlePosition"
                   :disabled="isTitleDisabled"
@@ -44,7 +44,7 @@
             </div>
             <div class="standard-input-container">
                <textarea placeholder="Question..." type="text"
-                  :value="quiz?.question"
+                  :value="question"
                   @input="onQuestionInputDebounced"
                   v-position="questionPosition"
                   :disabled="isQuestionDisabled"
@@ -89,6 +89,9 @@ import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
 import { quizOfId, updateQuiz } from '/src/use/useQuiz'
 import { listOfQuizChoices, getQuizChoiceList, createQuizChoice, removeQuizChoice } from '/src/use/useQuizChoice'
+
+import { app } from '/src/client-app.js'
+
 import router from '/src/router'
 
 import SortableListItem from '/src/components/SortableListItem.vue'
@@ -124,8 +127,14 @@ const quiz = computed(() => quizOfId.value(props.quiz_id))
 const quizChoiceList = computed(() => listOfQuizChoices.value(props.quiz_id))
 
 // handle title editing
+const localTitle = ref()
+const title = computed(() => localTitle.value || quiz.value.title)
+app.service('quiz').on('update', quiz => {
+   localTitle.value = quiz.title
+})
 const titlePosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onTitleInput = async (ev) => {
+   localTitle.value = ev.target.value
    titlePosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    await updateQuiz(props.quiz_id, { title: ev.target.value })
 }
@@ -133,8 +142,14 @@ const onTitleInputDebounced = useDebounceFn(onTitleInput, 500)
 const isTitleDisabled = ref(true)
 
 // handle question editing
+const localQuestion = ref()
+const question = computed(() => localQuestion.value || quiz.value.question)
+app.service('quiz').on('update', quiz => {
+   localQuestion.value = quiz.question
+})
 const questionPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onQuestionInput = async (ev) => {
+   localQuestion.value = ev.target.value
    questionPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    await updateQuiz(props.quiz_id, { question: ev.target.value })
 }
