@@ -84,7 +84,7 @@ export default function (app) {
 
 			// on Google auth, there is a race between the google auth callback and the websocket disconnection handler (see tranfer.js)
 			// Google auth callback wants to add user to dataCache so that it will be transfered on reconnection
-			// this dataCache (and roomCache) may or not already exist now, depending on who runs first
+			// this dataCache (and roomCache) may or not already exist now, depending on which runs first
 			if (!dataCache[cnxid]) {
 				dataCache[cnxid] = {}
 			}
@@ -114,7 +114,7 @@ export default function (app) {
 				// if (user.admin) {
 				// 	res.redirect(`/home/${user.id}/admin-ue`)
 				// } else {
-				// 	res.redirect(`/home/${user.id}/study-ue`)
+				// 	res.redirect(`/home/${user.id}/welcome-student`)
 				// }	
 			}
 		} catch (error) {

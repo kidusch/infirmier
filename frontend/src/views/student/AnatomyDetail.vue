@@ -10,26 +10,17 @@
          </p>
       </header>
 
-      <div v-for="path, index in featuredPaths">
-         <div class="flex items-center pb-1.5">
-            <input type="checkbox" :checked="path.style.opacity === 0.33" @click="ev => path.style.opacity = ev.target.checked ? 0.33 : 1." class="checkbox checkbox-primary" />
-
-            <label for="default-radio-1" class="font-normal ml-2 w-full">
-               <p class="text-black">
-                  {{ path.dataset.name }}
-               </p>
-            </label>
-
-         </div>
-      </div>
-
-      <div v-html="anatomy?.content" ref="svg"></div>
+      <vue3dLoader
+         height="200"
+         ffilePath="/src/3D/model.dae"
+         filePath="https://ftp.jcbuisson.dev/3d-models/chair.dae"
+      ></vue3dLoader>
 
    </main>
 </template>
 
 <script setup>
-import { computed, ref, onMounted } from 'vue'
+import { computed } from 'vue'
 
 import { anatomyOfId } from '/src/use/useAnatomy'
 
@@ -47,20 +38,4 @@ const props = defineProps({
 
 const anatomy = computed(() => anatomyOfId.value(props.anatomy_id))
 
-const svg = ref(null)
-const featuredPaths = ref([])
-const selectedPaths = ref([])
-
-function updateSelectedPaths() {
-   const result = []
-   for (const path of svg.value.querySelectorAll('path')) {
-      if (!path.dataset.rank) continue
-      result.push(path)
-   }
-   featuredPaths.value = result.sort((path1, path2) => path1.dataset.rank - path2.dataset.rank)
-}
-
-onMounted(() => {
-   updateSelectedPaths()
-})
 </script>

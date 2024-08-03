@@ -4,3 +4,4 @@ ecosystem.config.cjs
 package-lock.json
 dist/
 logs/
+3D/
