@@ -13,7 +13,7 @@
             </div>
             <div class="standard-input-container">
                <textarea placeholder="Texte..." type="text"
-                  :value="adminMisc?.email"
+                  :value="email"
                   @input="onEmailInputDebounced"
                   v-position="emailPosition"
                   :disabled="isEmailDisabled"
@@ -31,7 +31,7 @@
             </div>
             <div class="standard-input-container">
                <textarea placeholder="Texte..." type="text"
-                  :value="adminMisc?.cgu"
+                  :value="cgu"
                   @input="onCGUInputDebounced"
                   v-position="cguPosition"
                   :disabled="isCGUDisabled"
@@ -49,7 +49,7 @@
             </div>
             <div class="standard-input-container">
                <textarea placeholder="Texte..." type="text"
-                  :value="adminMisc?.welcome_text"
+                  :value="welcomeText"
                   @input="onWelcomeTextInputDebounced"
                   v-position="welcomeTextPosition"
                   :disabled="isWelcomeTextDisabled"
@@ -67,7 +67,7 @@
             </div>
             <div class="standard-input-container">
                <input placeholder="URL..." type="text"
-                  :value="adminMisc?.welcome_img"
+                  :value="welcomeImg"
                   @input="onWelcomeImgInputDebounced"
                   v-position="welcomeImgPosition"
                   :disabled="isWelcomeImgDisabled"
@@ -79,7 +79,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
 import { app } from '/src/client-app.js'
@@ -100,8 +100,14 @@ onMounted(async () => {
 })
 
 // handle email editing
+const localEmail = ref()
+const email = computed(() => localEmail.value || adminMisc.value.email)
+app.service('admin_misc').on('update', adminMisc => {
+   localEmail.value = adminMisc.email
+})
 const emailPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onEmailInput = async (ev) => {
+   localEmail.value = ev.target.value
    emailPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    adminMisc.value = await app.service('admin_misc').update({
       where: { id: 1 },
@@ -112,8 +118,14 @@ const onEmailInputDebounced = useDebounceFn(onEmailInput, 500)
 const isEmailDisabled = ref(true)
 
 // handle CGU editing
+const localCGU = ref()
+const cgu = computed(() => localCGU.value || adminMisc.value.cgu)
+app.service('admin_misc').on('update', adminMisc => {
+   localCGU.value = adminMisc.cgu
+})
 const cguPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onCGUInput = async (ev) => {
+   localCGU.value = ev.target.value
    cguPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    adminMisc.value = await app.service('admin_misc').update({
       where: { id: 1 },
@@ -124,8 +136,14 @@ const onCGUInputDebounced = useDebounceFn(onCGUInput, 500)
 const isCGUDisabled = ref(true)
 
 // handle welcome text editing
+const localWelcomeText = ref()
+const welcomeText = computed(() => localWelcomeText.value || adminMisc.value.welcome_text)
+app.service('admin_misc').on('update', adminMisc => {
+   localWelcomeText.value = adminMisc.welcome_text
+})
 const welcomeTextPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onWelcomeTextInput = async (ev) => {
+   localWelcomeText.value = ev.target.value
    welcomeTextPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    adminMisc.value = await app.service('admin_misc').update({
       where: { id: 1 },
@@ -136,8 +154,14 @@ const onWelcomeTextInputDebounced = useDebounceFn(onWelcomeTextInput, 500)
 const isWelcomeTextDisabled = ref(true)
 
 // handle welcome img url editing
+const localWelcomeImg = ref()
+const welcomeImg = computed(() => localWelcomeImg.value || adminMisc.value.welcome_img)
+app.service('admin_misc').on('update', adminMisc => {
+   localWelcomeImg.value = adminMisc.welcome_img
+})
 const welcomeImgPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onWelcomeImgInput = async (ev) => {
+   localWelcomeImg.value = ev.target.value
    welcomeImgPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    adminMisc.value = await app.service('admin_misc').update({
       where: { id: 1 },
