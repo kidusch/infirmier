@@ -59,7 +59,7 @@
 
             <div class="standard-input-container">
                <textarea placeholder="Écrivez votre réponse ici..." type="text"
-                  :value="userCaseStudy?.answer"
+                  :value="answer"
                   @input="onAnswerInputDebounced"
                   v-position="answerPosition"
                   :disabled="isAnswerDisabled"
@@ -136,9 +136,15 @@ const topic = computed(() => topicOfId.value(props.topic_id))
 const caseStudy = computed(() => caseStudyOfId.value(props.case_study_id))
 const userCaseStudy = computed(() => theUserCaseStudy.value(props.userid, props.case_study_id))
 
-// handle title editing
+// handle answer editing
+const localAnswer = ref()
+const answer = computed(() => localAnswer.value || userCaseStudy.value.answer)
+app.service('user_case_study').on('update', userCaseStudy => {
+   localAnswer.value = userCaseStudy.answer
+})
 const answerPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onAnswerInput = async (ev) => {
+   localAnswer.value = ev.target.value
    answerPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    await updateUserCaseStudy(userCaseStudy.value.id, { answer: ev.target.value })
 }

@@ -88,7 +88,7 @@
          </div>
          <textarea class="min-h-[65vh] h-[65vh] px-4 text-black/70 font-normal text-base"
             placeholder="Écrivez vos notes ici"
-            :value="userCourse?.note"
+            :value="note"
             @input="onNoteInputDebounced"
             v-position="notePosition"
          ></textarea>
@@ -106,6 +106,8 @@ import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
 import { courseOfId } from '/src/use/useCourse'
 import { theUserCourse, updateUserCourse } from '/src/use/useUserCourse'
+
+import { app } from '/src/client-app.js'
 
 import router from "/src/router"
 
@@ -176,8 +178,14 @@ function closeNoteModal() {
 }
 
 // handle note editing
+const localNote = ref()
+const note = computed(() => localNote.value || userCourse.value.note)
+app.service('user_course').on('update', userCourse => {
+   localNote.value = userCourse.note
+})
 const notePosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onNoteInput = async (ev) => {
+   localNote.value = ev.target.value
    notePosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    await updateUserCourse(userCourse.value.id, { note: ev.target.value })
 }
