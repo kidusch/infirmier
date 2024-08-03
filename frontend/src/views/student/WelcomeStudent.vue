@@ -114,8 +114,6 @@ const props = defineProps({
 const perc = ref(0)
 
 onMounted(async () => {
-   const userid = props.userid
-
    // preload ues, topics, courses, etc. by batches to prevent hundreds of small backend requests
    const BATCHSIZE = 20
    try {

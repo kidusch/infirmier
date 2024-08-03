@@ -16,7 +16,7 @@ const initialState = () => ({
 export const { data: userQuizState } = useIDBKeyval('user-quiz-state', initialState(), { mergeDefaults: true })
 
 export const resetUseUserQuiz = () => {
-   userQuizState.value = null
+   userQuizState.value = initialState()
 }
 
 

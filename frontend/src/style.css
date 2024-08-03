@@ -103,6 +103,10 @@
   .progress-list {
     @apply flex flex-col gap-3 lg:grid lg:grid-cols-3;
   }
+  .progress-list2 {
+    @apply flex flex-col gap-3;
+  }
+    
 
   .chapter-card {
     @apply bg-accent rounded-2xl text-primary p-4 w-full max-lg:text-center;

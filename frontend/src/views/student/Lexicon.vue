@@ -90,5 +90,6 @@ const lexiconList = computed(() => (lang) => {
 })
 
 const lexiconWord = computed(() => (lexicon, lang) => lang === 'fr' ? lexicon.french_word : lexicon.english_word)
-const lexiconDesc = computed(() => (lexicon, lang) => lang === 'fr' ? lexicon.french_desc : lexicon.english_desc)
+// const lexiconDesc = computed(() => (lexicon, lang) => lang === 'fr' ? lexicon.french_desc : lexicon.english_desc)
+const lexiconDesc = computed(() => (lexicon, lang) => lexicon.french_desc)
 </script>

@@ -54,6 +54,9 @@ const routes = [
       props: route => ({
          userid: parseInt(route.params.userid),
       }),
+      redirect: (to) => {
+         return { path: `/home/${to.params.userid}/welcome-student`}
+      },
       children: [
          {
             path: 'subscription-success',

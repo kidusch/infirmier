@@ -254,7 +254,7 @@ onMounted(async () => {
       // })
       
       // go to student welcome page
-      router.push(`/home/${props.userid}/welcome-student`)
+      // router.push(`/home/${props.userid}/welcome-student`)
    }
 })
 

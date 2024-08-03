@@ -12,7 +12,7 @@
       <main class="flex flex-col gap-6 pb-6">
          
          <div class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
-            <div class="progress-list">
+            <div class="progress-list2">
                <template v-for="anatomy in listOfAnatomy">
                   <div class="progress-item cursor-pointer" @click="selectAnatomy(anatomy)">
                      <p>
