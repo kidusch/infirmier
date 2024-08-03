@@ -21,7 +21,7 @@
             </div>
             <div class="standard-input-container">
                <input placeholder="Titre..." type="text"
-                  :value="care?.title"
+                  :value="title"
                   @input="onTitleInputDebounced"
                   v-position="titlePosition"
                   :disabled="isTitleDisabled"
@@ -40,7 +40,7 @@
             </div>
             <div class="standard-input-container">
                <textarea placeholder="Contenu..." type="text"
-                  :value="care?.content"
+                  :value="content"
                   @input="onContentInputDebounced"
                   v-position="contentPosition"
                   :disabled="isContentDisabled"
@@ -56,6 +56,9 @@ import { ref, computed } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
 import { careOfId, updateCare } from '/src/use/useCare'
+
+import { app } from '/src/client-app.js'
+
 import router from '/src/router'
 
 
@@ -73,8 +76,14 @@ const props = defineProps({
 const care = computed(() => careOfId.value(props.care_id))
 
 // handle title editing
+const localTitle = ref()
+const title = computed(() => localTitle.value || care.value.title)
+app.service('care').on('update', care => {
+   localTitle.value = care.title
+})
 const titlePosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onTitleInput = async (ev) => {
+   localTitle.value = ev.target.value
    titlePosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    await updateCare(props.care_id, { title: ev.target.value })
 }
@@ -82,8 +91,14 @@ const onTitleInputDebounced = useDebounceFn(onTitleInput, 500)
 const isTitleDisabled = ref(true)
 
 // handle content editing
+const localContent = ref()
+const content = computed(() => localContent.value || care.value.content)
+app.service('care').on('update', care => {
+   localContent.value = care.content
+})
 const contentPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onContentInput = async (ev) => {
+   localContent.value = ev.target.value
    contentPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    await updateCare(props.care_id, { content: ev.target.value })
 }

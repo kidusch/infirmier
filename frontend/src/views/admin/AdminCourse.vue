@@ -27,7 +27,7 @@
             </div>
             <div class="standard-input-container">
                <input placeholder="Titre..." type="text"
-                  :value="course?.title"
+                  :value="title"
                   @input="debouncedInputTitle"
                   v-position="titlePosition"
                   :disabled="isTitleDisabled"
@@ -47,8 +47,7 @@
 
             <div class="standard-input-container">
                <textarea placeholder="Contenu..." type="text"
-                  :value="courseContent"
-                  :vvvalue="course?.content"
+                  :value="content"
                   @input="onContentInputDebounced"
                   v-position="contentPosition"
                   :disabled="isContentDisabled"
@@ -102,21 +101,30 @@ const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
 const topic = computed(() => topicOfId.value(props.topic_id))
 const course = computed(() => courseOfId.value(props.course_id))
 
-
+// handle title editing
+const localTitle = ref()
+const title = computed(() => localTitle.value || course.value.title)
+app.service('course').on('update', course => {
+   localTitle.value = course.title
+})
 const titlePosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onInputTitle = async (ev) => {
+   localTitle.value = ev.target.value
    titlePosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    await updateCourse(props.course_id, { title: ev.target.value })
 }
 const debouncedInputTitle = useDebounceFn(onInputTitle, 500)
 const isTitleDisabled = ref(true)
 
-
-const localCourseContent = ref('')
-const courseContent = computed(() => localCourseContent.value || course.value.content)
+// handle content editing
+const localContent = ref()
+const content = computed(() => localContent.value || course.value.content)
+app.service('course').on('update', course => {
+   localContent.value = course.content
+})
 const contentPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onContentInput = async (ev) => {
-   localCourseContent.value = ev.target.value
+   localContent.value = ev.target.value
    contentPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    await updateCourse(props.course_id, {
       content: ev.target.value,
@@ -125,9 +133,6 @@ const onContentInput = async (ev) => {
 }
 const onContentInputDebounced = useDebounceFn(onContentInput, 500)
 const isContentDisabled = ref(true)
-app.service('course').on('update', course => {
-   localCourseContent.value = course.content
-})
 
 // custom directive (v-position on <input> or <textarea>) which restores cursor position
 const vPosition = {

@@ -47,7 +47,7 @@
             </div>
          </div>
 
-         <!-- Custom answer -->
+         <!-- Custom correction -->
          <div class="py-4">
             <div class="flex justify-between">
                <label for="title">Réponse personnalisée</label>
@@ -59,7 +59,7 @@
 
             <div class="standard-input-container">
                <textarea placeholder="Écrivez votre réponse ici..." type="text"
-                  :value="userQuiz?.custom_correction"
+                  :value="correction"
                   @input="onCorrectionInputDebounced"
                   v-position="correctionPosition"
                   :disabled="isCorrectionDisabled"
@@ -115,8 +115,15 @@ const userQuizChoiceAnswer = computed(() => (quiz_choice_id) => {
    return userQuizChoice?.answer
 })
 
+// handle correction editing
+const localCorrection = ref()
+const correction = computed(() => localCorrection.value || userQuiz.value.custom_correction)
+app.service('user_quiz').on('update', userQuiz => {
+   localCorrection.value = userQuiz.custom_correction
+})
 const correctionPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onCorrectionInput = async (ev) => {
+   localCorrection.value = ev.target.value
    correctionPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    await updateUserQuiz(userQuiz.value.id, { custom_correction: ev.target.value })
 }
@@ -126,7 +133,10 @@ const isCorrectionDisabled = ref(true)
 
 const onValidate = async () => {
    try {
-      await updateUserQuiz(userQuiz.value.id, { custom_correction_status: 'corrected' })
+      await updateUserQuiz(userQuiz.value.id, {
+         custom_correction_status: 'corrected',
+         custom_correction_date: new Date(),
+      })
    } catch(err) {
       alert("Erreur lors de l'enregistrement")
    }

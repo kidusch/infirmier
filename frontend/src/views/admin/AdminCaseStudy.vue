@@ -27,7 +27,7 @@
             </div>
             <div class="standard-input-container">
                <input placeholder="Titre..." type="text"
-                  :value="caseStudy?.title"
+                  :value="title"
                   @input="onTitleInputDebounced"
                   v-position="titlePosition"
                   :disabled="isTitleDisabled"
@@ -46,7 +46,7 @@
             </div>
             <div class="standard-input-container">
                <textarea placeholder="Contenu..." type="text"
-                  :value="caseStudy?.content"
+                  :value="content"
                   @input="onContentInputDebounced"
                   v-position="contentPosition"
                   :disabled="isContentDisabled"
@@ -65,7 +65,7 @@
             </div>
             <div class="standard-input-container">
                <textarea placeholder="Correction..." type="text"
-                  :value="caseStudy?.standard_correction"
+                  :value="standardCorrection"
                   @input="onCorrectionInputDebounced"
                   v-position="correctionPosition"
                   :disabled="isCorrectionDisabled"
@@ -85,6 +85,9 @@ import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
 import { caseStudyOfId, updateCaseStudy } from '/src/use/useCaseStudy'
+
+import { app } from '/src/client-app.js'
+
 import router from '/src/router'
 
 const props = defineProps({
@@ -115,25 +118,45 @@ const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
 const topic = computed(() => topicOfId.value(props.topic_id))
 const caseStudy = computed(() => caseStudyOfId.value(props.case_study_id))
 
-
+// handle title editing
+const localTitle = ref()
+const title = computed(() => localTitle.value || caseStudy.value.title)
+app.service('case_study').on('update', caseStudy => {
+   localTitle.value = caseStudy.title
+})
 const titlePosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onTitleInput = async (ev) => {
+   localTitle.value = ev.target.value
    titlePosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    await updateCaseStudy(props.case_study_id, { title: ev.target.value })
 }
 const onTitleInputDebounced = useDebounceFn(onTitleInput, 500)
 const isTitleDisabled = ref(true)
 
+// handle content editing
+const localContent = ref()
+const content = computed(() => localContent.value || caseStudy.value.content)
+app.service('case_study').on('update', caseStudy => {
+   localContent.value = caseStudy.content
+})
 const contentPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onContentInput = async (ev) => {
+   localContent.value = ev.target.value
    contentPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    await updateCaseStudy(props.case_study_id, { content: ev.target.value })
 }
 const onContentInputDebounced = useDebounceFn(onContentInput, 500)
 const isContentDisabled = ref(true)
 
+// handle standard correction editing
+const localCorrection = ref()
+const standardCorrection = computed(() => localCorrection.value || caseStudy.value.standard_correction)
+app.service('case_study').on('update', caseStudy => {
+   localCorrection.value = caseStudy.standard_correction
+})
 const correctionPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onCorrectionInput = async (ev) => {
+   localCorrection.value = ev.target.value
    correctionPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    await updateCaseStudy(props.case_study_id, { standard_correction: ev.target.value })
 }

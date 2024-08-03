@@ -27,7 +27,7 @@
             </div>
             <div class="standard-input-container">
                <input placeholder="Titre..." type="text"
-                  :value="card?.title"
+                  :value="title"
                   @input="onTitleInputDebounced"
                   v-position="titlePosition"
                   :disabled="isTitleDisabled"
@@ -45,7 +45,7 @@
             </div>
             <div class="standard-input-container">
                <textarea placeholder="Contenu..." type="text"
-                  :value="card?.content"
+                  :value="content"
                   @input="onContentInputDebounced"
                   v-position="contentPosition"
                   :disabled="isContentDisabled"
@@ -64,6 +64,9 @@ import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
 import { cardOfId, updateCard } from '/src/use/useCard'
+
+import { app } from '/src/client-app.js'
+
 import router from '/src/router'
 
 const props = defineProps({
@@ -95,8 +98,14 @@ const topic = computed(() => topicOfId.value(props.topic_id))
 const card = computed(() => cardOfId.value(props.card_id))
 
 // handle title editing
+const localTitle = ref()
+const title = computed(() => localTitle.value || card.value.title)
+app.service('card').on('update', card => {
+   localTitle.value = card.title
+})
 const titlePosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onTitleInput = async (ev) => {
+   localTitle.value = ev.target.value
    titlePosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    await updateCard(props.card_id, { title: ev.target.value })
 }
@@ -104,8 +113,14 @@ const onTitleInputDebounced = useDebounceFn(onTitleInput, 500)
 const isTitleDisabled = ref(true)
 
 // handle content editing
+const localContent = ref()
+const content = computed(() => localContent.value || card.value.content)
+app.service('card').on('update', card => {
+   localContent.value = card.content
+})
 const contentPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onContentInput = async (ev) => {
+   localContent.value = ev.target.value
    contentPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    await updateCard(props.card_id, { content: ev.target.value })
 }

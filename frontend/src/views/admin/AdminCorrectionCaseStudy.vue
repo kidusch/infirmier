@@ -41,9 +41,9 @@
 
             <div class="standard-input-container">
                <textarea placeholder="Écrivez votre réponse ici..." type="text"
-                  :value="userCaseStudy?.custom_correction"
-                  @input="onContentInputDebounced"
-                  v-position="contentPosition"
+                  :value="correction"
+                  @input="onCorrectionInputDebounced"
+                  v-position="correctionPosition"
                   :disabled="isContentDisabled"
                ></textarea>
             </div>
@@ -89,12 +89,19 @@ const student = computed(() => userOfId.value(props.userId))
 const caseStudy = computed(() => caseStudyOfId.value(props.caseStudyId))
 const userCaseStudy = computed(() => theUserCaseStudy.value(props.userId, props.caseStudyId))
 
-const contentPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
-const onContentInput = async (ev) => {
-   contentPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
+// handle custom correction editing
+const localCorrection = ref()
+const correction = computed(() => localCorrection.value || userCaseStudy.value.custom_correction)
+app.service('user_case_study').on('update', userCaseStudy => {
+   localCorrection.value = userCaseStudy.custom_correction
+})
+const correctionPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
+const onCorrectionInput = async (ev) => {
+   localCorrection.value = ev.target.value
+   correctionPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    await updateUserCaseStudy(userCaseStudy.value.id, { custom_correction: ev.target.value })
 }
-const onContentInputDebounced = useDebounceFn(onContentInput, 500)
+const onCorrectionInputDebounced = useDebounceFn(onCorrectionInput, 500)
 const isContentDisabled = ref(true)
 
 // custom directive (v-position on <input> or <textarea>) which restores cursor position
@@ -107,7 +114,10 @@ const vPosition = {
 
 const onValidate = async () => {
    try {
-      await updateUserCaseStudy(userCaseStudy.value.id, { custom_correction_status: 'corrected' })
+      await updateUserCaseStudy(userCaseStudy.value.id, {
+         custom_correction_status: 'corrected',
+         custom_correction_date: new Date(),
+      })
    } catch(err) {
       alert("Erreur lors de l'enregistrement")
    }
