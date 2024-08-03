@@ -246,7 +246,7 @@ onMounted(async () => {
          if (caseStudyList.length < BATCHSIZE) hasMoreCaseStudy = false
       }
       perc.value = 70
-
+/*
       // read user_course by batches
       let hasMoreUserCourse = true
       let userCourseCursor = null
@@ -328,7 +328,7 @@ onMounted(async () => {
          }
          userCaseStudyCursor = userCaseStudyList[userCaseStudyList.length - 1].id
          if (userCaseStudyList.length < BATCHSIZE) hasMoreUserCaseStudy = false
-      }
+      }*/
       perc.value = 100
 
    } catch(err) {
