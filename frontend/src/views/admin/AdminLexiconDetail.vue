@@ -16,16 +16,16 @@
             <div class="flex justify-between">
                <label for="title">Terme français</label>
                <div class="flex gap-2 mb-1">
-                  <img class="h-5 cursor-pointer" src="/src/assets/edit.svg" v-if="!isFrenchTermDisabled" @click="isFrenchTermDisabled = !isFrenchTermDisabled">
-                  <img class="h-5 cursor-pointer" src="/src/assets/edit-off.svg" v-if="isFrenchTermDisabled" @click="isFrenchTermDisabled = !isFrenchTermDisabled">
+                  <img class="h-5 cursor-pointer" src="/src/assets/edit.svg" v-if="!isFrenchWordDisabled" @click="isFrenchWordDisabled = !isFrenchWordDisabled">
+                  <img class="h-5 cursor-pointer" src="/src/assets/edit-off.svg" v-if="isFrenchWordDisabled" @click="isFrenchWordDisabled = !isFrenchWordDisabled">
                </div>
             </div>
             <div class="standard-input-container">
                <input placeholder="Terme français..." type="text"
-                  :value="lexicon?.french_word"
-                  @input="onFrenchTermInputDebounced"
+                  :value="frenchWord"
+                  @input="onFrenchWordInputDebounced"
                   v-position="frenchTermPosition"
-                  :disabled="isFrenchTermDisabled"
+                  :disabled="isFrenchWordDisabled"
                />
             </div>
          </div>
@@ -40,7 +40,7 @@
             </div>
             <div class="standard-input-container">
                <textarea placeholder="Contenu..." type="text"
-                  :value="lexicon?.french_desc"
+                  :value="frenchDesc"
                   @input="onFrenchDescriptionInputDebounced"
                   v-position="frenchDescriptionPosition"
                   :disabled="isFrenchDescriptionDisabled"
@@ -52,16 +52,16 @@
             <div class="flex justify-between">
                <label for="title">Terme anglais</label>
                <div class="flex gap-2 mb-1">
-                  <img class="h-5 cursor-pointer" src="/src/assets/edit.svg" v-if="!isEnglishTermDisabled" @click="isEnglishTermDisabled = !isEnglishTermDisabled">
-                  <img class="h-5 cursor-pointer" src="/src/assets/edit-off.svg" v-if="isEnglishTermDisabled" @click="isEnglishTermDisabled = !isEnglishTermDisabled">
+                  <img class="h-5 cursor-pointer" src="/src/assets/edit.svg" v-if="!isEnglishWordDisabled" @click="isEnglishWordDisabled = !isEnglishWordDisabled">
+                  <img class="h-5 cursor-pointer" src="/src/assets/edit-off.svg" v-if="isEnglishWordDisabled" @click="isEnglishWordDisabled = !isEnglishWordDisabled">
                </div>
             </div>
             <div class="standard-input-container">
                <input placeholder="Terme anglais..." type="text"
-                  :value="lexicon?.english_word"
-                  @input="onEnglishTermInputDebounced"
+                  :value="englishWord"
+                  @input="onEnglishWordInputDebounced"
                   v-position="englishTermPosition"
-                  :disabled="isEnglishTermDisabled"
+                  :disabled="isEnglishWordDisabled"
                />
             </div>
          </div>
@@ -91,6 +91,8 @@ import { useDebounceFn } from '@vueuse/core'
 
 import { lexiconOfId, getLexicon, updateLexicon } from '/src/use/useLexicon'
 
+import { app } from '/src/client-app.js'
+
 
 const props = defineProps({
    userid: {
@@ -106,17 +108,29 @@ const props = defineProps({
 const lexicon = computed(() => lexiconOfId.value(props.lexicon_id))
 
 // handle french term editing
+const localFrenchWord = ref()
+const frenchWord = computed(() => localFrenchWord.value || lexicon.value.french_word)
+app.service('lexicon').on('update', lexicon => {
+   localFrenchWord.value = lexicon.french_word
+})
 const frenchTermPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
-const onFrenchTermInput = async (ev) => {
+const onFrenchWordInput = async (ev) => {
+   localFrenchWord.value = ev.target.value
    frenchTermPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    await updateLexicon(props.lexicon_id, { french_word: ev.target.value })
 }
-const onFrenchTermInputDebounced = useDebounceFn(onFrenchTermInput, 500)
-const isFrenchTermDisabled = ref(true)
+const onFrenchWordInputDebounced = useDebounceFn(onFrenchWordInput, 500)
+const isFrenchWordDisabled = ref(true)
 
 // handle french description editing
+const localFrenchDesc = ref()
+const frenchDesc = computed(() => localFrenchDesc.value || lexicon.value.french_desc)
+app.service('lexicon').on('update', lexicon => {
+   localFrenchDesc.value = lexicon.french_desc
+})
 const frenchDescriptionPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onFrenchDescriptionInput = async (ev) => {
+   localFrenchDesc.value = ev.target.value
    frenchDescriptionPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    await updateLexicon(props.lexicon_id, { french_desc: ev.target.value })
 }
@@ -124,13 +138,19 @@ const onFrenchDescriptionInputDebounced = useDebounceFn(onFrenchDescriptionInput
 const isFrenchDescriptionDisabled = ref(true)
 
 // handle english term editing
+const localEnglishWord = ref()
+const englishWord = computed(() => localEnglishWord.value || lexicon.value.english_word)
+app.service('lexicon').on('update', lexicon => {
+   localEnglishWord.value = lexicon.english_word
+})
 const englishTermPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
-const onEnglishTermInput = async (ev) => {
+const onEnglishWordInput = async (ev) => {
+   localEnglishWord.value = ev.target.value
    englishTermPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
    await updateLexicon(props.lexicon_id, { english_word: ev.target.value })
 }
-const onEnglishTermInputDebounced = useDebounceFn(onEnglishTermInput, 500)
-const isEnglishTermDisabled = ref(true)
+const onEnglishWordInputDebounced = useDebounceFn(onEnglishWordInput, 500)
+const isEnglishWordDisabled = ref(true)
 
 // custom directive (v-position on <input> or <textarea>) which restores cursor position
 const vPosition = {
