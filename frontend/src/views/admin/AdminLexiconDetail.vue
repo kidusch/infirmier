@@ -4,7 +4,7 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p class="leading-loose">
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/admin-lexicon`">Lexique</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/admin/admin-lexicon`">Lexique</router-link>
             /
             <span class="font-semibold">{{ lexicon?.french_word }}</span>
          </p>

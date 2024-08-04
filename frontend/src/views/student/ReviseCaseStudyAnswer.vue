@@ -4,15 +4,15 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p class="leading-loose">
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-ue`">RÉVISIONS</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/revise-ue`">RÉVISIONS</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-ue`">{{ ue?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/revise-ue`">{{ ue?.name }}</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-sub-ue/${ue_id}/${sub_ue_id}`">{{ subUE?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/revise-sub-ue/${ue_id}/${sub_ue_id}`">{{ subUE?.name }}</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-topic/${ue_id}/${sub_ue_id}/${topic_id}`">{{ topic?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/revise-topic/${ue_id}/${sub_ue_id}/${topic_id}`">{{ topic?.name }}</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-topic/${ue_id}/${sub_ue_id}/${topic_id}`">{{ caseStudy?.title }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/revise-topic/${ue_id}/${sub_ue_id}/${topic_id}`">{{ caseStudy?.title }}</router-link>
             /
             <span class="font-semibold">Correction standard</span>
          </p>
@@ -124,11 +124,11 @@ const onDoneClick = async (done) => {
 }
 
 const gotoStudy = () => {
-   router.push(`/home/${props.userid}/study-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
+   router.push(`/student/study-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
 }
 
 const goOn = () => {
-   router.push(`/home/${props.userid}/revise-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
+   router.push(`/student/revise-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
 }
 
 const premiumModal = ref()

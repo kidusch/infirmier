@@ -4,13 +4,13 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p class="leading-loose">
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-ue`">RÉVISIONS</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/revise-ue`">RÉVISIONS</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-ue`">{{ ue?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/revise-ue`">{{ ue?.name }}</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-sub-ue/${ue_id}/${sub_ue_id}`">{{ subUE?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/revise-sub-ue/${ue_id}/${sub_ue_id}`">{{ subUE?.name }}</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-topic/${ue_id}/${sub_ue_id}/${topic_id}`">{{ topic?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/revise-topic/${ue_id}/${sub_ue_id}/${topic_id}`">{{ topic?.name }}</router-link>
             /
             <span class="font-semibold">QCM : {{ quiz?.title }}</span>
          </p>
@@ -170,11 +170,11 @@ const setAnswer = async (quiz_choice_id, value, checked) => {
 }
 
 const gotoStudy = () => {
-   router.push(`/home/${props.userid}/study-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
+   router.push(`/student/study-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
 }
 
 const getStandardCorrection = () => {
-   router.push(`/home/${props.userid}/revise-quiz-results/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${props.quiz_id}`)
+   router.push(`/student/revise-quiz-results/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${props.quiz_id}`)
 }
 
 const premiumModal = ref()
@@ -196,6 +196,6 @@ const subscribe = async () => {
 }
 
 const onClosed = () => {
-   router.push(`/home/${props.userid}/revise-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
+   router.push(`/student/revise-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
 }
 </script>

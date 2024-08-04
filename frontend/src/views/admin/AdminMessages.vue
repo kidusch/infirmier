@@ -81,7 +81,7 @@ const userList = computed(() => {
 })
 
 const select = (user) => {
-   router.push(`/home/${props.userid}/admin-messages-student/${user.id}`)
+   router.push(`/admin/admin-messages-student/${user.id}`)
 }
 
 const unreadMessagesCountOfStudent = computed(() => (studentId) => unreadMessagesCountOfUser2ByUser1.value(props.userid, studentId))

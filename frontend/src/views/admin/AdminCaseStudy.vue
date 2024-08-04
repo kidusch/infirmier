@@ -4,13 +4,13 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p class="leading-loose">
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/admin-ue`">Unités d'enseignement</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/admin/admin-ue`">Unités d'enseignement</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/admin-sub-ue/${ue_id}`">{{ ue?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/admin/admin-sub-ue/${ue_id}`">{{ ue?.name }}</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/admin-topics/${ue_id}/${sub_ue_id}`">{{ subUE?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/admin/admin-topics/${ue_id}/${sub_ue_id}`">{{ subUE?.name }}</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/admin-topic/${ue_id}/${sub_ue_id}/${topic_id}`">{{ topic?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/admin/admin-topic/${ue_id}/${sub_ue_id}/${topic_id}`">{{ topic?.name }}</router-link>
             /
             <span class="font-semibold">Cas d'étude</span>
          </p>
@@ -172,9 +172,9 @@ const vPosition = {
 }
 
 const preview = () => {
-   router.push(`/home/${props.userid}/admin-case-study-preview/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${props.case_study_id}`)
+   router.push(`/admin/admin-case-study-preview/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${props.case_study_id}`)
 }
 const previewCorrection = () => {
-   router.push(`/home/${props.userid}/admin-case-study-preview-correction/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${props.case_study_id}`)
+   router.push(`/admin/admin-case-study-preview-correction/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${props.case_study_id}`)
 }
 </script>

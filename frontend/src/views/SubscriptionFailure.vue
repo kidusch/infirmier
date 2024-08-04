@@ -9,7 +9,7 @@
      </section>
 
      <footer class="flex-1 flex flex-col justify-end pb-8">
-         <router-link class="primary-btn px-4" :to="`/home/${userid}/study-ue`">
+         <router-link class="primary-btn px-4" :to="`/student`">
             Continuer
          </router-link>
       </footer>

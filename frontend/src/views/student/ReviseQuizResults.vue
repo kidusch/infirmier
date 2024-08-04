@@ -4,15 +4,15 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p class="leading-loose">
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-ue`">RÉVISIONS</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/revise-ue`">RÉVISIONS</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-ue`">{{ ue?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/revise-ue`">{{ ue?.name }}</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-sub-ue/${ue_id}/${sub_ue_id}`">{{ subUE?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/revise-sub-ue/${ue_id}/${sub_ue_id}`">{{ subUE?.name }}</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-topic/${ue_id}/${sub_ue_id}/${topic_id}`">{{ topic?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/revise-topic/${ue_id}/${sub_ue_id}/${topic_id}`">{{ topic?.name }}</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-quiz/${ue_id}/${sub_ue_id}/${topic_id}/${quiz_id}`">QCM : {{ quiz?.title }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/revise-quiz/${ue_id}/${sub_ue_id}/${topic_id}/${quiz_id}`">QCM : {{ quiz?.title }}</router-link>
             /
             <span class="font-semibold">Résultats</span>
          </p>
@@ -77,7 +77,7 @@
       </main>
 
       <footer class="flex-1 flex flex-col justify-end py-8">
-         <router-link class="primary-btn px-4" :to="`/home/${userid}/revise-topic/${ue_id}/${sub_ue_id}/${topic_id}`">
+         <router-link class="primary-btn px-4" :to="`/student/revise-topic/${ue_id}/${sub_ue_id}/${topic_id}`">
             Continuer
          </router-link>
       </footer>
@@ -191,6 +191,6 @@ const score = computed(() => quizChoiceList.value.reduce((accu, quizChoice) => {
 }, 0))
 
 const gotoStudy = () => {
-   router.push(`/home/${props.userid}/study-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
+   router.push(`/student/study-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
 }
 </script>

@@ -27,8 +27,8 @@ export default function(app) {
                },
             ],
             mode: 'subscription',
-            success_url: `${process.env.CLIENT_URL}/home/${userid}/subscription-success`,
-            cancel_url: `${process.env.CLIENT_URL}/home/${userid}/subscription-failure`,
+            success_url: `${process.env.CLIENT_URL}/subscription-success/${userid}`,
+            cancel_url: `${process.env.CLIENT_URL}/subscription-failure/${userid}`,
          })
          return session
       }

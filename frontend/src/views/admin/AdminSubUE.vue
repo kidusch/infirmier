@@ -4,7 +4,7 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p class="leading-loose">
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/admin-ue`">Unités d'enseignement</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/admin/admin-ue`">Unités d'enseignement</router-link>
             /
             <span class="font-semibold">{{ ue?.name }}</span>
          </p>
@@ -106,6 +106,6 @@ const remove = async (subUE) => {
 }
 
 const select = (subUEId) => {
-   router.push(`/home/${props.userid}/admin-topics/${props.ue_id}/${subUEId}`)
+   router.push(`/admin/admin-topics/${props.ue_id}/${subUEId}`)
 }
 </script>

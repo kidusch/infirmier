@@ -40,6 +40,6 @@ const props = defineProps({
 })
 
 const selectAnatomy = (anatomy) => {
-   router.push(`/home/${props.userid}/anatomy/${anatomy.id}`)
+   router.push(`/student/anatomy/${anatomy.id}`)
 }
 </script>

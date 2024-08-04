@@ -4,9 +4,9 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p>
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/study-ue`">COURS</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/study-ue`">COURS</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/study-ue`">{{ ue?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/study-ue`">{{ ue?.name }}</router-link>
             /
             <span class="font-semibold">{{ subUE?.name }}</span>
          </p>
@@ -74,6 +74,6 @@ const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
 const topicList = computed(() => listOfTopic.value(props.sub_ue_id))
 
 const selectTopic = (topic) => {
-   router.push(`/home/${props.userid}/study-topic/${props.ue_id}/${props.sub_ue_id}/${topic.id}`)
+   router.push(`/student/study-topic/${props.ue_id}/${props.sub_ue_id}/${topic.id}`)
 }
 </script>

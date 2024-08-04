@@ -4,11 +4,11 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p class="leading-loose">
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/admin-ue`">Unités d'enseignement</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/admin/admin-ue`">Unités d'enseignement</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/admin-sub-ue/${ue_id}`">{{ ue?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/admin/admin-sub-ue/${ue_id}`">{{ ue?.name }}</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/admin-topics/${ue_id}/${sub_ue_id}`">{{ subUE?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/admin/admin-topics/${ue_id}/${sub_ue_id}`">{{ subUE?.name }}</router-link>
             /
             <span class="font-semibold">{{ topic?.name }}</span>
          </p>
@@ -176,7 +176,7 @@ async function updateCourses(e1, e2) {
 }
 
 const selectCourse = (course_id) => {
-   router.push(`/home/${props.userid}/admin-course/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${course_id}`)
+   router.push(`/admin/admin-course/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${course_id}`)
 }
 
 const addCourse = async () => {
@@ -201,7 +201,7 @@ async function updateCards(e1, e2) {
 }
 
 const selectCard = (card_id) => {
-   router.push(`/home/${props.userid}/admin-card/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${card_id}`)
+   router.push(`/admin/admin-card/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${card_id}`)
 }
 
 const addCard = async () => {
@@ -226,7 +226,7 @@ async function updateQuizs(e1, e2) {
 }
 
 const selectQuiz = (quiz_id) => {
-   router.push(`/home/${props.userid}/admin-quiz/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${quiz_id}`)
+   router.push(`/admin/admin-quiz/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${quiz_id}`)
 }
 
 const addQuiz = async () => {
@@ -251,7 +251,7 @@ async function updateCaseStudies(e1, e2) {
 }
 
 const selectCaseStudy = (case_study_id) => {
-   router.push(`/home/${props.userid}/admin-case-study/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${case_study_id}`)
+   router.push(`/admin/admin-case-study/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${case_study_id}`)
 }
 
 const addCaseStudy = async () => {

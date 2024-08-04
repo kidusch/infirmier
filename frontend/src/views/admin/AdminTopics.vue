@@ -4,9 +4,9 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p class="leading-loose">
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/admin-ue`">Unités d'enseignement</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/admin/admin-ue`">Unités d'enseignement</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/admin-sub-ue/${ue_id}`">{{ ue?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/admin/admin-sub-ue/${ue_id}`">{{ ue?.name }}</router-link>
             /
             <span class="font-semibold">{{ subUE?.name }}</span>
          </p>
@@ -115,6 +115,6 @@ const remove = async (topic) => {
    }
 }
 const select = (topicId) => {
-   router.push(`/home/${props.userid}/admin-topic/${props.ue_id}/${props.sub_ue_id}/${topicId}`)
+   router.push(`/admin/admin-topic/${props.ue_id}/${props.sub_ue_id}/${topicId}`)
 }
 </script>

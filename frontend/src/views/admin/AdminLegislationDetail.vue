@@ -4,7 +4,7 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p class="leading-loose">
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/admin-legislation`">Législation</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/admin/admin-legislation`">Législation</router-link>
             /
             <span class="font-semibold">{{ legislation?.title }}</span>
          </p>
@@ -114,6 +114,6 @@ const vPosition = {
 }
 
 const preview = () => {
-   router.push(`/home/${props.userid}/admin-legislation-preview/${props.legislation_id}`)
+   router.push(`/admin/admin-legislation-preview/${props.legislation_id}`)
 }
 </script>

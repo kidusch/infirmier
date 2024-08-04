@@ -4,11 +4,11 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p class="leading-loose">
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-ue`">RÉVISIONS</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/revise-ue`">RÉVISIONS</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-ue`">{{ ue?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/revise-ue`">{{ ue?.name }}</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/revise-sub-ue/${ue_id}/${sub_ue_id}`">{{ subUE?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/revise-sub-ue/${ue_id}/${sub_ue_id}`">{{ subUE?.name }}</router-link>
             /
             <span class="font-semibold">{{ topic?.name }}</span>
          </p>
@@ -153,18 +153,18 @@ const isTheUserCaseStudyWaiting = computed(() => (caseStudyId) => {
 })
 
 const selectCard = (card) => {
-   router.push(`/home/${props.userid}/revise-card/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${card.id}`)
+   router.push(`/student/revise-card/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${card.id}`)
 }
 
 const selectQuiz = (quiz) => {
-   router.push(`/home/${props.userid}/revise-quiz/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${quiz.id}`)
+   router.push(`/student/revise-quiz/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${quiz.id}`)
 }
 
 const selectCaseStudy = (caseStudy) => {
-   router.push(`/home/${props.userid}/revise-case-study/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${caseStudy.id}`)
+   router.push(`/student/revise-case-study/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${caseStudy.id}`)
 }
 
 const gotoStudy = () => {
-   router.push(`/home/${props.userid}/study-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
+   router.push(`/student/study-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
 }
 </script>

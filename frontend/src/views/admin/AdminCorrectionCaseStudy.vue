@@ -4,7 +4,7 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p class="leading-loose">
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/admin-corrections`">Corrections</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/admin/admin-corrections`">Corrections</router-link>
             /
             <span class="font-semibold">{{ student?.name }} - {{ caseStudy?.title }}</span>
          </p>
@@ -126,6 +126,6 @@ const onValidate = async () => {
    } catch(err) {
       alert("Erreur lors de l'envoi de la notification à l'étudiant")
    }
-   await router.push(`/home/${props.userid}/admin-corrections`)
+   await router.push(`/admin/admin-corrections`)
 }
 </script>

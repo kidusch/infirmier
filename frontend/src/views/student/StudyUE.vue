@@ -54,6 +54,7 @@ const props = defineProps({
 })
 
 const select = (ue, subUE) => {
-   router.push(`/home/${props.userid}/study-sub-ue/${ue.id}/${subUE.id}`)
+   // router.push(`/student/study-sub-ue/${ue.id}/${subUE.id}`)
+   router.push(`/student/study-sub-ue/${ue.id}/${subUE.id}`)
 }
 </script>

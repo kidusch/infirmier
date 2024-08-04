@@ -12,7 +12,7 @@
       <main class="flex flex-col gap-6 pb-6">
          
          <div class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
-            <div class="progress-list">
+            <div class="progress-list2">
                <template v-for="document in listOfDocument">
                   <div v-if="!document.hidden" class="progress-item cursor-pointer" @click="selectDocument(document)">
                      <p>
@@ -41,6 +41,6 @@ const props = defineProps({
 })
 
 const selectDocument = (document) => {
-   router.push(`/home/${props.userid}/document/${document.id}`)
+   router.push(`/student/document/${document.id}`)
 }
 </script>

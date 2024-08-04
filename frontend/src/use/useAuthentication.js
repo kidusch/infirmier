@@ -28,19 +28,11 @@ import { resetUseAgenda } from '/src/use/useAgenda'
 import router from '/src/router'
 
 
-// // state backed in SessionStorage
-// const initialState = () => ({
-//    user: null,
-// })
+export function clearCaches() {
+   console.log('clearCaches')
 
-// const authenticationState = useSessionStorage('authentication-state', initialState(), { mergeDefaults: true })
-
-// export const resetUseAuthentication = () => {
-//    authenticationState.value = initialState()
-// }
-
-export function clearSessionStorage() {
-   console.log('clearSessionStorage')
+   sessionStorage.removeItem('userid')
+   
    // resetUseAuthentication()
    resetUseAppState()
    resetUseUser()
@@ -67,7 +59,7 @@ export function clearSessionStorage() {
 }
 
 export const restartApp = async () => {
-   clearSessionStorage()
+   clearCaches()
    try {
       // can fail if connection is broken
       await app.service('auth').logout()
@@ -92,7 +84,7 @@ export async function logout(userId) {
       console.log('err', err)
    }
 
-   clearSessionStorage()
+   clearCaches()
 
    try {
       await app.service('auth').logout()

@@ -4,7 +4,7 @@
       <!-- Header -->
       <header class="chapter-card mt-6 mb-2">
          <p class="leading-loose">
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/admin-messages`">Messagerie</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/admin/admin-messages`">Messagerie</router-link>
             /
             <span class="font-semibold">{{ student?.name }}</span>
          </p>

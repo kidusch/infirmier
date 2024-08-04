@@ -4,11 +4,11 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p class="leading-loose">
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/study-ue`">COURS</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/study-ue`">COURS</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/study-ue`">{{ ue?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/study-ue`">{{ ue?.name }}</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/study-sub-ue/${ue?.id}/${subUE?.id}`">{{ subUE?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/study-sub-ue/${ue?.id}/${subUE?.id}`">{{ subUE?.name }}</router-link>
             /
             <span class="font-semibold">{{ topic?.name }}</span>
          </p>
@@ -88,6 +88,6 @@ const courseList = computed(() => listOfCourse.value(props.topic_id))
 const move = ref(false)
 
 const selectCourse = (course) => {
-   router.push(`/home/${props.userid}/study-course/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${course.id}`)
+   router.push(`/student/study-course/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${course.id}`)
 }
 </script>

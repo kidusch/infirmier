@@ -26,48 +26,6 @@
       </section>
    </div>
 
-   <!-- <div class="w-64 h-64">
-      <a-scene embedded>
-         <a-camera position="0 1.6 3" look-controls wasd-controls></a-camera>
-
-         <a-light type="ambient" color="#888"></a-light>
-         <a-light type="directional" position="-1 2 1" intensity="1"></a-light>
-
-         <a-entity
-            position="0 1.6 0"
-            scale="0.5 0.5 0.5"
-            rotation="0 180 0"
-            gltf-model="#model"
-         ></a-entity>
-
-         <a-assets>
-            <a-asset-item id="model" src="/src/3D/model.dae"></a-asset-item>
-         </a-assets>
-      </a-scene>
-   </div> -->
-
-   <!-- <a-scene>
-      <a-cylinder color="#FFC65D"></a-cylinder>
-   </a-scene> -->
-
-   <!-- <model-collada
-      :backgroundAlpha="0"
-      :rotation="{
-         x: - Math.PI / 2,
-         y: 0,
-         z: 0,
-      }"
-      src="/model.dae"
-   /> -->
-
-
-   <vue3dLoader
-      height="200"
-      filePath="/src/3D/model.dae"
-      fffilePath="https://ftp.jcbuisson.dev/3d-models/chair.dae"
-   ></vue3dLoader>
-
-
    <!-- computing... modal spinner-->
    <div class="fixed inset-0 flex items-center justify-center" v-if="perc > 0">
       <div class="fixed inset-0 bg-black opacity-50"></div>
@@ -84,9 +42,6 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-
-import 'aframe'
-// import { ModelCollada } from 'vue-3d-model'
 
 import { getUEList } from '/src/use/useUE'
 import { subUEState } from '/src/use/useSubUE'
@@ -366,6 +321,7 @@ onMounted(async () => {
 })
 
 const onClick = () => {
-   router.push(`/home/${props.userid}/study-ue`)
+   // router.push(`/student/study-ue`)
+   router.push(`/student/study-ue`)
 }
 </script>

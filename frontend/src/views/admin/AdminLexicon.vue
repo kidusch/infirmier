@@ -76,6 +76,6 @@ const remove = async (lexicon) => {
 }
 
 const select = (id) => {
-   router.push(`/home/${props.userid}/admin-lexicon/${id}`)
+   router.push(`/admin/admin-lexicon/${id}`)
 }
 </script>

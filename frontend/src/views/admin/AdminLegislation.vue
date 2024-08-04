@@ -83,6 +83,6 @@ const remove = async (legislation) => {
 }
 
 const select = (id) => {
-   router.push(`/home/${props.userid}/admin-legislation/${id}`)
+   router.push(`/admin/admin-legislation/${id}`)
 }
 </script>

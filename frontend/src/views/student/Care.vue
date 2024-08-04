@@ -12,7 +12,7 @@
       <main class="flex flex-col gap-6 pb-6">
          
          <div class="bg-accent p-5 gap-3 flex flex-col rounded-3xl">
-            <div class="progress-list">
+            <div class="progress-list2">
                <template v-for="care in listOfCare">
                   <div v-if="!care.hidden" class="progress-item cursor-pointer" @click="selectCare(care)">
                      <p>
@@ -41,6 +41,6 @@ const props = defineProps({
 })
 
 const selectCare = (care) => {
-   router.push(`/home/${props.userid}/care/${care.id}`)
+   router.push(`/student/care/${care.id}`)
 }
 </script>

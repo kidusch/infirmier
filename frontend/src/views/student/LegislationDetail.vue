@@ -4,7 +4,7 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p>
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/legislation`">LÉGISLATION</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/legislation`">LÉGISLATION</router-link>
             /
             <span class="font-semibold">{{ legislation?.title }}</span>
          </p>

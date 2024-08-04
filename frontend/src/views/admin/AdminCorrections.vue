@@ -77,7 +77,7 @@ const props = defineProps({
 // })
 
 const selectUserCaseStudy = (userCaseStudy) => {
-   router.push(`/home/${props.userid}/admin-correction-case-study/${userCaseStudy.user_id}/${userCaseStudy.case_study_id}`)
+   router.push(`/admin/admin-correction-case-study/${userCaseStudy.user_id}/${userCaseStudy.case_study_id}`)
 }
 
 const isPremiumUser = (userCaseStudy) => {
@@ -93,7 +93,7 @@ const isPremiumUser = (userCaseStudy) => {
 // })
 
 const selectUserQuiz = (userQuiz) => {
-   router.push(`/home/${props.userid}/admin-correction-quiz/${userQuiz.user_id}/${userQuiz.quiz_id}`)
+   router.push(`/admin/admin-correction-quiz/${userQuiz.user_id}/${userQuiz.quiz_id}`)
 }
 
 </script>

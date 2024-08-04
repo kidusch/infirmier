@@ -4,13 +4,13 @@
       <!-- Header -->
       <header class="chapter-card my-6">
          <p class="leading-loose">
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/study-ue`">COURS</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/study-ue`">COURS</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/study-ue`">{{ ue?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/study-ue`">{{ ue?.name }}</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/study-sub-ue/${ue?.id}/${subUE?.id}`">{{ subUE?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/study-sub-ue/${ue?.id}/${subUE?.id}`">{{ subUE?.name }}</router-link>
             /
-            <router-link class="cursor-pointer hover:underline" :to="`/home/${userid}/study-topic/${ue?.id}/${subUE?.id}/${topic?.id}`">{{ topic?.name }}</router-link>
+            <router-link class="cursor-pointer hover:underline" :to="`/student/study-topic/${ue?.id}/${subUE?.id}/${topic?.id}`">{{ topic?.name }}</router-link>
             /
             <span class="font-semibold">{{ course?.title }}</span>
          </p>
@@ -158,7 +158,7 @@ const onDoneClick = async (prevValue) => {
 }
 
 const gotoRevise = () => {
-   router.push(`/home/${props.userid}/revise-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
+   router.push(`/student/revise-topic/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}`)
 }
 
 const darkOverlay = ref(null)
