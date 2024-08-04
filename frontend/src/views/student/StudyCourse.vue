@@ -179,7 +179,7 @@ function closeNoteModal() {
 
 // handle note editing
 const localNote = ref()
-const note = computed(() => localNote.value || userCourse.value.note)
+const note = computed(() => localNote.value || userCourse.value?.note)
 app.service('user_course').on('update', userCourse => {
    localNote.value = userCourse.note
 })

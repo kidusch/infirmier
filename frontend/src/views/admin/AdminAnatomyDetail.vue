@@ -26,20 +26,17 @@
          </div>
          
          <div>
-            <button class="primary-btn px-8" @click="open">Chargez un fichier SVG...</button>
+            <button class="primary-btn px-8" @click="open">Charger un modèle 3D...</button>
          </div>
 
-         <div v-for="path, index in featuredPaths">
-            <PathItem
-               :index="index" :list="featuredPaths"
-               @update="updatePaths"
-               @edit="(text) => editPathTitle(path, text)"
-               @remove="removePath(path)"
-               @select="select(path)"
-            ></PathItem>
-         </div>
+         <vue3dLoader
+            v-if="url"
+            :height="500"
+            :filePath="url"
+            crossOrigin="anonymous"
+            :backgroundColor="0xff00ff"
+         ></vue3dLoader>
 
-         <div ref="svg" v-html="anatomy.content" class="w-full"></div>
       </main>
    </main>
 </template>
@@ -47,11 +44,12 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useFileDialog } from '@vueuse/core'
+import { get, set } from 'idb-keyval'
 
 import { readFileAsyncAsArrayBuffer } from '/src/lib/utilities.mjs'
 import { anatomyOfId, updateAnatomy } from '/src/use/useAnatomy'
 
-import PathItem from '/src/components/PathItem.vue'
+import { app } from '/src/client-app.js'
 
 
 const props = defineProps({
@@ -67,97 +65,55 @@ const props = defineProps({
 
 const anatomy = computed(() => anatomyOfId.value(props.anatomy_id))
 
-
 const { open, onChange } = useFileDialog({
-  accept: 'image/svg+xml',
-  directory: false,
+   accept: '*',
+//    accept: 'application/x-fbx, model/vnd.collada+xml, model/gltf+json, model/gltf-binary, model/stl, application/sla, application/x-tgif, text/plain, application/x-obj',
+   directory: false,
 })
+
+const fileProgress = ref(0)
+const fileUploading = ref(0)
+const url = ref()
 
 onChange(async (files) => {
    const file = files[0]
+   console.log('file', file)
    const arrayBuffer = await readFileAsyncAsArrayBuffer(file)
-   const decoder = new TextDecoder('utf-8')
-   const utf8Svg = decoder.decode(arrayBuffer)
+   let transmittedCount = 0
+   fileProgress.value = 0
+   fileUploading.value = true
+   // const CHUNKSIZE = 1048576 // 1M
+   const CHUNKSIZE = 2048
+   try {
+      for (let offset = 0; offset < arrayBuffer.byteLength; offset += CHUNKSIZE) {
+         // the last slice is usually smaller than `CHUNKSIZE`
+         const arrayBufferSlice = arrayBuffer.slice(offset, offset + CHUNKSIZE)
+         const {error} = await app.service('file-upload').appendToFile({
+            dirKey: 'UPLOADS_DIR',
+            filePath: file.name,
+            arrayBuffer: arrayBufferSlice,
+         })
+         if (error) throw(error)
 
-   await updateAnatomy(props.anatomy_id, { content: utf8Svg })
-   featuredPaths.value = []
-})
-
-const svg = ref(null)
-const featuredPaths = ref([])
-
-function updateSelectedPaths() {
-   const result = []
-   for (const path of svg.value.querySelectorAll('path, ellipse, circle, rect')) {
-      if (!path.dataset.rank) continue
-      result.push(path)
-   }
-   featuredPaths.value = result.sort((path1, path2) => path1.dataset.rank - path2.dataset.rank)
-}
-
-const highestRank = computed(() => featuredPaths.value.reduce((accu, path) => Math.max(accu, path.dataset.rank), 0))
-
-// mouseenter/mouseleave au lieu de mouseover/mouseout
-// target / relatedTarget
-function mouseoverListener(event) {
-   if (event.target.tagName?.toLowerCase() === 'path') {
-      event.target.style.opacity = 0.33
-      highlightPath(event.target)
-   }
-}
-
-function mouseoutListener(event) {
-   if (event.target.tagName?.toLowerCase() === 'path') {
-      event.target.style.opacity = 1
-   }
-}
-
-async function clickListener(event) {
-   if (event.target.tagName?.toLowerCase() === 'path') {
-      console.log('click')
-      if (window.confirm("Ajouter un élément ?")) {
-         if (!event.target.dataset.rank) {
-            event.target.dataset.rank = highestRank.value + 1
-            event.target.style.opacity = 1
-
-            await updateAnatomy(props.anatomy_id, { content: svg.value.innerHTML })
-            updateSelectedPaths()
-         }
+         transmittedCount += arrayBufferSlice.byteLength
+         fileProgress.value = Math.round(transmittedCount * 100 / arrayBuffer.byteLength)
       }
-   }
-}
 
-onMounted(() => {
-   svg.value.addEventListener('mouseover', mouseoverListener)
-   svg.value.addEventListener('mouseout', mouseoutListener)
-   svg.value.addEventListener('click', clickListener)
-   updateSelectedPaths()
+      // store in Indexedb
+      // await set(anatomy.value.id, arrayBuffer)
+
+      const blob = new Blob([arrayBuffer], { type: 'application/octet-stream' })
+      // Create a URL pointing to the Blob
+      url.value = URL.createObjectURL(blob)
+      console.log('url', url.value)
+
+   } catch(err) {
+      console.log('err', err)
+   } finally {
+      fileProgress.value = undefined
+      fileUploading.value = false
+   }
+
 })
 
-function highlightPath(path) {
-   path.style.opacity = 0.33
-   setTimeout(() => path.style.opacity = 1, 1000)
-}
-
-const select = (path) => {
-   highlightPath(path)
-}
-
-const editPathTitle = async (path, text) => {
-   path.dataset.name = text
-   await updateAnatomy(props.anatomy_id, { content: svg.value.innerHTML })
-   updateSelectedPaths()
-}
-
-const updatePaths = async () => {
-   await updateAnatomy(props.anatomy_id, { content: svg.value.innerHTML })
-   updateSelectedPaths()
-}
-
-const removePath = async (path) => {
-   delete path.dataset.rank
-   delete path.dataset.name
-   await updateAnatomy(props.anatomy_id, { content: svg.value.innerHTML })
-   updateSelectedPaths()
-}
 </script>
