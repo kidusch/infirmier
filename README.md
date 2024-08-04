@@ -120,4 +120,8 @@ Le innerHTML correspondant est stocké dans la BD et contient toute l'informatio
 
 https://vue-3d-model.netlify.app/en/guide/installation/
 
+https://threejs.org/examples/webgl_loader_fbx.html
+
+
+
 
