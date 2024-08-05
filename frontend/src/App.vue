@@ -6,10 +6,10 @@
 
    <router-view></router-view>
 
-   <!-- <Spinner v-if="appState?.isWaiting"></Spinner> -->
-   <div v-if="appState?.isWaiting" class="fixed top-10 right-0 m-4 p-4 bg-green-100 border-solid rounded z-10">
+   <Spinner v-if="appState?.isWaiting"></Spinner>
+   <!-- <div v-if="appState?.isWaiting" class="fixed top-10 right-0 m-4 p-4 bg-green-100 border-solid rounded z-10">
       Waiting...
-   </div>
+   </div> -->
 
 </template>
 

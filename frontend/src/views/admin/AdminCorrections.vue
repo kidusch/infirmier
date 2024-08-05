@@ -20,7 +20,7 @@
                   <div class="flex items-center justify-start gap-3">
                      <div>
                         <div class="">{{ userOfId(userCaseStudy.user_id).name }} - Étude de cas</div>
-                        <div class="text-sm text-blue-300">{{ isPremiumUser ? "Abonné - " : "" }} {{ formattedDatetime(userCaseStudy.custom_correction_date) }}</div>
+                        <div class="text-sm text-blue-300">{{ isPremiumUser(userCaseStudy.user_id) ? "Abonné - " : "" }} {{ formattedDatetime(userCaseStudy.custom_correction_date) }}</div>
                      </div>
                   </div>
                   <img class="h-4 cursor-pointer" src="/src/assets/thick-arrow-right.svg" @click="selectUserCaseStudy(userCaseStudy)">
@@ -33,7 +33,7 @@
                   <div class="flex items-center justify-start gap-3">
                      <div>
                         <div class="">{{ userOfId(userQuiz.user_id).name }} - Quiz</div>
-                        <div class="text-sm text-blue-300">{{ isPremiumUser ? "Abonné - " : "" }} {{ formattedDatetime(userQuiz.custom_correction_date) }}</div>
+                        <div class="text-sm text-blue-300">{{ isPremiumUser(userQuiz.user_id) ? "Abonné - " : "" }} {{ formattedDatetime(userQuiz.custom_correction_date) }}</div>
                      </div>
                   </div>
                   <img class="h-4 cursor-pointer" src="/src/assets/thick-arrow-right.svg" @click="selectUserQuiz(userQuiz)">
@@ -80,9 +80,9 @@ const selectUserCaseStudy = (userCaseStudy) => {
    router.push(`/admin/admin-correction-case-study/${userCaseStudy.user_id}/${userCaseStudy.case_study_id}`)
 }
 
-const isPremiumUser = (userCaseStudy) => {
-   const user = userOfId.value(userCaseStudy.user_id)
-   return (user?.premium)
+const isPremiumUser = (user_id) => {
+   const user = userOfId.value(user_id)
+   return (user.value?.premium)
 }
 
 // const listOfUncorrectedUserQuizForPremium = computed(() => {

@@ -9,7 +9,7 @@
    <div class="form-control mt-2">
       <div class="relative">
          <textarea class="h-20 textarea-bordered w-full pr-16 leading-5" v-model="messageText" placeholder="Tapez votre message..."></textarea> 
-         <button class="absolute top-0 right-0 rounded-l-none primary-btn h-20" :disabled="!messageText"
+         <button class="absolute top-0 right-0 rounded-l-none primary-btn h-20 w-16" :disabled="!messageText"
                @click="sendMessage">
             Envoyer
          </button>
