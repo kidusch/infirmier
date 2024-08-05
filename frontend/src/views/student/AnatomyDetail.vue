@@ -16,15 +16,15 @@
          filePath="https://ftp.jcbuisson.dev/3d-models/helmet.fbx"
       ></vue3dLoader> -->
 
-      <!-- <vue3dLoader
-         height="500"
-         :filePath="`/static/uploads/${anatomy?.content}`"
-      ></vue3dLoader> -->
-
       <vue3dLoader
          height="500"
-         filePath="/static/uploads/helmet.fbx"
+         :filePath="`/static/uploads/${anatomy?.content}`"
       ></vue3dLoader>
+
+      <!-- <vue3dLoader
+         height="500"
+         filePath="/static/uploads/helmet.fbx"
+      ></vue3dLoader> -->
 
       <div ref="target"></div>
 
