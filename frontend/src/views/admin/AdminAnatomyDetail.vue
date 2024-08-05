@@ -68,7 +68,7 @@ import { useFileDialog } from '@vueuse/core'
 import { get, set } from 'idb-keyval'
 
 import { readFileAsyncAsArrayBuffer } from '/src/lib/utilities.mjs'
-import { anatomyOfId, updateAnatomy } from '/src/use/useAnatomy'
+import { anatomyOfId, getAnatomy, updateAnatomy } from '/src/use/useAnatomy'
 import { appState } from '/src/use/useAppState'
 import { timeout } from '/src/lib/utilities'
 import { loadFBXFromArrayBuffer } from '/src/lib/3D'
@@ -98,17 +98,17 @@ const { open, onChange } = useFileDialog({
 onChange(async (files) => {
    const file = files[0]
    console.log('file', file)
+   const filePath = file.name
    const arrayBuffer = await readFileAsyncAsArrayBuffer(file)
    let transmittedCount = 0
    const CHUNKSIZE = 32768
    try {
-      
       for (let offset = 0; offset < arrayBuffer.byteLength; offset += CHUNKSIZE) {
          // the last slice is usually smaller than `CHUNKSIZE`
          const arrayBufferSlice = arrayBuffer.slice(offset, offset + CHUNKSIZE)
          const {error} = await app.service('file-upload').appendToFile({
             dirKey: 'UPLOADS_DIR',
-            filePath: file.name,
+            filePath,
             arrayBuffer: arrayBufferSlice,
          })
          if (error) throw(error)
@@ -118,64 +118,23 @@ onChange(async (files) => {
          appState.value.spinnerWaitingText = [ "Uploading...", Math.round(transmittedCount * 100 / arrayBuffer.byteLength) + " %" ]
       }
 
-      // store in Indexedb
-      // await set(anatomy.value.id, arrayBuffer)
+      // store in Indexedb under the key `filePath` (they need to be all different)
+      await set(filePath, arrayBuffer)
 
-      const blob = new Blob([arrayBuffer], { type: 'application/octet-stream' })
-      const loader = new FBXLoader()
-      const reader = new FileReader()
+      const group = await loadFBXFromArrayBuffer(arrayBuffer)
+      scene.add(group)
 
-      reader.onload = evt => {
-         const result = evt.target?.result
-         if (!result) return
+      group.scale.set(0.1, 0.1, 0.1); // Adjust scale
+      group.position.set(0, 0, 0);    // Adjust position
 
-         const group = loader.parse(result, '')
-         scene.add(group)
-
-         group.scale.set(0.1, 0.1, 0.1); // Adjust scale
-         group.position.set(0, 0, 0);    // Adjust position
-
-         // const boxHelper = new THREE.BoxHelper(group, 0xff0000); // Red bounding box
-         // scene.add(boxHelper);
-      }
-      reader.onprogress = (evt) => console.log('progress')
-      reader.readAsArrayBuffer(blob)
+      await updateAnatomy(props.anatomy_id, { content: filePath })
 
    } catch(err) {
       console.log('err', err)
    } finally {
       appState.value.spinnerWaitingText = null
    }
-
 })
-
-// const loadFBX = async (url) => {
-//    const loader = new FBXLoader()
-//    const reader = new FileReader()
-
-//    const res = await fetch(url)
-//    const blob = await res.blob()
-
-//    reader.onload = evt => {
-//       const result = evt.target?.result
-//       if (!result) return
-
-//       const group = loader.parse(result, '')
-//       scene.add(group)
-
-//       group.scale.set(0.1, 0.1, 0.1); // Adjust scale
-//       group.position.set(0, 0, 0);    // Adjust position
-
-//       // const boxHelper = new THREE.BoxHelper(group, 0xff0000); // Red bounding box
-//       // scene.add(boxHelper);
-//       // console.log('boxHelper', boxHelper)
-//    }
-
-//    reader.onprogress = (evt) => console.log('progress')
-
-//    reader.readAsArrayBuffer(blob)
-// }
-
 
 const target = ref();
 
@@ -188,11 +147,6 @@ const camera = new THREE.PerspectiveCamera(75, WIDTH / HEIGHT, 0.1, 1000);
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(WIDTH, HEIGHT);
-
-// const geometry = new THREE.BoxGeometry(1, 1, 1);
-// const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-// const cube = new THREE.Mesh(geometry, material);
-// scene.add(cube);
 
 // Create an instance of OrbitControls
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -215,18 +169,33 @@ const gridHelper = new THREE.GridHelper(2000, 100);
 scene.add(gridHelper);
 
 
-function animate() {
-  requestAnimationFrame(animate);
 
-//   cube.rotation.x += 0.01;
-//   cube.rotation.y += 0.01;
+function animate() {
+   requestAnimationFrame(animate);
+
    controls.update()
 
    renderer.render(scene, camera);
 }
 
-onMounted(() => {
-  target.value.appendChild(renderer.domElement);
-  animate();
+onMounted(async () => {
+   target.value.appendChild(renderer.domElement)
+
+   const anatomy = await getAnatomy(props.anatomy_id)
+   if (anatomy.content) {
+      const arrayBuffer = await get(anatomy.content)
+      console.log('idb', arrayBuffer)
+      if (arrayBuffer) {
+         appState.value.spinnerWaitingText = [ "Chargement..." ]
+         const group = await loadFBXFromArrayBuffer(arrayBuffer)
+         appState.value.spinnerWaitingText = null
+         scene.add(group)
+
+         group.scale.set(0.1, 0.1, 0.1); // Adjust scale
+         group.position.set(0, 0, 0);    // Adjust position
+      }
+   }
+
+   animate()
 });
 </script>

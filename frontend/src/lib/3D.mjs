@@ -19,25 +19,7 @@ export async function loadFBXFromUri(uri, scene) {
    reader.readAsArrayBuffer(blob)
 }
 
-
 export async function loadFBXFromArrayBuffer(arrayBuffer) {
-   // const loader = new FBXLoader()
-   // const reader = new FileReader()
- 
-   // const res = await fetch('/assets/Idle.fbx')
-   // const blob = await res.blob()
- 
-   // reader.onload = evt => {
-   //   const result = evt.target?.result
-   //   if (!result) return
- 
-   //   const group = loader.parse(result, '')
-   //   this.scene.add(group)
-   // }
- 
-   // reader.readAsArrayBuffer(blob)
-
-
    return new Promise((resolve, reject) => {
 
       const loader = new FBXLoader()
@@ -46,7 +28,7 @@ export async function loadFBXFromArrayBuffer(arrayBuffer) {
       reader.readAsArrayBuffer(blob)
       
       reader.onload = function(e) {
-         const result = evt.target?.result
+         const result = e.target?.result
          if (!result) reject(new Error('Error in loadFBXFromArrayBuffer'))
 
          const group = loader.parse(result, '')
@@ -56,7 +38,5 @@ export async function loadFBXFromArrayBuffer(arrayBuffer) {
       reader.onerror = function(e) {
          reject(new Error('Error in loadFBXFromArrayBuffer'))
       }
-
    })
-
 }

@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { watch } from 'vue'
+import { watch, onMounted } from 'vue'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 
 import { appState } from '/src/use/useAppState'
@@ -41,11 +41,14 @@ watch(() => appState.value?.isExpired, async (value) => {
 
 /////////////////      PREVENT COPY EVERYWHERE     ////////////////
 
-// onMounted(() => {
-//    document.addEventListener('copy', (event) => {
-//       event.preventDefault()
-//    })
-// })
+onMounted(() => {
+   document.addEventListener('copy', (event) => {
+      event.preventDefault()
+   })
+
+   // allows page reload to unlock spinner
+   appState.value.spinnerWaitingText = null
+})
 
 
 /////////////////      AUTOMATIC VERSION UPDATE     ////////////////
