@@ -38,12 +38,12 @@ watch(() => appState.value?.isExpired, async (value) => {
    if (value) restartApp()
 })
 
-// watchdog de 1000s sur le spinner
+// watchdog de 100s sur le spinner
 watch(() => appState.value?.spinnerWaitingText, async (value) => {
    if (value) {
       setTimeout(() => {
          appState.value.spinnerWaitingText = null
-      }, 1000000)
+      }, 100000)
    }
 })
 
