@@ -89,37 +89,37 @@ function animate() {
    renderer.render(scene, camera);
 }
 
-onMounted(async () => {
-   target.value.appendChild(renderer.domElement)
+// onMounted(async () => {
+//    target.value.appendChild(renderer.domElement)
 
-   try {
-      appState.value.spinnerWaitingText = [ "Chargement..." ]
-      const anatomy = await getAnatomy(props.anatomy_id)
-      const filePath = anatomy.content
-      if (filePath) {
-         // try to load fbx model from Indexedb under the key `filePath`
-         let arrayBuffer = await get(filePath)
-         console.log('idb', arrayBuffer)
-         if (!arrayBuffer) {
-            // load fbx model from network
-            const uri = `/static/uploads/${filePath}`
-            arrayBuffer = await readURIAsArrayBuffer(uri)
-            console.log('arrayBuffer', arrayBuffer)
-            // cache arrayBuffer in IndexedDB 
-            set(filePath, arrayBuffer)
-         }
-         // load fbx model from array buffer
-         const group = await loadFBXFromArrayBuffer(arrayBuffer)
-         scene.add(group)
-         group.scale.set(0.1, 0.1, 0.1); // Adjust scale
-         group.position.set(0, 0, 0);    // Adjust position
-      }
-   } catch(err) {
-      console.log(err)
-   } finally {
-      appState.value.spinnerWaitingText = null
-   }
+//    try {
+//       appState.value.spinnerWaitingText = [ "Chargement..." ]
+//       const anatomy = await getAnatomy(props.anatomy_id)
+//       const filePath = anatomy.content
+//       if (filePath) {
+//          // try to load fbx model from Indexedb under the key `filePath`
+//          let arrayBuffer = await get(filePath)
+//          console.log('idb', arrayBuffer)
+//          if (!arrayBuffer) {
+//             // load fbx model from network
+//             const uri = `/static/uploads/${filePath}`
+//             arrayBuffer = await readURIAsArrayBuffer(uri)
+//             console.log('arrayBuffer', arrayBuffer)
+//             // cache arrayBuffer in IndexedDB 
+//             set(filePath, arrayBuffer)
+//          }
+//          // load fbx model from array buffer
+//          const group = await loadFBXFromArrayBuffer(arrayBuffer)
+//          scene.add(group)
+//          group.scale.set(0.1, 0.1, 0.1); // Adjust scale
+//          group.position.set(0, 0, 0);    // Adjust position
+//       }
+//    } catch(err) {
+//       console.log(err)
+//    } finally {
+//       appState.value.spinnerWaitingText = null
+//    }
 
-   animate()
-})
+//    animate()
+// })
 </script>
