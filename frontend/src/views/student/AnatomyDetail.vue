@@ -10,11 +10,11 @@
          </p>
       </header>
 
-      <!-- <vue3dLoader
+      <vue3dLoader
          height="500"
-         filePath="/src/3D/splanchnology.fbx"
-         ffilePath="https://ftp.jcbuisson.dev/3d-models/chair.dae"
-      ></vue3dLoader> -->
+         ffilePath="/src/3D/splanchnology.fbx"
+         filePath="https://ftp.jcbuisson.dev/3d-models/helmet.fbx"
+      ></vue3dLoader>
 
       <div ref="target"></div>
 
