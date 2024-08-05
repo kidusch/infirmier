@@ -89,8 +89,7 @@ const props = defineProps({
 const anatomy = computed(() => anatomyOfId.value(props.anatomy_id))
 
 const { open, onChange } = useFileDialog({
-   accept: 'application/x-fbx',
-   // accept: '*',
+   accept: '*',
 //    accept: 'application/x-fbx, model/vnd.collada+xml, model/gltf+json, model/gltf-binary, model/stl, application/sla, application/x-tgif, text/plain, application/x-obj',
    directory: false,
 })
