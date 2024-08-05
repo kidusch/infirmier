@@ -71,6 +71,7 @@ import { readFileAsyncAsArrayBuffer } from '/src/lib/utilities.mjs'
 import { anatomyOfId, updateAnatomy } from '/src/use/useAnatomy'
 import { appState } from '/src/use/useAppState'
 import { timeout } from '/src/lib/utilities'
+import { loadFBXFromArrayBuffer } from '/src/lib/3D'
 
 import { app } from '/src/client-app.js'
 
