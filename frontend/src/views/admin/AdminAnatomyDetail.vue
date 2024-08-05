@@ -43,17 +43,16 @@
             filePath="url || '/src/3D/chair.dae'"
          ></vue3dLoader> -->
 
-         <!-- <vue3dLoader
+         <div ref="target"></div>
+
+         <vue3dLoader
             width="200"
             height="200"
             :scale="{x: 0.9, y: 0.9, z: 0.9}"
             fffilePath="/src/3D/chair.dae"
             filePath="https://ftp.jcbuisson.dev/3d-models/helmet.fbx"
             backgroundColor="#eee"
-         ></vue3dLoader> -->
-
-
-         <div ref="target"></div>
+         ></vue3dLoader>
 
       </main>
    </main>
