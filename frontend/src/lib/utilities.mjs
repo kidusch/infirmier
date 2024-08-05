@@ -140,8 +140,28 @@ export function readFileAsyncAsArrayBuffer(file) {
 
       reader.onerror = function(e) {
          reject(new Error('Error reading file'))
-      };
+      }
 
       reader.readAsArrayBuffer(file)
+   })
+}
+
+export function readURIAsArrayBuffer(uri) {
+   return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+
+      fetch(uri)
+      .then(res => res.blob())
+      .then(blob => {
+         reader.readAsArrayBuffer(blob)
+      })
+
+      reader.onload = function(e) {
+         resolve(e.target.result)
+      }
+
+      reader.onerror = function(e) {
+         reject(new Error('Error reading file'))
+      }
    })
 }

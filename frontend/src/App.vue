@@ -24,7 +24,7 @@
 import { watch, onMounted } from 'vue'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 
-import { appState } from '/src/use/useAppState'
+import { appState, resetUseAppState } from '/src/use/useAppState'
 import { restartApp } from '/src/use/useAuthentication'
 
 import Spinner from '/src/components/Spinner.vue'
@@ -38,6 +38,15 @@ watch(() => appState.value?.isExpired, async (value) => {
    if (value) restartApp()
 })
 
+// watchdog de 1000s sur le spinner
+watch(() => appState.value?.spinnerWaitingText, async (value) => {
+   if (value) {
+      setTimeout(() => {
+         appState.value.spinnerWaitingText = null
+      }, 1000000)
+   }
+})
+
 
 /////////////////      PREVENT COPY EVERYWHERE     ////////////////
 
@@ -47,7 +56,7 @@ onMounted(() => {
    })
 
    // allows page reload to unlock spinner
-   appState.value.spinnerWaitingText = null
+   resetUseAppState()
 })
 
 

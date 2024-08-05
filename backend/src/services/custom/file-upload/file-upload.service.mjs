@@ -31,6 +31,26 @@ export default function (app) {
                error: err.toString(),
             }
          }
+      },
+
+      async resetFile(data) {
+         try {
+            const baseDir = config[data.dirKey]
+            const filePath = data.filePath
+            const uploadPath = path.join(baseDir, filePath)
+            console.log("uploadPath", uploadPath)
+            sync(path.dirname(uploadPath))
+            await fs.promises.writeFile(uploadPath, '')
+
+            return {
+               error: null,
+            }
+         } catch(err) {
+            console.log(err)
+            return {
+               error: err.toString(),
+            }
+         }
       }
    })
 }

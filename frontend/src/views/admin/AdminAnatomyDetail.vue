@@ -61,7 +61,6 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import * as THREE from 'three'
-import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 import { useFileDialog } from '@vueuse/core'
@@ -102,6 +101,10 @@ onChange(async (files) => {
    const arrayBuffer = await readFileAsyncAsArrayBuffer(file)
    let transmittedCount = 0
    const CHUNKSIZE = 32768
+   await app.service('file-upload').resetFile({
+      dirKey: 'UPLOADS_DIR',
+      filePath,
+   })
    try {
       for (let offset = 0; offset < arrayBuffer.byteLength; offset += CHUNKSIZE) {
          // the last slice is usually smaller than `CHUNKSIZE`
@@ -197,5 +200,5 @@ onMounted(async () => {
    }
 
    animate()
-});
+})
 </script>
