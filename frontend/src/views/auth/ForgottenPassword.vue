@@ -56,7 +56,7 @@ const validate = async () => {
       return
    }
    try {
-      appState.value.isWaiting = true
+      appState.value.spinnerWaitingText = [ "Envoi..." ]
       await app.service('auth', { timeout: 60000 }).forgottenPassword(email.value)
       alert("Merci. Un email de confirmation vient de vous être envoyé.")
       // go home
@@ -65,7 +65,7 @@ const validate = async () => {
       console.log('err', err)
       alert("Une erreur s'est produite lors de l'envoi de l'email de confirmation")
    } finally {
-      appState.value.isWaiting = false
+      appState.value.spinnerWaitingText = null
    }
 }
 </script>

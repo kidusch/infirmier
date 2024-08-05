@@ -43,16 +43,16 @@
             filePath="url || '/src/3D/chair.dae'"
          ></vue3dLoader> -->
 
-         <div ref="target"></div>
-
-         <vue3dLoader
+         <!-- <vue3dLoader
             width="200"
             height="200"
             :scale="{x: 0.9, y: 0.9, z: 0.9}"
             fffilePath="/src/3D/chair.dae"
             filePath="https://ftp.jcbuisson.dev/3d-models/helmet.fbx"
             backgroundColor="#eee"
-         ></vue3dLoader>
+         ></vue3dLoader> -->
+
+         <div ref="target"></div>
 
       </main>
    </main>
@@ -70,6 +70,7 @@ import { get, set } from 'idb-keyval'
 import { readFileAsyncAsArrayBuffer } from '/src/lib/utilities.mjs'
 import { anatomyOfId, updateAnatomy } from '/src/use/useAnatomy'
 import { appState } from '/src/use/useAppState'
+import { timeout } from '/src/lib/utilities'
 
 import { app } from '/src/client-app.js'
 
@@ -93,21 +94,14 @@ const { open, onChange } = useFileDialog({
    directory: false,
 })
 
-const fileProgress = ref(0)
-const fileUploading = ref(0)
-const url = ref('')
-
 onChange(async (files) => {
    const file = files[0]
    console.log('file', file)
    const arrayBuffer = await readFileAsyncAsArrayBuffer(file)
    let transmittedCount = 0
-   fileProgress.value = 0
-   fileUploading.value = true
-   // const CHUNKSIZE = 1048576 // 1M
-   const CHUNKSIZE = 2048
+   const CHUNKSIZE = 32768
    try {
-      appState.value.isWaiting = true
+      
       for (let offset = 0; offset < arrayBuffer.byteLength; offset += CHUNKSIZE) {
          // the last slice is usually smaller than `CHUNKSIZE`
          const arrayBufferSlice = arrayBuffer.slice(offset, offset + CHUNKSIZE)
@@ -119,7 +113,8 @@ onChange(async (files) => {
          if (error) throw(error)
 
          transmittedCount += arrayBufferSlice.byteLength
-         fileProgress.value = Math.round(transmittedCount * 100 / arrayBuffer.byteLength)
+         // await timeout(10) // ??? nécessaire pour que le spinner soit visible
+         appState.value.spinnerWaitingText = [ "Uploading...", Math.round(transmittedCount * 100 / arrayBuffer.byteLength) + " %" ]
       }
 
       // store in Indexedb
@@ -141,7 +136,6 @@ onChange(async (files) => {
 
          // const boxHelper = new THREE.BoxHelper(group, 0xff0000); // Red bounding box
          // scene.add(boxHelper);
-         // console.log('boxHelper', boxHelper)
       }
       reader.onprogress = (evt) => console.log('progress')
       reader.readAsArrayBuffer(blob)
@@ -149,9 +143,7 @@ onChange(async (files) => {
    } catch(err) {
       console.log('err', err)
    } finally {
-      appState.value.isWaiting = false
-      fileProgress.value = undefined
-      fileUploading.value = false
+      appState.value.spinnerWaitingText = null
    }
 
 })

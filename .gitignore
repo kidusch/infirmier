@@ -5,4 +5,4 @@ package-lock.json
 dist/
 logs/
 3D/
-static/uploads
+uploads/

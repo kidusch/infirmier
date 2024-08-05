@@ -1,7 +1,9 @@
 <template>
-<div class="fixed top-0 left-0 w-full h-full bg-black opacity-50 z-50 flex justify-center items-center">
-   <div class="flex justify-center items-center">
-      <div class="animate-spin rounded-full h-64 w-64 border-t-4 border-b-4 border-gray-200"></div>
+   <div class="fixed inset-0 flex items-center justify-center">
+      <div class="fixed inset-0 bg-black opacity-50"></div>
+      <div class="w-96 h-96 border-t-8 border-white border-solid rounded-full mx-auto animate-spin"></div>
+      <div class="absolute inset-0 flex items-center justify-center">
+         <slot></slot>
+      </div>
    </div>
-</div>
 </template>

@@ -69,6 +69,6 @@ const login = () => {
 }
 
 const spinner = () => {
-   appState.value.isWaiting = true
+   appState.value.spinnerWaitingText = [ "Chargement..." ]
 }
 </script>

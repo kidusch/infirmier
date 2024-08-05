@@ -6,8 +6,15 @@
 
    <router-view></router-view>
 
-   <Spinner v-if="appState?.isWaiting"></Spinner>
-   <!-- <div v-if="appState?.isWaiting" class="fixed top-10 right-0 m-4 p-4 bg-green-100 border-solid rounded z-10">
+   <Spinner v-if="appState?.spinnerWaitingText">
+      <div>
+         <template v-for="line in appState.spinnerWaitingText">
+            <div class="text-center font-bold text-white text-2xl">{{ line }}</div>
+         </template>
+      </div>
+   </Spinner>
+
+   <!-- <div v-if="appState?.spinnerWaitingText" class="fixed top-10 right-0 m-4 p-4 bg-green-100 border-solid rounded z-10">
       Waiting...
    </div> -->
 

@@ -309,7 +309,7 @@ model anatomy {
   id           Int      @id @default(autoincrement())
   created_at   DateTime @default(now()) @db.Timestamptz(6)
   name         String
-  content      String?  // svg content, with 'data-' attributes
+  content      String?  // 3d-model file path // (svg content, with 'data-' attributes)
   rank         Int
   hidden       Boolean  @default(false)
 }

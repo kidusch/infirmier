@@ -96,6 +96,6 @@ const goSignup = () => {
 }
 
 const spinner = () => {
-   appState.value.isWaiting = true
+   appState.value.spinnerWaitingText = [ "Chargement..." ]
 }
 </script>

@@ -6,7 +6,7 @@ import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 const initialState = () => ({
    isExpired: false,
    unrecoverableError: false,
-   isWaiting: false,
+   spinnerWaitingText: null,
 })
 
 // export const appState = useSessionStorage('app-state', initialState(), { mergeDefaults: true })

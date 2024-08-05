@@ -26,18 +26,6 @@
       </section>
    </div>
 
-   <!-- computing... modal spinner-->
-   <div class="fixed inset-0 flex items-center justify-center" v-if="perc > 0">
-      <div class="fixed inset-0 bg-black opacity-50"></div>
-      <div class="w-96 h-96 border-t-8 border-white border-solid rounded-full mx-auto animate-spin"></div>
-      <div class="absolute inset-0 flex items-center justify-center">
-         <div>
-            <div class="text-center font-bold text-white text-2xl">Préchargement...</div>
-            <div class="text-center font-bold text-white text-3xl mt-4">{{ perc }} %</div>
-         </div>
-      </div>
-   </div>
-
 </template>
 
 <script setup>
@@ -54,6 +42,7 @@ import { userCourseState } from '/src/use/useUserCourse'
 import { userCardState } from '/src/use/useUserCard'
 import { userQuizState } from '/src/use/useUserQuiz'
 import { userCaseStudyState } from '/src/use/useUserCaseStudy'
+import { appState } from '/src/use/useAppState'
 
 import router from '/src/router'
 import { app } from '/src/client-app.js'
@@ -66,14 +55,12 @@ const props = defineProps({
    },
 })
 
-const perc = ref(0)
-
 onMounted(async () => {
    // preload ues, topics, courses, etc. by batches to prevent hundreds of small backend requests
    const BATCHSIZE = 20
    try {
       const ueList = await getUEList()
-      perc.value = 10
+      appState.value.spinnerWaitingText = [ "Chargement...", "10%" ]
 
       const subUEList = await app.service('sub_ue').findMany({})
       for (const subUE of subUEList) {
@@ -83,7 +70,7 @@ onMounted(async () => {
       for (const ue of ueList) {
          subUEState.value.subUEListStatus[ue.id] = 'ready'
       }
-      perc.value = 20
+      appState.value.spinnerWaitingText = [ "Chargement...", "20%" ]
 
       // read topic by batches
       let hasMoreTopîc = true
@@ -108,7 +95,7 @@ onMounted(async () => {
             topicCursor = topicList[topicList.length - 1].id
          }
       }
-      perc.value = 30
+      appState.value.spinnerWaitingText = [ "Chargement...", "30%" ]
 
       // collect all topics
       const topicList = Object.values(topicState.value.topicCache)
@@ -137,7 +124,7 @@ onMounted(async () => {
       for (const topic of topicList) {
          courseState.value.courseListStatus[topic.id] = 'ready'
       }
-      perc.value = 40
+      appState.value.spinnerWaitingText = [ "Chargement...", "40%" ]
 
       // read card by batches
       let hasMoreCard = true
@@ -162,7 +149,7 @@ onMounted(async () => {
             cardCursor = cardList[cardList.length - 1].id
          }
       }
-      perc.value = 50
+      appState.value.spinnerWaitingText = [ "Chargement...", "50%" ]
 
       // read quiz by batches
       let hasMoreQuiz = true
@@ -189,7 +176,7 @@ onMounted(async () => {
       for (const topic of topicList) {
          quizState.value.quizListStatus[topic.id] = 'ready'
       }
-      perc.value = 60
+      appState.value.spinnerWaitingText = [ "Chargement...", "60%" ]
 
       // read case_study by batches
       let hasMoreCaseStudy = true
@@ -215,7 +202,7 @@ onMounted(async () => {
             caseStudyCursor = caseStudyList[caseStudyList.length - 1].id
          }
       }
-      perc.value = 70
+      appState.value.spinnerWaitingText = [ "Chargement...", "70%" ]
 
       // read user_course by batches
       let hasMoreUserCourse = true
@@ -239,7 +226,7 @@ onMounted(async () => {
             userCourseCursor = userCourseList[userCourseList.length - 1].id
          }
       }
-      perc.value = 80
+      appState.value.spinnerWaitingText = [ "Chargement...", "80%" ]
 
       // read user_card by batches
       let hasMoreUserCard = true
@@ -263,7 +250,7 @@ onMounted(async () => {
             userCardCursor = userCardList[userCardList.length - 1].id
          }
       }
-      perc.value = 90
+      appState.value.spinnerWaitingText = [ "Chargement...", "90%" ]
 
       // read user_quiz by batches
       let hasMoreUserQuiz = true
@@ -287,7 +274,7 @@ onMounted(async () => {
             userQuizCursor = userQuizList[userQuizList.length - 1].id
          }
       }
-      perc.value = 95
+      appState.value.spinnerWaitingText = [ "Chargement...", "95%" ]
 
       // read user_case_study by batches
       let hasMoreUserCaseStudy = true
@@ -311,12 +298,11 @@ onMounted(async () => {
             userCaseStudyCursor = userCaseStudyList[userCaseStudyList.length - 1].id
          }
       }
-      perc.value = 100
 
    } catch(err) {
       console.log('err', err)
    } finally {
-      perc.value = 0
+      appState.value.spinnerWaitingText = null
    }
 })
 

@@ -623,7 +623,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
    console.log('from', from.path, 'to', to.path)
-   if (appState.value) appState.value.isWaiting = false
+   if (appState.value) appState.value.spinnerWaitingText = null
 
    if (to.meta.requiresAuth) {
       try {

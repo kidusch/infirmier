@@ -83,7 +83,7 @@ const validate = async () => {
       return
    }
    try {
-      appState.value.isWaiting = true
+      appState.value.spinnerWaitingText = [ "Envoi..." ]
       await app.service('auth', { timeout: 60000 }).localSignup(email.value, name.value)
       alert("Merci ! Regardez dans votre boite mail, un message de confirmation vient de vous être envoyé")
    } catch(err) {
@@ -93,7 +93,7 @@ const validate = async () => {
          alert("Une erreur s'est produite lors de l'envoi de l'email de confirmation")
       }
    } finally {
-      appState.value.isWaiting = false
+      appState.value.spinnerWaitingText = null
    }
 }
 
