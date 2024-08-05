@@ -10,10 +10,15 @@
          </p>
       </header>
 
-      <vue3dLoader
+      <!-- <vue3dLoader
          height="500"
          ffilePath="/src/3D/splanchnology.fbx"
          filePath="https://ftp.jcbuisson.dev/3d-models/helmet.fbx"
+      ></vue3dLoader> -->
+
+      <vue3dLoader
+         height="500"
+         :filePath="`/static/uploads/${anatomy?.content}`"
       ></vue3dLoader>
 
       <div ref="target"></div>
