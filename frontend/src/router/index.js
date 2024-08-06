@@ -25,8 +25,8 @@ const routes = [
       props: true
    },
    {
-      path: '/google-signup-confirm/:userid',
-      component: () => import('/src/views/auth/GoogleSignupConfirm.vue'),
+      path: '/accept-cgu/:userid',
+      component: () => import('/src/views/auth/AcceptCGU.vue'),
       props: true
    },
    {
@@ -79,7 +79,11 @@ const routes = [
             if (user.admin) {
                next('/admin')
             } else {
-               next('/student')
+               if (user.accept_cgu) {
+                  next('/student')
+               } else {
+                  next(`/accept-cgu/${userid}`)
+               }
             }
          } else {
             next('/')

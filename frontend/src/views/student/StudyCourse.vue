@@ -41,7 +41,7 @@
       </main>
 
       <!-- Highlight pens -->
-      <ul class="menu menu-horizontal bg-slate-50 rounded-box fixed right-0 bottom-0">
+      <ul class="menu menu-horizontal bg-slate-50 rounded-box fixed right-0 bottom-16">
          <li>
             <a :class="{ active: highlightColor === '#FFFF66' }" @click="highlightColor = '#FFFF66'">
                <img class="h-6 w-6" src="/src/assets/highlighter-yellow.svg">
@@ -66,7 +66,7 @@
 
 
       <!-- Note button -->
-      <button ref="openNoteBtn" class="p-2 bg-primary rounded-full shadow-primary shadow-md fixed bottom-16 ttttop-[30%] right-2"
+      <button ref="openNoteBtn" class="p-2 bg-primary rounded-full shadow-primary shadow-md fixed bottom-32 right-2"
          @click="openNoteModal">
          <img class="h-6 w-6" alt="note" src="/src/assets/note.svg">
       </button>

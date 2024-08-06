@@ -107,16 +107,13 @@ export default function (app) {
 			})
 			
 			// redirect; this will lead to a connection transfer from cnxid
-			if (isUserCreated) {
-				res.redirect(`/google-signup-confirm/${user.id}`)
-			} else {
-				res.redirect(`/home/${user.id}`)
-				// if (user.admin) {
-				// 	res.redirect(`/home/${user.id}/admin-ue`)
-				// } else {
-				// 	res.redirect(`/home/${user.id}/welcome-student`)
-				// }	
-			}
+			// if (isUserCreated) {
+			// 	res.redirect(`/accept-cgu/${user.id}`)
+			// } else {
+			// 	res.redirect(`/home/${user.id}`)
+			// }
+			res.redirect(`/home/${user.id}`)
+
 		} catch (error) {
 			console.error('Access Token Error', error.message)
 			res.status(500).json('Authentication failed')
