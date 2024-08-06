@@ -97,7 +97,7 @@ import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
 import { caseStudyOfId } from '/src/use/useCaseStudy'
-import { theUserCaseStudy, updateUserCaseStudy } from '/src/use/useUserCaseStudy'
+import { theUserCaseStudy, createUserCaseStudy, updateUserCaseStudy } from '/src/use/useUserCaseStudy'
 
 import router from "/src/router"
 import { app } from '/src/client-app.js'
@@ -134,11 +134,22 @@ const ue = computed(() => ueOfId.value(props.ue_id))
 const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
 const topic = computed(() => topicOfId.value(props.topic_id))
 const caseStudy = computed(() => caseStudyOfId.value(props.case_study_id))
-const userCaseStudy = computed(() => theUserCaseStudy.value(props.userid, props.case_study_id))
+
+// const userCaseStudy = computed(() => theUserCaseStudy.value(props.userid, props.case_study_id))
+
+const userCaseStudy = computed(() => {
+   let userCaseStudy = theUserCaseStudy.value(props.userid, props.case_study_id)
+   if (userCaseStudy === null) {
+      // null value indicates there is no (user_id, case_study_id) in database
+      createUserCaseStudy(props.userid, props.case_study_id)
+      return undefined
+   }
+   return userCaseStudy
+})
 
 // handle answer editing
 const localAnswer = ref()
-const answer = computed(() => localAnswer.value || userCaseStudy.value.answer)
+const answer = computed(() => localAnswer.value || userCaseStudy.value?.answer)
 app.service('user_case_study').on('update', userCaseStudy => {
    localAnswer.value = userCaseStudy.answer
 })

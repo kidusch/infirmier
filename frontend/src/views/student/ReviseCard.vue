@@ -76,7 +76,7 @@ import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
 import { cardOfId } from '/src/use/useCard'
-import { theUserCard, updateUserCard } from '/src/use/useUserCard'
+import { theUserCard, createUserCard, updateUserCard } from '/src/use/useUserCard'
 import router from "/src/router"
 
 
@@ -107,7 +107,18 @@ const ue = computed(() => ueOfId.value(props.ue_id))
 const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
 const topic = computed(() => topicOfId.value(props.topic_id))
 const card = computed(() => cardOfId.value(props.card_id))
-const userCard = computed(() => theUserCard.value(props.userid, props.card_id))
+
+// const userCard = computed(() => theUserCard.value(props.userid, props.card_id))
+
+const userCard = computed(() => {
+   let userCard = theUserCard.value(props.userid, props.card_id)
+   if (userCard === null) {
+      // null value indicates there is no (user_id, card_id) in database
+      createUserCard(props.userid, props.card_id)
+      return undefined
+   }
+   return userCard
+})
 
 const onDoneClick = async (prevValue) => {
    await updateUserCard(userCard.value.id, { done: !prevValue })

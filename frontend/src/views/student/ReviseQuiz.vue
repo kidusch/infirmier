@@ -112,7 +112,7 @@ import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
 import { quizOfId } from '/src/use/useQuiz'
-import { theUserQuiz, updateUserQuiz } from '/src/use/useUserQuiz'
+import { theUserQuiz, createUserQuiz, updateUserQuiz } from '/src/use/useUserQuiz'
 import { listOfQuizChoices } from '/src/use/useQuizChoice'
 import { theUserQuizChoice, updateUserQuizChoice } from '/src/use/useUserQuizChoice'
 
@@ -151,7 +151,19 @@ const ue = computed(() => ueOfId.value(props.ue_id))
 const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
 const topic = computed(() => topicOfId.value(props.topic_id))
 const quiz = computed(() => quizOfId.value(props.quiz_id))
-const userQuiz = computed(() => theUserQuiz.value(props.userid, props.quiz_id))
+
+// const userQuiz = computed(() => theUserQuiz.value(props.userid, props.quiz_id))
+
+const userQuiz = computed(() => {
+   let userQuiz = theUserQuiz.value(props.userid, props.quiz_id)
+   if (userQuiz === null) {
+      // null value indicates there is no (user_id, quiz_id) in database
+      createUserQuiz(props.userid, props.quiz_id)
+      return undefined
+   }
+   return userQuiz
+})
+
 const quizChoiceList = computed(() => listOfQuizChoices.value(props.quiz_id))
 
 const userQuizChoiceAnswer = computed(() => quiz_choice_id => {

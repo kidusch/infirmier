@@ -74,21 +74,21 @@ export const topicReviseProgress = computed(() => (user_id, topic_id) => {
       const userCard = theUserCard.value(user_id, card.id)
       if (userCard === undefined) return -1
       count += 1
-      sum += (userCard.done ? 100 : 0)
+      sum += (userCard?.done ? 100 : 0)
    }
    const quizList = listOfQuiz.value(topic_id)
    for (const quiz of quizList) {
       const userQuiz = theUserQuiz.value(user_id, quiz.id)
       if (userQuiz === undefined) return -1
       count += 1
-      sum += (userQuiz.done ? 100 : 0)
+      sum += (userQuiz?.done ? 100 : 0)
    }
    const caseStudyList = listOfCaseStudy.value(topic_id)
    for (const caseStudy of caseStudyList) {
       const userCaseStudy = theUserCaseStudy.value(user_id, caseStudy.id)
       if (userCaseStudy === undefined) return -1
       count += 1
-      sum += (userCaseStudy.done ? 100 : 0)
+      sum += (userCaseStudy?.done ? 100 : 0)
    }
    return count === 0 ? 0 : Math.round(sum / count)
 })

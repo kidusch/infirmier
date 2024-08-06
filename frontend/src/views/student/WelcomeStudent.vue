@@ -126,6 +126,9 @@ onMounted(async () => {
       }
       appState.value.spinnerWaitingText = [ "Chargement...", "40%" ]
 
+      // collect all courses
+      const courseList = Object.values(courseState.value.courseCache)
+
       // read card by batches
       let hasMoreCard = true
       let cardCursor = null
@@ -150,6 +153,9 @@ onMounted(async () => {
          }
       }
       appState.value.spinnerWaitingText = [ "Chargement...", "50%" ]
+
+      // collect all cards
+      const cardList = Object.values(cardState.value.cardCache)
 
       // read quiz by batches
       let hasMoreQuiz = true
@@ -178,6 +184,9 @@ onMounted(async () => {
       }
       appState.value.spinnerWaitingText = [ "Chargement...", "60%" ]
 
+      // collect all quizzes
+      const quizList = Object.values(quizState.value.quizCache)
+
       // read case_study by batches
       let hasMoreCaseStudy = true
       let caseStudyCursor = null
@@ -204,6 +213,9 @@ onMounted(async () => {
       }
       appState.value.spinnerWaitingText = [ "Chargement...", "70%" ]
 
+      // collect all case studies
+      const caseStudyList = Object.values(caseStudyState.value.caseStudyCache)
+
       // read user_course by batches
       let hasMoreUserCourse = true
       let userCourseCursor = null
@@ -224,6 +236,14 @@ onMounted(async () => {
             hasMoreUserCourse = false
          } else {
             userCourseCursor = userCourseList[userCourseList.length - 1].id
+         }
+      }
+      // set to null in cache (= not user_course for userid,courseid in dartabase) all other user_course for userid
+      for (const course of courseList) {
+         const key = props.userid + ':' + course.id
+         if (userCourseState.value.theUserCourseCache[key] === undefined) {
+            userCourseState.value.theUserCourseCache[key] = null
+            userCourseState.value.theUserCourseStatus[key] = 'ready'
          }
       }
       appState.value.spinnerWaitingText = [ "Chargement...", "80%" ]
@@ -250,6 +270,14 @@ onMounted(async () => {
             userCardCursor = userCardList[userCardList.length - 1].id
          }
       }
+      // set to null in cache (= not user_card for userid, cardid in dartabase) all other user_card for userid
+      for (const card of cardList) {
+         const key = props.userid + ':' + card.id
+         if (userCardState.value.theUserCardCache[key] === undefined) {
+            userCardState.value.theUserCardCache[key] = null
+            userCardState.value.theUserCardStatus[key] = 'ready'
+         }
+      }
       appState.value.spinnerWaitingText = [ "Chargement...", "90%" ]
 
       // read user_quiz by batches
@@ -274,6 +302,14 @@ onMounted(async () => {
             userQuizCursor = userQuizList[userQuizList.length - 1].id
          }
       }
+      // set to null in cache (= not user_quiz for userid, quizid in dartabase) all other user_quiz for userid
+      for (const quiz of quizList) {
+         const key = props.userid + ':' + quiz.id
+         if (userQuizState.value.theUserQuizCache[key] === undefined) {
+            userQuizState.value.theUserQuizCache[key] = null
+            userQuizState.value.theUserQuizStatus[key] = 'ready'
+         }
+      }
       appState.value.spinnerWaitingText = [ "Chargement...", "95%" ]
 
       // read user_case_study by batches
@@ -296,6 +332,14 @@ onMounted(async () => {
             hasMoreUserCaseStudy = false
          } else {
             userCaseStudyCursor = userCaseStudyList[userCaseStudyList.length - 1].id
+         }
+      }
+      // set to null in cache (= not user_case_study for userid, casestudyid in database) all other user_case_study for userid
+      for (const caseStudy of caseStudyList) {
+         const key = props.userid + ':' + caseStudy.id
+         if (userCaseStudyState.value.theUserCaseStudyCache[key] === undefined) {
+            userCaseStudyState.value.theUserCaseStudyCache[key] = null
+            userCaseStudyState.value.theUserCaseStudyStatus[key] = 'ready'
          }
       }
 

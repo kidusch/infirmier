@@ -75,15 +75,29 @@ export const theUserCourse = computed(() => (user_id, course_id) => {
          userCourseState.value.theUserCourseCache[key] = userCourse
          userCourseState.value.theUserCourseStatus[key] = 'ready'
       } else {
-         app.service('user_course').create({
-            data: { user_id, course_id },
-         }).then(userCourse => {
-            userCourseState.value.theUserCourseCache[key] = userCourse
-            userCourseState.value.theUserCourseStatus[key] = 'ready'
-         })
+         // app.service('user_course').create({
+         //    data: { user_id, course_id },
+         // }).then(userCourse => {
+         //    userCourseState.value.theUserCourseCache[key] = userCourse
+         //    userCourseState.value.theUserCourseStatus[key] = 'ready'
+         // })
+         // null value indicates there is no (user_id, course_id) in database
+         userCourseState.value.theUserCourseCache[key] = null
+         userCourseState.value.theUserCourseStatus[key] = 'ready'
       }
    })
 })
+
+export const createUserCourse = async (user_id, course_id) => {
+   const userCourse = await app.service('user_course').create({
+      data: { user_id, course_id },
+   })
+   // update cache
+   const key = user_id + ':' + course_id
+   userCourseState.value.theUserCourseCache[key] = userCourse
+   userCourseState.value.theUserCourseStatus[key] = 'ready'
+   return userCourse
+}
 
 export const updateUserCourse = async (id, data) => {
    const userCourse = await app.service('user_course').update({

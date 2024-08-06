@@ -77,15 +77,29 @@ export const theUserCard = computed(() => (user_id, card_id) => {
          userCardState.value.theUserCardCache[key] = userCard
          userCardState.value.theUserCardStatus[key] = 'ready'
       } else {
-         app.service('user_card').create({
-            data: { user_id, card_id },
-         }).then(userCard => {
-            userCardState.value.theUserCardCache[key] = userCard
-            userCardState.value.theUserCardStatus[key] = 'ready'
-         })
+         // app.service('user_card').create({
+         //    data: { user_id, card_id },
+         // }).then(userCard => {
+         //    userCardState.value.theUserCardCache[key] = userCard
+         //    userCardState.value.theUserCardStatus[key] = 'ready'
+         // })
+         // null value indicates there is no (user_id, card_id) in database
+         userCardState.value.theUserCardCache[key] = null
+         userCardState.value.theUserCardStatus[key] = 'ready'
       }
    })
 })
+
+export const createUserCard = async (user_id, card_id) => {
+   const userCard = await app.service('user_card').create({
+      data: { user_id, card_id },
+   })
+   // update cache
+   const key = user_id + ':' + card_id
+   userCardState.value.theUserCardCache[key] = userCard
+   userCardState.value.theUserCardStatus[key] = 'ready'
+   return userCard
+}
 
 export const updateUserCard = async (id, data) => {
    const userCard = await app.service('user_card').update({

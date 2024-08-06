@@ -22,14 +22,12 @@
             <div class="form-control">
                <label class="label cursor-pointer">
                   <span class="label-text">J'accepte ces conditions</span> 
-                  <!-- <input type="radio" value="" class="w-4 h-4 " :checked="accept === true" @click="accept = true" /> -->
                   <input type="checkbox" :checked="accept === true" @click="accept = true" class="checkbox checkbox-primary" />
                </label>
                </div>
                <div class="form-control">
                <label class="label cursor-pointer">
                   <span class="label-text">Je refuse ces conditions</span> 
-                  <!-- <input type="radio" value="" class="w-4 h-4 " :checked="accept === false" @click="accept = false" /> -->
                   <input type="checkbox" :checked="accept === false" @click="accept = false" class="checkbox checkbox-primary" />
 
                </label>

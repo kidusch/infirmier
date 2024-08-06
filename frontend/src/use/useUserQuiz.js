@@ -79,15 +79,29 @@ export const theUserQuiz = computed(() => (user_id, quiz_id) => {
          userQuizState.value.theUserQuizCache[key] = userQuiz
          userQuizState.value.theUserQuizStatus[key] = 'ready'
       } else {
-         app.service('user_quiz').create({
-            data: { user_id, quiz_id },
-         }).then(userQuiz => {
-            userQuizState.value.theUserQuizCache[key] = userQuiz
-            userQuizState.value.theUserQuizStatus[key] = 'ready'
-         })
+         // app.service('user_quiz').create({
+         //    data: { user_id, quiz_id },
+         // }).then(userQuiz => {
+         //    userQuizState.value.theUserQuizCache[key] = userQuiz
+         //    userQuizState.value.theUserQuizStatus[key] = 'ready'
+         // })
+         // null value indicates there is no (user_id, quiz_id) in database
+         userQuizState.value.theUserQuizCache[key] = null
+         userQuizState.value.theUserQuizStatus[key] = 'ready'
       }
    })
 })
+
+export const createUserQuiz = async (user_id, quiz_id) => {
+   const userQuiz = await app.service('user_quiz').create({
+      data: { user_id, quiz_id },
+   })
+   // update cache
+   const key = user_id + ':' + quiz_id
+   userQuizState.value.theUserQuizCache[key] = userQuiz
+   userQuizState.value.theUserQuizStatus[key] = 'ready'
+   return userQuiz
+}
 
 export const updateUserQuiz = async (id, data) => {
    const userQuiz = await app.service('user_quiz').update({

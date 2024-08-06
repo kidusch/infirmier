@@ -80,16 +80,29 @@ export const theUserCaseStudy = computed(() => (user_id, case_study_id) => {
          userCaseStudyState.value.theUserCaseStudyCache[key] = userCaseStudy
          userCaseStudyState.value.theUserCaseStudyStatus[key] = 'ready'
       } else {
-         app.service('user_case_study').create({
-            data: { user_id, case_study_id },
-         }).then(userCaseStudy => {
-            userCaseStudyState.value.theUserCaseStudyCache[key] = userCaseStudy
-            userCaseStudyState.value.theUserCaseStudyStatus[key] = 'ready'
-         })
+         // app.service('user_case_study').create({
+         //    data: { user_id, case_study_id },
+         // }).then(userCaseStudy => {
+         //    userCaseStudyState.value.theUserCaseStudyCache[key] = userCaseStudy
+         //    userCaseStudyState.value.theUserCaseStudyStatus[key] = 'ready'
+         // })
+         // null value indicates there is no (user_id, case_study_id) in database
+         userCaseStudyState.value.theUserCaseStudyCache[key] = null
+         userCaseStudyState.value.theUserCaseStudyStatus[key] = 'ready'
       }
    })
 })
 
+export const createUserCaseStudy = async (user_id, case_study_id) => {
+   const userCaseStudy = await app.service('user_case_study').create({
+      data: { user_id, case_study_id },
+   })
+   // update cache
+   const key = user_id + ':' + case_study_id
+   userCaseStudyState.value.theUserCaseStudyCache[key] = userCaseStudy
+   userCaseStudyState.value.theUserCaseStudyStatus[key] = 'ready'
+   return userCaseStudy
+}
 
 export const updateUserCaseStudy = async (id, data) => {
    const userCaseStudy = await app.service('user_case_study').update({

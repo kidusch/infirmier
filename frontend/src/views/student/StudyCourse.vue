@@ -105,7 +105,7 @@ import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
 import { courseOfId } from '/src/use/useCourse'
-import { theUserCourse, updateUserCourse } from '/src/use/useUserCourse'
+import { theUserCourse, createUserCourse, updateUserCourse } from '/src/use/useUserCourse'
 
 import { app } from '/src/client-app.js'
 
@@ -141,7 +141,16 @@ const ue = computed(() => ueOfId.value(props.ue_id))
 const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
 const topic = computed(() => topicOfId.value(props.topic_id))
 const course = computed(() => courseOfId.value(props.course_id))
-const userCourse = computed(() => theUserCourse.value(props.userid, props.course_id))
+
+const userCourse = computed(() => {
+   let userCourse = theUserCourse.value(props.userid, props.course_id)
+   if (userCourse === null) {
+      // null value indicates there is no (user_id, course_id) in database
+      createUserCourse(props.userid, props.course_id)
+      return undefined
+   }
+   return userCourse
+})
 
 // annotations are lost when more recent course content is available
 const courseContent = computed(() => {
