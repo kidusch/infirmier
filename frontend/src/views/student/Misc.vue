@@ -36,6 +36,7 @@ const props = defineProps({
 const onNotification = async () => {
    try {
          const subscription = await getWebPushSubscription()
+         console.log('sub', subscription)
          if (subscription) await app.service('notification').addSubscription(props.userid, subscription)
       } catch(err) {
          console.log('err subscription', err)
