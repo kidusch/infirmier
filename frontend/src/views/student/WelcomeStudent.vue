@@ -350,8 +350,16 @@ onMounted(async () => {
    }
 })
 
-const onClick = () => {
-   // router.push(`/student/study-ue`)
+const onClick = async () => {
+   // create a subscription from the push manager and save/update it on the server
+   // IT MUST BE DONE FROM A USER GESTURE
+   try {
+      const subscription = await getWebPushSubscription()
+      if (subscription) await app.service('notification').addSubscription(props.userid, subscription)
+   } catch(err) {
+      console.log('err subscription', err)
+   }
+   // go to study UE
    router.push(`/student/study-ue`)
 }
 </script>

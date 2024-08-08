@@ -179,17 +179,17 @@ const menuItems = computed(() => {
 })
 
 
-onMounted(async () => {
-   // subscribe to notifications
-   if ('Notification' in window) {
-      try {
-         const subscription = await getWebPushSubscription()
-         if (subscription) await app.service('notification').addSubscription(props.userid, subscription)
-      } catch(err) {
-         console.log('err subscription', err)
-      }
-   }
-})
+// onMounted(async () => {
+//    // subscribe to notifications
+//    if ('Notification' in window) {
+//       try {
+//          const subscription = await getWebPushSubscription()
+//          if (subscription) await app.service('notification').addSubscription(props.userid, subscription)
+//       } catch(err) {
+//          console.log('err subscription', err)
+//       }
+//    }
+// })
 
 const selectItem = (index) => {
    currentItemIndex.value = index

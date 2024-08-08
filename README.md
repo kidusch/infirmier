@@ -67,14 +67,21 @@ VueJS cache busting : https://medium.com/js-dojo/vuejs-pwa-cache-busting-8d09edd
 # PWA web push
 see: https://developers.google.com/web/ilt/pwa/introduction-to-push-notifications
 
-- chaque destinataire de notification doit créer une 'subscription', qui représente une adresse d'envoi.
-`app.service('notifications).create({userId, subscription})` permet au serveur de mémoriser les subscriptions de chaque utilisateur,
-elle est (re)créée à chaque login (car elle est susceptible de changer)
-- `app.service('notification').patch(userId, data)` permet au serveur d'envoyer une notification à un client,
-en utilisant la subscription qui a été mémorisée pour lui
+- à chaque destinataire de notification correspond une 'subscription', qui représente une adresse d'envoi, sur un device donné
+pour une application donnée. Si l'utilisateur se connecte à l'application avec N devices, les notifications
+seront envoyées aux N subscriptions associées
+Une subscription est créé côté client par la méthode getWebPushSubscription via le service worker / push manager
+ATTENTION : cette méthode doit être appelée dans le handler d'un GESTE UTILISATEUR.
+Dans l'application, on profite du bouton "Continuer" de WelcomeStudent.vue
+
+- `app.service('notifications).addSubscription({userId, subscription})` permet au serveur de mémoriser une nouvelle
+subscription pour un utilisateur.
+
+- `app.service('notification').pushNotification(userId, data)` permet au serveur d'envoyer une notification à toutes
+les subscriptions d'un client
+
 - la librairie 'web-push' simplifie l'implémentation du protocole; le cryptage s'appuie sur des 'vapid-keys'.
-Les mêmes 'vapid-keys' sont utilisées pour le serveur et pour tous les clients.
-- la demande d'autorisation d'utiliser les notifications est faite dans `main.js`
+Les mêmes 'vapid-keys' sont utilisées pour le serveur et pour tous les clients
 
 Vapid keys (création : scrips/create-valid-keys.js)
 Public Key: BCb26MnBWZp7X38igiSV-JZp4EIqRJ9NeiIGhjpFM_3Rs3y_6C08YNA7d1IVKR64uqmP0csnS7KmLVkn4bAiHuQ
