@@ -92,7 +92,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed } from 'vue'
+import { ref, computed } from 'vue'
 
 import { logout, clearCaches } from '/src/use/useAuthentication'
 import { userOfId, listOfUser } from '/src/use/useUser'
@@ -102,11 +102,8 @@ import { isDocumentTabVisible } from '/src/use/useDocument'
 import { isLegislationTabVisible } from '/src/use/useLegislation'
 
 import { courseIconPath, revisionIconPath } from '/src/lib/icons.mjs'
-import { getWebPushSubscription } from '/src/lib/utilities.mjs'
 import router from '/src/router'
 import { VERSION } from '/src/version'
-
-import { app } from '/src/client-app.js'
 
 
 const props = defineProps({

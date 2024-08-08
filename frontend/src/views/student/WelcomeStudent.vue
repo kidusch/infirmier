@@ -44,6 +44,7 @@ import { userQuizState } from '/src/use/useUserQuiz'
 import { userCaseStudyState } from '/src/use/useUserCaseStudy'
 import { appState } from '/src/use/useAppState'
 
+import { getWebPushSubscription } from '/src/lib/utilities.mjs'
 import router from '/src/router'
 import { app } from '/src/client-app.js'
 
