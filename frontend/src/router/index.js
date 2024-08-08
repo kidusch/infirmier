@@ -616,6 +616,14 @@ const routes = [
          },
 
          {
+            path: 'admin-agenda',
+            component: () => import('/src/views/admin/AdminAgenda.vue'),
+            props: (route) => ({
+               userid: parseInt(sessionStorage.getItem('userid')),
+            }),
+         },
+
+         {
             path: 'admin-misc',
             component: () => import('/src/views/admin/AdminMisc.vue'),
             props: (route) => ({

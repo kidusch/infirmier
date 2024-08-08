@@ -72,6 +72,17 @@ export const userOfId = computed(() => id => {
    })
 })
 
+export const updateUser = async (id, data) => {
+   const user = await app.service('user').update({
+      where: { id },
+      data,
+   })
+   // update cache
+   userState.value.userCache[id] = user
+   userState.value.userStatus[id] = 'ready'
+   return user
+}
+
 export const listOfUser = computed(() => {
    if (!userState.value) return []
    if (userState.value.userListStatus === 'ready') {

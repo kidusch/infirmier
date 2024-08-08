@@ -166,6 +166,13 @@ const menuItems = computed(() => {
       path: `/admin/admin-corrections`,
       iconPath: revisionIconPath,
    })
+
+   items.push({
+      label: "Agendas",
+      path: `/admin/admin-agenda`,
+      iconPath: revisionIconPath,
+   })
+
    items.push({
       label: "Divers",
       path: `/admin/admin-misc`,
