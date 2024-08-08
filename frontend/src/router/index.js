@@ -314,6 +314,14 @@ const routes = [
                userid: parseInt(sessionStorage.getItem('userid')),
             }),
          },
+
+         {
+            path: 'misc',
+            component: () => import('/src/views/student/Misc.vue'),
+            props: (route) => ({
+               userid: parseInt(sessionStorage.getItem('userid')),
+            }),
+         },
       ]
    },
 

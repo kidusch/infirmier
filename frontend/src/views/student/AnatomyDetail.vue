@@ -136,7 +136,6 @@ const anatomy = computed(() => anatomyOfId.value(props.anatomy_id))
 // })
 
 const onProcess = (e, index) => {
-   console.log('e', index, e)
    const perc = Math.round((e.loaded * 100.) / e.total)
    appState.value.spinnerWaitingText = [ "Chargement...", `${perc} %`]
 }

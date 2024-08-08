@@ -169,6 +169,12 @@ const menuItems = computed(() => {
       path: `/student/agenda`,
       iconPath: revisionIconPath,
    })
+
+   items.push({
+      label: "Divers",
+      path: `/student/misc`,
+      iconPath: revisionIconPath,
+   })
    return items
 })
 

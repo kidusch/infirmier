@@ -90,9 +90,7 @@ Le innerHTML correspondant est stocké dans la BD et contient toute l'informatio
 
 # Modèles 3D
 
-https://vue-3d-model.netlify.app/en/guide/installation/
-
-https://threejs.org/examples/webgl_loader_fbx.html
+vue-3d-loader : https://github.com/king2088/vue-3d-loader/tree/master/src/examples
 
 https://www.mixamo.com
 
