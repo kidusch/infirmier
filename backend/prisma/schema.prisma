@@ -16,6 +16,7 @@ model user {
   admin      Boolean    @default(false)  // is admin
   premium    Boolean    @default(false)  // is student with premium subscription
   subscription_list  String    @default("[]")   // push notification 'adresses', comma-separated
+  shared_agenda Boolean @default(false)
 
   google_id String?     @unique(map: "uses_google_id_unique")
   name      String?

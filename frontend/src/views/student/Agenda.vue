@@ -36,11 +36,16 @@ const props = defineProps({
 
 const events = computed(() => {
    const agendaList = userListOfAgenda.value(props.userid)
-   return agendaList.map(agenda => ({
-      title: agenda.title,
-      start: new Date(agenda.start),
-      // end: new Date(agenda.end),
-   }))
+   console.log('agendaList', agendaList)
+   return agendaList.map(agenda => {
+      return {
+         title: agenda.title,
+         start: new Date(agenda.start),
+         allDay: true,
+
+         agendaId: agenda.id, // will be stored in event.extendedProps
+      }
+   })
 })
 
 const calendarOptions = ref({
@@ -53,7 +58,7 @@ const calendarOptions = ref({
    eventClick: handleEventClick,
    longPressDelay: 10, // on touch devices, touching a date square for 10ms triggers a 'select' event
 
-   events,
+   events, // calendar events, reactive
 })
 
 let idNo = 1
@@ -61,26 +66,17 @@ let idNo = 1
 async function handleDateSelect(selectInfo) {
    const title = prompt("Entrez un titre pour votre événement")
    const calendarApi = selectInfo.view.calendar
-
    calendarApi.unselect() // clear date selection
 
    if (title) {
-      calendarApi.addEvent({
-         id: idNo++ + "",
-         title,
-         start: selectInfo.startStr,
-         end: selectInfo.endStr,
-         allDay: selectInfo.allDay
-      })
       await createAgenda(props.userid, title, selectInfo.startStr, selectInfo.endStr)
    }
 }
 
 async function handleEventClick(clickInfo) {
+   console.log('clickInfo.event', clickInfo)
    if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-      clickInfo.event.remove()
-      console.log('clickInfo.event', clickInfo.event)
-      await deleteAgenda(clickInfo.event.agendaId)
+      await deleteAgenda(clickInfo.event.extendedProps.agendaId)
    }
 }
 </script>
