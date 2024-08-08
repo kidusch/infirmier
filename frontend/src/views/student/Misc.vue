@@ -24,6 +24,7 @@
 import { ref } from 'vue'
 
 import { getWebPushSubscription } from '/src/lib/utilities.mjs'
+import { app } from '/src/client-app.js'
 
 
 const props = defineProps({
