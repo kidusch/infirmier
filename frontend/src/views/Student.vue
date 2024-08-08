@@ -167,11 +167,11 @@ const menuItems = computed(() => {
       iconPath: revisionIconPath,
    })
 
-   items.push({
-      label: "Divers",
-      path: `/student/misc`,
-      iconPath: revisionIconPath,
-   })
+   // items.push({
+   //    label: "Divers",
+   //    path: `/student/misc`,
+   //    iconPath: revisionIconPath,
+   // })
    return items
 })
 

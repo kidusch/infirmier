@@ -51,6 +51,7 @@ const calendarOptions = ref({
    selectable: true,
    select: handleDateSelect,
    eventClick: handleEventClick,
+   longPressDelay: 10, // on touch devices, touching a date square for 10ms triggers a 'select' event
 
    events,
 })
@@ -78,6 +79,7 @@ async function handleDateSelect(selectInfo) {
 async function handleEventClick(clickInfo) {
    if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
       clickInfo.event.remove()
+      console.log('clickInfo.event', clickInfo.event)
       await deleteAgenda(clickInfo.event.agendaId)
    }
 }

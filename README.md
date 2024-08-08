@@ -74,6 +74,10 @@ Une subscription est créé côté client par la méthode getWebPushSubscription
 ATTENTION : cette méthode doit être appelée dans le handler d'un GESTE UTILISATEUR.
 Dans l'application, on profite du bouton "Continuer" de WelcomeStudent.vue
 
+iOS : après installation sur l'écran d'accueil (ou réinstallation), l'application n'apparait pas tout de suite dans la liste des applications.
+À l'appui sur "Continuer", à la création de la première subscription, iOS demande à l'utilisateur s'il autorise les notifications.
+Après accepttation et création de la première subscription, l'application apparait dans la liste.
+
 - `app.service('notifications).addSubscription({userId, subscription})` permet au serveur de mémoriser une nouvelle
 subscription pour un utilisateur.
 

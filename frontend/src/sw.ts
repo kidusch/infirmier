@@ -21,7 +21,7 @@ self.addEventListener('push', function(e) {
   console.log('payload', payload)
   const options = {
      body: payload.text,
-     icon: "https://ftp.jcbuisson.dev/images/homer.png",
+     icon: "https://ftp.jcbuisson.dev/images/logo_infirmier.png",
      requireInteraction: true,
      vibrate: [100, 50, 100],
      // tag: payload.tag,
