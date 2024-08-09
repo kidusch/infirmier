@@ -622,6 +622,14 @@ const routes = [
                userid: parseInt(sessionStorage.getItem('userid')),
             }),
          },
+         {
+            path: 'admin-agenda/:studentId',
+            component: () => import('/src/views/admin/AdminAgendaDetail.vue'),
+            props: (route) => ({
+               userid: parseInt(sessionStorage.getItem('userid')),
+               studentId: parseInt(route.params.studentId),
+            }),
+         },
 
          {
             path: 'admin-misc',

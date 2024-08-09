@@ -37,7 +37,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 
 import { userOfId, updateUser } from '/src/use/useUser'
-import { createAgenda, deleteAgenda, userListOfAgenda } from '/src/use/useAgenda'
+import { createAgenda, updateAgenda, deleteAgenda, userListOfAgenda } from '/src/use/useAgenda'
 
 
 const props = defineProps({
@@ -55,7 +55,6 @@ const onClick = async (checked) => {
 
 const events = computed(() => {
    const agendaList = userListOfAgenda.value(props.userid)
-   console.log('agendaList', agendaList)
    return agendaList.map(agenda => {
       return {
          title: agenda.title,
@@ -71,11 +70,12 @@ const calendarOptions = ref({
    plugins: [ dayGridPlugin, interactionPlugin ],
    initialView: 'dayGridMonth',
    locale: 'fr',
+   longPressDelay: 10, // on touch devices, touching a date square for 10ms triggers a 'select' event
    editable: true,
    selectable: true,
    select: handleDateSelect,
    eventClick: handleEventClick,
-   longPressDelay: 10, // on touch devices, touching a date square for 10ms triggers a 'select' event
+   eventDrop: handleEventDrop,
 
    events, // calendar events, reactive
 })
@@ -97,5 +97,13 @@ async function handleEventClick(clickInfo) {
    if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
       await deleteAgenda(clickInfo.event.extendedProps.agendaId)
    }
+}
+
+async function handleEventDrop(clickInfo) {
+   console.log('clickInfo.event', clickInfo)
+   await updateAgenda(clickInfo.event.extendedProps.agendaId, {
+      start: clickInfo.event.start,
+      end: clickInfo.event.end,
+   })
 }
 </script>

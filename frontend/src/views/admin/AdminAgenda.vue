@@ -10,21 +10,16 @@
       </header>
 
       <main class="flex flex-col gap-6 pb-4">
-
          <div class="flex flex-col gap-3">
 
-            <!-- <div v-for="anatomy, index in listOfAnatomy">
-               <EditableListItem
-                  field="name" :index="index" :list="listOfAnatomy"
-                  @update="(anatomy1, anatomy2) => update(anatomy1, anatomy2)"
-                  @edit="(text) => edit(anatomy.id, text)"
-                  @remove="remove(anatomy)"
-                  @select="select(anatomy.id)"
-                  @show="updateHidden(anatomy.id, false)"
-                  @hide="updateHidden(anatomy.id, true)"
-               ></EditableListItem>
-
-            </div> -->
+            <div v-for="user in listOfUserSharingAgenda">
+               <div class="flex gap-3 items-center">
+                  <input class="standard-input flex-1" placeholder="Titre" type="text" :value="user.name" disabled>
+                  <div class="flex gap-1.5">
+                     <img class="h-4 cursor-pointer" src="/src/assets/thick-arrow-right.svg" @click="select(user)">
+                  </div>
+               </div>
+            </div>
 
          </div>
       </main>
@@ -32,7 +27,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed } from 'vue'
+
+import { listOfUser } from '/src/use/useUser'
 
 import router from "/src/router"
 
@@ -43,7 +40,10 @@ const props = defineProps({
    },
 })
 
-const select = (id) => {
-   router.push(`/admin/admin-agenda/${id}`)
+const listOfUserSharingAgenda = computed(() => listOfUser.value.filter(user => user.shared_agenda))
+
+
+const select = (user) => {
+   router.push(`/admin/admin-agenda/${user.id}`)
 }
 </script>

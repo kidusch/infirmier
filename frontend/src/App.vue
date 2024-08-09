@@ -59,7 +59,7 @@ onMounted(() => {
       event.preventDefault()
    })
 
-   // allows page reload to unlock spinner
+   // allows page reload to unlock spinner (?? MARCHE PAS ??)
    resetUseAppState()
 })
 

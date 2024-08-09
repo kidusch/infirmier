@@ -54,6 +54,17 @@ export const createAgenda = async (user_id, title, start, end) => {
    return agenda
 }
 
+export const updateAgenda = async (id, data) => {
+   const agenda = await app.service('agenda').update({
+      where: { id },
+      data,
+   })
+   // update cache
+   agendaState.value.agendaCache[id] = agenda
+   agendaState.value.agendaStatus[id] = 'ready'
+   return agenda
+}
+
 export const deleteAgenda = async (id) => {
    await app.service('agenda').delete({ where: { id }})
    delete agendaState.value.agendaCache[id]

@@ -6,7 +6,6 @@
          <img class="h-4 cursor-pointer" src="/src/assets/thick-arrow-right.svg" @click="select">
       </div>
    </div>
-
 </template>
 
 <script setup>
