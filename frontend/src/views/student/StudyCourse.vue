@@ -41,7 +41,7 @@
       </main>
 
       <!-- Highlight pens -->
-      <ul class="menu menu-horizontal bg-slate-50 rounded-box fixed right-0 bottom-16">
+      <ul class="menu menu-horizontal bg-slate-50 rounded-box fixed right-2 bottom-16">
          <li>
             <a :class="{ active: highlightColor === '#FFFF66' }" @click="highlightColor = '#FFFF66'">
                <img class="h-6 w-6" src="/src/assets/highlighter-yellow.svg">
