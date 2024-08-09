@@ -141,7 +141,7 @@ export const updateUserCaseStudy = async (id, data) => {
 export const listOfUncorrectedUserCaseStudy = computed(() => {
    if (!userCaseStudyState.value) return []
    if (userCaseStudyState.value.uncorrectedUserCaseStudyListStatus === 'ready') {
-      return Object.values(userCaseStudyState.value.theUserCaseStudyCache).filter(userCaseStudy => (userCaseStudy.custom_correction_status === 'waiting-for-correction'))
+      return Object.values(userCaseStudyState.value.theUserCaseStudyCache).filter(userCaseStudy => (userCaseStudy?.custom_correction_status === 'waiting-for-correction'))
    }
    if (userCaseStudyState.value.uncorrectedUserCaseStudyListStatus !== 'ongoing') {
       userCaseStudyState.value.uncorrectedUserCaseStudyListStatus = 'ongoing'

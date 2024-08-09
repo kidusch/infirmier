@@ -117,7 +117,7 @@ export const updateUserQuiz = async (id, data) => {
 export const listOfUncorrectedUserQuiz = computed(() => {
    if (!userQuizState.value) return []
    if (userQuizState.value.uncorrectedUserQuizListStatus === 'ready') {
-      return Object.values(userQuizState.value.theUserQuizCache).filter(userQuiz => (userQuiz.custom_correction_status === 'waiting-for-correction'))
+      return Object.values(userQuizState.value.theUserQuizCache).filter(userQuiz => (userQuiz?.custom_correction_status === 'waiting-for-correction'))
    }
    if (userQuizState.value.uncorrectedUserQuizListStatus !== 'ongoing') {
       userQuizState.value.uncorrectedUserQuizListStatus = 'ongoing'

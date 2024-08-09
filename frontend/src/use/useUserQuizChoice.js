@@ -142,7 +142,7 @@ export const listOfUserQuizChoice = computed(() => (user_id) => {
 export const listOfUncorrectedUserQuizChoice = computed(() => {
    if (!userQuizChoiceState.value) return []
    if (userQuizChoiceState.value.uncorrectedUserQuizChoiceListStatus === 'ready') {
-      return Object.values(userQuizChoiceState.value.theUserQuizChoiceCache).filter(userQuizChoice => (userQuizChoice.custom_correction_status === 'waiting-for-correction'))
+      return Object.values(userQuizChoiceState.value.theUserQuizChoiceCache).filter(userQuizChoice => (userQuizChoice?.custom_correction_status === 'waiting-for-correction'))
    }
    if (userQuizChoiceState.value.uncorrectedUserQuizChoiceListStatus !== 'ongoing') {
       userQuizChoiceState.value.uncorrectedUserQuizChoiceListStatus = 'ongoing'
