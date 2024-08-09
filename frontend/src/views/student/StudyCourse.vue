@@ -77,7 +77,7 @@
       </div>
 
       <!-- Note Area -->
-      <!-- <div ref="noteBox"
+      <div ref="noteBox"
          class="fixed bottom-0 -right-full transition-all duration-300 bg-white w-1/2 sm:w-52 lg:w-72 z-[1] rounded-ss-2xl max-h-[65vh] h-[65vh] flex-col">
          <div class="flex items-center justify-between p-4 pb-2">
             <h3>Note</h3>
@@ -91,7 +91,7 @@
             @input="onNoteInputDebounced"
             v-position="notePosition"
          ></textarea>
-      </div> -->
+      </div>
 
    </main>
 </template>
