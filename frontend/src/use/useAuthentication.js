@@ -72,7 +72,7 @@ export const restartApp = async () => {
 
 // throws an error 'wrong-credentials' if wrong email / password
 export async function localSignin(email, password) {
-   const user = await app.service('auth').localSignin(email, password)
+   const user = await app.service('auth').localSignin('email', email, password)
    await addUserAction(user.id, 'login')
    return user
 }

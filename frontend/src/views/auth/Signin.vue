@@ -73,17 +73,15 @@ import { cnxid } from '/src/client-app.js'
 
 const email = ref()
 const password = ref()
-// const errorMessage = ref('')
 
 const validate = async () => {
    // errorMessage.value = ''
    try {
-      const user = await localSignin(email.value, password.value)
+      const user = await localSignin(email.value.toLowerCase(), password.value)
       // go home
-      router.push(`/home/${user.id}`)
+      router.push(`/student`)
    } catch(err) {
-      if (err.code === 'wrong-credentials') {
-         // errorMessage.value = "wrong credentials"
+      if (err.message === 'wrong-credentials') {
          alert('Email ou mot de passe incorrect')
       } else {
          alert("Une erreur inconnue s'est produite")

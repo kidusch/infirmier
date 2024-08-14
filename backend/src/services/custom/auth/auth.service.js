@@ -14,16 +14,18 @@ export default function (app) {
 
    app.createService('auth', {
 
-      localSignin: async (email, password) => {
-         // check existence of a user with `email`
-         const user = await prisma.user.findUnique({ where: { email }})
-         if (!user) throw new EXError('wrong-credentials', "Wrong credendials")
+      localSignin: async (subField, sub, password) => {
+         const prisma = app.get('prisma')
+         // check existence of a user `sub`
+         const user = await prisma.user.findUnique({ where: { [subField]: sub }})
+         if (!user) throw new Error('wrong-credentials')
          // check its password
          const correct = await bcrypt.compare(password, user.password)
-         if (!correct) throw new EXError('wrong-credentials', "Wrong credendials")
+         if (!correct) throw new Error('wrong-credentials')
          return user
       },
 
+      // only for email as sub
       localSignup: async (email, name) => {
          // check existence of a user with `email`
          const user = await prisma.user.findUnique({ where: { email }})
@@ -52,7 +54,41 @@ export default function (app) {
          return 'ok'
       },
 
-      setPassword: async (token, password) => {
+      getAllAuthenticatedUsers: async () => {
+         const sockets = await app.io.fetchSockets()
+         return sockets
+            .filter(socket => !!socket.data.user)
+            .map(socket => socket.data.user.id)
+      },
+
+      getNameFromSub: async (subField, sub) => {
+         const prisma = app.get('prisma')
+         const user = await prisma.user.findUnique({ where: { [subField]: sub }})
+         if (!user) return null
+         if (!user.firstname && !user.lastname) return ''
+         if (!user.firstname) return user.lastname
+         if (!user.lastname) return user.firstname
+         return user.lastname + ' ' + user.firstname
+      },
+
+      getPasswordStatusFromSub: async (subField, sub) => {
+         const prisma = app.get('prisma')
+         const user = await prisma.user.findUnique({ where: { [subField]: sub }})
+         if (user === null) return "invalid"
+         return user.password ? "password" : "nopassword"
+      },
+
+      setPassword: async (subField, sub, password) => {
+         const prisma = app.get('prisma')
+         password = await bcrypt.hash(password, 5)
+         const user = await prisma.user.update({
+            where: { [subField]: sub },
+            data: { password }
+         })
+         return user.id
+      },
+
+      setPasswordWithToken: async (token, password) => {
          try {
             const payload = jwt.verify(token, config.SECRET)
             password = await bcrypt.hash(password, 5)
@@ -74,6 +110,7 @@ export default function (app) {
          }
       },
 
+      // only when sub is email
       forgottenPassword: async (email) => {
          console.log('forgottenPassword', email)
          // check existence of a user with `email`

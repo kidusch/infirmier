@@ -66,9 +66,6 @@ import { testEmail } from '/src/lib/utilities.mjs'
 import { appState } from '/src/use/useAppState'
 import router from "/src/router"
 
-import Spinner from '/src/components/Spinner.vue'
-import SetPassword from './SetPassword.vue'
-
 const email = ref()
 const name = ref()
 
@@ -84,7 +81,7 @@ const validate = async () => {
    }
    try {
       appState.value.spinnerWaitingText = [ "Envoi..." ]
-      await app.service('auth', { timeout: 60000 }).localSignup(email.value, name.value)
+      await app.service('auth', { timeout: 60000 }).localSignup(email.value.toLowerCase(), name.value)
       alert("Merci ! Regardez dans votre boite mail, un message de confirmation vient de vous être envoyé")
    } catch(err) {
       if (err.code === 'email-already-used') {

@@ -77,7 +77,7 @@ const validate = async () => {
       return
    }
    try {
-      const user = await app.service('auth').setPassword(props.token, password.value)
+      const user = await app.service('auth').setPasswordWithToken(props.token, password.value)
       console.log('user', user)
       router.push('/login')
    } catch(err) {
