@@ -89,15 +89,6 @@ export default function (app) {
          })
       },
 
-      // see hooks
-      getCnxInfo: async () => {
-         return 0
-      },
-
-      // Do nothing - see hooks
-      ping: async () => {
-      },
-
       // Do nothing - see hooks
       checkAndExtend: async () => {
       },

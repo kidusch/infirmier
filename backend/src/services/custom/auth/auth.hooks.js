@@ -30,21 +30,11 @@ function afterSignout(context) {
    }
 }
 
-async function afterGetCnxInfo(context) {
-   console.log('context.socket.data', context.socket.data)
-   console.log('context.socket.rooms', context.socket.rooms)
-   context.result = context.socket.data.expiresAt
-}
-
 export default {
-   before: {
-      ping: [isAuthenticated, isNotExpired],
-   },
    after: {
       localSignin: [afterAuthentication, extendExpiration(config.SESSION_EXPIRE_DELAY)],
       localSignup: [afterAuthentication, extendExpiration(config.SESSION_EXPIRE_DELAY)],
       logout: [afterSignout],
-      getCnxInfo: [afterGetCnxInfo],
       checkAndExtend: [extendExpiration(config.SESSION_EXPIRE_DELAY)],
    },
 }

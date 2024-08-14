@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
 import topLevelAwait from "vite-plugin-top-level-await"
+import vike from 'vike/plugin'
 
 // see: https://vitejs.dev/config/
 
@@ -9,6 +10,7 @@ export default defineConfig(({ command, mode }) => {
    console.log('mode=', mode, 'command=', command) // visible in the terminal where `npm run dev` or `npm run preview` is executed
    return {
       plugins: [
+
          vue({
             template: {
                compilerOptions: {
@@ -16,7 +18,9 @@ export default defineConfig(({ command, mode }) => {
                },
             }
          }),
+
          topLevelAwait(),
+
          VitePWA({
             devOptions: {
                enabled: false
@@ -54,6 +58,8 @@ export default defineConfig(({ command, mode }) => {
                ],
             },
          }),
+
+         // vike(),
       ],
       resolve: {
          alias: [

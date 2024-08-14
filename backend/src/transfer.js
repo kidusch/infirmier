@@ -1,4 +1,6 @@
 
+// COMMON TO NUTRIEDUC & INFIRMIER
+
 // socket.io connection data and pub/sub rooms are preserved on network disconnections/reconnections, but not on page refresh / reload
 // (when a new page is loaded or the current page is refreshed, all resources from the previous page are closed and freed by the browser, including websockets)
 // We want connection data and pub/sub rooms preserved after a page refresh / reload
@@ -24,7 +26,7 @@ export default async function(app) {
 
       if (alreadySavedData) dataCache[socket.id] = Object.assign(dataCache[socket.id], alreadySavedData)
       if (alreadySavedRooms) roomCache[socket.id].add(alreadySavedRooms)
-})
+   })
 
    app.addConnectListener((socket) => {
       console.log('onSocketConnect', socket.id)

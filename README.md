@@ -106,6 +106,17 @@ vue-3d-loader : https://github.com/king2088/vue-3d-loader/tree/master/src/exampl
 https://www.mixamo.com
 
 
+# SEO
+
+- tentative d'utilisation de Vike pour prerendering de '/'
+Semble prometteur et récent, mais délicat
+
+
+# AppStore & Google Play
+
+Essayer d'utiliser PWABuilder (Microsoft)
+
+
 ## Références utiles
 
 MSD manuals : https://www.msdmanuals.com

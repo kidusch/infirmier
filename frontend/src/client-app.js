@@ -1,3 +1,6 @@
+// COMMUN À NUTRIEDUC & INFIRMIER
+// MODIFIER LE SOCKET PATH
+
 import { io } from "socket.io-client"
 import { useSessionStorage } from '@vueuse/core'
 
@@ -9,6 +12,7 @@ import { appState } from '/src/use/useAppState'
 
 
 const socket = io({
+   // path: '/nutrieduc-socket-io/',
    path: '/infirmier-socket-io/',
    transports: ["websocket"],
    reconnectionDelay: 1000,
