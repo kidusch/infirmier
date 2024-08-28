@@ -63,7 +63,7 @@ const routes = [
    },
 
    // Après login local ou OAuth2, un accès à '/home/:userid' est effectué, qui conduit à stocker `:userid` dans sessionStorage sous la clé 'userid'
-   // Selon le type de l'utilisateur, il est redirigé vers '/student' ou '/admin'
+   // Selon le type de l'utilisateur, il est redirigé vers '/student' (ou '/accept-cgu') ou '/admin'
    {
       path: '/home/:userid',
       component: () => import('/src/views/Home.vue'),

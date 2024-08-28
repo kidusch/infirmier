@@ -1,11 +1,14 @@
 
+// COMMON TO NUTRIEDUC & INFIRMIER
+
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
 import hooks from './auth.hooks.js'
 import config from '#config'
 
-import { EXError } from '@jcbuisson/express-x'
+// import { EXError } from '@jcbuisson/express-x'
+import { EXError } from '#root/src/server.mjs'
 
 
 export default function (app) {

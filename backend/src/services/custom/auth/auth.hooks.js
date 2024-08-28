@@ -1,8 +1,10 @@
 
+// COMMON TO NUTRIEDUC & INFIRMIER
+
 import config from '#config'
 
-import { isAuthenticated, isNotExpired, extendExpiration } from '@jcbuisson/express-x'
-// import { isAuthenticated, isNotExpired, extendExpiration } from '#root/src/server.mjs'
+// import { isAuthenticated, isNotExpired, extendExpiration } from '@jcbuisson/express-x'
+import { isAuthenticated, isNotExpired, extendExpiration } from '#root/src/server.mjs'
 
 
 async function afterAuthentication(context) {

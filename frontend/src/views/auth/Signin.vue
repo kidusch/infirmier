@@ -79,7 +79,7 @@ const validate = async () => {
    try {
       const user = await localSignin(email.value.toLowerCase(), password.value)
       // go home
-      router.push(`/student`)
+      router.push(`/home/${user.id}`)
    } catch(err) {
       if (err.message === 'wrong-credentials') {
          alert('Email ou mot de passe incorrect')

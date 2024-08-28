@@ -1,5 +1,5 @@
-// COMMUN À NUTRIEDUC & INFIRMIER
-// MODIFIER LE SOCKET PATH
+// COMMON TO NUTRIEDUC & INFIRMIER
+// TO ADAPT: SOCKET PATH
 
 import { io } from "socket.io-client"
 import { useSessionStorage } from '@vueuse/core'
@@ -8,7 +8,6 @@ import { useSessionStorage } from '@vueuse/core'
 import expressXClient from './client.mjs'
 
 import { appState } from '/src/use/useAppState'
-// import { restartApp } from '/src/use/useAuthentication'
 
 
 const socket = io({
@@ -33,8 +32,8 @@ app.onConnectError((socket, err) => {
 app.onConnect(async (socket) => {
    const socketId = socket.id
    console.log('connect', socketId)
+   // handle reconnections & reloads
    // look for a previously stored connection id
-   // const prevSocketId = getStorageSocketId()
    const prevSocketId = cnxid.value
    if (prevSocketId) {
       // it's a connection after a reload/refresh
@@ -42,12 +41,10 @@ app.onConnect(async (socket) => {
       console.log('cnx-transfer', prevSocketId, 'to', socketId)
       await socket.emit('cnx-transfer', prevSocketId, socketId)
       // update connection id
-      // setStorageSocketId(socketId)
       cnxid.value = socketId
 
    } else {
       // set connection id
-      // setStorageSocketId(socketId)
       cnxid.value = socketId
    }
 

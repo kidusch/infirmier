@@ -6,6 +6,7 @@ import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 const initialState = () => ({
    isExpired: false,
    unrecoverableError: false,
+   connectedToServer: undefined,
    spinnerWaitingText: null,
 })
 

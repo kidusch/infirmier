@@ -9,7 +9,7 @@
 
 ## Authentification
 
-Voir [./documentation/auth-workflow.svg](schéma)
+Voir [https://wiki.jcbuisson.dev/minimal/assets/images/auth-workflow.svg](schéma)
 
 Google Developers Console : https://console.cloud.google.com/apis/dashboard?project=infirmier-418706
 
@@ -24,8 +24,8 @@ Les sessions pourront être déterminées après-coup en regroupant les événem
 
 ## Indexedb
 
-Indexedb est utilisé pour le cache local au lieu de LocalStorage, pour des raisons de taille
-vueuse/useIDBKeyval est basé sur idb-keyval
+- Indexedb est utilisé pour le cache local au lieu de LocalStorage, pour des raisons de taille
+- vueuse/useIDBKeyval est utilisé pour gérer Indexedb de façon réactive; il est basé sur le package idb-keyval
 
 
 ## Routage
@@ -103,6 +103,7 @@ Le innerHTML correspondant est stocké dans la BD et contient toute l'informatio
 
 vue-3d-loader : https://github.com/king2088/vue-3d-loader/tree/master/src/examples
 
+https://sketchfab.com/
 https://www.mixamo.com
 
 
