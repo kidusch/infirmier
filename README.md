@@ -36,6 +36,13 @@ Dans leur `beforeEnter`, ces routes ajoutent la propriété 'userid' dont la val
 Les url ne contiennent donc jamais l'identifiant de l'utilisateur et peuvent être utilisées comme liens dans les pages de cours par exemple
 
 
+## Page de présentation
+
+Essais avec vike.js sans succès.
+Mis un proxypass vers express pour /presentation et mis une règle de routage app.get('/presentation') (voir presentation.middleware.js)
+Produit une page HTML directement, ou en utilisant la fonction SSR `renderToString` de VueJS
+
+
 ## Parsing (abandonné)
 
 PEGJS (projet cloné dans CLONES)

@@ -78,6 +78,7 @@ export default defineConfig(({ command, mode }) => {
             },
             '^/auth/.*': 'http://localhost:9500',
             '^/static/.*': 'http://localhost:9500',
+            '^/presentation': 'http://localhost:9500',
          }
       },
    }
