@@ -57,8 +57,8 @@ app.onConnect(async (socket) => {
       appState.value.unrecoverableError = true
    })
 
-   socket.on('expired', async () => {
-      console.log("server app-hook sent 'expired' event")
-      appState.value.isExpired = true
+   socket.on('not-authenticated', async () => {
+      console.log("server app-hook sent 'not-authenticated' event")
+      appState.value.isNotAuthenticated = true
    })
 })

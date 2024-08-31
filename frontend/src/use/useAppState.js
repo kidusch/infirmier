@@ -4,7 +4,7 @@ import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 
 // state backed in SessionStorage
 const initialState = () => ({
-   isExpired: false,
+   isNotAuthenticated: false,
    unrecoverableError: false,
    connectedToServer: undefined,
    spinnerWaitingText: null,

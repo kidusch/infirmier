@@ -30,7 +30,7 @@ watch(() => appState.value?.unrecoverableError, async (value) => {
    if (value) restartApp()
 })
 
-watch(() => appState.value?.isExpired, async (value) => {
+watch(() => appState.value?.isNotAuthenticated, async (value) => {
    if (value) restartApp()
 })
 
