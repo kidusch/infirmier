@@ -1,7 +1,5 @@
 
-import { isAuthenticated, isNotExpired, extendExpiration, protect } from '@jcbuisson/express-x'
-// import { isAuthenticated, isNotExpired, extendExpiration, protect } from '#root/src/server.mjs'
-
+import { isAuthenticated, isNotExpired, extendExpiration, protect } from '#root/src/common-server.mjs'
 import config from '#config'
 
 

@@ -233,7 +233,7 @@ const signout = async () => {
    await router.push(`/`)
    console.log('on front page')
    // ...then unauthenticate
-   // await logout(props.userid)
+   await logout(props.userid)
    clearCaches()
 }
 

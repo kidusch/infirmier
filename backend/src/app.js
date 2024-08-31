@@ -1,6 +1,5 @@
 import express from 'express'
-// import { expressX } from '@jcbuisson/express-x'
-import { expressX } from './server.mjs'
+import { expressX } from './common-server.mjs'
 import { PrismaClient } from '@prisma/client'
 import config from '#config'
 
@@ -10,9 +9,7 @@ import channels from './channels.js'
 import transfer from './transfer.js'
 import middleware from './middleware/index.js'
 
-import { isAuthenticated, isNotExpired, extendExpiration, EXError } from '@jcbuisson/express-x'
-// import { isAuthenticated, isNotExpired, extendExpiration, EXError } from '#root/src/server.mjs'
-
+import { isAuthenticated, isNotExpired, extendExpiration } from './common-server.mjs'
 
 // `app` is a regular express application, enhanced with express-x features
 const app = expressX(config)

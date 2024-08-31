@@ -1,4 +1,9 @@
 
+# Bugs
+
+- lors du logout ('sortie'), socket.data ne semble pas être vidé
+
+
 # Journal de bord infirmier
 
 - Charlène Fantone, devenir.linfirmier.que.tu.veux.etre@gmail.com, +41767338336, Impasse du plan 1, 1730 Ecuvillens, Suisse

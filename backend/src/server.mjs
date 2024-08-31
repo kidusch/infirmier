@@ -364,7 +364,7 @@ export const isNotExpired = async (context) => {
       }
    } else {
       // send an event to the client (typical client handling: logout)
-      // context.socket.emit('not-authenticated')
+      context.socket.emit('not-authenticated')
       throw new EXError('not-authenticated', "No expiresAt in socket.data")
    }
 }
@@ -377,12 +377,12 @@ export const isAuthenticated = async (context) => {
    if (context.caller !== 'client') return
    if (!context.socket?.data) {
       // send an event to the client (typical client handling: logout)
-      // context.socket.emit('not-authenticated')
+      context.socket.emit('not-authenticated')
       throw new EXError('not-authenticated', 'no data in socket')
    }
    if (!context.socket.data?.user) {
       // send an event to the client (typical client handling: logout)
-      // context.socket.emit('not-authenticated')
+      context.socket.emit('not-authenticated')
       throw new EXError('not-authenticated', 'no user in socket.data')
    }
 }
@@ -395,7 +395,7 @@ export const extendExpiration = (duration) => async (context) => {
    if (context.caller !== 'client') return
    if (!context.socket?.data) {
       // send an event to the client (typical client handling: logout)
-      // context.socket.emit('not-authenticated')
+      context.socket.emit('not-authenticated')
       throw new EXError('not-authenticated', 'no data in socket')
    }
    context.socket.data.expiresAt = new Date(now.getTime() + duration)

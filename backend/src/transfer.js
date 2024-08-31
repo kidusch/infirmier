@@ -34,8 +34,8 @@ export default async function(app) {
       // when client ask for transfer from fromSocketId to toSocketId
       socket.on('cnx-transfer', async (fromSocketId, toSocketId) => {
          app.log('verbose', `cnx-transfer from ${fromSocketId} to ${toSocketId}`)
-         // console.log('dataCache', dataCache)
-         // console.log('roomCache', roomCache)
+         console.log('dataCache', dataCache)
+         console.log('roomCache', roomCache)
          // copy connection room & data from 'fromSocketId' to 'toSocketId'
          const toSocket = io.sockets.sockets.get(toSocketId)
          // data & rooms of fromSocketId are taken from dataCache and roomCache, since socket no longer exists
