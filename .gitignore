@@ -7,3 +7,7 @@ logs/
 3D/
 uploads/
 backend/logs/
+README.secret
+
+ios/
+android/

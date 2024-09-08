@@ -1,7 +1,7 @@
 
 # Bugs
 
-- lors du logout ('sortie'), socket.data ne semble pas être vidé
+- premium doit passer à false lorsque le paiement/abonnement est interrompu
 
 
 # Journal de bord infirmier
@@ -17,6 +17,15 @@
 Voir [https://wiki.jcbuisson.dev/minimal/assets/images/auth-workflow.svg](schéma)
 
 Google Developers Console : https://console.cloud.google.com/apis/dashboard?project=infirmier-418706
+
+
+## Modes d'utilisation
+
+- accès gratuit à l'application, mais seuls quelques cours marqués 'free' et les éléments associés sont accessibles
+- accès standard : un abonnement de premier niveau permet d'avoir accès à tous les éléments
+- accès premium : un abonnement de deuxième niveau permet d'avoir en plus la correction personnalisée, etc.
+
+Sur les stores, les abonnements sont des achats in-app, sur le web ce sont des abonnements Stripe
 
 
 ## Pas de sessions
@@ -127,7 +136,8 @@ Semble prometteur et récent, mais délicat
 
 # AppStore & Google Play
 
-Essayer d'utiliser PWABuilder (Microsoft)
+Essayer d'utiliser PWABuilder (Microsoft) Pb : rien prévu pour in-app purchase
+Utiliser plutôt Capacitor (plugins pour in-app)
 
 
 ## Références utiles
