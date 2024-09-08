@@ -10,7 +10,7 @@ import expressXClient from './client.mjs'
 import { appState } from '/src/use/useAppState'
 
 
-const socket = io({
+const socket = io('https://infirmier.jcbuisson.dev', {
    // path: '/nutrieduc-socket-io/',
    path: '/infirmier-socket-io/',
    transports: ["websocket"],
