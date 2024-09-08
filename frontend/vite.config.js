@@ -2,7 +2,6 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
 import topLevelAwait from "vite-plugin-top-level-await"
-import vike from 'vike/plugin'
 
 // see: https://vitejs.dev/config/
 
