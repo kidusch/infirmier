@@ -10,7 +10,7 @@ import expressXClient from './client.mjs'
 import { appState } from '/src/use/useAppState'
 
 
-const socket = io('https://infirmier.jcbuisson.dev', {
+const socketOptions = {
    // path: '/nutrieduc-socket-io/',
    path: '/infirmier-socket-io/',
    transports: ["websocket"],
@@ -19,7 +19,9 @@ const socket = io('https://infirmier.jcbuisson.dev', {
    extraHeaders: {
       "bearer-token": "mytoken"
    }
-})
+}
+
+const socket = import.meta.env.SERVER ? io(SERVER, socketOptions) : io(socketOptions)
 
 export const app = expressXClient(socket, { debug: true })
 

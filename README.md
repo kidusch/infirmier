@@ -2,6 +2,10 @@
 # Bugs
 
 - premium doit passer à false lorsque le paiement/abonnement est interrompu
+- vue-3d-loader marche pas avec Capacitor
+- PhaserJS ?
+   - 3D models : https://labs.phaser.io/view.html?src=src\game%20objects\mesh\mesh%20from%20obj.js
+   - avec VueJS : https://github.com/phaserjs/template-vue/blob/main/src/game/PhaserGame.vue
 
 
 # Journal de bord infirmier
