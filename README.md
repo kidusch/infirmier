@@ -2,10 +2,6 @@
 # Bugs
 
 - premium doit passer à false lorsque le paiement/abonnement est interrompu
-- vue-3d-loader marche pas avec Capacitor
-- PhaserJS ?
-   - 3D models : https://labs.phaser.io/view.html?src=src\game%20objects\mesh\mesh%20from%20obj.js
-   - avec VueJS : https://github.com/phaserjs/template-vue/blob/main/src/game/PhaserGame.vue
 
 
 # Journal de bord infirmier
@@ -21,6 +17,32 @@
 Voir [https://wiki.jcbuisson.dev/minimal/assets/images/auth-workflow.svg](schéma)
 
 Google Developers Console : https://console.cloud.google.com/apis/dashboard?project=infirmier-418706
+
+- id client OAuth2 "iOS client 1" : 35236017874-2mus35pvufa8kfbojf5p7u1f0cmts4qa.apps.googleusercontent.com
+
+https://branch.io/resources/aasa-validator/
+
+
+## IOS / Android
+
+## IOS
+App enregistrée sur le compte de Charlène (voir README.secret)
+
+Bundle id : com.journaldebordide.app
+Identifiant Apple : 6673904628
+Apple Id prefix : T8P24LJSUB (Team ID)
+UGS : infirmier
+
+
+```
+npm run build:ios   # vite build --mode ios && npx cap sync)
+npm run build:android
+
+npx cap open ios
+npx cap open android
+```
+
+Plugin Google OAuth : https://github.com/CodetrixStudio/CapacitorGoogleAuth
 
 
 ## Modes d'utilisation

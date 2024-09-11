@@ -19,12 +19,22 @@
 <script setup>
 import { watch, onMounted } from 'vue'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
+import { App } from '@capacitor/app';
 
 import { appState, resetUseAppState } from '/src/use/useAppState'
 import { restartApp } from '/src/use/useAuthentication'
 
 import Spinner from '/src/components/Spinner.vue'
 
+
+App.addListener('appUrlOpen', (data) => {
+   // Handle the URL scheme
+   if (data.url && data.url.startsWith('infirmier://')) {
+      console.log('Deep link URL:', data.url)
+      alert("Deep link!")
+      // Navigate or handle deep link as needed
+   }
+})
 
 watch(() => appState.value?.unrecoverableError, async (value) => {
    if (value) restartApp()

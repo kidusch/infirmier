@@ -11,7 +11,6 @@ import { appState } from '/src/use/useAppState'
 
 
 const socketOptions = {
-   // path: '/nutrieduc-socket-io/',
    path: '/infirmier-socket-io/',
    transports: ["websocket"],
    reconnectionDelay: 1000,
@@ -21,7 +20,8 @@ const socketOptions = {
    }
 }
 
-const socket = import.meta.env.SERVER ? io(SERVER, socketOptions) : io(socketOptions)
+// VITE_SERVER is used when app is packaged as a store application
+const socket = import.meta.env.VITE_SERVER ? io(import.meta.env.VITE_SERVER, socketOptions) : io(socketOptions)
 
 export const app = expressXClient(socket, { debug: true })
 

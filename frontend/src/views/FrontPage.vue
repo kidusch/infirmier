@@ -2,7 +2,8 @@
    <body class="py-4 lg:pt-2 flex flex-col h-screen relative">
 
       <!-- navbar -->
-      <nav class="lg:border-b lg:pb-2">
+      <!-- <nav class="lg:border-b lg:pb-2"> -->
+      <nav class="lg:border-b lg:pb-2 fixed w-full bg-white" :class="{ 'top-10': isIOS, 'top-0': !isIOS }">
 
          <main class="flex w-full justify-between items-center container max-w-7xl">
 
@@ -22,7 +23,7 @@
       <!-- main body -->
       <main class=" container max-w-7xl flex-1 flex flex-col">
          
-         <header class="mt-10 w-full flex justify-center flex-1">
+         <header class="mt-12 w-full flex justify-center flex-1">
             <img class="object-contain sm:max-w-2xl" :src="adminMisc?.welcome_img" alt="home_illustration">
          </header>
 
@@ -46,9 +47,12 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { Capacitor } from '@capacitor/core'
 
 import router from "/src/router"
 import { app } from '/src/client-app.js'
+
+const isIOS = ref(Capacitor.getPlatform() === 'ios')
 
 const adminMisc = ref({})
 

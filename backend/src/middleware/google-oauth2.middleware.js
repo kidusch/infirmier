@@ -107,11 +107,6 @@ export default function (app) {
 			})
 			
 			// redirect; this will lead to a connection transfer from cnxid
-			// if (isUserCreated) {
-			// 	res.redirect(`/accept-cgu/${user.id}`)
-			// } else {
-			// 	res.redirect(`/home/${user.id}`)
-			// }
 			res.redirect(`/home/${user.id}`)
 
 		} catch (error) {
