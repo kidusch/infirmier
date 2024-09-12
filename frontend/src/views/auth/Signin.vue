@@ -51,6 +51,11 @@
                   Continuer avec Google
                </span>
             </a>
+            <a class="secondary-btn" @click="gSignin">
+               <span>
+                  Continuer avec GoogleX
+               </span>
+            </a>
          </div>
 
          <footer>
@@ -64,7 +69,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
 
 import router from '/src/router'
 import { appState } from '/src/use/useAppState'
@@ -95,5 +101,28 @@ const goSignup = () => {
 
 const spinner = () => {
    appState.value.spinnerWaitingText = [ "Chargement..." ]
+}
+
+
+onMounted(() => {
+   try {
+      // see: https://github.com/CodetrixStudio/CapacitorGoogleAuth
+      GoogleAuth.initialize({
+         clientId: import.meta.env.VITE_GOOGLE_APP_CLIENT_ID,
+         scopes: ['profile', 'email'],
+         grantOfflineAccess: true,
+      })
+   } catch(err) {
+      console.log('init err', err)
+   }
+})
+
+const gSignin = async () => {
+   try {
+      const response = await GoogleAuth.signIn()
+      console.log('gSignin', response)
+   } catch(err) {
+      console.log('gSignin err', err)
+   }
 }
 </script>

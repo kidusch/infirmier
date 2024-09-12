@@ -28,12 +28,12 @@ import Spinner from '/src/components/Spinner.vue'
 
 
 App.addListener('appUrlOpen', (data) => {
-   // Handle the URL scheme
-   if (data.url && data.url.startsWith('infirmier://')) {
-      console.log('Deep link URL:', data.url)
-      alert("Deep link!")
-      // Navigate or handle deep link as needed
-   }
+   alert(`Deep link! ${data?.url}`)
+   // // Handle the URL scheme
+   // if (data.url && data.url.startsWith('infirmier://')) {
+   //    console.log('Deep link URL:', data.url)
+   //    // Navigate or handle deep link as needed
+   // }
 })
 
 watch(() => appState.value?.unrecoverableError, async (value) => {

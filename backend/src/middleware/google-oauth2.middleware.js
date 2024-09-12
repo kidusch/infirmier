@@ -1,4 +1,6 @@
 
+// FUNCTIONAL, BUT HAS BEEN REPLACED BY (LESS SECURE - IMPLICIT OAUTH FLOW) CAPACITOR-GOOGLE-AUTH PLUGIN
+
 import { AuthorizationCode } from 'simple-oauth2'
 import axios from 'axios'
 import config from '#config'

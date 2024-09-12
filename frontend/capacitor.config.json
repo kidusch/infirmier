@@ -1,5 +1,5 @@
 {
-  "appId": "dev.jcbuisson.infirmier",
-  "appName": "JDB Infirmier",
-  "webDir": "dist"
+   "appId": "dev.jcbuisson.infirmier",
+   "appName": "JDB Infirmier",
+   "webDir": "dist"
 }

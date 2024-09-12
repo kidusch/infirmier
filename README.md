@@ -18,9 +18,17 @@ Voir [https://wiki.jcbuisson.dev/minimal/assets/images/auth-workflow.svg](schém
 
 Google Developers Console : https://console.cloud.google.com/apis/dashboard?project=infirmier-418706
 
-- id client OAuth2 "iOS client 1" : 35236017874-2mus35pvufa8kfbojf5p7u1f0cmts4qa.apps.googleusercontent.com
+Google OAuth Capacitor plugin : https://github.com/CodetrixStudio/CapacitorGoogleAuth, utilise un flow moins secure (Implicit Flow ?)
+qui ne passe pas le backend (Authorization Code Grant) et ne nécessite pas de secret, seulement un clientId.
+Fonctionne sur iOS et Android, mais aussi pour le web.
 
-https://branch.io/resources/aasa-validator/
+
+## Deep links
+
+Abandonné pour ce projet, mais tests réussis sur iOS : https://capacitorjs.com/docs/guides/deep-links
+Permet de lancer directement l'application en cliquant sur un lien web.
+L'application doit être configurée pour connaitre l'appli web, et l'appli web doit connaitre l'appli ios
+avec un fichier accessible à l'url /well-known/ 
 
 
 ## IOS / Android
@@ -42,7 +50,7 @@ npx cap open ios
 npx cap open android
 ```
 
-Plugin Google OAuth : https://github.com/CodetrixStudio/CapacitorGoogleAuth
+(Plugin Google OAuth : https://github.com/CodetrixStudio/CapacitorGoogleAuth)
 
 
 ## Modes d'utilisation

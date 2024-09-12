@@ -19,6 +19,7 @@ export default function (app) {
       })
      
       renderToString(ssrApp).then((html) => {
+         console.log('page rendered by SSR')
          res.send(`
          <!DOCTYPE html>
          <html>
