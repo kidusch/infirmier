@@ -45,13 +45,15 @@
          </div>
          
          <div class="flex flex-col">
-            <a class="secondary-btn" :href="`/auth/google?cnxid=${cnxid}`" @click="spinner">
+            <!-- previous Google auth with secure Authorization Code Grant flow -->
+            <!-- <a class="secondary-btn" :href="`/auth/google?cnxid=${cnxid}`" @click="spinner">
                <img src="/src/assets/google.svg" alt="google">
                <span>
                   Continuer avec Google
                </span>
-            </a>
-            <a class="secondary-btn" @click="gSignin">
+            </a> -->
+            <a class="secondary-btn" href="#" @click="googleLogin">
+               <img src="/src/assets/google.svg" alt="google">
                <span>
                   Continuer avec GoogleX
                </span>
@@ -74,8 +76,8 @@ import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
 
 import router from '/src/router'
 import { appState } from '/src/use/useAppState'
-import { localSignin } from '/src/use/useAuthentication'
-import { cnxid } from '/src/client-app.js'
+import { localSignin, googleSignin } from '/src/use/useAuthentication'
+
 
 const email = ref()
 const password = ref()
@@ -117,12 +119,16 @@ onMounted(() => {
    }
 })
 
-const gSignin = async () => {
+const googleLogin = async () => {
+   let googleUser
    try {
-      const response = await GoogleAuth.signIn()
-      console.log('gSignin', response)
+      googleUser = await GoogleAuth.signIn()
    } catch(err) {
-      console.log('gSignin err', err)
+      console.log('googleSignin err', err)
    }
+   console.log('gSignin', googleUser)
+   const user = await googleSignin(googleUser)
+   // go home
+   router.push(`/home/${user.id}`)
 }
 </script>

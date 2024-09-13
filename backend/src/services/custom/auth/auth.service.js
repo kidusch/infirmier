@@ -52,6 +52,21 @@ export default function (app) {
          return createdUser
       },
 
+      // links google user with application user
+      googleSignin: async (googleUser) => {
+         // check existence of a user with same google id
+         let user = await prisma.user.findUnique({ where: { google_id: googleUser.id }})
+         if (user) return user
+         // create user
+         user = await prisma.user.create({
+            data: {
+               email: googleUser.email,
+               name: googleUser.name,
+               google_id: googleUser.id,
+            }
+         })
+      },
+
       // see hooks
       logout: async () => {
          return 'ok'

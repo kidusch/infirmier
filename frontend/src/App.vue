@@ -27,13 +27,9 @@ import { restartApp } from '/src/use/useAuthentication'
 import Spinner from '/src/components/Spinner.vue'
 
 
+// test, works for iOS, see: https://capacitorjs.com/docs/guides/deep-links
 App.addListener('appUrlOpen', (data) => {
    alert(`Deep link! ${data?.url}`)
-   // // Handle the URL scheme
-   // if (data.url && data.url.startsWith('infirmier://')) {
-   //    console.log('Deep link URL:', data.url)
-   //    // Navigate or handle deep link as needed
-   // }
 })
 
 watch(() => appState.value?.unrecoverableError, async (value) => {

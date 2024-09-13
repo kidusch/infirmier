@@ -4,34 +4,18 @@
 - premium doit passer à false lorsque le paiement/abonnement est interrompu
 
 
-# Journal de bord infirmier
+# Modes d'utilisation
 
-- Charlène Fantone, devenir.linfirmier.que.tu.veux.etre@gmail.com, +41767338336, Impasse du plan 1, 1730 Ecuvillens, Suisse
+- accès gratuit à l'application, mais seuls quelques cours marqués 'free' et les éléments associés sont accessibles
+- accès standard : un abonnement de premier niveau permet d'avoir accès à tous les éléments
+- accès premium : un abonnement de deuxième niveau permet d'avoir en plus la correction personnalisée, etc.
 
-- spécification client : https://onedrive.live.com/edit?id=F3D5CD9650AC97DE!4629&resid=F3D5CD9650AC97DE!4629&ithint=file%2cdocx&authkey=!AHjAXRVgmUv7wfw&wdo=2&cid=f3d5cd9650ac97de
-- Figma : https://www.figma.com/design/WMk1ig0gMqx2XVHy664eqP/Devenir-Infirmier?node-id=0-1&t=bznsOdhjUDkAqLcV-0
-
-
-## Authentification
-
-Voir [https://wiki.jcbuisson.dev/minimal/assets/images/auth-workflow.svg](schéma)
-
-Google Developers Console : https://console.cloud.google.com/apis/dashboard?project=infirmier-418706
-
-Google OAuth Capacitor plugin : https://github.com/CodetrixStudio/CapacitorGoogleAuth, utilise un flow moins secure (Implicit Flow ?)
-qui ne passe pas le backend (Authorization Code Grant) et ne nécessite pas de secret, seulement un clientId.
-Fonctionne sur iOS et Android, mais aussi pour le web.
+Sur les stores, les abonnements sont des achats in-app, sur le web ce sont des abonnements Stripe
 
 
-## Deep links
+# CapacitorJS
 
-Abandonné pour ce projet, mais tests réussis sur iOS : https://capacitorjs.com/docs/guides/deep-links
-Permet de lancer directement l'application en cliquant sur un lien web.
-L'application doit être configurée pour connaitre l'appli web, et l'appli web doit connaitre l'appli ios
-avec un fichier accessible à l'url /well-known/ 
-
-
-## IOS / Android
+Génère les projets iOS et Android
 
 ## IOS
 App enregistrée sur le compte de Charlène (voir README.secret)
@@ -50,16 +34,32 @@ npx cap open ios
 npx cap open android
 ```
 
-(Plugin Google OAuth : https://github.com/CodetrixStudio/CapacitorGoogleAuth)
+
+## Authentification Google
+
+Voir [https://wiki.jcbuisson.dev/minimal/assets/images/auth-workflow.svg](schéma) : à adapter
+suite au changement d'authentification Google
+
+Initialement l'authentification Google était implémentée avec le flow recommandé (Authorization Code Grant)
+(voir google-auth2.middleware.js), mais je n'ai pas réussi à l'adapter à iOS et Android.
+Finalement on utilise Google OAuth Capacitor plugin : https://github.com/CodetrixStudio/CapacitorGoogleAuth,
+qui utilise le flow 'Implcit Flow' normalement déconseillé, qui ne nécessite pas de secret, seulement un clientId,
+et ne fait aucune intéraction avec le backend.
+Renvoie directement le user Google, qu'il faut ensuite lier au user de l'application.
+Fonctionne sur iOS et Android, mais aussi pour le web.
+
+Google Developers Console : https://console.cloud.google.com/apis/dashboard?project=infirmier-418706
+
+.env définit VITE_GOOGLE_APP_CLIENT_ID = clientId de "Client Web 1"
+.env.ios définit VITE_GOOGLE_APP_CLIENT_ID = clientId de "Client iOS 1"
+.env.android définit VITE_GOOGLE_APP_CLIENT_ID = clientId de "Client Android 1"
 
 
-## Modes d'utilisation
+### iOS
 
-- accès gratuit à l'application, mais seuls quelques cours marqués 'free' et les éléments associés sont accessibles
-- accès standard : un abonnement de premier niveau permet d'avoir accès à tous les éléments
-- accès premium : un abonnement de deuxième niveau permet d'avoir en plus la correction personnalisée, etc.
-
-Sur les stores, les abonnements sont des achats in-app, sur le web ce sont des abonnements Stripe
+- utilise un "Client ID for iOS" (voir Google Devlopers Console, "Client iOS 1")
+- ajouter à Info.plist, "URL Types", identifier: REVERSED_CLIENT_ID, URL schemes: com.googleusercontent.apps.35236017874-2mus35pvufa8kfbojf5p7u1f0cmts4qa
+(Xcode: App - Targets/App - Info - URL Types, click '+')
 
 
 ## Pas de sessions
@@ -152,6 +152,13 @@ Private Key: dh5acZXqHarphMNw6pDOgtgIG8fbxvC4qdprsnbkedg
 A partir d'un fichier SVG chargé par l'admin, le contenu HTML/SVG est stocké dans la BD.
 Les éléments 'path' du SVG qu'on souhaite mettre en valeur sont enrichis d'attributs 'data-rank' et 'data-name'.
 Le innerHTML correspondant est stocké dans la BD et contient toute l'information nécessaire.
+
+# Deep links (abandonné)
+
+Abandonné pour ce projet, mais tests réussis sur iOS : https://capacitorjs.com/docs/guides/deep-links
+Permet de lancer directement l'application en cliquant sur un lien web.
+L'application doit être configurée pour connaitre le site web, et le site web doit connaitre l'appli ios
+avec un fichier accessible à l'url /well-known/ 
 
 
 # Modèles 3D

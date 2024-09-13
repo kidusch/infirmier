@@ -1,4 +1,4 @@
-import { useSessionStorage } from '@vueuse/core'
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
 
 import { app } from '/src/client-app.js'
 
@@ -77,27 +77,35 @@ export async function localSignin(email, password) {
    return user
 }
 
-export async function logout(userId) {
-   try {
-      await addUserAction(userId, 'logout')
-   } catch(err) {
-      console.log('err', err)
+export async function googleSignin(googleUser) {
+   const user = await app.service('auth').googleSignin(googleUser)
+   await addUserAction(user.id, 'login')
+   return user
+}
+
+export async function logout(user) {
+   if (user.google_id) {
+      GoogleAuth.signOut()
    }
+
+   await addUserAction(user.id, 'logout')
 
    clearCaches()
 
    try {
       await app.service('auth').logout()
    } catch(err) {
-      console.log('err', err)
+      console.log('logout err', err)
    }
-   
-   // router.push('/')
 }
 
 export async function addUserAction(user_id, action) {
-   await app.service('user_action').create({ data: {
-      user_id,
-      action,
-   }})
+   try {
+      await app.service('user_action').create({ data: {
+         user_id,
+         action,
+      }})
+   } catch(err) {
+      console.log('addUserAction err', err)
+   }
 }

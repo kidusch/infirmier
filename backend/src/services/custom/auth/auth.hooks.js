@@ -36,6 +36,7 @@ export default {
    after: {
       localSignin: [afterAuthentication, extendExpiration(config.SESSION_EXPIRE_DELAY)],
       localSignup: [afterAuthentication, extendExpiration(config.SESSION_EXPIRE_DELAY)],
+      googleSignin: [afterAuthentication, extendExpiration(config.SESSION_EXPIRE_DELAY)],
       logout: [afterSignout],
       checkAndExtend: [extendExpiration(config.SESSION_EXPIRE_DELAY)],
    },
