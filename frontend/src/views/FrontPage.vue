@@ -66,8 +66,8 @@ onMounted(async () => {
    adminMisc.value = await app.service('admin_misc').findUnique({ where: { id: 1 }})
 
    await InAppPurchase.echo({ value: "Hello, Capacitor!" })
-   
-   const x = await InAppPurchase.fetchProducts({ value: "Hello, Capacitor!" })
+
+   const x = await InAppPurchase.fetchProducts({ value: "productid" })
    console.log('x', x)
 })
 
