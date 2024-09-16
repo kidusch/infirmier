@@ -70,7 +70,8 @@ onMounted(async () => {
    const x = await InAppPurchase.fetchProducts({ value: "premium" })
    console.log('x', x)
 
-   await InAppPurchase.test({ value: "Hello, World!" })
+   const y = await InAppPurchase.test({ value: "Hello, World!" })
+   console.log('y', y)
 })
 
 function login() {
