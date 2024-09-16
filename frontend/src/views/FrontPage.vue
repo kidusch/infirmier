@@ -65,7 +65,8 @@ onMounted(async () => {
    // the only row of table 'admin_misc' is supposed to have id=1
    adminMisc.value = await app.service('admin_misc').findUnique({ where: { id: 1 }})
 
-   const x = await InAppPurchase.echo({ value: "Hello, Capacitor!" })
+   // const x = await InAppPurchase.echo({ value: "Hello, Capacitor!" })
+   const x = await InAppPurchase.fetchProducts({ value: "Hello, Capacitor!" })
    console.log('x', x)
 
    initializeStore()
