@@ -2,7 +2,6 @@
    <body class="py-4 lg:pt-2 flex flex-col h-screen relative">
 
       <!-- navbar -->
-      <!-- <nav class="lg:border-b lg:pb-2"> -->
       <nav class="lg:border-b lg:pb-2 fixed w-full bg-white" :class="{ 'top-10': isIOS, 'top-0': !isIOS }">
 
          <main class="flex w-full justify-between items-center container max-w-7xl">
@@ -11,6 +10,10 @@
                <img class="h-12" src="/src/assets/logo.svg" alt="Logo">
                <h3 class="max-lg:hidden">Journal de bord IDE</h3>
             </a>
+
+            <button @click="buy">
+               Buy
+            </button>
 
             <button>
                <img class="h-9" src="/src/assets/user.svg" alt="user" @click="login">
@@ -48,6 +51,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { Capacitor } from '@capacitor/core'
+// import "cordova-plugin-purchase"
+import { InAppPurchase } from 'jcb-capacitor-inapp'
 
 import router from "/src/router"
 import { app } from '/src/client-app.js'
@@ -59,7 +64,49 @@ const adminMisc = ref({})
 onMounted(async () => {
    // the only row of table 'admin_misc' is supposed to have id=1
    adminMisc.value = await app.service('admin_misc').findUnique({ where: { id: 1 }})
+
+   const x = await InAppPurchase.echo({ value: "Hello, Capacitor!" })
+   console.log('x', x)
+
+   initializeStore()
 })
+
+
+const productId = '6683299457'
+
+function initializeStore() {
+   // Ensure Cordova is loaded before initializing the store
+   document.addEventListener('deviceready', () => {      
+      console.log('Device is ready, initializing store...')
+      // console.log('CdvPurchase', CdvPurchase)
+
+      return
+
+      const {store, ProductType, Platform} = CdvPurchase
+      
+      // Initialize the store
+      store.verbosity = store.DEBUG; // Optional, for debugging
+      store.register({
+         id: productId,
+         type: store.NON_CONSUMABLE, // or store.CONSUMABLE for consumable products
+         platform: Platform.TEST,
+      })
+      
+      // When the product is successfully purchased
+      store.when(productId).approved((order) => {
+         console.log('Purchase Approved!')
+         order.finish()
+      })
+
+      // Handle failed purchases
+      store.error((error) => {
+         console.log('Purchase Failed', error.message)
+      });
+
+      // Finish initialization and request product details
+      store.refresh()
+   })
+}
 
 function login() {
    router.push('/login')
@@ -67,5 +114,9 @@ function login() {
 
 function signup() {
    router.push('/signup')
+}
+
+function buy() {
+
 }
 </script>

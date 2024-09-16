@@ -6,24 +6,42 @@
 
 # Modes d'utilisation
 
-- accès gratuit à l'application, mais seuls quelques cours marqués 'free' et les éléments associés sont accessibles
-- accès standard : un abonnement de premier niveau permet d'avoir accès à tous les éléments
-- accès premium : un abonnement de deuxième niveau permet d'avoir en plus la correction personnalisée, etc.
+- 'free' : accès gratuit à l'application, mais seuls quelques cours marqués 'free' et les éléments associés sont accessibles
+- 'standard' : un abonnement de premier niveau permet d'avoir accès à tous les éléments
+- 'premium' : un abonnement de deuxième niveau permet d'avoir en plus la correction personnalisée, etc.
 
 Sur les stores, les abonnements sont des achats in-app, sur le web ce sont des abonnements Stripe
 
 
-# CapacitorJS
+# Choix techniques pour application AppStore et GooglePlay
 
+## CapacitorJS
 Génère les projets iOS et Android
+Voir détails plus loin par plateforme
+
+
+## Authentification Google
+https://github.com/CodetrixStudio/CapacitorGoogleAuth, plugin utilisé pour l'authentification Google
+Voir détails plus loin par plateforme
+
+
+## inApp purchase
+Développement d'un plugin Capacitor 'jcb-capacitor-inapp' accessible sur npm (arrive pas à faire marcher le plugin Cordova 'cordova-plugin-purchase')
+On peut tester en simulation sur iOS, en utilisant un 'StoreKit configuration file' (voir https://medium.com/@aisultanios/implement-inn-app-subscriptions-using-swift-and-storekit2-serverless-and-share-active-purchases-7d50f9ecdc09)
+Voir détails plus loin par plateforme
+
 
 ## IOS
 App enregistrée sur le compte de Charlène (voir README.secret)
+PAS BESOIN D'AVOIR UN ABONNEMENT DÉVELOPPEUR ?
+MOT DE PASSE TROUSSEAU SESSION IOS DEVELOPER CHARLENE FANTONE : VIDE
 
 Bundle id : com.journaldebordide.app
 Identifiant Apple : 6673904628
 Apple Id prefix : T8P24LJSUB (Team ID)
 UGS : infirmier
+
+Sandbox tester (pour tests sur device) : Paul Maumy, jean-christophe.buisson@enseeiht.fr / apM**e
 
 
 ```
@@ -33,6 +51,10 @@ npm run build:android
 npx cap open ios
 npx cap open android
 ```
+
+## Android
+
+
 
 
 ## Authentification Google
@@ -60,6 +82,14 @@ Google Developers Console : https://console.cloud.google.com/apis/dashboard?proj
 - utilise un "Client ID for iOS" (voir Google Devlopers Console, "Client iOS 1")
 - ajouter à Info.plist, "URL Types", identifier: REVERSED_CLIENT_ID, URL schemes: com.googleusercontent.apps.35236017874-2mus35pvufa8kfbojf5p7u1f0cmts4qa
 (Xcode: App - Targets/App - Info - URL Types, click '+')
+
+### Android
+COMPLETER
+
+
+## inAPP purchase
+
+iOS : https://medium.com/@aisultanios/implement-inn-app-subscriptions-using-swift-and-storekit2-serverless-and-share-active-purchases-7d50f9ecdc09
 
 
 ## Pas de sessions

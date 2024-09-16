@@ -22,7 +22,13 @@
          <!-- Login Options -->
          <main class="flex flex-col gap-2 my-8">
 
-            <a class="secondary-btn" :href="`/auth/google?cnxid=${cnxid}`" @click="spinner">
+            <!-- <a class="secondary-btn" :href="`/auth/google?cnxid=${cnxid}`" @click="spinner">
+               <img src="/src/assets/google.svg" alt="google">
+               <span>
+                  Continuer avec Google
+               </span>
+            </a> -->
+            <a class="secondary-btn" href="#" @click="googleLogin">
                <img src="/src/assets/google.svg" alt="google">
                <span>
                   Continuer avec Google
@@ -55,9 +61,13 @@
 </template>
 
 <script setup>
-import { appState } from '/src/use/useAppState'
+import { onMounted } from 'vue'
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
+
+// import { appState } from '/src/use/useAppState'
+import { googleSignin } from '/src/use/useAuthentication'
+
 import router from "/src/router"
-import { cnxid } from '/src/client-app.js'
 
 
 const localSignup = () => {
@@ -68,7 +78,33 @@ const login = () => {
    router.push('/login')
 }
 
-const spinner = () => {
-   appState.value.spinnerWaitingText = [ "Chargement..." ]
+onMounted(() => {
+   try {
+      // see: https://github.com/CodetrixStudio/CapacitorGoogleAuth
+      GoogleAuth.initialize({
+         clientId: import.meta.env.VITE_GOOGLE_APP_CLIENT_ID,
+         scopes: ['profile', 'email'],
+         grantOfflineAccess: true,
+      })
+   } catch(err) {
+      console.log('init err', err)
+   }
+})
+
+const googleLogin = async () => {
+   let googleUser
+   try {
+      googleUser = await GoogleAuth.signIn()
+   } catch(err) {
+      console.log('googleSignin err', err)
+   }
+   console.log('gSignin', googleUser)
+   const user = await googleSignin(googleUser)
+   // go home
+   router.push(`/home/${user.id}`)
 }
+
+// const spinner = () => {
+//    appState.value.spinnerWaitingText = [ "Chargement..." ]
+// }
 </script>

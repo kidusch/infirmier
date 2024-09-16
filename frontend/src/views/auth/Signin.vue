@@ -55,7 +55,7 @@
             <a class="secondary-btn" href="#" @click="googleLogin">
                <img src="/src/assets/google.svg" alt="google">
                <span>
-                  Continuer avec GoogleX
+                  Continuer avec Google
                </span>
             </a>
          </div>
@@ -75,7 +75,7 @@ import { ref, onMounted } from 'vue'
 import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
 
 import router from '/src/router'
-import { appState } from '/src/use/useAppState'
+// import { appState } from '/src/use/useAppState'
 import { localSignin, googleSignin } from '/src/use/useAuthentication'
 
 
@@ -101,9 +101,9 @@ const goSignup = () => {
    router.push('/signup')
 }
 
-const spinner = () => {
-   appState.value.spinnerWaitingText = [ "Chargement..." ]
-}
+// const spinner = () => {
+//    appState.value.spinnerWaitingText = [ "Chargement..." ]
+// }
 
 
 onMounted(() => {
