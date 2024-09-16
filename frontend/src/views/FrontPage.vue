@@ -68,46 +68,7 @@ onMounted(async () => {
    // const x = await InAppPurchase.echo({ value: "Hello, Capacitor!" })
    const x = await InAppPurchase.fetchProducts({ value: "Hello, Capacitor!" })
    console.log('x', x)
-
-   initializeStore()
 })
-
-
-const productId = '6683299457'
-
-function initializeStore() {
-   // Ensure Cordova is loaded before initializing the store
-   document.addEventListener('deviceready', () => {      
-      console.log('Device is ready, initializing store...')
-      // console.log('CdvPurchase', CdvPurchase)
-
-      return
-
-      const {store, ProductType, Platform} = CdvPurchase
-      
-      // Initialize the store
-      store.verbosity = store.DEBUG; // Optional, for debugging
-      store.register({
-         id: productId,
-         type: store.NON_CONSUMABLE, // or store.CONSUMABLE for consumable products
-         platform: Platform.TEST,
-      })
-      
-      // When the product is successfully purchased
-      store.when(productId).approved((order) => {
-         console.log('Purchase Approved!')
-         order.finish()
-      })
-
-      // Handle failed purchases
-      store.error((error) => {
-         console.log('Purchase Failed', error.message)
-      });
-
-      // Finish initialization and request product details
-      store.refresh()
-   })
-}
 
 function login() {
    router.push('/login')
