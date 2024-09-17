@@ -67,9 +67,6 @@ onMounted(async () => {
 
    await InAppPurchase.echo({ value: "Hello, Capacitor!" })
 
-   const x = await InAppPurchase.buyProduct({ productId: "premium" })
-   console.log('x', x)
-
    const y = await InAppPurchase.test({ value: "Hello, World!" })
    console.log('y', y)
 })
@@ -82,7 +79,8 @@ function signup() {
    router.push('/signup')
 }
 
-function buy() {
-
+async function buy() {
+   const x = await InAppPurchase.buyProduct({ productId: "premium" })
+   console.log('x', x)
 }
 </script>
