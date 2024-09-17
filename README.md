@@ -30,6 +30,8 @@ Développement d'un plugin Capacitor 'jcb-capacitor-inapp' accessible sur npm (a
 On peut tester en simulation sur iOS, en utilisant un 'StoreKit configuration file' (voir https://medium.com/@aisultanios/implement-inn-app-subscriptions-using-swift-and-storekit2-serverless-and-share-active-purchases-7d50f9ecdc09)
 Voir détails plus loin par plateforme
 
+iOS : >iOS15
+
 
 ## IOS
 App enregistrée sur le compte de Charlène (voir README.secret)
