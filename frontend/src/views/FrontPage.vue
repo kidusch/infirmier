@@ -67,7 +67,7 @@ onMounted(async () => {
 
    await InAppPurchase.echo({ value: "Hello, Capacitor!" })
 
-   const x = await InAppPurchase.buyProduct({ value: "premium" })
+   const x = await InAppPurchase.buyProduct({ productId: "premium" })
    console.log('x', x)
 
    const y = await InAppPurchase.test({ value: "Hello, World!" })
