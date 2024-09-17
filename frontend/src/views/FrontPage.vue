@@ -80,7 +80,7 @@ function signup() {
 }
 
 async function buy() {
-   const x = await InAppPurchase.buyProduct({ productId: "premium" })
+   const x = await InAppPurchase.buyProduct({ productId: "standard_monthly" })
    console.log('x', x)
 }
 </script>
