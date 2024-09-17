@@ -11,6 +11,10 @@
                <h3 class="max-lg:hidden">Journal de bord IDE</h3>
             </a>
 
+            <button @click="check">
+               Check
+            </button>
+
             <button @click="buy">
                Buy
             </button>
@@ -82,5 +86,10 @@ function signup() {
 async function buy() {
    const x = await InAppPurchase.buyProduct({ productId: "standard_monthly" })
    console.log('x', x)
+}
+
+async function check() {
+   const c = await InAppPurchase.checkSubscription({ productId: "standard_monthly" })
+   console.log('c', c)
 }
 </script>
