@@ -95,13 +95,13 @@ const googleLogin = async () => {
    let googleUser
    try {
       googleUser = await GoogleAuth.signIn()
+      console.log('gSignin', googleUser)
+      const user = await googleSignin(googleUser)
+      // go home
+      router.push(`/home/${user.id}`)
    } catch(err) {
       console.log('googleSignin err', err)
    }
-   console.log('gSignin', googleUser)
-   const user = await googleSignin(googleUser)
-   // go home
-   router.push(`/home/${user.id}`)
 }
 
 // const spinner = () => {

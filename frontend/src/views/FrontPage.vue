@@ -89,7 +89,7 @@ async function buy() {
 }
 
 async function check() {
-   const c = await InAppPurchase.checkSubscription({ productId: "standard_monthly" })
-   console.log('c', c)
+   const y = await InAppPurchase.getPurchases()
+   console.log('y', y)
 }
 </script>

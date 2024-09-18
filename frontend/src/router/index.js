@@ -118,6 +118,13 @@ const routes = [
             }),
          },
          {
+            path: 'subscribe',
+            component: () => import('/src/views/student/Subscribe.vue'),
+            props: (route) => ({
+               userid: parseInt(sessionStorage.getItem('userid')),
+            }),
+         },
+         {
             path: 'study-ue',
             component: () => import('/src/views/student/StudyUE.vue'),
             props: (route) => ({

@@ -43,24 +43,24 @@
       <!-- Highlight pens -->
       <ul class="menu menu-horizontal bg-slate-50 rounded-box fixed right-0 bottom-16">
          <li>
-            <div :class="{ active: highlightColor === '#FFFF66' }" @click="highlightColor = '#FFFF66'">
+            <button :class="{ active: highlightColor === '#FFFF66' }" @click="highlightColor = '#FFFF66'">
                <img class="h-6 w-6" src="/src/assets/highlighter-yellow.svg">
-            </div>
+            </button>
          </li>
          <li>
-            <div :class="{ active: highlightColor === '#FFCC66' }" @click="highlightColor = '#FFCC66'">
+            <button :class="{ active: highlightColor === '#FFCC66' }" @click="highlightColor = '#FFCC66'">
                <img class="h-6 w-6" src="/src/assets/highlighter-orange.svg">
-            </div>
+            </button>
          </li>
          <li>
-            <div :class="{ active: highlightColor === '#FF99CC' }" @click="highlightColor = '#FF99CC'">
+            <button :class="{ active: highlightColor === '#FF99CC' }" @click="highlightColor = '#FF99CC'">
                <img class="h-6 w-6" src="/src/assets/highlighter-purple.svg">
-            </div>
+            </button>
          </li>
          <li>
-            <div :class="{ active: highlightColor === null }" @click="highlightColor = null">
+            <button :class="{ active: highlightColor === null }" @click="highlightColor = null">
                <img class="h-6 w-6" src="/src/assets/eraser.svg">
-            </div>
+            </button>
          </li>
       </ul>
 
