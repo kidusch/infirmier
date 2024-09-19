@@ -24,6 +24,11 @@ export const resetUseSubscriptonState = () => {
 
 export const buyProduct = async (productId) => {
    const { revocationDate, expirationDate, active } = await InAppPurchase.buyProduct({ productId })
+   subscriptionState.value.productId = productId
+   subscriptionState.value.revocationDate = revocationDate
+   subscriptionState.value.expirationDate = expirationDate
+   subscriptionState.value.active = active
+   return { productId, revocationDate, expirationDate, active }
 }
 
 
