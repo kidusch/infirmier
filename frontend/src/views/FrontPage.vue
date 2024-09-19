@@ -40,6 +40,7 @@
                <h1>
                   Journal de bord IDE
                </h1>
+               <p>{{ subscriptionInfo?.productId }}</p>
                <p v-html="adminMisc?.welcome_text"></p>
             </div>
             <button class="primary-btn px-10" @click="signup">
@@ -57,6 +58,8 @@ import { ref, onMounted } from 'vue'
 import { Capacitor } from '@capacitor/core'
 import { InAppPurchase } from 'jcb-capacitor-inapp'
 
+import { buyProduct, subscriptionInfo } from '/src/use/useSubscription'
+
 import router from "/src/router"
 import { app } from '/src/client-app.js'
 
@@ -68,13 +71,9 @@ onMounted(async () => {
    // the only row of table 'admin_misc' is supposed to have id=1
    adminMisc.value = await app.service('admin_misc').findUnique({ where: { id: 1 }})
 
-   const platform = Capacitor.getPlatform()
-   if (platform === 'ios' || platform === 'android') {
-
-   } else {
-      // web: use Stripe
-
-   }
+   // setInterval(() => {
+   //    console.log("interval", subscriptionInfo.value)
+   // }, 4000)
 })
 
 function login() {
@@ -86,7 +85,7 @@ function signup() {
 }
 
 async function buy() {
-   const x = await InAppPurchase.buyProduct({ productId: "standard_monthly" })
+   const x = await buyProduct("standard_monthly")
    console.log('x', x)
 }
 
