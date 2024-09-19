@@ -37,10 +37,6 @@
       </main>
 
    </main>
-
-   <!-- PROPOSE SUBSCRIPTION MODAL -->
-   <SubscribeDialog ref="subscribeModal" @cancel="subscribeModal?.close" @subscribe="gotoSubscribe" />
-
 </template>
 
 <script setup>
@@ -51,8 +47,6 @@ import { listOfSubUE } from '/src/use/useSubUE'
 import { subUEStudyProgress, ueStudyProgress } from '/src/use/useProgress'
 import router from "/src/router"
 
-import SubscribeDialog from '/src/components/SubscribeDialog.vue'
-
 
 const props = defineProps({
    userid: {
@@ -61,18 +55,7 @@ const props = defineProps({
    },
 })
 
-const subscribeModal = ref()
-
 const select = (ue, subUE) => {
-   if (false) {
-      subscribeModal.value.showModal()
-   } else {
-      // router.push(`/student/study-sub-ue/${ue.id}/${subUE.id}`)
-      router.push(`/student/study-sub-ue/${ue.id}/${subUE.id}`)
-   }
-}
-
-const gotoSubscribe = () => {
-   router.push(`/student/subscribe`)
+   router.push(`/student/study-sub-ue/${ue.id}/${subUE.id}`)
 }
 </script>

@@ -86,7 +86,9 @@ import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
 import { caseStudyOfId } from '/src/use/useCaseStudy'
 import { theUserCaseStudy, updateUserCaseStudy } from '/src/use/useUserCaseStudy'
+
 import router from "/src/router"
+import { app } from '/src/client-app.js'
 
 
 const props = defineProps({

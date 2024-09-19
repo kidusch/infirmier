@@ -55,7 +55,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { Capacitor } from '@capacitor/core'
-// import "cordova-plugin-purchase"
 import { InAppPurchase } from 'jcb-capacitor-inapp'
 
 import router from "/src/router"
@@ -69,10 +68,13 @@ onMounted(async () => {
    // the only row of table 'admin_misc' is supposed to have id=1
    adminMisc.value = await app.service('admin_misc').findUnique({ where: { id: 1 }})
 
-   await InAppPurchase.echo({ value: "Hello, Capacitor!" })
+   const platform = Capacitor.getPlatform()
+   if (platform === 'ios' || platform === 'android') {
 
-   const y = await InAppPurchase.getPurchases({ value: "--" })
-   console.log('y', y)
+   } else {
+      // web: use Stripe
+
+   }
 })
 
 function login() {
@@ -89,7 +91,7 @@ async function buy() {
 }
 
 async function check() {
-   const y = await InAppPurchase.getPurchases()
+   const y = await InAppPurchase.checkSubscription()
    console.log('y', y)
 }
 </script>

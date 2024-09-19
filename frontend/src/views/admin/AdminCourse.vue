@@ -17,6 +17,7 @@
       </header>
 
       <main class="flex flex-col gap-3">
+
          <div>
             <div class="flex justify-between">
                <label for="title">Titre</label>
@@ -34,6 +35,17 @@
                />
             </div>
          </div>
+
+         <div class="flex items-center pb-1.5">
+            <label for="default-radio-1" class="font-normal me-2 w-12">
+               <p class="text-sm text-black">
+                  Gratuit
+               </p>
+            </label>
+
+            <input type="checkbox" :checked="free" @click="ev => toggleFree(ev)" class="checkbox checkbox-primary" />
+         </div>
+
          
          <div>
             <div class="flex justify-between">
@@ -115,6 +127,12 @@ const onInputTitle = async (ev) => {
 }
 const debouncedInputTitle = useDebounceFn(onInputTitle, 500)
 const isTitleDisabled = ref(true)
+
+// handle 'free' editing
+const free = computed(() => course?.value.free)
+const toggleFree = async (ev) => {
+   await updateCourse(props.course_id, { free: ev.target.checked })
+}
 
 // handle content editing
 const localContent = ref()

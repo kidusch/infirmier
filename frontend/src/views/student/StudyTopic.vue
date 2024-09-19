@@ -44,14 +44,16 @@
          </div>
 
       </main>
-
-
    </main>
+
+   <!-- PROPOSE SUBSCRIPTION MODAL -->
+   <SubscribeDialog ref="subscribeModal" @cancel="subscribeModal?.close" @subscribe="gotoSubscribe" />
 </template>
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 
+import { userOfId } from '/src/use/useUser'
 import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
@@ -59,6 +61,8 @@ import { listOfCourse } from '/src/use/useCourse'
 import { courseStudyProgress, topicStudyProgress } from '/src/use/useProgress'
 
 import router from "/src/router"
+
+import SubscribeDialog from '/src/components/SubscribeDialog.vue'
 
 
 const props = defineProps({
@@ -80,14 +84,23 @@ const props = defineProps({
    },
 })
 
+const user = computed(() => userOfId.value(props.userid))
 const ue = computed(() => ueOfId.value(props.ue_id))
 const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
 const topic = computed(() => topicOfId.value(props.topic_id))
 const courseList = computed(() => listOfCourse.value(props.topic_id))
 
-const move = ref(false)
-
 const selectCourse = (course) => {
-   router.push(`/student/study-course/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${course.id}`)
+   if (!course.free && !user.product_id) {
+      subscribeModal.value.showModal()
+   } else {
+      router.push(`/student/study-course/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${course.id}`)
+   }
+}
+
+const subscribeModal = ref()
+
+const gotoSubscribe = () => {
+   router.push(`/student/subscribe`)
 }
 </script>

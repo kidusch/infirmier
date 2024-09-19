@@ -14,6 +14,7 @@ model user {
   password              String?    // 4-digit pin-code for patients
   accept_cgu            Boolean?
   admin                 Boolean    @default(false)  // is admin
+  premium               Boolean    @default(false)  // À SUPPRIMER
   product_id            String?    // product id of subscription (AppStore, GooglePlay, Stripe), among 'standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly'
   subscription_list     String    @default("[]")   // push notification 'adresses', comma-separated
   shared_agenda Boolean @default(false)
