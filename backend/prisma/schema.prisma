@@ -14,17 +14,22 @@ model user {
   password              String?    // 4-digit pin-code for patients
   accept_cgu            Boolean?
   admin                 Boolean    @default(false)  // is admin
-  premium               Boolean    @default(false)  // À SUPPRIMER
-  product_id            String?    // product id of subscription (AppStore, GooglePlay, Stripe), among 'standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly'
-  subscription_list     String    @default("[]")   // push notification 'adresses', comma-separated
+  subscription_list     String     @default("[]")   // push notification 'adresses', comma-separated
   shared_agenda Boolean @default(false)
 
   google_id String?     @unique(map: "uses_google_id_unique")
   name      String?
   picture   String?
 
-  messages_from         message[]        @relation("from")
-  messages_to           message[]        @relation("to")
+  // subscription_type     String?      // null, 'standard', 'premium'
+
+  product_id            String?     // null, 'standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly'
+  revocation_date       DateTime?
+  expiration_date       DateTime?
+  active                Boolean?
+
+  messages_from         message[]    @relation("from")
+  messages_to           message[]    @relation("to")
   user_actions          user_action[]
   user_courses          user_course[] // actually a 1:1 relationship
   user_cards            user_card[] // actually a 1:1 relationship

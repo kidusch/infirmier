@@ -9,16 +9,16 @@
 
       <main class="mt-4">
          <section class="grid grid-cols-2 grid-flow-rows gap-4">
-            <button class="rounded-lg border-2 text-center p-6 hover:bg-gray-200">
+            <button class="rounded-lg border-2 text-center p-6 hover:bg-gray-200" @click="buySubscription('standard_monthly')">
                Standard - monthly
             </button>
-            <div class="rounded-lg border-2 text-center p-6 hover:bg-gray-200">
+            <div class="rounded-lg border-2 text-center p-6 hover:bg-gray-200" @click="buySubscription('standard_yearly')">
                Standard - yearly
             </div>
-            <div class="rounded-lg border-2 text-center p-6 hover:bg-gray-200">
+            <div class="rounded-lg border-2 text-center p-6 hover:bg-gray-200" @click="buySubscription('premium_monthly')">
                Premium - monthly
             </div>
-            <div class="rounded-lg border-2 text-center p-6 hover:bg-gray-200">
+            <div class="rounded-lg border-2 text-center p-6 hover:bg-gray-200" @click="buySubscription('premium_yearly')">
                Premium - yearly
             </div>
          </section>
@@ -28,6 +28,7 @@
 </template>
 
 <script setup>
+import { buyProduct, subscriptionOfUser } from '/src/use/useUser'
 
 const props = defineProps({
    userid: {
@@ -35,6 +36,16 @@ const props = defineProps({
       required: true
    },
 })
+
+const buySubscription = async (productId) => {
+   const platform = Capacitor.getPlatform()
+   if (platform === 'ios' || platform === 'android') {
+      const b = await buyProduct(productId)
+      console.log('b', b)
+   } else {
+
+   }
+}
 
 // const subscribe = async () => {
 //    const session = await app.service('stripe').createSession(props.userid)

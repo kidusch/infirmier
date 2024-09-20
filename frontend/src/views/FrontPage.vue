@@ -11,14 +11,6 @@
                <h3 class="max-lg:hidden">Journal de bord IDE</h3>
             </a>
 
-            <button @click="check">
-               Check
-            </button>
-
-            <button @click="buy">
-               Buy
-            </button>
-
             <button>
                <img class="h-9" src="/src/assets/user.svg" alt="user" @click="login">
             </button>
@@ -40,7 +32,6 @@
                <h1>
                   Journal de bord IDE
                </h1>
-               <p>{{ subscriptionInfo?.productId }}</p>
                <p v-html="adminMisc?.welcome_text"></p>
             </div>
             <button class="primary-btn px-10" @click="signup">
@@ -56,9 +47,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { Capacitor } from '@capacitor/core'
-import { InAppPurchase } from 'jcb-capacitor-inapp'
-
-import { buyProduct, subscriptionInfo } from '/src/use/useSubscription'
 
 import router from "/src/router"
 import { app } from '/src/client-app.js'
@@ -70,10 +58,6 @@ const adminMisc = ref({})
 onMounted(async () => {
    // the only row of table 'admin_misc' is supposed to have id=1
    adminMisc.value = await app.service('admin_misc').findUnique({ where: { id: 1 }})
-
-   // setInterval(() => {
-   //    console.log("interval", subscriptionInfo.value)
-   // }, 4000)
 })
 
 function login() {
@@ -82,15 +66,5 @@ function login() {
 
 function signup() {
    router.push('/signup')
-}
-
-async function buy() {
-   const x = await buyProduct("standard_monthly")
-   console.log('x', x)
-}
-
-async function check() {
-   const y = await InAppPurchase.checkSubscription()
-   console.log('y', y)
 }
 </script>

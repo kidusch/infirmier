@@ -1,6 +1,6 @@
 import { computed } from 'vue'
-// import { useSessionStorage } from '@vueuse/core'
 import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
+import { InAppPurchase } from 'jcb-capacitor-inapp'
 
 import { app } from '/src/client-app.js'
 
@@ -55,15 +55,14 @@ export const getUser = async (id) => {
 }
 
 export const userOfId = computed(() => id => {
-   if (!userState.value) return
    if (!userState.value) return undefined
    const status = userState.value?.userStatus[id]
    if (status === 'ready') return userState.value.userCache[id]
    if (status === 'ongoing') return undefined // ongoing request
    userState.value.userStatus[id] = 'ongoing'
    app.service('user').findUnique({ where: { id }})
-   .then(ue => {
-      userState.value.userCache[id] = ue
+   .then(user => {
+      userState.value.userCache[id] = user
       userState.value.userStatus[id] = 'ready'
    })
    .catch(err => {
@@ -104,3 +103,58 @@ export const listOfUser = computed(() => {
    }
    return []
 })
+
+//////////////////           SUBSCRIPTION           //////////////////
+
+export const buyProduct = async (id, productId) => {
+   const { revocationDate, expirationDate, active } = await InAppPurchase.buyProduct({ productId })
+   await updateUser(id, {
+      product_id: productId,
+      revocation_date: revocationDate,
+      expiration_date: expirationDate,
+      active,
+   })
+   return { productId, revocationDate, expirationDate, active }
+}
+
+export const updateSubscriptionInfo = async (id) => {
+   // ask info to stores
+   const platform = Capacitor.getPlatform()
+   if (platform === 'ios' || platform === 'android') {
+      console.log("checking...")
+      const { productId, revocationDate, expirationDate, active } = await InAppPurchase.checkSubscription()
+      console.log("info", productId, revocationDate, expirationDate, active)
+      if (productId) {
+         // update cache info
+         updateUser(id, {
+            product_id: productId,
+            revocation_date: revocationDate,
+            expiration_date: expirationDate,
+            active,
+         })
+      } else {
+         if (userState.value.productId) {
+            console.log("shouldn't happen: keeping cache info")
+         }
+      }
+   } else {
+      // ask stripe
+   }
+
+   // return cache info
+   return {
+      productId: userState.value.productId,
+      revocationDate: userState.value.revocationDate, 
+      expirationDate: userState.value.expirationDate,
+      active: userState.value.active,
+   }
+}
+
+// undefined,  null, 'standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly'
+export const subscriptionOfUser = computed(() => (id) => {
+   const user = userOfId.value(id)
+   if (!user.value) return undefined
+   if (!user.value.active) return null // no subscription (null), or a subscription has been made, but is no longer active (false)
+   return user.value.product_id
+})
+

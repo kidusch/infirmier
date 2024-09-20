@@ -9,11 +9,9 @@
 
          <section class="flex flex-col">
             <h1>
-               Bienvenue dans le
-               <span class="text-primary">
-                  Journal de bord Infirmier
-               </span>
+               Bienvenue dans le <span class="text-primary">Journal de bord Infirmier</span>
             </h1>
+            <p>{{ subscriptionOfUser(userid) }}</p>
          </section>
 
          <div class="flex flex-col mt-2">
@@ -31,6 +29,7 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 
+import { updateSubscriptionInfo, subscriptionOfUser } from '/src/use/useUser'
 import { getUEList } from '/src/use/useUE'
 import { subUEState } from '/src/use/useSubUE'
 import { courseState } from '/src/use/useCourse'
@@ -343,6 +342,10 @@ onMounted(async () => {
             userCaseStudyState.value.theUserCaseStudyStatus[key] = 'ready'
          }
       }
+
+      // update subscription info
+      const x = await updateSubscriptionInfo(props.userid)
+      console.log('x', x)
 
    } catch(err) {
       console.log('err', err)

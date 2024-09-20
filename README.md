@@ -1,7 +1,6 @@
 
 # Bugs
 
-- premium doit passer à false lorsque le paiement/abonnement est interrompu
 
 
 # Modes d'utilisation
@@ -26,17 +25,21 @@ Voir détails plus loin par plateforme
 
 
 ## inApp purchase
-Développement d'un plugin Capacitor 'jcb-capacitor-inapp' accessible sur npm (arrive pas à faire marcher le plugin Cordova 'cordova-plugin-purchase')
+Développement d'un plugin Capacitor 'jcb-capacitor-inapp' accessible sur npm (le plugin Cordova 'cordova-plugin-purchase' est vieux et non fonctionnel)
 
-### iOS
+### inApp purchase - iOS
 iOS : >iOS15 (utilise StoreKit2, les transactions, async/await)
+Voir : https://medium.com/@aisultanios/implement-inn-app-subscriptions-using-swift-and-storekit2-serverless-and-share-active-purchases-7d50f9ecdc09
 
-On peut tester en simulation sur iOS, en utilisant un 'StoreKit configuration file' (voir https://medium.com/@aisultanios/implement-inn-app-subscriptions-using-swift-and-storekit2-serverless-and-share-active-purchases-7d50f9ecdc09)
+On peut tester en simulation sur iOS, en utilisant un 'StoreKit configuration file' :
 -> le créer dans XCode avec File -> new -> File -> StoreKit Configuration
 -> l'utiliser dans le Run avec Product -> Scheme -> Edit Scheme... -> choisir le fichier dans la rubrique "StoreKit configuration"
 
+### inApp purchase - Android
+COMPLÉTER
 
-## IOS
+
+## AppStore / iOSConnect
 App enregistrée sur le compte de Charlène (voir README.secret)
 PAS BESOIN D'AVOIR UN ABONNEMENT DÉVELOPPEUR ?
 MOT DE PASSE TROUSSEAU SESSION IOS DEVELOPER CHARLENE FANTONE : VIDE
@@ -57,7 +60,7 @@ npx cap open ios
 npx cap open android
 ```
 
-## Android
+## GooglePlay
 
 
 
@@ -82,19 +85,15 @@ Google Developers Console : https://console.cloud.google.com/apis/dashboard?proj
 .env.android définit VITE_GOOGLE_APP_CLIENT_ID = clientId de "Client Android 1"
 
 
-### iOS
+### Authentification Google - iOS
 
 - utilise un "Client ID for iOS" (voir Google Devlopers Console, "Client iOS 1")
 - ajouter à Info.plist, "URL Types", identifier: REVERSED_CLIENT_ID, URL schemes: com.googleusercontent.apps.35236017874-2mus35pvufa8kfbojf5p7u1f0cmts4qa
 (Xcode: App - Targets/App - Info - URL Types, click '+')
 
-### Android
-COMPLETER
+### Authentification Google - Android
+COMPLÉTER
 
-
-## inAPP purchase
-
-iOS : https://medium.com/@aisultanios/implement-inn-app-subscriptions-using-swift-and-storekit2-serverless-and-share-active-purchases-7d50f9ecdc09
 
 
 ## Pas de sessions

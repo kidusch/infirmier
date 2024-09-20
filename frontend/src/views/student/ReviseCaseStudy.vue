@@ -92,7 +92,7 @@
 import { ref, computed } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
-import { userOfId } from '/src/use/useUser'
+import { userOfId, subscriptionOfUser } from '/src/use/useUser'
 import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
@@ -153,7 +153,7 @@ const answer = computed(() => localAnswer.value || userCaseStudy.value?.answer)
 app.service('user_case_study').on('update', userCaseStudy => {
    localAnswer.value = userCaseStudy.answer
 })
-const answerPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
+const answerPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition / v-position
 const onAnswerInput = async (ev) => {
    localAnswer.value = ev.target.value
    answerPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
@@ -163,7 +163,7 @@ const onAnswerInputDebounced = useDebounceFn(onAnswerInput, 500)
 const isAnswerDisabled = ref(true)
 
 // custom directive (v-position on <input> or <textarea>) which restores cursor position
-   const vPosition = {
+const vPosition = {
    updated: (el, binding) => {
       // binding.value is the directive argument, here the cursor position ref { start, end }
       el.selectionStart, el.selectionEnd = binding.value.start, binding.value.end
@@ -186,7 +186,7 @@ const premiumModal = ref()
 const transmitModal = ref(false)
 
 const getCustomCorrection = async () => {
-   if (user.value.premium) {
+   if (subscriptionOfUser.value(user.value.id)) {
       await updateUserCaseStudy(userCaseStudy.value.id, {
          custom_correction_status: 'waiting-for-correction',
          custom_correction_date: new Date(),

@@ -80,7 +80,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-import { userOfId } from '/src/use/useUser'
+import { userOfId, subscriptionOfUser } from '/src/use/useUser'
 import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
@@ -137,7 +137,7 @@ const premiumModal = ref()
 const transmitModal = ref(false)
 
 const getCustomCorrection = async () => {
-   if (user.value.premium) {
+   if (subscriptionOfUser.value(user.value.id)) {
       await updateUserCaseStudy(userCaseStudy.value.id, { custom_correction_status: 'waiting-for-correction' })
       transmitModal.value.showModal()
    } else {
