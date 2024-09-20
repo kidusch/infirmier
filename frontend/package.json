@@ -8,6 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "build:ios": "vite build --mode ios && npx cap sync",
+    "build:iosdev": "vite build --mode iosdev && npx cap sync",
     "build:android": "vite build --mode android && npx cap sync"
   },
   "dependencies": {

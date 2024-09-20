@@ -8,6 +8,7 @@
       </header>
 
       <main class="mt-4">
+
          <section class="grid grid-cols-2 grid-flow-rows gap-4">
             <button class="rounded-lg border-2 text-center p-6 hover:bg-gray-200" @click="buySubscription('standard_monthly')">
                Standard - monthly
@@ -22,6 +23,10 @@
                Premium - yearly
             </div>
          </section>
+
+
+         <p>{{ subscriptionOfUser(userid) }}</p>
+
       </main>
 
    </main>
@@ -40,7 +45,7 @@ const props = defineProps({
 const buySubscription = async (productId) => {
    const platform = Capacitor.getPlatform()
    if (platform === 'ios' || platform === 'android') {
-      const b = await buyProduct(productId)
+      const b = await buyProduct(props.userid, productId)
       console.log('b', b)
    } else {
 

@@ -2,7 +2,6 @@
 # Bugs
 
 
-
 # Modes d'utilisation
 
 - 'free' : accès gratuit à l'application, mais seuls quelques cours marqués 'free' et les éléments associés sont accessibles
@@ -12,7 +11,36 @@
 Sur les stores, les abonnements sont des achats in-app, sur le web ce sont des abonnements Stripe
 
 
+# Configuration
+
+## Configuration de développement
+
+- frontend, voir : https://vitejs.dev/guide/env-and-mode, accessibles via import.meta.env
+   - .env          pour version web / PWA
+   - .env.iosdev   pour exécution en dev sur iOS simulator
+
+Lancer le backend en dev :
+```
+cd backend
+npm run dev
+```
+
+### Exécuter sur iOS Simulator
+Builder le frontend pour ios et exécuter le projet iOS :
+```
+cd frontend
+npm run build:iosdev   # utilise .env.iosdev
+npx cap open ios
+```
+
+## Configuration de production
+
+
+
+
 # Choix techniques pour application AppStore et GooglePlay
+
+Essai de PWABuilder (Microsoft) Pb : rien prévu pour in-app purchase
 
 ## CapacitorJS
 Génère les projets iOS et Android
@@ -208,11 +236,6 @@ https://www.mixamo.com
 - tentative d'utilisation de Vike pour prerendering de '/'
 Semble prometteur et récent, mais délicat
 
-
-# AppStore & Google Play
-
-Essayer d'utiliser PWABuilder (Microsoft) Pb : rien prévu pour in-app purchase
-Utiliser plutôt Capacitor (plugins pour in-app)
 
 
 ## Références utiles

@@ -92,7 +92,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { Capacitor } from '@capacitor/core'
 
 import { logout, clearCaches } from '/src/use/useAuthentication'
@@ -112,6 +112,12 @@ const props = defineProps({
       type: Number,
       required: true
    },
+})
+
+onMounted(async () => {
+   // update subscription info
+   const x = await updateSubscriptionInfo(props.userid)
+   console.log('x', x)
 })
 
 const isIOS = ref(Capacitor.getPlatform() === 'ios')
@@ -170,11 +176,11 @@ const menuItems = computed(() => {
       iconPath: revisionIconPath,
    })
 
-   // items.push({
-   //    label: "Divers",
-   //    path: `/student/misc`,
-   //    iconPath: revisionIconPath,
-   // })
+   items.push({
+      label: "Abonnements",
+      path: `/student/subscribe`,
+      iconPath: revisionIconPath,
+   })
    return items
 })
 

@@ -153,8 +153,8 @@ export const updateSubscriptionInfo = async (id) => {
 // undefined,  null, 'standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly'
 export const subscriptionOfUser = computed(() => (id) => {
    const user = userOfId.value(id)
-   if (!user.value) return undefined
-   if (!user.value.active) return null // no subscription (null), or a subscription has been made, but is no longer active (false)
-   return user.value.product_id
+   if (!user) return undefined
+   if (!user.active) return null // no subscription (null), or a subscription has been made, but is no longer active (false)
+   return user.product_id
 })
 
