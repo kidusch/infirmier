@@ -2,7 +2,7 @@
    <div class="py-4 flex flex-col h-screen">
 
       <!-- navbar -->
-      <nav class="border-b pb-2 fixed w-full bg-white" :class="{ 'top-10': isIOS, 'top-0': !isIOS }">
+      <nav class="border-b pb-2 absolute top-0 w-full bg-white">
 
          <main class="flex w-full items-center justify-between container max-w-7xl">
             <button @click="toggleSideMenu">
@@ -98,7 +98,6 @@
 
 <script setup>
 import { onMounted, ref, computed } from 'vue'
-import { Capacitor } from '@capacitor/core'
 
 import { logout, clearCaches } from '/src/use/useAuthentication'
 import { userOfId, listOfUser } from '/src/use/useUser'
@@ -120,8 +119,6 @@ const props = defineProps({
       required: true
    },
 })
-
-const isIOS = ref(Capacitor.getPlatform() === 'ios')
 
 const user = computed(() => userOfId.value(props.userid))
 

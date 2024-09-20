@@ -2,7 +2,7 @@
    <div class="py-4 flex flex-col h-screen">
 
       <!-- navbar -->
-      <nav class="border-b pb-2 fixed w-full bg-white" :class="{ 'top-10': isIOS, 'top-0': !isIOS }">
+      <nav class="border-b pb-2 absolute top-0 w-full bg-white">
 
          <main class="flex w-full items-center justify-between container max-w-7xl">
             <button @click="toggleSideMenu">
@@ -93,10 +93,10 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { Capacitor } from '@capacitor/core'
 
+import { isIosPortrait } from '/src/use/useDevice'
 import { logout, clearCaches } from '/src/use/useAuthentication'
-import { userOfId, listOfUser } from '/src/use/useUser'
+import { userOfId, listOfUser, updateSubscriptionInfo } from '/src/use/useUser'
 import { unreadMessagesCountOfUser2ByUser1 } from '/src/use/useMessage'
 import { isCareTabVisible } from '/src/use/useCare'
 import { isDocumentTabVisible } from '/src/use/useDocument'
@@ -119,8 +119,6 @@ onMounted(async () => {
    const x = await updateSubscriptionInfo(props.userid)
    console.log('x', x)
 })
-
-const isIOS = ref(Capacitor.getPlatform() === 'ios')
 
 const user = computed(() => userOfId.value(props.userid))
 

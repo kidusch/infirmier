@@ -2,7 +2,7 @@
    <body class="py-4 lg:pt-2 flex flex-col h-screen relative">
 
       <!-- navbar -->
-      <nav class="lg:border-b lg:pb-2 fixed w-full bg-white" :class="{ 'top-10': isIOS, 'top-0': !isIOS }">
+      <nav class="lg:border-b lg:pb-2 fixed w-full bg-white">
 
          <main class="flex w-full justify-between items-center container max-w-7xl">
 
@@ -45,13 +45,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { Capacitor } from '@capacitor/core'
+import { ref, onMounted, computed } from 'vue'
 
 import router from "/src/router"
 import { app } from '/src/client-app.js'
 
-const isIOS = ref(Capacitor.getPlatform() === 'ios')
 
 const adminMisc = ref({})
 

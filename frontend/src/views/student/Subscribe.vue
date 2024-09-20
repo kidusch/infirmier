@@ -7,15 +7,16 @@
          </p>
       </header>
 
-      <main class="mt-4">
+      <main class="mt-4 max-w-xl">
 
          <section class="grid grid-cols-2 grid-flow-rows gap-4">
-            <button class="rounded-lg border-2 text-center p-6 hover:bg-gray-200" @click="buySubscription('standard_monthly')">
+            <div class="rounded-lg border-2 text-center p-6 hover:bg-gray-200 box" @click="buySubscription('standard_monthly')">
                Standard - monthly
-            </button>
+            </div>
             <div class="rounded-lg border-2 text-center p-6 hover:bg-gray-200" @click="buySubscription('standard_yearly')">
                Standard - yearly
             </div>
+
             <div class="rounded-lg border-2 text-center p-6 hover:bg-gray-200" @click="buySubscription('premium_monthly')">
                Premium - monthly
             </div>
@@ -23,10 +24,7 @@
                Premium - yearly
             </div>
          </section>
-
-
-         <p>{{ subscriptionOfUser(userid) }}</p>
-
+         
       </main>
 
    </main>
@@ -58,3 +56,20 @@ const buySubscription = async (productId) => {
 //    window.location.href = session.url
 // }
 </script>
+
+<style scoped>
+.box {
+  position: relative;
+  background-color: lightblue;
+  border: 1px solid #ccc;
+}
+
+.box::after {
+  content: '✔'; /* Unicode for checkmark */
+  font-size: 24px;
+  color: green;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
+</style>
