@@ -125,7 +125,7 @@ export const updateSubscriptionInfo = async (id) => {
       const { productId, revocationDate, expirationDate, active } = await InAppPurchase.checkSubscription()
       console.log("info", productId, revocationDate, expirationDate, active)
       if (productId) {
-         // update cache info
+         // replace cache info by Store info
          updateUser(id, {
             product_id: productId,
             revocation_date: revocationDate,
@@ -150,6 +150,7 @@ export const updateSubscriptionInfo = async (id) => {
    }
 }
 
+// return active (= existing, not expired) subscription
 // undefined,  null, 'standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly'
 export const subscriptionOfUser = computed(() => (id) => {
    const user = userOfId.value(id)
@@ -158,3 +159,9 @@ export const subscriptionOfUser = computed(() => (id) => {
    return user.product_id
 })
 
+// has an active, premium subscription
+export const isPremium = computed(() => (id) => {
+   const productId = subscriptionOfUser.value(id)
+   if (!productId) return false
+   return productId.startsWith('premium')
+})

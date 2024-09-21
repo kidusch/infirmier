@@ -1,11 +1,7 @@
 <template>
 
-<div v-if="needRefresh" class="fixed bottom-0 right-0 m-4 p-4 bg-green-100 border-solid rounded z-50">
+   <div v-if="needRefresh" class="fixed bottom-0 right-0 m-4 p-4 bg-green-100 border-solid rounded z-50">
       Une nouvelle version est disponible <a href="#" class="text-blue-400 hover:underline ml-2" @click="updateServiceWorker">installer</a>
-   </div>
-
-   <div class="fixed bottom-0 right-0 m-4 p-4 bg-green-100 border-solid rounded z-50">
-      {{ isIosPortrait }}
    </div>
 
    <router-view class="fixed" :class="{ 'top-12': isIosPortrait, 'top-2': !isIosPortrait }">

@@ -11,7 +11,6 @@
             <h1>
                Bienvenue dans le <span class="text-primary">Journal de bord Infirmier</span>
             </h1>
-            <p>{{ subscriptionOfUser(userid) }}</p>
          </section>
 
          <div class="flex flex-col mt-2">
@@ -29,7 +28,6 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 
-import { subscriptionOfUser } from '/src/use/useUser'
 import { getUEList } from '/src/use/useUE'
 import { subUEState } from '/src/use/useSubUE'
 import { courseState } from '/src/use/useCourse'

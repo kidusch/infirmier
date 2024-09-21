@@ -1,4 +1,8 @@
 <template>
+   <!-- <div class="fixed bottom-0 right-0 m-4 p-4 bg-green-100 border-solid rounded z-50">
+      {{ subscriptionOfUser(userid) }} - {{ isIosPortrait }}
+   </div> -->
+
    <div class="py-4 flex flex-col h-screen">
 
       <!-- navbar -->
@@ -94,13 +98,14 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 
-import { isIosPortrait } from '/src/use/useDevice'
+import { subscriptionOfUser } from '/src/use/useUser'
 import { logout, clearCaches } from '/src/use/useAuthentication'
 import { userOfId, listOfUser, updateSubscriptionInfo } from '/src/use/useUser'
 import { unreadMessagesCountOfUser2ByUser1 } from '/src/use/useMessage'
 import { isCareTabVisible } from '/src/use/useCare'
 import { isDocumentTabVisible } from '/src/use/useDocument'
 import { isLegislationTabVisible } from '/src/use/useLegislation'
+import { isIosPortrait } from '/src/use/useDevice'
 
 import { courseIconPath, revisionIconPath } from '/src/lib/icons.mjs'
 import router from '/src/router'

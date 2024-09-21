@@ -81,7 +81,7 @@
    </main>
 
    <!-- ASK PREMIUM SUBSCRIPTION MODAL -->
-   <PremiumDialog ref="premiumModal" @cancel="premiumModal?.close" @subscribe="subscribe" />
+   <PremiumDialog ref="premiumModal" @cancel="premiumModal?.close" @subscribe="gotoSubscribe" />
 
    <!-- TRANSMIT MODAL -->
    <CaseStudyAnswerDialog ref="transmitModal" @closed="onClosed" />
@@ -92,7 +92,7 @@
 import { ref, computed } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
-import { userOfId, subscriptionOfUser } from '/src/use/useUser'
+import { userOfId, isPremium } from '/src/use/useUser'
 import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
@@ -186,7 +186,7 @@ const premiumModal = ref()
 const transmitModal = ref(false)
 
 const getCustomCorrection = async () => {
-   if (subscriptionOfUser.value(user.value.id)) {
+   if (isPremium.value(user.value.id)) {
       await updateUserCaseStudy(userCaseStudy.value.id, {
          custom_correction_status: 'waiting-for-correction',
          custom_correction_date: new Date(),
@@ -197,10 +197,14 @@ const getCustomCorrection = async () => {
    }
 }
 
-const subscribe = async () => {
-   const session = await app.service('stripe').createSession(props.userid)
-   console.log('session', session)
-   window.location.href = session.url
+// const subscribe = async () => {
+//    const session = await app.service('stripe').createSession(props.userid)
+//    console.log('session', session)
+//    window.location.href = session.url
+// }
+
+const gotoSubscribe = () => {
+   router.push(`/student/subscribe`)
 }
 
 const onClosed = () => {
