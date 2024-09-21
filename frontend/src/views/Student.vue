@@ -1,12 +1,13 @@
 <template>
+
    <!-- <div class="fixed bottom-0 right-0 m-4 p-4 bg-green-100 border-solid rounded z-50">
-      {{ subscriptionOfUser(userid) }} - {{ isIosPortrait }}
+      {{ isIosPortrait }}
    </div> -->
 
    <div class="py-4 flex flex-col h-screen">
 
       <!-- navbar -->
-      <nav class="border-b pb-2 absolute top-0 w-full bg-white">
+      <nav class="sticky border-b pb-2 top-0 w-full bg-white">
 
          <main class="flex w-full items-center justify-between container max-w-7xl">
             <button @click="toggleSideMenu">
@@ -98,14 +99,13 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 
-import { subscriptionOfUser } from '/src/use/useUser'
 import { logout, clearCaches } from '/src/use/useAuthentication'
-import { userOfId, listOfUser, updateSubscriptionInfo } from '/src/use/useUser'
+import { userOfId, listOfUser, updateSubscriptionInfo, subscriptionOfUser } from '/src/use/useUser'
 import { unreadMessagesCountOfUser2ByUser1 } from '/src/use/useMessage'
 import { isCareTabVisible } from '/src/use/useCare'
 import { isDocumentTabVisible } from '/src/use/useDocument'
 import { isLegislationTabVisible } from '/src/use/useLegislation'
-import { isIosPortrait } from '/src/use/useDevice'
+// import { isIosPortrait } from '/src/use/useDevice'
 
 import { courseIconPath, revisionIconPath } from '/src/lib/icons.mjs'
 import router from '/src/router'

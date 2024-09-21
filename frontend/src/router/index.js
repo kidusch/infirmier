@@ -47,21 +47,6 @@ const routes = [
       component: () => import('/src/views/auth/ForgottenPassword.vue'),
    },
 
-   {
-      path: '/subscription-success/:userid',
-      component: () => import('/src/views/SubscriptionSuccess.vue'),
-      props: route => ({
-         userid: parseInt(route.params.userid),
-      }),
-   },
-   {
-      path: '/subscription-failure/:userid',
-      component: () => import('/src/views/SubscriptionFailure.vue'),
-      props: route => ({
-         userid: parseInt(route.params.userid),
-      }),
-   },
-
    // Après login local ou OAuth2, un accès à '/home/:userid' est effectué, qui conduit à stocker `:userid` dans sessionStorage sous la clé 'userid'
    // Selon le type de l'utilisateur, il est redirigé vers '/student' (ou '/accept-cgu') ou '/admin'
    {
@@ -121,6 +106,20 @@ const routes = [
             path: 'subscribe',
             component: () => import('/src/views/student/Subscribe.vue'),
             props: (route) => ({
+               userid: parseInt(sessionStorage.getItem('userid')),
+            }),
+         },
+         {
+            path: '/subscription-success',
+            component: () => import('/src/views/SubscriptionSuccess.vue'),
+            props: route => ({
+               userid: parseInt(sessionStorage.getItem('userid')),
+            }),
+         },
+         {
+            path: '/subscription-failure',
+            component: () => import('/src/views/SubscriptionFailure.vue'),
+            props: route => ({
                userid: parseInt(sessionStorage.getItem('userid')),
             }),
          },

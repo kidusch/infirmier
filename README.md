@@ -52,8 +52,11 @@ https://github.com/CodetrixStudio/CapacitorGoogleAuth, plugin utilisé pour l'au
 Voir détails plus loin par plateforme
 
 
-## inApp purchase
-Développement d'un plugin Capacitor 'jcb-capacitor-inapp' accessible sur npm (le plugin Cordova 'cordova-plugin-purchase' est vieux et non fonctionnel)
+## Abonnement
+
+- Abonnements 'inapp' sur iOS et Android, abonnements Stripe sur le web
+- Développement d'un plugin Capacitor 'jcb-capacitor-inapp' accessible sur npm (le plugin Cordova 'cordova-plugin-purchase' est vieux et non fonctionnel)
+pour iOS et Android
 
 ### inApp purchase - iOS
 iOS : >iOS15 (utilise StoreKit2, les transactions, async/await)
@@ -65,6 +68,10 @@ On peut tester en simulation sur iOS, en utilisant un 'StoreKit configuration fi
 
 ### inApp purchase - Android
 COMPLÉTER
+
+### Stripe
+- utiliser le dashboard Stripe pour créer les abonnements ("Catalogue de produits")
+- carte de test : 4242 4242 4242 4242, expiration 09/28, CVC: 123, code postal 10001
 
 
 ## AppStore / iOSConnect
