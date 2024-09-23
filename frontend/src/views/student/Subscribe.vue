@@ -37,14 +37,27 @@
             </div>
          </section>
          
-         <form id="subscription-form" @submit.prevent="handleSubmit">
-            <div id="card-element"><!-- Stripe Elements will mount here --></div>
+         <div class="my-8" v-show="stripeSubscriptionChoice">
 
-            <button :disabled="loading" type="submit">
-               {{ loading ? 'Processing...' : 'Subscribe' }}
-            </button>
-            <div id="card-errors" role="alert">{{ errorMessage }}</div>
-         </form>
+            <div class="text-lg">{{ SUBSCRIPTIONS[stripeSubscriptionChoice]?.title }}</div>
+            <div class="text-sm">Le montant sera prélevé immédiatement, puis à chaque échéance.</div>
+
+            <form id="subscription-form" @submit.prevent="handleStripeSubmit">
+
+               <div id="card-element" class="rounded-lg border-gray-300 border-2 p-3 my-2"></div>
+
+               <button :disabled="loading" type="submit" class="primary-btn my-2">
+                  {{ loading ? 'En cours...' : 'Valider le paiement' }}
+               </button>
+               <div class="text-red-600">
+                  {{ errorMessage }}
+               </div>
+
+               <button :disabled="true" class="link my-2">
+                  Arrêter l'abonnement en cours...
+               </button>
+            </form>
+         </div>
       </main>
 
    </main>
@@ -68,42 +81,83 @@ const props = defineProps({
 
 const user = computed(() => userOfId.value(props.userid))
 
+const SUBSCRIPTIONS = {
+   standard_monthly: {
+      subscriptionId: import.meta.env.VITE_STRIPE_STANDARD_MONTHLY_SUBSCRIPTION_ID,
+      priceId: import.meta.env.VITE_STRIPE_STANDARD_MONTHLY_PRICE_ID,
+      title: "Souscription à un abonnement standard mensuel",
+   },
+   standard_yearly: {
+      subscriptionId: import.meta.env.VITE_STRIPE_STANDARD_YEARLY_SUBSCRIPTION_ID,
+      priceId: import.meta.env.VITE_STRIPE_STANDARD_YEARLY_PRICE_ID,
+      title: "Souscription à un abonnement standard annuel",
+   },
+   premium_monthly: {
+      subscriptionId: import.meta.env.VITE_STRIPE_PREMIUM_MONTHLY_SUBSCRIPTION_ID,
+      priceId: import.meta.env.VITE_STRIPE_PREMIUM_MONTHLY_PRICE_ID,
+      title: "Souscription à un abonnement premium mensuel",
+   },
+   premium_yearly: {
+      subscriptionId: import.meta.env.VITE_STRIPE_PREMIUM_YEARLY_SUBSCRIPTION_ID,
+      priceId: import.meta.env.VITE_STRIPE_PREMIUM_YEARLY_PRICE_ID,
+      title: "Souscription à un abonnement premium annuel",
+   },
+}
+
 const buySubscription = async (productId) => {
    const platform = Capacitor.getPlatform()
    if (platform === 'ios' || platform === 'android') {
       // buy on AppStore or GooglePlay
       await buyProduct(props.userid, productId)
    } else {
-      // buy with Stripe
-      const session = await app.service('stripe').createSession(props.userid)
-      console.log('session', session)
-      window.location.href = session.url
+      stripeSubscriptionChoice.value = productId
    }
 }
 
-const stripe = ref(null);
-const cardElement = ref(null);
-const errorMessage = ref('');
-const loading = ref(false);
+const stripe = ref(null)
+const cardElement = ref(null)
 
-// Your Stripe publishable key
-const STRIPE_PUBLISHABLE_KEY = 'pk_test_51PbbFWH5CkAsTx9zoczqFG2RqoJ5JNK2YDInE0wxQJFH016eMYwxCqhTquzCvqnAQ64MBjMmwEnrnB6iUpG1qcZ800z2zvZQnX'
-const SUBSCRIPTION_PRICE_ID = 'price_1Q1QzGH5CkAsTx9zW1U05r0Q'
+const errorMessage = ref('')
+const loading = ref(false)
+const stripeSubscriptionChoice = ref()
+
 
 onMounted(async () => {
    // Load Stripe.js
-   stripe.value = await loadStripe(STRIPE_PUBLISHABLE_KEY)
-
+   stripe.value = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
    // Create an instance of Elements
    const elements = stripe.value.elements()
 
    // Create and mount the Card Element
-   cardElement.value = elements.create('card')
+   cardElement.value = elements.create('card', {
+      hidePostalCode: true,
+      // see: https://docs.stripe.com/payments/payment-element#affichage
+      style: {
+         base: {
+            color: '#32325d',
+            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+            fontSize: '16px',
+            fontWeight: '500',
+            letterSpacing: '0.025em',
+            lineHeight: '24px',
+            padding: '10px',
+            '::placeholder': {
+               color: '#aab7c4',
+            },
+            border: '1px solid #ccc',
+            borderRadius: '4px',
+         },
+         invalid: {
+            iconColor: '#FFC7EE',
+            color: '#FFC7EE',
+         },
+      }
+   })
    cardElement.value.mount('#card-element')
 })
 
 // Handle the form submission
-const handleSubmit = async () => {
+const handleStripeSubmit = async () => {
    loading.value = true
    errorMessage.value = ''
 
@@ -117,18 +171,20 @@ const handleSubmit = async () => {
       // Display error in payment form
       errorMessage.value = error.message
       loading.value = false
+      return
    } else {
       // Payment method created successfully
       console.log('Payment method created:', paymentMethod)
-      await createSubscription(paymentMethod.id)
+      const priceId = SUBSCRIPTIONS[stripeSubscriptionChoice.value].priceId
+      await createStripeSubscription(paymentMethod.id, priceId)
    }
 }
 
 // Process the subscription on the backend
-const createSubscription = async (paymentMethodId) => {
-   console.log('createSubscription', paymentMethodId)
+const createStripeSubscription = async (paymentMethodId, priceId) => {
+   console.log('createStripeSubscription', paymentMethodId, priceId)
    try {
-      const result = await app.service('stripe').createSubscription(paymentMethodId, user.value.email, SUBSCRIPTION_PRICE_ID)
+      const result = await app.service('stripe').createSubscription(paymentMethodId, user.value.email, priceId)
       if (result.error) {
          errorMessage.value = result.error
       } else {
@@ -137,30 +193,28 @@ const createSubscription = async (paymentMethodId) => {
          if (error) {
             errorMessage.value = error.message
          } else {
-            alert('Subscription successful!')
+            alert("L'abonnement a été souscrit avec succès !")
          }
       }
    } catch (error) {
-      errorMessage.value = 'Something went wrong!'
+      errorMessage.value = 'Erreur inconnue...'
    } finally {
       loading.value = false
    }
 }
 
-const elementStyles = {
-   base: {
-      color: '#32325d', // Text color
-      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-      fontSmoothing: 'antialiased',
-      fontSize: '16px',
-      '::placeholder': {
-         color: '#aab7c4', // Placeholder color
-      },
-   },
-   invalid: {
-      color: '#fa755a', // Invalid input color
-      iconColor: '#fa755a',
-   },
+const cancelStripeSubscription = async () => {
+   const subscriptionId = SUBSCRIPTIONS[stripeSubscriptionChoice.value].subscriptionId
+   try {
+      const result = await app.service('stripe').cancelSubscription(subscriptionId)
+      if (result.error) {
+         errorMessage.value = result.error
+      } else {
+         alert("L'abonnement a été annulé avec succès !")
+      }
+   } catch (error) {
+      errorMessage.value = 'Erreur inconnue...'
+   }
 }
 </script>
 
@@ -178,5 +232,22 @@ const elementStyles = {
   position: absolute;
   bottom: 5px;
   right: 5px;
+}
+
+.payment-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-wrapper {
+  margin-bottom: 20px; /* Space between card element and button */
+  width: 100%; /* Full width for responsive design */
+}
+
+.stripe-element {
+  border: 1px solid #ccc; /* Custom border */
+  border-radius: 4px; /* Rounded corners */
+  padding: 10px; /* Padding for the input area */
 }
 </style>

@@ -67,5 +67,17 @@ export default function(app) {
          }
       },
 
+      cancelSubscription: async (subscriptionId) => {
+         try {
+            const subscription = await stripe.subscriptions.del(subscriptionId)
+            console.log('Subscription canceled:', subscription)
+            return subscription
+         } catch (error) {
+            console.error('Error canceling subscription:', error)
+            return ({
+               error: error.message
+            })
+         }
+      },
    })
 }
