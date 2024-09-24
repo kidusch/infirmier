@@ -41,6 +41,7 @@
 
             <div class="text-lg">{{ SUBSCRIPTIONS[stripeSubscriptionChoice]?.title }}</div>
             <div class="text-sm">Le montant sera prélevé immédiatement, puis à chaque échéance.</div>
+            <div class="text-sm">Vous pourrez à tout moment arrêter l'abonnement en cours.</div>
 
             <form id="subscription-form" @submit.prevent="handleStripeSubmit">
 
@@ -53,11 +54,16 @@
                   {{ errorMessage }}
                </div>
 
-               <button :disabled="true" class="link my-2">
+               <button :disabled="false" class="link my-2" @click="cancelStripeSubscription">
                   Arrêter l'abonnement en cours...
                </button>
             </form>
          </div>
+
+         <button class="link my-2" @click="update">
+            Update
+         </button>
+
       </main>
 
    </main>
@@ -67,7 +73,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { loadStripe } from '@stripe/stripe-js'
 
-import { userOfId, buyProduct, subscriptionOfUser } from '/src/use/useUser'
+import { userOfId, buyStoreProduct, subscriptionOfUser, updateSubscriptionInfo } from '/src/use/useUser'
 
 import { app } from '/src/client-app.js'
 
@@ -104,13 +110,13 @@ const SUBSCRIPTIONS = {
    },
 }
 
-const buySubscription = async (productId) => {
+const buySubscription = async (subscriptionType) => {
    const platform = Capacitor.getPlatform()
    if (platform === 'ios' || platform === 'android') {
       // buy on AppStore or GooglePlay
-      await buyProduct(props.userid, productId)
+      await buyStoreProduct(props.userid, subscriptionType)
    } else {
-      stripeSubscriptionChoice.value = productId
+      stripeSubscriptionChoice.value = subscriptionType
    }
 }
 
@@ -184,7 +190,10 @@ const handleStripeSubmit = async () => {
 const createStripeSubscription = async (paymentMethodId, priceId) => {
    console.log('createStripeSubscription', paymentMethodId, priceId)
    try {
-      const result = await app.service('stripe').createSubscription(paymentMethodId, user.value.email, priceId)
+      // const result = await app.service('stripe').createSubscription(paymentMethodId, user.value.email, priceId)
+      const customerId = await app.service('stripe').createCustomer(paymentMethodId, user.value.email)
+      console.log('customerId', customerId)
+      const result = await app.service('stripe').createSubscription(customerId, priceId)
       if (result.error) {
          errorMessage.value = result.error
       } else {
@@ -205,6 +214,7 @@ const createStripeSubscription = async (paymentMethodId, priceId) => {
 
 const cancelStripeSubscription = async () => {
    const subscriptionId = SUBSCRIPTIONS[stripeSubscriptionChoice.value].subscriptionId
+   console.log('cancelStripeSubscription', subscriptionId)
    try {
       const result = await app.service('stripe').cancelSubscription(subscriptionId)
       if (result.error) {
@@ -215,6 +225,11 @@ const cancelStripeSubscription = async () => {
    } catch (error) {
       errorMessage.value = 'Erreur inconnue...'
    }
+}
+
+const update = async () => {
+   const x = await updateSubscriptionInfo(props.userid)
+   console.log('x', x)
 }
 </script>
 

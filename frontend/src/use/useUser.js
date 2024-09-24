@@ -106,18 +106,44 @@ export const listOfUser = computed(() => {
 
 //////////////////           SUBSCRIPTION           //////////////////
 
-export const buyProduct = async (id, productId) => {
+
+const SUBSCRIPTIONS = {
+   standard_monthly: {
+      subscriptionId: import.meta.env.VITE_STRIPE_STANDARD_MONTHLY_SUBSCRIPTION_ID,
+      priceId: import.meta.env.VITE_STRIPE_STANDARD_MONTHLY_PRICE_ID,
+      title: "Souscription à un abonnement standard mensuel",
+   },
+   standard_yearly: {
+      subscriptionId: import.meta.env.VITE_STRIPE_STANDARD_YEARLY_SUBSCRIPTION_ID,
+      priceId: import.meta.env.VITE_STRIPE_STANDARD_YEARLY_PRICE_ID,
+      title: "Souscription à un abonnement standard annuel",
+   },
+   premium_monthly: {
+      subscriptionId: import.meta.env.VITE_STRIPE_PREMIUM_MONTHLY_SUBSCRIPTION_ID,
+      priceId: import.meta.env.VITE_STRIPE_PREMIUM_MONTHLY_PRICE_ID,
+      title: "Souscription à un abonnement premium mensuel",
+   },
+   premium_yearly: {
+      subscriptionId: import.meta.env.VITE_STRIPE_PREMIUM_YEARLY_SUBSCRIPTION_ID,
+      priceId: import.meta.env.VITE_STRIPE_PREMIUM_YEARLY_PRICE_ID,
+      title: "Souscription à un abonnement premium annuel",
+   },
+}
+
+export const buyStoreProduct = async (id, subscriptionType) => {
+   const productId = subscriptionType
    const { revocationDate, expirationDate, active } = await InAppPurchase.buyProduct({ productId })
    await updateUser(id, {
-      product_id: productId,
+      subscription_type: subscriptionType,
       revocation_date: revocationDate,
       expiration_date: expirationDate,
       active,
    })
-   return { productId, revocationDate, expirationDate, active }
+   return { subscriptionType, revocationDate, expirationDate, active }
 }
 
 export const updateSubscriptionInfo = async (id) => {
+   let user = await getUser(id)
    // ask info to stores
    const platform = Capacitor.getPlatform()
    if (platform === 'ios' || platform === 'android') {
@@ -126,27 +152,29 @@ export const updateSubscriptionInfo = async (id) => {
       console.log("info", productId, revocationDate, expirationDate, active)
       if (productId) {
          // replace cache info by Store info
-         updateUser(id, {
-            product_id: productId,
-            revocation_date: revocationDate,
-            expiration_date: expirationDate,
+         user = await updateUser(id, {
+            subscription_type: productId,
+            // revocation_date: revocationDate,
+            // expiration_date: expirationDate,
             active,
          })
       } else {
-         if (userState.value.productId) {
+         if (user.subscription_type) {
             console.log("shouldn't happen: keeping cache info")
          }
       }
    } else {
       // ask stripe
+      const data = await app.service('stripe').subscriptionStatus()
+      console.log('data', data)
    }
 
    // return cache info
    return {
-      productId: userState.value.productId,
-      revocationDate: userState.value.revocationDate, 
-      expirationDate: userState.value.expirationDate,
-      active: userState.value.active,
+      subscriptionType: user.subscription_type,
+      // revocationDate: user.revocation_date, 
+      // expirationDate: user.expiration_date,
+      active: user.active,
    }
 }
 
@@ -156,12 +184,20 @@ export const subscriptionOfUser = computed(() => (id) => {
    const user = userOfId.value(id)
    if (!user) return undefined
    if (!user.active) return null // no subscription (null), or a subscription has been made, but is no longer active (false)
-   return user.product_id
+   return user.subscription_type
 })
 
 // has an active, premium subscription
 export const isPremium = computed(() => (id) => {
-   const productId = subscriptionOfUser.value(id)
-   if (!productId) return false
-   return productId.startsWith('premium')
+   const subscriptionType = subscriptionOfUser.value(id)
+   if (!subscriptionType) return false
+   return subscriptionType.startsWith('premium')
 })
+
+// export const createStripeSubscription = async (id, subscriptionType) => {
+//    const user = await getUser(id)
+//    let customerId = user.stripe_customer_id
+//    if (!customerId) {
+//       customerId = await app.service('stripe').createCustomer()
+//    }
+// }

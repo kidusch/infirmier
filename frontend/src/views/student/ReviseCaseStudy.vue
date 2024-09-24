@@ -197,12 +197,6 @@ const getCustomCorrection = async () => {
    }
 }
 
-// const subscribe = async () => {
-//    const session = await app.service('stripe').createSession(props.userid)
-//    console.log('session', session)
-//    window.location.href = session.url
-// }
-
 const gotoSubscribe = () => {
    router.push(`/student/subscribe`)
 }

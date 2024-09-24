@@ -35,9 +35,8 @@ export default function(app) {
          return session
       },
 
-      createSubscription: async (paymentMethodId, customerEmail, priceId) => {
+      createCustomer: async (paymentMethodId, customerEmail) => {
          try {
-            // 1. Create a Customer
             const customer = await stripe.customers.create({
                payment_method: paymentMethodId,
                email: customerEmail,
@@ -45,10 +44,19 @@ export default function(app) {
                   default_payment_method: paymentMethodId,
                },
             })
-         
-            // 2. Create a Subscription
+            return customer.id
+         } catch(err) {
+            return ({
+               error: err.message
+            })
+         }
+      },
+
+      createSubscription: async (customerId, priceId) => {
+         try {
+            // Create a Subscription
             const subscription = await stripe.subscriptions.create({
-               customer: customer.id,
+               customer: customerId,
                items: [{ price: priceId }],
                expand: ['latest_invoice.payment_intent'],
             })
@@ -72,6 +80,18 @@ export default function(app) {
             const subscription = await stripe.subscriptions.del(subscriptionId)
             console.log('Subscription canceled:', subscription)
             return subscription
+         } catch (error) {
+            console.error('Error canceling subscription:', error)
+            return ({
+               error: error.message
+            })
+         }
+      },
+
+      subscriptionStatus: async () => {
+         try {
+            const data = await stripe.subscriptions.list()
+            return data
          } catch (error) {
             console.error('Error canceling subscription:', error)
             return ({

@@ -21,12 +21,12 @@ model user {
   name      String?
   picture   String?
 
-  // subscription_type     String?      // null, 'standard', 'premium'
 
-  product_id            String?     // null, 'standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly'
-  revocation_date       DateTime?
-  expiration_date       DateTime?
+  subscription_type     String?     // null, 'standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly'
+  //revocation_date       DateTime?
+  //expiration_date       DateTime?
   active                Boolean?
+  stripe_customer_id    String?
 
   messages_from         message[]    @relation("from")
   messages_to           message[]    @relation("to")
