@@ -205,3 +205,7 @@ export const getOrCreateStripeCustomer = async (id, paymentMethodId, customerEma
    }
    return customerId
 }
+
+export const createStripeSubscription = async (customerId, priceId) => {
+   return await app.service('stripe').createSubscription(customerId, priceId)
+}

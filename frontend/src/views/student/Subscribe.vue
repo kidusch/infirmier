@@ -73,7 +73,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { loadStripe } from '@stripe/stripe-js'
 
-import { userOfId, buyStoreProduct, subscriptionOfUser, updateSubscriptionInfo, getOrCreateStripeCustomer } from '/src/use/useUser'
+import { userOfId, buyStoreProduct, subscriptionOfUser, updateSubscriptionInfo, getOrCreateStripeCustomer, createStripeSubscription } from '/src/use/useUser'
 
 import { app } from '/src/client-app.js'
 
@@ -182,18 +182,19 @@ const handleStripeSubmit = async () => {
       // Payment method created successfully
       console.log('Payment method created:', paymentMethod)
       const priceId = SUBSCRIPTIONS[stripeSubscriptionChoice.value].priceId
-      await createStripeSubscription(paymentMethod.id, priceId)
+      await processStripeSubscription(paymentMethod.id, priceId)
    }
 }
 
 // Process the subscription on the backend
-const createStripeSubscription = async (paymentMethodId, priceId) => {
-   console.log('createStripeSubscription', paymentMethodId, priceId)
+const processStripeSubscription = async (paymentMethodId, priceId) => {
+   console.log('processStripeSubscription', paymentMethodId, priceId)
    try {
-      // const customerId = await app.service('stripe').createCustomer(paymentMethodId, user.value.email)
       const customerId = await getOrCreateStripeCustomer(props.userid, paymentMethodId, user.value.email)
       console.log('customerId', customerId)
-      const result = await app.service('stripe').createSubscription(customerId, priceId)
+      // const result = await app.service('stripe').createSubscription(customerId, priceId)
+      const result = await createStripeSubscription(customerId, priceId)
+      
       if (result.error) {
          errorMessage.value = result.error
       } else {
