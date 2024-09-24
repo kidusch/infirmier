@@ -192,7 +192,6 @@ const processStripeSubscription = async (paymentMethodId, priceId) => {
    try {
       const customerId = await getOrCreateStripeCustomer(props.userid, paymentMethodId, user.value.email)
       console.log('customerId', customerId)
-      // const result = await app.service('stripe').createSubscription(customerId, priceId)
       const result = await createStripeSubscription(customerId, priceId)
       
       if (result.error) {

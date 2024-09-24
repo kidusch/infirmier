@@ -148,14 +148,12 @@ export const updateSubscriptionInfo = async (id) => {
    const platform = Capacitor.getPlatform()
    if (platform === 'ios' || platform === 'android') {
       console.log("checking...")
-      const { productId, revocationDate, expirationDate, active } = await InAppPurchase.checkSubscription()
-      console.log("info", productId, revocationDate, expirationDate, active)
+      const { productId, active } = await InAppPurchase.checkSubscription()
+      console.log("info", productId, active)
       if (productId) {
          // replace cache info by Store info
          user = await updateUser(id, {
             subscription_type: productId,
-            // revocation_date: revocationDate,
-            // expiration_date: expirationDate,
             active,
          })
       } else {
@@ -164,9 +162,18 @@ export const updateSubscriptionInfo = async (id) => {
          }
       }
    } else {
-      // ask stripe
-      const data = await app.service('stripe').subscriptionStatus()
-      console.log('data', data)
+      // ask stripe the subscriptions for stripe_customer_id
+      if (user.stripe_customer_id) {
+         const data = await app.service('stripe').subscriptionStatus(user.stripe_customer_id)
+         console.log('data', data)
+         if (data.length > 0) {
+            // replace cache info by Stripe info
+            user = await updateUser(id, {
+               subscription_type: 'xxx',
+               active: data[0].status === 'active',
+            })
+         }
+      }
    }
 
    // return cache info

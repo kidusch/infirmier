@@ -89,12 +89,14 @@ export default function(app) {
          }
       },
 
-      subscriptionStatus: async () => {
+      subscriptionStatus: async (customerId) => {
          try {
-            const data = await stripe.subscriptions.list()
+            const data = await stripe.subscriptions.list({
+               customer: customerId,
+            })
             return data
          } catch (error) {
-            console.error('Error canceling subscription:', error)
+            console.error('Error subscriptionStatus:', error)
             return ({
                error: error.message
             })
