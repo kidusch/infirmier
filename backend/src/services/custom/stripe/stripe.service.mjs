@@ -8,34 +8,35 @@ export default function(app) {
 
    app.createService('stripe', {
 
-      createSession: async (userid) => {
-         const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            line_items: [
-               {
-                  price_data: {
-                     currency: 'eur',
-                     product_data: {
-                        name: "Journal de Bord Infirmier",
-                     },
-                     recurring: {
-                        interval: 'month',
-                     },
-                     unit_amount: 200, // Amount in cents = 2€
-                  },
-                  quantity: 1,
-               },
-            ],
-            mode: 'subscription',
-            // success_url: `${process.env.CLIENT_URL}/subscription-success/${userid}`,
-            // cancel_url: `${process.env.CLIENT_URL}/subscription-failure/${userid}`,
-            success_url: `${process.env.CLIENT_URL}/student/subscription-success`,
-            cancel_url: `${process.env.CLIENT_URL}/student/subscription-failure`,
-         })
-         return session
-      },
+      // createSession: async (userid) => {
+      //    const session = await stripe.checkout.sessions.create({
+      //       payment_method_types: ['card'],
+      //       line_items: [
+      //          {
+      //             price_data: {
+      //                currency: 'eur',
+      //                product_data: {
+      //                   name: "Journal de Bord Infirmier",
+      //                },
+      //                recurring: {
+      //                   interval: 'month',
+      //                },
+      //                unit_amount: 200, // Amount in cents = 2€
+      //             },
+      //             quantity: 1,
+      //          },
+      //       ],
+      //       mode: 'subscription',
+      //       // success_url: `${process.env.CLIENT_URL}/subscription-success/${userid}`,
+      //       // cancel_url: `${process.env.CLIENT_URL}/subscription-failure/${userid}`,
+      //       success_url: `${process.env.CLIENT_URL}/student/subscription-success`,
+      //       cancel_url: `${process.env.CLIENT_URL}/student/subscription-failure`,
+      //    })
+      //    return session
+      // },
 
       createCustomer: async (paymentMethodId, customerEmail) => {
+         console.log('createCustomer', paymentMethodId, customerEmail)
          try {
             const customer = await stripe.customers.create({
                payment_method: paymentMethodId,

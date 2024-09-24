@@ -194,10 +194,14 @@ export const isPremium = computed(() => (id) => {
    return subscriptionType.startsWith('premium')
 })
 
-// export const createStripeSubscription = async (id, subscriptionType) => {
-//    const user = await getUser(id)
-//    let customerId = user.stripe_customer_id
-//    if (!customerId) {
-//       customerId = await app.service('stripe').createCustomer()
-//    }
-// }
+export const getOrCreateStripeCustomer = async (id, paymentMethodId, customerEmail) => {
+   const user = await getUser(id)
+   let customerId = user.stripe_customer_id
+   if (!customerId) {
+      customerId = await app.service('stripe').createCustomer(paymentMethodId, customerEmail)
+      await updateUser(id, {
+         stripe_customer_id: customerId,
+      })
+   }
+   return customerId
+}

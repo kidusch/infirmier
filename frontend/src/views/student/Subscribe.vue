@@ -73,7 +73,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { loadStripe } from '@stripe/stripe-js'
 
-import { userOfId, buyStoreProduct, subscriptionOfUser, updateSubscriptionInfo } from '/src/use/useUser'
+import { userOfId, buyStoreProduct, subscriptionOfUser, updateSubscriptionInfo, getOrCreateStripeCustomer } from '/src/use/useUser'
 
 import { app } from '/src/client-app.js'
 
@@ -190,8 +190,8 @@ const handleStripeSubmit = async () => {
 const createStripeSubscription = async (paymentMethodId, priceId) => {
    console.log('createStripeSubscription', paymentMethodId, priceId)
    try {
-      // const result = await app.service('stripe').createSubscription(paymentMethodId, user.value.email, priceId)
-      const customerId = await app.service('stripe').createCustomer(paymentMethodId, user.value.email)
+      // const customerId = await app.service('stripe').createCustomer(paymentMethodId, user.value.email)
+      const customerId = await getOrCreateStripeCustomer(props.userid, paymentMethodId, user.value.email)
       console.log('customerId', customerId)
       const result = await app.service('stripe').createSubscription(customerId, priceId)
       if (result.error) {
