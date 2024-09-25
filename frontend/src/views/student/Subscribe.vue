@@ -57,16 +57,16 @@
          </div>
 
          <div>
-            <button :disabled="!user.subscription_status" class="link my-2" @click="cancelCustomerSubscriptions">
+            <button v-if="hasSubscription(user.id)" class="link my-2" @click="cancelCustomerSubscriptions">
                Arrêter l'abonnement en cours...
             </button>
          </div>
 
-         <div>
+         <!-- <div>
             <button class="link my-2" @click="update">
                Update
             </button>
-         </div>
+         </div> -->
 
       </main>
 
@@ -77,7 +77,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { loadStripe } from '@stripe/stripe-js'
 
-import { userOfId, updateUser, buyStoreProduct, subscriptionOfUser, SUBSCRIPTIONS, updateSubscriptionInfo,
+import { userOfId, updateUser, buyStoreProduct, subscriptionOfUser, hasSubscription, SUBSCRIPTIONS, updateSubscriptionInfo,
    getOrCreateStripeCustomer, createStripeSubscription, cancelStripeCustomerSubscriptions } from '/src/use/useUser'
 
 
@@ -197,6 +197,7 @@ const processStripeSubscription = async (subscriptionType, paymentMethodId, pric
       errorMessage.value = 'Erreur inconnue...'
    } finally {
       loading.value = false
+      stripeSubscriptionChoice.value = null
    }
 }
 

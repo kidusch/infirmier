@@ -41,7 +41,7 @@
 
                      <div>
                         <div class="">{{ user.name }}</div>
-                        <div class="text-sm text-blue-300">{{ subscriptionOfUser(user?.id) ? 'abonné' : '-' }}</div>
+                        <div class="text-sm text-blue-300">{{ hasSubscription(user?.id) ? 'abonné' : '-' }}</div>
                      </div>
                   </div>
                   <img class="h-4 cursor-pointer" src="/src/assets/thick-arrow-right.svg" @click="select(user)">
@@ -58,7 +58,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 
-import { listOfUser, subscriptionOfUser } from '/src/use/useUser'
+import { listOfUser, hasSubscription } from '/src/use/useUser'
 import { unreadMessagesCountOfUser2ByUser1 } from '/src/use/useMessage'
 import router from "/src/router"
 

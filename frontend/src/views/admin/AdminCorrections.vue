@@ -19,7 +19,7 @@
                   <div class="flex items-center justify-start gap-3">
                      <div>
                         <div class="">{{ userOfId(userCaseStudy.user_id).name }} - Étude de cas</div>
-                        <div class="text-sm text-blue-300">{{ subscriptionOfUser(userCaseStudy.user_id) ? "Abonné - " : "" }} {{ formattedDatetime(userCaseStudy.custom_correction_date) }}</div>
+                        <div class="text-sm text-blue-300">{{ hasSubscription(userCaseStudy.user_id) ? "Abonné - " : "" }} {{ formattedDatetime(userCaseStudy.custom_correction_date) }}</div>
                      </div>
                   </div>
                   <img class="h-4 cursor-pointer" src="/src/assets/thick-arrow-right.svg" @click="selectUserCaseStudy(userCaseStudy)">
@@ -31,7 +31,7 @@
                   <div class="flex items-center justify-start gap-3">
                      <div>
                         <div class="">{{ userOfId(userQuiz.user_id).name }} - Quiz</div>
-                        <div class="text-sm text-blue-300">{{ subscriptionOfUser(userQuiz.user_id) ? "Abonné - " : "" }} {{ formattedDatetime(userQuiz.custom_correction_date) }}</div>
+                        <div class="text-sm text-blue-300">{{ hasSubscription(userQuiz.user_id) ? "Abonné - " : "" }} {{ formattedDatetime(userQuiz.custom_correction_date) }}</div>
                      </div>
                   </div>
                   <img class="h-4 cursor-pointer" src="/src/assets/thick-arrow-right.svg" @click="selectUserQuiz(userQuiz)">
@@ -51,7 +51,7 @@
 <script setup>
 // import { computed, ref } from 'vue'
 
-import { userOfId, subscriptionOfUser } from '/src/use/useUser'
+import { userOfId, hasSubscription } from '/src/use/useUser'
 import { listOfUncorrectedUserCaseStudy } from '/src/use/useUserCaseStudy'
 import { listOfUncorrectedUserQuiz } from '/src/use/useUserQuiz'
 

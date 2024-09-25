@@ -92,7 +92,7 @@
 import { ref, computed } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
-import { userOfId, isPremium } from '/src/use/useUser'
+import { userOfId, hasPremiumSubscription } from '/src/use/useUser'
 import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
@@ -186,7 +186,7 @@ const premiumModal = ref()
 const transmitModal = ref(false)
 
 const getCustomCorrection = async () => {
-   if (isPremium.value(user.value.id)) {
+   if (hasPremiumSubscription.value(user.value.id)) {
       await updateUserCaseStudy(userCaseStudy.value.id, {
          custom_correction_status: 'waiting-for-correction',
          custom_correction_date: new Date(),

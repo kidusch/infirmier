@@ -205,12 +205,26 @@ export const subscriptionOfUser = computed(() => (id) => {
    return user.subscription_type
 })
 
+// has an active subscription
+export const hasSubscription = computed(() => (id) => {
+   const subscriptionType = subscriptionOfUser.value(id)
+   return !!subscriptionType
+})
+
 // has an active, premium subscription
-export const isPremium = computed(() => (id) => {
+export const hasPremiumSubscription = computed(() => (id) => {
    const subscriptionType = subscriptionOfUser.value(id)
    if (!subscriptionType) return false
    return subscriptionType.startsWith('premium')
 })
+
+// has an active, standard subscription
+export const hasStandardSubscription = computed(() => (id) => {
+   const subscriptionType = subscriptionOfUser.value(id)
+   if (!subscriptionType) return false
+   return subscriptionType.startsWith('standard')
+})
+
 
 export const getOrCreateStripeCustomer = async (id, paymentMethodId, customerEmail) => {
    const user = await getUser(id)

@@ -107,7 +107,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-import { userOfId, subscriptionOfUser } from '/src/use/useUser'
+import { userOfId, hasPremiumSubscription } from '/src/use/useUser'
 import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
@@ -192,7 +192,7 @@ const premiumModal = ref()
 const transmitModal = ref(false)
 
 const getCustomCorrection = async () => {
-   if (subscriptionOfUser.value(user.value.id)) {
+   if (hasPremiumSubscription.value(user.value.id)) {
       await updateUserQuiz(userQuiz.value.id, { custom_correction_status: 'waiting-for-correction' })
       transmitModal.value.showModal()
    } else {

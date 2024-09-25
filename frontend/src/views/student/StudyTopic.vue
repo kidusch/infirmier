@@ -53,7 +53,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-import { userOfId, subscriptionOfUser } from '/src/use/useUser'
+import { userOfId, hasSubscription } from '/src/use/useUser'
 import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
@@ -91,7 +91,7 @@ const topic = computed(() => topicOfId.value(props.topic_id))
 const courseList = computed(() => listOfCourse.value(props.topic_id))
 
 const selectCourse = (course) => {
-   if (!course.free && !subscriptionOfUser.value(props.userid)) {
+   if (!course.free && !hasSubscription.value(props.userid)) {
       subscribeModal.value.showModal()
    } else {
       router.push(`/student/study-course/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${course.id}`)
