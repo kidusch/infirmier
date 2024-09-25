@@ -24,6 +24,7 @@ model user {
 
   subscription_type       String?     // null, 'standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly'
   subscription_status     String?    // null, 'active', +
+  
   stripe_customer_id      String?
   stripe_subscription_id  String?
 

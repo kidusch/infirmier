@@ -227,7 +227,6 @@ export const getOrCreateStripeCustomer = async (id, paymentMethodId, customerEma
 export const createStripeSubscription = async (id, customerId, priceId) => {
    const { clientSecret, subscriptionId, error } = await app.service('stripe').createSubscription(customerId, priceId)
    if (!error) {
-      const user = await getUser(id)
       await updateUser(id, {
          stripe_subscription_id: subscriptionId,
       })

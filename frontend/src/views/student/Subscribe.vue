@@ -73,7 +73,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { loadStripe } from '@stripe/stripe-js'
 
-import { userOfId, buyStoreProduct, subscriptionOfUser, SUBSCRIPTIONS, updateSubscriptionInfo, getOrCreateStripeCustomer, createStripeSubscription } from '/src/use/useUser'
+import { userOfId, updateUser, buyStoreProduct, subscriptionOfUser, SUBSCRIPTIONS, updateSubscriptionInfo, getOrCreateStripeCustomer, createStripeSubscription } from '/src/use/useUser'
 
 
 const props = defineProps({
@@ -157,14 +157,15 @@ const handleStripeSubmit = async () => {
    } else {
       // Payment method created successfully
       console.log('Payment method created:', paymentMethod)
-      const priceId = SUBSCRIPTIONS[stripeSubscriptionChoice.value].priceId
-      await processStripeSubscription(paymentMethod.id, priceId)
+      const subscriptionType = stripeSubscriptionChoice.value
+      const priceId = SUBSCRIPTIONS[subscriptionType].priceId
+      await processStripeSubscription(subscriptionType, paymentMethod.id, priceId)
    }
 }
 
 // Process the subscription on the backend
-const processStripeSubscription = async (paymentMethodId, priceId) => {
-   console.log('processStripeSubscription', paymentMethodId, priceId)
+const processStripeSubscription = async (subscriptionType, paymentMethodId, priceId) => {
+   console.log('processStripeSubscription', subscriptionType, paymentMethodId, priceId)
    try {
       const customerId = await getOrCreateStripeCustomer(props.userid, paymentMethodId, user.value.email)
       console.log('customerId', customerId)
@@ -174,10 +175,16 @@ const processStripeSubscription = async (paymentMethodId, priceId) => {
          errorMessage.value = error
       } else {
          // Confirm the subscription payment
+         console.log('clientSecret', clientSecret)
          const { error } = await stripe.value.confirmCardPayment(clientSecret)
+         console.log('clientSecret error', error)
          if (error) {
             errorMessage.value = error.message
          } else {
+            await updateUser(props.userid, {
+               subscription_type: subscriptionType,
+               subscription_status: 'active',
+            })
             alert("L'abonnement a été souscrit avec succès !")
          }
       }
