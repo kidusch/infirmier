@@ -139,8 +139,7 @@ function productId2subscriptionType(productId) {
 
 
 export const buyStoreProduct = async (id, subscriptionType) => {
-   const productId = subscriptionType
-   const { active } = await InAppPurchase.buyProduct({ productId })
+   const { active } = await InAppPurchase.buyProduct({ productId: subscriptionType })
    const subscriptionStatus = active ? "active" : "inactive"
    await updateUser(id, {
       subscription_type: subscriptionType,
