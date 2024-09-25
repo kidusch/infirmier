@@ -100,7 +100,7 @@
 import { ref, computed, onMounted } from 'vue'
 
 import { logout, clearCaches } from '/src/use/useAuthentication'
-import { userOfId, listOfUser, updateSubscriptionInfo, subscriptionOfUser } from '/src/use/useUser'
+import { userOfId, listOfUser, updateSubscriptionInfo } from '/src/use/useUser'
 import { unreadMessagesCountOfUser2ByUser1 } from '/src/use/useMessage'
 import { isCareTabVisible } from '/src/use/useCare'
 import { isDocumentTabVisible } from '/src/use/useDocument'

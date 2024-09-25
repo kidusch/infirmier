@@ -77,12 +77,16 @@ export default function(app) {
       },
 
       cancelCustomerSubscriptions: async (customerId) => {
-         console.log('cancelCustomerSubscriptions')
+         console.log('cancelCustomerSubscriptions', customerId)
          try {
-            const subscriptions = await stripe.subscriptions.list({
+            const { data: subscriptions } = await stripe.subscriptions.list({
                customer: customerId,
+               status: 'active',
             })
-            console.log('cancelCustomerSubscriptions subscriptions', subscriptions)
+            for (const subscription of subscriptions) {
+               const s = await stripe.subscriptions.cancel(subscription.id)
+               console.log('canceled', s.id)
+            }
             return { subscriptions }
          } catch (error) {
             console.error('Error canceling subscription:', error)
@@ -92,10 +96,11 @@ export default function(app) {
          }
       },
 
-      customerSubscriptionsStatus: async (customerId) => {
+      customerActiveSubscriptions: async (customerId) => {
          try {
-            const subscriptions = await stripe.subscriptions.list({
+            const { data: subscriptions } = await stripe.subscriptions.list({
                customer: customerId,
+               status: 'active',
             })
             return subscriptions
          } catch (error) {

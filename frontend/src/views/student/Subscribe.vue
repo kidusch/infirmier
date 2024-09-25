@@ -202,7 +202,7 @@ const processStripeSubscription = async (subscriptionType, paymentMethodId, pric
 
 // cancel all subscriptions of assciated customer (in case there are several by mistake)
 const cancelCustomerSubscriptions = async () => {
-   console.log('cancelStripeSubscription, stripe_customer_id', user.value.stripe_customer_id, 'subscription_status', user.value.subscription_status)
+   console.log('cancelCustomerSubscriptions, subscription_type', user.value.subscription_type, 'stripe_customer_id', user.value.stripe_customer_id, 'subscription_status', user.value.subscription_status)
 
    if (user.value.subscription_status === 'active') {
       const platform = Capacitor.getPlatform()
@@ -212,7 +212,7 @@ const cancelCustomerSubscriptions = async () => {
       } else {
          // cancel on Stripe
          try {
-            const { subscriptions, error } = await cancelStripeCustomerSubscriptions(props.userid, user.stripe_customer_id)
+            const { subscriptions, error } = await cancelStripeCustomerSubscriptions(props.userid, user.value.stripe_customer_id)
             if (error) {
                errorMessage.value = error
             } else {

@@ -117,7 +117,6 @@ import { listOfQuizChoices } from '/src/use/useQuizChoice'
 import { theUserQuizChoice, updateUserQuizChoice } from '/src/use/useUserQuizChoice'
 
 import router from "/src/router"
-import { app } from '/src/client-app.js'
 
 import PremiumDialog from '/src/components/PremiumDialog.vue'
 import CaseStudyAnswerDialog from '/src/components/CaseStudyAnswerDialog.vue'

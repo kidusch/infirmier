@@ -172,11 +172,11 @@ export const updateSubscriptionInfo = async (id) => {
    } else {
       // ask stripe the subscriptions for stripe_customer_id
       if (user.stripe_customer_id) {
-         const data = await app.service('stripe').customerSubscriptionsStatus(user.stripe_customer_id)
-         console.log('data', data)
-         if (data.length > 0) {
+         const subscriptions = await app.service('stripe').customerActiveSubscriptions(user.stripe_customer_id)
+         // console.log('subscriptions', subscriptions)
+         if (subscriptions.length > 0) {
             // replace cache info by Stripe info
-            const subscription = data[0]
+            const subscription = subscriptions[0]
             const productId = subscription.plan.product
             const subscriptionType = productId2subscriptionType(productId)
             user = await updateUser(id, {
@@ -235,6 +235,14 @@ export const createStripeSubscription = async (id, customerId, priceId) => {
 }
 
 export const cancelStripeCustomerSubscriptions = async (id, customerId) => {
-   const { subscriptions } = await app.service('stripe').cancelCustomerSubscriptions(user.stripe_customer_id)
+   const { error } = await app.service('stripe').cancelCustomerSubscriptions(customerId)
+   if (!error) {
+      await updateUser(id, {
+         subscription_type: null,
+         stripe_subscription_id: null,
+         subscription_status: 'canceled',
+      })
+   }
+   return { error }
 }
 
