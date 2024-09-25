@@ -77,11 +77,13 @@ export default function(app) {
       },
 
       cancelCustomerSubscriptions: async (customerId) => {
+         console.log('cancelCustomerSubscriptions')
          try {
             const subscriptions = await stripe.subscriptions.list({
                customer: customerId,
             })
-            return subscriptions
+            console.log('cancelCustomerSubscriptions subscriptions', subscriptions)
+            return { subscriptions }
          } catch (error) {
             console.error('Error canceling subscription:', error)
             return ({

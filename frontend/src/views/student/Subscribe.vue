@@ -53,16 +53,20 @@
                <div class="text-red-600">
                   {{ errorMessage }}
                </div>
-
-               <button :disabled="false" class="link my-2" @click="cancelStripeCustomerSubscriptions">
-                  Arrêter l'abonnement en cours...
-               </button>
             </form>
          </div>
 
-         <button class="link my-2" @click="update">
-            Update
-         </button>
+         <div>
+            <button :disabled="!user.subscription_status" class="link my-2" @click="cancelCustomerSubscriptions">
+               Arrêter l'abonnement en cours...
+            </button>
+         </div>
+
+         <div>
+            <button class="link my-2" @click="update">
+               Update
+            </button>
+         </div>
 
       </main>
 
@@ -73,7 +77,8 @@
 import { ref, computed, onMounted } from 'vue'
 import { loadStripe } from '@stripe/stripe-js'
 
-import { userOfId, updateUser, buyStoreProduct, subscriptionOfUser, SUBSCRIPTIONS, updateSubscriptionInfo, getOrCreateStripeCustomer, createStripeSubscription } from '/src/use/useUser'
+import { userOfId, updateUser, buyStoreProduct, subscriptionOfUser, SUBSCRIPTIONS, updateSubscriptionInfo,
+   getOrCreateStripeCustomer, createStripeSubscription, cancelStripeCustomerSubscriptions } from '/src/use/useUser'
 
 
 const props = defineProps({
@@ -196,21 +201,29 @@ const processStripeSubscription = async (subscriptionType, paymentMethodId, pric
 }
 
 // cancel all subscriptions of assciated customer (in case there are several by mistake)
-const cancelStripeCustomerSubscriptions = async () => {
-   console.log('cancelStripeSubscription, stripe_customer_id', user.stripe_customer_id)
-   if (user.stripe_customer_id) {
-      try {
-         const result = await app.service('stripe').cancelCustomerSubscriptions(user.stripe_customer_id)
-         if (result.error) {
-            errorMessage.value = result.error
-         } else {
-            alert("L'abonnement a été annulé avec succès !")
+const cancelCustomerSubscriptions = async () => {
+   console.log('cancelStripeSubscription, stripe_customer_id', user.value.stripe_customer_id, 'subscription_status', user.value.subscription_status)
+
+   if (user.value.subscription_status === 'active') {
+      const platform = Capacitor.getPlatform()
+      if (platform === 'ios' || platform === 'android') {
+         // cancel on AppStore or GooglePlay
+         
+      } else {
+         // cancel on Stripe
+         try {
+            const { subscriptions, error } = await cancelStripeCustomerSubscriptions(props.userid, user.stripe_customer_id)
+            if (error) {
+               errorMessage.value = error
+            } else {
+               alert("L'abonnement a été annulé avec succès !")
+            }
+         } catch (error) {
+            errorMessage.value = 'Erreur inconnue...'
          }
-      } catch (error) {
-         errorMessage.value = 'Erreur inconnue...'
       }
    } else {
-      alert("Il n'y a pas d'abonnement en cours")
+      alert("Il n'y a pas d'abonnement actif en cours")
    }
 }
 

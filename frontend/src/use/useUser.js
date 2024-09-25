@@ -233,3 +233,8 @@ export const createStripeSubscription = async (id, customerId, priceId) => {
    }
    return { clientSecret, subscriptionId, error }
 }
+
+export const cancelStripeCustomerSubscriptions = async (id, customerId) => {
+   const { subscriptions } = await app.service('stripe').cancelCustomerSubscriptions(user.stripe_customer_id)
+}
+
