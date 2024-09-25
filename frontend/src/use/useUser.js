@@ -107,39 +107,46 @@ export const listOfUser = computed(() => {
 //////////////////           SUBSCRIPTION           //////////////////
 
 
-const SUBSCRIPTIONS = {
+export const SUBSCRIPTIONS = {
    standard_monthly: {
-      subscriptionId: import.meta.env.VITE_STRIPE_STANDARD_MONTHLY_SUBSCRIPTION_ID,
+      productId: import.meta.env.VITE_STRIPE_STANDARD_MONTHLY_SUBSCRIPTION_ID,
       priceId: import.meta.env.VITE_STRIPE_STANDARD_MONTHLY_PRICE_ID,
       title: "Souscription à un abonnement standard mensuel",
    },
    standard_yearly: {
-      subscriptionId: import.meta.env.VITE_STRIPE_STANDARD_YEARLY_SUBSCRIPTION_ID,
+      productId: import.meta.env.VITE_STRIPE_STANDARD_YEARLY_SUBSCRIPTION_ID,
       priceId: import.meta.env.VITE_STRIPE_STANDARD_YEARLY_PRICE_ID,
       title: "Souscription à un abonnement standard annuel",
    },
    premium_monthly: {
-      subscriptionId: import.meta.env.VITE_STRIPE_PREMIUM_MONTHLY_SUBSCRIPTION_ID,
+      productId: import.meta.env.VITE_STRIPE_PREMIUM_MONTHLY_SUBSCRIPTION_ID,
       priceId: import.meta.env.VITE_STRIPE_PREMIUM_MONTHLY_PRICE_ID,
       title: "Souscription à un abonnement premium mensuel",
    },
    premium_yearly: {
-      subscriptionId: import.meta.env.VITE_STRIPE_PREMIUM_YEARLY_SUBSCRIPTION_ID,
+      productId: import.meta.env.VITE_STRIPE_PREMIUM_YEARLY_SUBSCRIPTION_ID,
       priceId: import.meta.env.VITE_STRIPE_PREMIUM_YEARLY_PRICE_ID,
       title: "Souscription à un abonnement premium annuel",
    },
 }
 
+function productId2subscriptionType(productId) {
+   let subscriptionType
+   for (subscriptionType in SUBSCRIPTIONS) {
+      if (SUBSCRIPTIONS[subscriptionType].productId === productId) return subscriptionType
+   }
+}
+
+
 export const buyStoreProduct = async (id, subscriptionType) => {
    const productId = subscriptionType
-   const { revocationDate, expirationDate, active } = await InAppPurchase.buyProduct({ productId })
+   const { active } = await InAppPurchase.buyProduct({ productId })
+   const subscriptionStatus = active ? "active" : "inactive"
    await updateUser(id, {
       subscription_type: subscriptionType,
-      revocation_date: revocationDate,
-      expiration_date: expirationDate,
-      active,
+      subscription_status: subscriptionStatus,
    })
-   return { subscriptionType, revocationDate, expirationDate, active }
+   return { subscriptionType, subscriptionStatus }
 }
 
 export const updateSubscriptionInfo = async (id) => {
@@ -149,12 +156,13 @@ export const updateSubscriptionInfo = async (id) => {
    if (platform === 'ios' || platform === 'android') {
       console.log("checking...")
       const { productId, active } = await InAppPurchase.checkSubscription()
-      console.log("info", productId, active)
+      const subscriptionStatus = active ? "active" : "inactive"
+      console.log("info", productId, subscriptionStatus)
       if (productId) {
          // replace cache info by Store info
          user = await updateUser(id, {
             subscription_type: productId,
-            active,
+            subscription_status: subscriptionStatus,
          })
       } else {
          if (user.subscription_type) {
@@ -164,13 +172,17 @@ export const updateSubscriptionInfo = async (id) => {
    } else {
       // ask stripe the subscriptions for stripe_customer_id
       if (user.stripe_customer_id) {
-         const data = await app.service('stripe').subscriptionStatus(user.stripe_customer_id)
+         const data = await app.service('stripe').customerSubscriptionsStatus(user.stripe_customer_id)
          console.log('data', data)
          if (data.length > 0) {
             // replace cache info by Stripe info
+            const subscription = data[0]
+            const productId = subscription.plan.product
+            const subscriptionType = productId2subscriptionType(productId)
             user = await updateUser(id, {
-               subscription_type: 'xxx',
-               active: data[0].status === 'active',
+               subscription_type: subscriptionType,
+               subscription_status: subscription.status,
+               stripe_subscription_id: subscription.id,
             })
          }
       }
@@ -179,9 +191,7 @@ export const updateSubscriptionInfo = async (id) => {
    // return cache info
    return {
       subscriptionType: user.subscription_type,
-      // revocationDate: user.revocation_date, 
-      // expirationDate: user.expiration_date,
-      active: user.active,
+      subscriptionStatus: user.subscription_status,
    }
 }
 
@@ -190,7 +200,8 @@ export const updateSubscriptionInfo = async (id) => {
 export const subscriptionOfUser = computed(() => (id) => {
    const user = userOfId.value(id)
    if (!user) return undefined
-   if (!user.active) return null // no subscription (null), or a subscription has been made, but is no longer active (false)
+   if (!user.subscription_status) return null // no subscription (null), or a subscription has been made, but is no longer active (false)
+   if (user.subscription_status !== 'active') return null // a subscription has been made, but is no longer active (false)
    return user.subscription_type
 })
 
@@ -213,6 +224,13 @@ export const getOrCreateStripeCustomer = async (id, paymentMethodId, customerEma
    return customerId
 }
 
-export const createStripeSubscription = async (customerId, priceId) => {
-   return await app.service('stripe').createSubscription(customerId, priceId)
+export const createStripeSubscription = async (id, customerId, priceId) => {
+   const { clientSecret, subscriptionId, error } = await app.service('stripe').createSubscription(customerId, priceId)
+   if (!error) {
+      const user = await getUser(id)
+      await updateUser(id, {
+         stripe_subscription_id: subscriptionId,
+      })
+   }
+   return { clientSecret, subscriptionId, error }
 }

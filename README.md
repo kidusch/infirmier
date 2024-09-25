@@ -71,7 +71,7 @@ COMPLÉTER
 
 ### Stripe
 - utiliser le dashboard Stripe pour créer les abonnements ("Catalogue de produits")
-- carte de test : 4242 4242 4242 4242, expiration 09/28, CVC: 123, code postal 10001
+- carte de test : 4242 4242 4242 4242, expiration 09/28, CVC: 123
 
 
 ## AppStore / iOSConnect

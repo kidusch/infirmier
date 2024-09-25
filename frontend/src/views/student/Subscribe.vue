@@ -54,7 +54,7 @@
                   {{ errorMessage }}
                </div>
 
-               <button :disabled="false" class="link my-2" @click="cancelStripeSubscription">
+               <button :disabled="false" class="link my-2" @click="cancelStripeCustomerSubscriptions">
                   Arrêter l'abonnement en cours...
                </button>
             </form>
@@ -73,9 +73,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { loadStripe } from '@stripe/stripe-js'
 
-import { userOfId, buyStoreProduct, subscriptionOfUser, updateSubscriptionInfo, getOrCreateStripeCustomer, createStripeSubscription } from '/src/use/useUser'
-
-import { app } from '/src/client-app.js'
+import { userOfId, buyStoreProduct, subscriptionOfUser, SUBSCRIPTIONS, updateSubscriptionInfo, getOrCreateStripeCustomer, createStripeSubscription } from '/src/use/useUser'
 
 
 const props = defineProps({
@@ -87,28 +85,6 @@ const props = defineProps({
 
 const user = computed(() => userOfId.value(props.userid))
 
-const SUBSCRIPTIONS = {
-   standard_monthly: {
-      subscriptionId: import.meta.env.VITE_STRIPE_STANDARD_MONTHLY_SUBSCRIPTION_ID,
-      priceId: import.meta.env.VITE_STRIPE_STANDARD_MONTHLY_PRICE_ID,
-      title: "Souscription à un abonnement standard mensuel",
-   },
-   standard_yearly: {
-      subscriptionId: import.meta.env.VITE_STRIPE_STANDARD_YEARLY_SUBSCRIPTION_ID,
-      priceId: import.meta.env.VITE_STRIPE_STANDARD_YEARLY_PRICE_ID,
-      title: "Souscription à un abonnement standard annuel",
-   },
-   premium_monthly: {
-      subscriptionId: import.meta.env.VITE_STRIPE_PREMIUM_MONTHLY_SUBSCRIPTION_ID,
-      priceId: import.meta.env.VITE_STRIPE_PREMIUM_MONTHLY_PRICE_ID,
-      title: "Souscription à un abonnement premium mensuel",
-   },
-   premium_yearly: {
-      subscriptionId: import.meta.env.VITE_STRIPE_PREMIUM_YEARLY_SUBSCRIPTION_ID,
-      priceId: import.meta.env.VITE_STRIPE_PREMIUM_YEARLY_PRICE_ID,
-      title: "Souscription à un abonnement premium annuel",
-   },
-}
 
 const buySubscription = async (subscriptionType) => {
    const platform = Capacitor.getPlatform()
@@ -192,13 +168,13 @@ const processStripeSubscription = async (paymentMethodId, priceId) => {
    try {
       const customerId = await getOrCreateStripeCustomer(props.userid, paymentMethodId, user.value.email)
       console.log('customerId', customerId)
-      const result = await createStripeSubscription(customerId, priceId)
+      const { clientSecret, error } = await createStripeSubscription(props.userid, customerId, priceId)
       
-      if (result.error) {
-         errorMessage.value = result.error
+      if (error) {
+         errorMessage.value = error
       } else {
          // Confirm the subscription payment
-         const { error } = await stripe.value.confirmCardPayment(result.clientSecret)
+         const { error } = await stripe.value.confirmCardPayment(clientSecret)
          if (error) {
             errorMessage.value = error.message
          } else {
@@ -212,24 +188,28 @@ const processStripeSubscription = async (paymentMethodId, priceId) => {
    }
 }
 
-const cancelStripeSubscription = async () => {
-   const subscriptionId = SUBSCRIPTIONS[stripeSubscriptionChoice.value].subscriptionId
-   console.log('cancelStripeSubscription', subscriptionId)
-   try {
-      const result = await app.service('stripe').cancelSubscription(subscriptionId)
-      if (result.error) {
-         errorMessage.value = result.error
-      } else {
-         alert("L'abonnement a été annulé avec succès !")
+// cancel all subscriptions of assciated customer (in case there are several by mistake)
+const cancelStripeCustomerSubscriptions = async () => {
+   console.log('cancelStripeSubscription, stripe_customer_id', user.stripe_customer_id)
+   if (user.stripe_customer_id) {
+      try {
+         const result = await app.service('stripe').cancelCustomerSubscriptions(user.stripe_customer_id)
+         if (result.error) {
+            errorMessage.value = result.error
+         } else {
+            alert("L'abonnement a été annulé avec succès !")
+         }
+      } catch (error) {
+         errorMessage.value = 'Erreur inconnue...'
       }
-   } catch (error) {
-      errorMessage.value = 'Erreur inconnue...'
+   } else {
+      alert("Il n'y a pas d'abonnement en cours")
    }
 }
 
 const update = async () => {
-   const x = await updateSubscriptionInfo(props.userid)
-   console.log('x', x)
+   const {subscriptionType, subscriptionStatus } = await updateSubscriptionInfo(props.userid)
+   console.log('subscriptionType', subscriptionType, 'subscriptionStatus', subscriptionStatus)
 }
 </script>
 

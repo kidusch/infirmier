@@ -8,35 +8,34 @@ datasource db {
 }
 
 model user {
-  id                    Int        @id @default(autoincrement())
-  created_at            DateTime   @default(now()) @db.Timestamptz(6)
-  email                 String?    @unique(map: "user_sub_unique")
-  password              String?    // 4-digit pin-code for patients
-  accept_cgu            Boolean?
-  admin                 Boolean    @default(false)  // is admin
-  subscription_list     String     @default("[]")   // push notification 'adresses', comma-separated
-  shared_agenda Boolean @default(false)
+  id                      Int        @id @default(autoincrement())
+  created_at              DateTime   @default(now()) @db.Timestamptz(6)
+  email                   String?    @unique(map: "user_sub_unique")
+  password                String?    // 4-digit pin-code for patients
+  accept_cgu              Boolean?
+  admin                   Boolean    @default(false)  // is admin
+  subscription_list       String     @default("[]")   // push notification 'adresses', comma-separated
+  shared_agenda Boolean   @default(false)
 
-  google_id String?     @unique(map: "uses_google_id_unique")
+  google_id String?       @unique(map: "uses_google_id_unique")
   name      String?
   picture   String?
 
 
-  subscription_type     String?     // null, 'standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly'
-  //revocation_date       DateTime?
-  //expiration_date       DateTime?
-  active                Boolean?
-  stripe_customer_id    String?
+  subscription_type       String?     // null, 'standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly'
+  subscription_status     String?    // null, 'active', +
+  stripe_customer_id      String?
+  stripe_subscription_id  String?
 
-  messages_from         message[]    @relation("from")
-  messages_to           message[]    @relation("to")
-  user_actions          user_action[]
-  user_courses          user_course[] // actually a 1:1 relationship
-  user_cards            user_card[] // actually a 1:1 relationship
-  user_quizes           user_quiz[] // actually a 1:1 relationship
-  user_case_studies     user_case_study[] // actually a 1:1 relationship
-  user_quiz_choices     user_quiz_choice[]
-  agendas               agenda[]
+  messages_from           message[]    @relation("from")
+  messages_to             message[]    @relation("to")
+  user_actions            user_action[]
+  user_courses            user_course[] // actually a 1:1 relationship
+  user_cards              user_card[] // actually a 1:1 relationship
+  user_quizes             user_quiz[] // actually a 1:1 relationship
+  user_case_studies       user_case_study[] // actually a 1:1 relationship
+  user_quiz_choices       user_quiz_choice[]
+  agendas                 agenda[]
 }
 
 model message {

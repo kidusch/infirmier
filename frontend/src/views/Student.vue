@@ -121,8 +121,8 @@ const props = defineProps({
 
 onMounted(async () => {
    // update subscription info
-   const x = await updateSubscriptionInfo(props.userid)
-   console.log('x', x)
+   const {subscriptionType, subscriptionStatus } = await updateSubscriptionInfo(props.userid)
+   console.log('subscriptionType', subscriptionType, 'subscriptionStatus', subscriptionStatus)
 })
 
 const user = computed(() => userOfId.value(props.userid))
