@@ -112,7 +112,7 @@ onMounted(() => {
       GoogleAuth.initialize({
          clientId: import.meta.env.VITE_GOOGLE_APP_CLIENT_ID,
          scopes: ['profile', 'email'],
-         // grantOfflineAccess: true,
+         grantOfflineAccess: true,
       })
    } catch(err) {
       console.log('init err', err)
