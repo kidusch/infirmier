@@ -17,10 +17,11 @@ const socketOptions = {
    reconnectionDelayMax: 10000,
    extraHeaders: {
       "bearer-token": "mytoken"
-   }
+   },
 }
 
 // VITE_SERVER is used when app is packaged as a store application
+console.log('VITE_SERVER', import.meta.env.VITE_SERVER)
 const socket = import.meta.env.VITE_SERVER ? io(import.meta.env.VITE_SERVER, socketOptions) : io(socketOptions)
 
 export const app = expressXClient(socket, { debug: true })

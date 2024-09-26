@@ -139,8 +139,7 @@ function productId2subscriptionType(productId) {
 
 
 export const buyStoreProduct = async (id, subscriptionType) => {
-   const { active } = await InAppPurchase.buyProduct({ productId: subscriptionType })
-   const subscriptionStatus = active ? "active" : "inactive"
+   const { status: subscriptionStatus } = await InAppPurchase.buyProduct({ productId: subscriptionType })
    await updateUser(id, {
       subscription_type: subscriptionType,
       subscription_status: subscriptionStatus,
@@ -154,8 +153,7 @@ export const updateSubscriptionInfo = async (id) => {
    const platform = Capacitor.getPlatform()
    if (platform === 'ios' || platform === 'android') {
       console.log("checking...")
-      const { productId, active } = await InAppPurchase.checkSubscription()
-      const subscriptionStatus = active ? "active" : "inactive"
+      const { productId, status: subscriptionStatus } = await InAppPurchase.checkSubscription()
       console.log("info", productId, subscriptionStatus)
       if (productId) {
          // replace cache info by Store info

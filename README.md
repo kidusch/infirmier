@@ -122,13 +122,42 @@ Google Developers Console : https://console.cloud.google.com/apis/dashboard?proj
 
 ### Authentification Google - iOS
 
-- utilise un "Client ID for iOS" (voir Google Devlopers Console, "Client iOS 1")
+- utilise un "Client ID for iOS" (voir Google Developers Console, "Client iOS 1")
 - ajouter à Info.plist, "URL Types", identifier: REVERSED_CLIENT_ID, URL schemes: com.googleusercontent.apps.35236017874-2mus35pvufa8kfbojf5p7u1f0cmts4qa
 (Xcode: App - Targets/App - Info - URL Types, click '+')
 
 ### Authentification Google - Android
-COMPLÉTER
 
+Le code Android considère que localhost ou 127.0.0.1 est le device Android et non la machine locale ;
+le plus simple est de tester avec un serveur de production
+
+- utilise un "Client id for Android", voir Google Developers Console
+
+(
+- modifier android/variables.gradle et passer minSdkVersion à 24
+
+- pour que ça marche en dev, il faut autoriser le non-https :
+   - ajouter à android/app/src/main/AndroidManifest.xml :
+```
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+   <application
+
+      android:usesCleartextTraffic="true"
+      android:networkSecurityConfig="@xml/network_security_config"
+      ...
+```
+   - créer un fichier android/app/src/main/res/xml/network_security_config.xml :
+```
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">localhost</domain>
+        <domain includeSubdomains="true">infirmier.jcbuisson.dev</domain>
+    </domain-config>
+</network-security-config>
+```
+)
 
 
 ## Pas de sessions

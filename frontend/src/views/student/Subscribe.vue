@@ -56,17 +56,23 @@
             </form>
          </div>
 
-         <div>
-            <button v-if="hasSubscription(user.id)" class="link my-2" @click="cancelCustomerSubscriptions">
-               Arrêter l'abonnement en cours...
+         <div class="my-2">
+            <button v-if="platform !== 'ios' && platform !== 'android' && hasSubscription(user.id)" class="link" @click="cancelCustomerSubscriptions">
+               Résilier l'abonnement en cours...
             </button>
+            <p v-if="platform === 'ios'">
+               Vous pouvez résilier à tout moment l'abonnement en cours en allant dans Réglages -> Apple Id -> Abonnements
+            </p>
+            <p v-if="platform === 'android'">
+               Vous pouvez résilier à tout moment l'abonnement en cours en allant dans Réglages -> Abonnements
+            </p>
          </div>
 
-         <!-- <div>
+         <div>
             <button class="link my-2" @click="update">
                Update
             </button>
-         </div> -->
+         </div>
 
       </main>
 
@@ -89,15 +95,21 @@ const props = defineProps({
 })
 
 const user = computed(() => userOfId.value(props.userid))
-
+const platform = computed(() => Capacitor.getPlatform())
 
 const buySubscription = async (subscriptionType) => {
-   const platform = Capacitor.getPlatform()
-   if (platform === 'ios' || platform === 'android') {
-      // buy on AppStore or GooglePlay
-      await buyStoreProduct(props.userid, subscriptionType)
+   const subscribed = subscriptionOfUser.value(props.userid)
+   if (subscribed === subscriptionType) {
+      alert("Vous avez déjà souscrit à cet abonnement")
+   } else if (subscribed) {
+      alert("Pour souscrire un abonnement différent, vous devez d'abord résilier l'abonnement en cours")
    } else {
-      stripeSubscriptionChoice.value = subscriptionType
+      if (platform.value === 'ios' || platform.value === 'android') {
+         // buy on AppStore or GooglePlay
+         await buyStoreProduct(props.userid, subscriptionType)
+      } else {
+         stripeSubscriptionChoice.value = subscriptionType
+      }
    }
 }
 
@@ -206,8 +218,7 @@ const cancelCustomerSubscriptions = async () => {
    console.log('cancelCustomerSubscriptions, subscription_type', user.value.subscription_type, 'stripe_customer_id', user.value.stripe_customer_id, 'subscription_status', user.value.subscription_status)
 
    if (user.value.subscription_status === 'active') {
-      const platform = Capacitor.getPlatform()
-      if (platform === 'ios' || platform === 'android') {
+      if (platform.value === 'ios' || platform.value === 'android') {
          // cancel on AppStore or GooglePlay
          
       } else {

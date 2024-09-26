@@ -100,7 +100,7 @@
 import { ref, computed, onMounted } from 'vue'
 
 import { logout, clearCaches } from '/src/use/useAuthentication'
-import { userOfId, listOfUser, updateSubscriptionInfo } from '/src/use/useUser'
+import { userOfId, getUser, listOfUser, updateSubscriptionInfo } from '/src/use/useUser'
 import { unreadMessagesCountOfUser2ByUser1 } from '/src/use/useMessage'
 import { isCareTabVisible } from '/src/use/useCare'
 import { isDocumentTabVisible } from '/src/use/useDocument'
@@ -121,8 +121,10 @@ const props = defineProps({
 
 onMounted(async () => {
    // update subscription info
-   const {subscriptionType, subscriptionStatus } = await updateSubscriptionInfo(props.userid)
+   const { subscriptionType, subscriptionStatus } = await updateSubscriptionInfo(props.userid)
    console.log('subscriptionType', subscriptionType, 'subscriptionStatus', subscriptionStatus)
+   // const user = await getUser(props.userid)
+   // alert(user.id + ", " + user.subscriptionType + ", " + user.subscriptionStatus)
 })
 
 const user = computed(() => userOfId.value(props.userid))
