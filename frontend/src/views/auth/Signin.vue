@@ -110,7 +110,8 @@ onMounted(() => {
    try {
       // see: https://github.com/CodetrixStudio/CapacitorGoogleAuth
       GoogleAuth.initialize({
-         clientId: import.meta.env.VITE_GOOGLE_APP_CLIENT_ID,
+         // clientId: import.meta.env.VITE_GOOGLE_APP_CLIENT_ID,
+         clientId: "35236017874-cdtgpjkhkpkrrp6f6p4l5ku60e6ipmv6.apps.googleusercontent.com",
          scopes: ['profile', 'email'],
          grantOfflineAccess: true,
       })
