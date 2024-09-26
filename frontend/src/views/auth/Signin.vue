@@ -108,6 +108,7 @@ const goSignup = () => {
 
 onMounted(() => {
    try {
+      console.log('VITE_GOOGLE_APP_CLIENT_ID', import.meta.env.VITE_GOOGLE_APP_CLIENT_ID)
       // see: https://github.com/CodetrixStudio/CapacitorGoogleAuth
       GoogleAuth.initialize({
          // clientId: import.meta.env.VITE_GOOGLE_APP_CLIENT_ID,
