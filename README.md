@@ -131,7 +131,28 @@ Google Developers Console : https://console.cloud.google.com/apis/dashboard?proj
 Le code Android considère que localhost ou 127.0.0.1 est le device Android et non la machine locale ;
 le plus simple est de tester avec un serveur de production
 
+Voir : https://medium.com/codetrixstudio/authenticate-using-google-sign-in-in-capacitor-706e28703e69
+Voir : https://enappd.com/blog/google-login-in-ionic-capacitor-app-with-angular/178/
+
+
+
 - utilise un "Client id for Android", voir Google Developers Console
+- ajouter dans app/src/main/values/strings.xml :
+```
+  <string name="server_client_id">Your Web Client Key</string>
+```
+- ajouter dans app/src/main/java/com/journaldebordide/app/MainActivity.java :
+```
+```
+- ajouter dans capacitor.config.json :
+```
+   "plugins": {
+      "GoogleAuth": {
+         "scopes": ["profile", "email"],
+         "serverClientId": "35236017874-f1cgk3t2eec06lqtj1satbabrgrn1aih.apps.googleusercontent.com"
+      }
+    }}
+```
 
 (
 - modifier android/variables.gradle et passer minSdkVersion à 24

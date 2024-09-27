@@ -50,7 +50,6 @@ import { ref, onMounted, computed } from 'vue'
 import router from "/src/router"
 import { app } from '/src/client-app.js'
 
-
 const adminMisc = ref({})
 
 onMounted(async () => {
