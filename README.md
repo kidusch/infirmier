@@ -33,7 +33,11 @@ npm run build:iosdev   # utilise .env.iosdev
 npx cap open ios
 ```
 
-## Configuration de production
+# IOS
+
+Gestion des certificats de développement : Xcode -> Settings... -> Accounts -> Manage certificates
+
+Sandbox tester (pour tests sur device) : Paul Maumy, jean-christophe.buisson@enseeiht.fr / apM**e
 
 
 
@@ -67,7 +71,8 @@ On peut tester en simulation sur iOS, en utilisant un 'StoreKit configuration fi
 -> l'utiliser dans le Run avec Product -> Scheme -> Edit Scheme... -> choisir le fichier dans la rubrique "StoreKit configuration"
 
 ### inApp purchase - Android
-COMPLÉTER
+Voir : https://bugfender.com/blog/android-in-app-purchases
+
 
 ### Stripe
 - utiliser le dashboard Stripe pour créer les abonnements ("Catalogue de produits")
@@ -76,20 +81,16 @@ COMPLÉTER
 
 ## AppStore / iOSConnect
 App enregistrée sur le compte de Charlène (voir README.secret)
-PAS BESOIN D'AVOIR UN ABONNEMENT DÉVELOPPEUR ?
-MOT DE PASSE TROUSSEAU SESSION IOS DEVELOPER CHARLENE FANTONE : VIDE
 
 Bundle id : com.journaldebordide.app
 Identifiant Apple : 6673904628
 Apple Id prefix : T8P24LJSUB (Team ID)
 UGS : infirmier
 
-Sandbox tester (pour tests sur device) : Paul Maumy, jean-christophe.buisson@enseeiht.fr / apM**e
-
 
 ```
-npm run build:ios   # vite build --mode ios && npx cap sync)
-npm run build:android
+npm run build:iosdev   # vite build --mode iosdev && npx cap sync)
+npm run build:androiddev
 
 npx cap open ios
 npx cap open android
