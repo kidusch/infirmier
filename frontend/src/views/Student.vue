@@ -1,13 +1,13 @@
 <template>
 
    <!-- <div class="fixed bottom-0 right-0 m-4 p-4 bg-green-100 border-solid rounded z-50">
-      {{ isIosPortrait }}
+      {{ isMobilePortrait }}
    </div> -->
 
    <div class="py-4 flex flex-col h-screen">
 
       <!-- navbar -->
-      <nav class="sticky border-b pb-2 top-0 w-full bg-white">
+      <nav class="sticky border-b pb-2 w-full bg-white" :class="{ 'top-0': !isMobilePortrait,  'top-12': isMobilePortrait }">
 
          <main class="flex w-full items-center justify-between container max-w-7xl">
             <button @click="toggleSideMenu">
@@ -105,7 +105,7 @@ import { unreadMessagesCountOfUser2ByUser1 } from '/src/use/useMessage'
 import { isCareTabVisible } from '/src/use/useCare'
 import { isDocumentTabVisible } from '/src/use/useDocument'
 import { isLegislationTabVisible } from '/src/use/useLegislation'
-// import { isIosPortrait } from '/src/use/useDevice'
+import { isMobilePortrait } from '/src/use/useDevice'
 
 import { courseIconPath, revisionIconPath } from '/src/lib/icons.mjs'
 import router from '/src/router'

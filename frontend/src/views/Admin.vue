@@ -2,7 +2,7 @@
    <div class="py-4 flex flex-col h-screen">
 
       <!-- navbar -->
-      <nav class="border-b pb-2 absolute top-0 w-full bg-white">
+      <nav class="sticky border-b pb-2 w-full bg-white" :class="{ 'top-0': !isMobilePortrait,  'top-12': isMobilePortrait }">
 
          <main class="flex w-full items-center justify-between container max-w-7xl">
             <button @click="toggleSideMenu">

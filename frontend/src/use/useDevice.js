@@ -4,4 +4,4 @@ import { useScreenOrientation } from '@vueuse/core'
 
 const { orientation } = useScreenOrientation()
 
-export const isIosPortrait = computed(() => Capacitor.getPlatform() === 'ios' && orientation.value === 'portrait-primary')
+export const isMobilePortrait = computed(() => Capacitor.getPlatform() !== 'web' && orientation.value === 'portrait-primary')

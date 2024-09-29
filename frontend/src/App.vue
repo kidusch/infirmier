@@ -4,7 +4,7 @@
       Une nouvelle version est disponible <a href="#" class="text-blue-400 hover:underline ml-2" @click="updateServiceWorker">installer</a>
    </div>
 
-   <router-view cclass="fixed" :cclass="{ 'top-12': isIosPortrait, 'top-2': !isIosPortrait }">
+   <router-view cclass="fixed">
    </router-view>
 
    <Spinner v-if="appState?.spinnerWaitingText" class="z-40">
@@ -22,7 +22,7 @@ import { watch, onMounted } from 'vue'
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 import { App } from '@capacitor/app'
 
-import { isIosPortrait } from '/src/use/useDevice'
+import { isMobilePortrait } from '/src/use/useDevice'
 import { appState, resetUseAppState } from '/src/use/useAppState'
 import { restartApp } from '/src/use/useAuthentication'
 

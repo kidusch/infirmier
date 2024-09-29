@@ -8,16 +8,34 @@
 - 'standard' : un abonnement de premier niveau permet d'avoir accès à tous les éléments
 - 'premium' : un abonnement de deuxième niveau permet d'avoir en plus la correction personnalisée, etc.
 
-Sur les stores, les abonnements sont des achats in-app, sur le web ce sont des abonnements Stripe
+
+# Choix techniques
+
+## CapacitorJS pour les versions mobiles
+Génère les projets iOS et Android
+Essai de PWABuilder (Microsoft) Pb : rien prévu pour in-app purchase
+
+## Authentification Google
+https://github.com/CodetrixStudio/CapacitorGoogleAuth, plugin utilisé pour l'authentification Google
+
+## Abonnements
+- Abonnements 'inapp' sur iOS et Android, abonnements Stripe sur le web
+- Développement d'un plugin Capacitor 'jcb-capacitor-inapp' accessible sur npm (le plugin Cordova 'cordova-plugin-purchase' est vieux et non fonctionnel)
+pour iOS et Android
 
 
-# Configuration
+# Configurations
 
-## Configuration de développement
+- Google Developer Console pour l'authentification
+- Apple Developer pour les certificats
+- Appstore Connect pour la création de l'application et ses abonnements et le suivi de TestFlight, des achats etc.
 
 - frontend, voir : https://vitejs.dev/guide/env-and-mode, accessibles via import.meta.env
-   - .env          pour version web / PWA
-   - .env.iosdev   pour exécution en dev sur iOS simulator
+   - .env              pour version web / PWA
+   - .env.iosdev       pour exécution sur iOS avec le backend de dev
+   - .env.ios          pour exécution sur iOS avec le backend de prod
+   - .env.androiddev   pour exécution sur Android avec le backend de dev
+   - .env.android      pour exécution sur Android avec le backend de prod
 
 Lancer le backend en dev :
 ```
@@ -25,44 +43,45 @@ cd backend
 npm run dev
 ```
 
-### Exécuter sur iOS Simulator
-Builder le frontend pour ios et exécuter le projet iOS :
+# Version web
+
+## Achat abonnements : Stripe
+- voir README.secret pour les identifiants
+- utiliser le dashboard Stripe pour créer les abonnements ("Catalogue de produits")
+- carte de test : 4242 4242 4242 4242, expiration 09/28, CVC: 123
+
+
+# iOS
+App enregistrée sur le compte de Charlène (voir README.secret)
+Bundle id : com.journaldebordide.app
+Identifiant Apple : 6673904628
+Apple Id prefix : T8P24LJSUB (Team ID)
+UGS : infirmier
+
+## Build
 ```
 cd frontend
-npm run build:iosdev   # utilise .env.iosdev
+npm run build:iosdev   # vite build --mode iosdev && npx cap sync)
 npx cap open ios
 ```
-
-# IOS
-
-Gestion des certificats de développement : Xcode -> Settings... -> Accounts -> Manage certificates
-
-Sandbox tester (pour tests sur device) : Paul Maumy, jean-christophe.buisson@enseeiht.fr / apM**e
-
-
-
-
-# Choix techniques pour application AppStore et GooglePlay
-
-Essai de PWABuilder (Microsoft) Pb : rien prévu pour in-app purchase
-
-## CapacitorJS
-Génère les projets iOS et Android
-Voir détails plus loin par plateforme
-
+Sur XCode, enlever le "automatic signing" et choisir le provisionning profile de dev ou de prod, puis builder/exécuter
+Choisir la team : "CHARLENE FANTONE"
+On peut exécuter sur simulateur ou sur device
 
 ## Authentification Google
-https://github.com/CodetrixStudio/CapacitorGoogleAuth, plugin utilisé pour l'authentification Google
-Voir détails plus loin par plateforme
+- utilise un "Client ID for iOS" (voir Google Developers Console, "Client iOS 1")
+- ajouter à Info.plist, "URL Types", identifier: REVERSED_CLIENT_ID, URL schemes: com.googleusercontent.apps.35236017874-2mus35pvufa8kfbojf5p7u1f0cmts4qa
+(Xcode: App - Targets/App - Info - URL Types, click '+')
 
+## Certificats de développement et de distribution, provisioning profiles
+- les créer sur Apple Developer, compte Charlène, types "iOS development" et "iOS distribution" (voir README.secret)
+- il n'était peut-être pas nécessaire d'avoir un compte moi-même
+- les télécharger et double-cliquer pour qu'ils s'installent dans le trousseau "session"
+- créer des "provisioning profiles" de développement et de distribution
+- les télécharger et double-cliquer pour qu'ils s'installent dans XCode
+- à la demande d'un mot de passe pour les cerificats, entrer le mdp de "session" (= M**e) et cliquer sur "Toujours autoriser"
 
-## Abonnement
-
-- Abonnements 'inapp' sur iOS et Android, abonnements Stripe sur le web
-- Développement d'un plugin Capacitor 'jcb-capacitor-inapp' accessible sur npm (le plugin Cordova 'cordova-plugin-purchase' est vieux et non fonctionnel)
-pour iOS et Android
-
-### inApp purchase - iOS
+## inApp purchase
 iOS : >iOS15 (utilise StoreKit2, les transactions, async/await)
 Voir : https://medium.com/@aisultanios/implement-inn-app-subscriptions-using-swift-and-storekit2-serverless-and-share-active-purchases-7d50f9ecdc09
 
@@ -70,34 +89,25 @@ On peut tester en simulation sur iOS, en utilisant un 'StoreKit configuration fi
 -> le créer dans XCode avec File -> new -> File -> StoreKit Configuration
 -> l'utiliser dans le Run avec Product -> Scheme -> Edit Scheme... -> choisir le fichier dans la rubrique "StoreKit configuration"
 
-### inApp purchase - Android
+## TestFlight & distribution
+- choisir le provisioning profile de prod et faire "Archive"
+- uploader le build sur AppStore Connect
+
+## Utilisateur de test
+Identifiant Apple Sandbox : buisson@toulouse-inp.fr (Paul Maumy)
+
+
+# Android
+
+## inApp purchase - Android
 Voir : https://bugfender.com/blog/android-in-app-purchases
 
+## Authentification Google
+Difficile de tester avec le serveur de dev car le code Android considère que localhost ou 127.0.0.1 est le device Android et non la machine locale
+Le plus simple est de tester avec le serveur de production
 
-### Stripe
-- utiliser le dashboard Stripe pour créer les abonnements ("Catalogue de produits")
-- carte de test : 4242 4242 4242 4242, expiration 09/28, CVC: 123
-
-
-## AppStore / iOSConnect
-App enregistrée sur le compte de Charlène (voir README.secret)
-
-Bundle id : com.journaldebordide.app
-Identifiant Apple : 6673904628
-Apple Id prefix : T8P24LJSUB (Team ID)
-UGS : infirmier
-
-
-```
-npm run build:iosdev   # vite build --mode iosdev && npx cap sync)
-npm run build:androiddev
-
-npx cap open ios
-npx cap open android
-```
-
-## GooglePlay
-
+Voir : https://medium.com/codetrixstudio/authenticate-using-google-sign-in-in-capacitor-706e28703e69
+Voir : https://enappd.com/blog/google-login-in-ionic-capacitor-app-with-angular/178/
 
 
 
@@ -121,11 +131,6 @@ Google Developers Console : https://console.cloud.google.com/apis/dashboard?proj
 .env.android définit VITE_GOOGLE_APP_CLIENT_ID = clientId de "Client Android 1"
 
 
-### Authentification Google - iOS
-
-- utilise un "Client ID for iOS" (voir Google Developers Console, "Client iOS 1")
-- ajouter à Info.plist, "URL Types", identifier: REVERSED_CLIENT_ID, URL schemes: com.googleusercontent.apps.35236017874-2mus35pvufa8kfbojf5p7u1f0cmts4qa
-(Xcode: App - Targets/App - Info - URL Types, click '+')
 
 ### Authentification Google - Android
 
@@ -287,12 +292,6 @@ vue-3d-loader : https://github.com/king2088/vue-3d-loader/tree/master/src/exampl
 
 https://sketchfab.com/
 https://www.mixamo.com
-
-
-# SEO
-
-- tentative d'utilisation de Vike pour prerendering de '/'
-Semble prometteur et récent, mais délicat
 
 
 

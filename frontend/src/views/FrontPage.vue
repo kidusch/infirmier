@@ -2,7 +2,8 @@
    <body class="py-4 lg:pt-2 flex flex-col h-screen relative">
 
       <!-- navbar -->
-      <nav class="lg:border-b lg:pb-2 fixed w-full bg-white">
+      <!-- <nav class="lg:border-b lg:pb-2 fixed w-full bg-white"> -->
+      <nav class="sticky border-b pb-2 w-full bg-white" :class="{ 'top-0': !isMobilePortrait,  'top-12': isMobilePortrait }">
 
          <main class="flex w-full justify-between items-center container max-w-7xl">
 
@@ -33,6 +34,7 @@
                   Journal de bord IDE
                </h1>
                <p v-html="adminMisc?.welcome_text"></p>
+               <!-- <p>{{ SERVER }} - {{ isMobilePortrait }}</p> -->
             </div>
             <button class="primary-btn px-10" @click="signup">
                S’incrire
@@ -49,8 +51,11 @@ import { ref, onMounted, computed } from 'vue'
 
 import router from "/src/router"
 import { app } from '/src/client-app.js'
+import { isMobilePortrait } from '/src/use/useDevice'
 
 const adminMisc = ref({})
+
+const SERVER = computed(() => import.meta.env.VITE_SERVER)
 
 onMounted(async () => {
    // the only row of table 'admin_misc' is supposed to have id=1
