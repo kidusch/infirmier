@@ -1,8 +1,8 @@
 <template>
-   <main class="ffflex-1 container max-w-7xl">
+   <main class="container max-w-7xl">
 
       <!-- Header -->
-      <header class="chapter-card mt-6 mb-2">
+      <header class="chapter-card mb-2">
          <p class="leading-loose">
             <router-link class="cursor-pointer hover:underline" :to="`/student/messages`">Messagerie</router-link>
          </p>
@@ -10,7 +10,7 @@
 
       <UserUserMessagesWithScroll v-if="adminId"
          :userid="userid" :userId="adminId"
-         :offset="210">
+         :offset="270">
       </UserUserMessagesWithScroll>
 
    </main>

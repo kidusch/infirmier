@@ -1,8 +1,8 @@
 <template>
-   <main class="flex-1 container max-w-7xl">
+   <main class="container max-w-7xl">
 
       <!-- Header -->
-      <header class="chapter-card my-6">
+      <header class="chapter-card mb-2">
          <p>
             <span>Agenda</span>
          </p>

@@ -2,7 +2,6 @@
    <body class="py-4 lg:pt-2 flex flex-col h-screen relative">
 
       <!-- navbar -->
-      <!-- <nav class="lg:border-b lg:pb-2 fixed w-full bg-white"> -->
       <nav class="sticky border-b pb-2 w-full bg-white" :class="{ 'top-0': !isMobilePortrait,  'top-12': isMobilePortrait }">
 
          <main class="flex w-full justify-between items-center container max-w-7xl">

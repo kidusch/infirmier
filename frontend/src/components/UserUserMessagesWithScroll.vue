@@ -6,15 +6,15 @@
       ></UserUserConversation>
    </div>
 
-   <div class="form-control mt-2">
-      <div class="relative">
-         <textarea class="h-20 textarea-bordered w-full pr-16 leading-5" v-model="messageText" placeholder="Tapez votre message..."></textarea> 
-         <button class="absolute top-0 right-0 rounded-l-none primary-btn h-20 w-16" :disabled="!messageText"
-               @click="sendMessage">
+   <div class="mt-2">
+      <div class="flex">
+         <textarea class="bg-gray-100" v-model="messageText" placeholder="Tapez votre message..."></textarea>
+         <button class="px-6 md:px-20 py-2.5 bg-primary text-white flex items-center justify-center gap-4 font-medium max-h-14 rounded-3xl rounded-l-none"
+            :disabled="!messageText" @click="sendMessage">
             Envoyer
          </button>
       </div>
-   </div> 
+   </div>
 </template>
 
 <script setup>

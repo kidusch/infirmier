@@ -1,12 +1,8 @@
 <template>
-
-   <!-- <div class="fixed bottom-0 right-0 m-4 p-4 bg-green-100 border-solid rounded z-50">
-      {{ isMobilePortrait }}
-   </div> -->
-
    <div class="py-4 flex flex-col h-screen">
 
       <!-- navbar -->
+      <!-- <nav class="sticky border-b pb-2 w-full bg-white" :class="{ 'top-0': !isMobilePortrait,  'top-12': isMobilePortrait }"> -->
       <nav class="sticky border-b pb-2 w-full bg-white" :class="{ 'top-0': !isMobilePortrait,  'top-12': isMobilePortrait }">
 
          <main class="flex w-full items-center justify-between container max-w-7xl">
@@ -44,7 +40,7 @@
          class="hidden fixed bg-black/70 h-screen w-screen top-0 left-0 transition-all z-50">
 
          <main ref="sidebarMenuArea"
-               class="fixed h-screen top-0 -left-full w-1/5 max-lg:w-1/3 max-sm:w-2/3 bg-white p-5 flex flex-col transition-all">
+               class="fixed h-screen top-0 -left-full w-1/5 max-lg:w-1/3 max-sm:w-2/3 bg-white p-5 flex flex-col transition-all overflow-y-auto">
 
             <div class="w-full flex justify-end">
                <button @click="toggleSideMenu()">
