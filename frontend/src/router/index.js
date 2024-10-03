@@ -110,20 +110,6 @@ const routes = [
             }),
          },
          {
-            path: '/subscription-success',
-            component: () => import('/src/views/SubscriptionSuccess.vue'),
-            props: route => ({
-               userid: parseInt(sessionStorage.getItem('userid')),
-            }),
-         },
-         {
-            path: '/subscription-failure',
-            component: () => import('/src/views/SubscriptionFailure.vue'),
-            props: route => ({
-               userid: parseInt(sessionStorage.getItem('userid')),
-            }),
-         },
-         {
             path: 'study-ue',
             component: () => import('/src/views/student/StudyUE.vue'),
             props: (route) => ({

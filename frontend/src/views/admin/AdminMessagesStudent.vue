@@ -12,7 +12,7 @@
 
       <UserUserMessagesWithScroll
          :userid="userid" :userId="studentId"
-         :offset="270">
+         :offset="250">
       </UserUserMessagesWithScroll>
 
    </main>

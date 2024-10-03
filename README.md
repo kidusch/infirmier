@@ -62,6 +62,7 @@ UGS : infirmier
 ```
 cd frontend
 npm run build:iosdev   # vite build --mode iosdev && npx cap sync)
+ou : npm run build:ios
 npx cap open ios
 ```
 Sur XCode, enlever le "automatic signing" et choisir le provisionning profile de dev ou de prod, puis builder/exécuter
@@ -89,15 +90,40 @@ On peut tester en simulation sur iOS, en utilisant un 'StoreKit configuration fi
 -> le créer dans XCode avec File -> new -> File -> StoreKit Configuration
 -> l'utiliser dans le Run avec Product -> Scheme -> Edit Scheme... -> choisir le fichier dans la rubrique "StoreKit configuration"
 
+Gestion des abonnements depuis XCode : Debug -> StoreKit. On voit les expirations / renouvellements se dérouler en temps réel (accéléré
+au rythme défini dans le 'StoreKit configuration file')
+
 ## TestFlight & distribution
 - choisir le provisioning profile de prod et faire "Archive"
 - uploader le build sur AppStore Connect
 
+OUVRIR L'APPLICATION TESTFLIGHT SUR L'IPHONE (téléchargeable sur l'AppStore) : les builds seront accessible si je fais partie de l'équipe de test
+
 ## Utilisateur de test
-Identifiant Apple Sandbox : buisson@toulouse-inp.fr (Paul Maumy)
+Identifiant Apple Sandbox (AppstoreConnect / Utilisateurs et accès / Sandbox) : jean-christophe.buisson@n7.fr / apM**e
+Nécessaire pour tester les abonnements inapp
+Sur l'iphone, se déconnecter de son Apple Id et se connecter sur le Sandbox Id
 
 
 # Android
+
+## Test en développement
+Exécuter `npm run build:androiddev` pour mettre à jour le projet.
+On peut directement tester en simulation depuis Android Studio, ou sur un device simplement en le branchant et en le sélectionnant dans la barre du haut.
+
+## Distribution
+Obligatoire maintenant de construire des "App bundles" = archive contenant le code compilé + fichiers de configuration.
+Ces "App  bundle" doivent être signés avant d'être uploadés sur Google Play Console (Build -> Generate Signed Bundle/APK)
+
+### Keystore et clés d'importation
+Il est nécessaire pour signer les "App bundle". Situé dans ~chris/Documents/keystore.jks, mdp : M**e
+Clé d'importation 'infirmier' dans ce keystore pour l'importation des "App Bundle", mdp M**e
+Fichier créé dans backend/android/app/debug
+
+Dans Android Studio, aller dans "File -> Project structure" et choisir "modules" puis l'onglet "Signing configs".
+Saisir le chemin vers le keystore et la clé d'importation et leurs mots de passe
+
+(Aller dans "Google Play Console", puis dans "Publier -> Configuration -> signature d'application")
 
 ## inApp purchase - Android
 Voir : https://bugfender.com/blog/android-in-app-purchases
@@ -187,7 +213,17 @@ Voir : https://enappd.com/blog/google-login-in-ionic-capacitor-app-with-angular/
 )
 
 
-## Pas de sessions
+# Génération des icons / splash screens pour la distribution dans les stores
+
+Utilisation de capacitor-assets. Il cherche dans ./assets les fichiers logo.png et splash.png
+```
+npx capacitor-assets generate --ios
+npx capacitor-assets generate --android
+npx capacitor-assets generate --pwa
+```
+
+
+# Pas de sessions
 
 Ça complique inutilement ; sur les mobiles une session peut durer plusieurs jours.
 
@@ -195,13 +231,13 @@ Les événements sont datés et relatifs à l'utilisateur après authentificatio
 Les sessions pourront être déterminées après-coup en regroupant les événements.
 
 
-## Indexedb
+# Indexedb
 
 - Indexedb est utilisé pour le cache local au lieu de LocalStorage, pour des raisons de taille
 - vueuse/useIDBKeyval est utilisé pour gérer Indexedb de façon réactive; il est basé sur le package idb-keyval
 
 
-## Routage
+# Routage
 
 Après login local ou OAuth2, un accès à '/home/:userid' est effectué, qui conduit à stocker `:userid` dans sessionStorage sous la clé 'userid'.
 Selon le type de l'utilisateur, il est redirigé vers '/student' ou '/admin'.
@@ -209,14 +245,14 @@ Dans leur `beforeEnter`, ces routes ajoutent la propriété 'userid' dont la val
 Les url ne contiennent donc jamais l'identifiant de l'utilisateur et peuvent être utilisées comme liens dans les pages de cours par exemple
 
 
-## Page de présentation
+# Page de présentation
 
 Essais avec vike.js sans succès.
 Mis un proxypass vers express pour /presentation et mis une règle de routage app.get('/presentation') (voir presentation.middleware.js)
 Produit une page HTML directement, ou en utilisant la fonction SSR `renderToString` de VueJS
 
 
-## Parsing (abandonné)
+# Parsing (abandonné)
 
 PEGJS (projet cloné dans CLONES)
 https://shamansir.github.io/pegjs-fn/
@@ -231,20 +267,19 @@ https://github.com/kach/nearley
 https://omrelli.ug/nearley-playground/
 
 
+# PWA
 
-# PWA manifest
+## PWA manifest
 La doc est incomplète, notamment sur les icones.
 Utilisé : https://stackoverflow.com/questions/62373216/vue-pwa-plugin-manifest-doesnt-use-my-config-attributes
 Il faut éditer la section 'pwa' de vue.config.js
 Lors du build, un fichier `manifest.json` sera généré dans dist/
 
-
-# PWA, service workers
+## PWA, service workers
 SW : https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers
 VueJS cache busting : https://medium.com/js-dojo/vuejs-pwa-cache-busting-8d09edd22a31
 
-
-# PWA web push
+## PWA web push
 see: https://developers.google.com/web/ilt/pwa/introduction-to-push-notifications
 
 - à chaque destinataire de notification correspond une 'subscription', qui représente une adresse d'envoi, sur un device donné

@@ -60,19 +60,13 @@
             <button v-if="platform !== 'ios' && platform !== 'android' && hasSubscription(user.id)" class="link" @click="cancelCustomerSubscriptions">
                Résilier l'abonnement en cours...
             </button>
-            <p v-if="platform === 'ios'">
-               Vous pouvez résilier à tout moment l'abonnement en cours en allant dans Réglages -> Apple Id -> Abonnements
-            </p>
-            <p v-if="platform === 'android'">
-               Vous pouvez résilier à tout moment l'abonnement en cours en allant dans Réglages -> Abonnements
-            </p>
          </div>
 
-         <div>
+         <!-- <div>
             <button class="link my-2" @click="update">
                Update
             </button>
-         </div>
+         </div> -->
 
       </main>
 
@@ -218,20 +212,28 @@ const cancelCustomerSubscriptions = async () => {
    console.log('cancelCustomerSubscriptions, subscription_type', user.value.subscription_type, 'stripe_customer_id', user.value.stripe_customer_id, 'subscription_status', user.value.subscription_status)
 
    if (user.value.subscription_status === 'active') {
-      if (platform.value === 'ios' || platform.value === 'android') {
-         // cancel on AppStore or GooglePlay
-         
+      if (platform.value === 'ios') {
+         alert(`Vous pouvez résilier à tout moment l'abonnement en cours en allant dans les réglages de l'iPhone, rubrique Apple Id -> Abonnements`)
+               
+      } else if (platform.value === 'android') {
+         alert(`Vous pouvez résilier à tout moment l'abonnement en cours en allant dans Réglages -> Abonnements`)
+
       } else {
-         // cancel on Stripe
-         try {
-            const { subscriptions, error } = await cancelStripeCustomerSubscriptions(props.userid, user.value.stripe_customer_id)
-            if (error) {
-               errorMessage.value = error
-            } else {
-               alert("L'abonnement a été annulé avec succès !")
+         if (user.value.stripe_customer_id) {
+            // cancel on Stripe
+            try {
+               const { subscriptions, error } = await cancelStripeCustomerSubscriptions(props.userid, user.value.stripe_customer_id)
+               if (error) {
+                  errorMessage.value = error
+               } else {
+                  alert("L'abonnement a été annulé avec succès !")
+               }
+            } catch (error) {
+               errorMessage.value = 'Erreur inconnue...'
             }
-         } catch (error) {
-            errorMessage.value = 'Erreur inconnue...'
+         } else {
+            // subscription must have been made on mobile
+            alert(`Votre abonnement a dû être souscrit sur un mobile. C'est lui que vous devez utiliser pour annuler l'avonnement`)
          }
       }
    } else {

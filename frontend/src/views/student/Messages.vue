@@ -10,7 +10,7 @@
 
       <UserUserMessagesWithScroll v-if="adminId"
          :userid="userid" :userId="adminId"
-         :offset="270">
+         :offset="250">
       </UserUserMessagesWithScroll>
 
    </main>
