@@ -207,21 +207,22 @@ const processStripeSubscription = async (subscriptionType, paymentMethodId, pric
    }
 }
 
-// cancel all subscriptions of assciated customer (in case there are several by mistake)
+
 const cancelCustomerSubscriptions = async () => {
    console.log('cancelCustomerSubscriptions, subscription_type', user.value.subscription_type, 'stripe_customer_id', user.value.stripe_customer_id, 'subscription_status', user.value.subscription_status)
 
    if (user.value.subscription_status === 'active') {
       if (platform.value === 'ios') {
-         alert(`Vous pouvez résilier à tout moment l'abonnement en cours en allant dans les réglages de l'iPhone, rubrique Apple Id -> Abonnements`)
+         alert(`Pour résilier l'abonnement, il faut que vous alliez dans les réglages de l'iPhone, rubrique Apple Id -> Abonnements`)
                
       } else if (platform.value === 'android') {
-         alert(`Vous pouvez résilier à tout moment l'abonnement en cours en allant dans Réglages -> Abonnements`)
+         alert(`Pour résilier l'abonnement, il faut que vous alliez dans l'application Google Play Store, rubrique Paiements et abonnements`)
 
       } else {
          if (user.value.stripe_customer_id) {
             // cancel on Stripe
             try {
+               // cancel all subscriptions of assciated customer (there should be only one)
                const { subscriptions, error } = await cancelStripeCustomerSubscriptions(props.userid, user.value.stripe_customer_id)
                if (error) {
                   errorMessage.value = error
@@ -233,7 +234,7 @@ const cancelCustomerSubscriptions = async () => {
             }
          } else {
             // subscription must have been made on mobile
-            alert(`Votre abonnement a dû être souscrit sur un mobile. C'est lui que vous devez utiliser pour annuler l'avonnement`)
+            alert(`Votre abonnement a dû être souscrit sur un mobile ou une tablette. C'est cet appareil que vous devez utiliser pour l'annulation`)
          }
       }
    } else {
