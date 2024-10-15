@@ -655,7 +655,7 @@ router.beforeEach(async (to, from, next) => {
          // checks authentication + extends session at each route change
          await app.service('auth').checkAndExtend()
       } catch(err) {
-         console.log('err', err.code, err.message)
+         console.log('router.beforeEach err', err.code, err.message)
          restartApp()
       }
    }

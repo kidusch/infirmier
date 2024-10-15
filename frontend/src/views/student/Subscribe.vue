@@ -62,11 +62,11 @@
             </button>
          </div>
 
-         <!-- <div>
-            <button class="link my-2" @click="update">
-               Update
+         <div>
+            <button class="link my-2" @click="testSubscription">
+               Test subscription
             </button>
-         </div> -->
+         </div>
 
       </main>
 
@@ -78,7 +78,7 @@ import { ref, computed, onMounted } from 'vue'
 import { loadStripe } from '@stripe/stripe-js'
 
 import { userOfId, updateUser, buyStoreProduct, subscriptionOfUser, hasSubscription, SUBSCRIPTIONS, updateSubscriptionInfo,
-   getOrCreateStripeCustomer, createStripeSubscription, cancelStripeCustomerSubscriptions } from '/src/use/useUser'
+   getOrCreateStripeCustomer, createStripeSubscription, cancelStripeCustomerSubscriptions, testSubscription } from '/src/use/useUser'
 
 
 const props = defineProps({

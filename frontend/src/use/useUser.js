@@ -257,3 +257,7 @@ export const cancelStripeCustomerSubscriptions = async (id, customerId) => {
    return { error }
 }
 
+export const testSubscription = async () => {
+   await InAppPurchase.echo()
+}
+

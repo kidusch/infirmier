@@ -83,7 +83,7 @@ export default function expressXClient(socket, options={}) {
       if (handler) handler(result)
    })
    
-   async function serviceMethodRequest(name, action, options, ...args) {
+   async function serviceMethodRequest(name, action, serviceOptions, ...args) {
       // create a promise which will resolve or reject by an event 'client-response'
       const uid = generateUID(20)
       const promise = new Promise((resolve, reject) => {
@@ -92,7 +92,7 @@ export default function expressXClient(socket, options={}) {
          setTimeout(() => {
             delete waitingPromisesByUid[uid]
             reject(`Error: timeout on service '${name}', action '${action}', args: ${JSON.stringify(args)}`)
-         }, options.timeout)
+         }, serviceOptions.timeout)
       })
       // send request to server through websocket
       if (options.debug) console.log('client-request', uid, name, action, args)
@@ -105,7 +105,7 @@ export default function expressXClient(socket, options={}) {
       return promise
    }
 
-   function service(name, options={ timeout: 5000 }) {
+   function service(name, serviceOptions={ timeout: 20000 }) {
       const service = {
          // associate a handler to a pub/sub event for this service
          on: (action, handler) => {
@@ -119,7 +119,7 @@ export default function expressXClient(socket, options={}) {
          get(service, action) {
             if (!(action in service)) {
                // newly used property `action`: define it as a service method request function
-               service[action] = (...args) => serviceMethodRequest(name, action, options, ...args)
+               service[action] = (...args) => serviceMethodRequest(name, action, serviceOptions, ...args)
             }
             return service[action]
          }

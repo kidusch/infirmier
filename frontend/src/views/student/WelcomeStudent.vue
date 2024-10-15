@@ -108,6 +108,7 @@ onMounted(async () => {
             cursor: courseCursor ? { id: courseCursor } : undefined,
             orderBy: { id: 'asc' },
          })
+         console.log('PRELOAD COURSE', courseList)
          for (const course of courseList) {
             courseState.value.courseCache[course.id] = course
             courseState.value.courseStatus[course.id] = 'ready'
@@ -236,7 +237,7 @@ onMounted(async () => {
             userCourseCursor = userCourseList[userCourseList.length - 1].id
          }
       }
-      // set to null in cache (= not user_course for userid,courseid in dartabase) all other user_course for userid
+      // set to null in cache (= no user_course for userid,courseid in database) all other user_course for userid
       for (const course of courseList) {
          const key = props.userid + ':' + course.id
          if (userCourseState.value.theUserCourseCache[key] === undefined) {

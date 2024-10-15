@@ -1,6 +1,8 @@
 
 # Bugs
 
+- avec un réseau lent, le préchargement ne se finit pas, et l'appli redémarre lorsque on commence à l'utiliser
+
 
 # Modes d'utilisation
 
@@ -16,7 +18,7 @@ Génère les projets iOS et Android
 Essai de PWABuilder (Microsoft) Pb : rien prévu pour in-app purchase
 
 ## Authentification Google
-https://github.com/CodetrixStudio/CapacitorGoogleAuth, plugin utilisé pour l'authentification Google
+https://github.com/CodetrixStudio/CapacitorGoogleAuth
 
 ## Abonnements
 - Abonnements 'inapp' sur iOS et Android, abonnements Stripe sur le web
@@ -27,8 +29,8 @@ pour iOS et Android
 # Configurations
 
 - Google Developer Console pour l'authentification
-- Apple Developer pour les certificats
-- Appstore Connect pour la création de l'application et ses abonnements et le suivi de TestFlight, des achats etc.
+- Apple Developer pour les certificats: https://developer.apple.com/
+- Appstore Connect pour la création de l'application et ses abonnements et le suivi de TestFlight, des achats etc. https://appstoreconnect.apple.com
 
 - frontend, voir : https://vitejs.dev/guide/env-and-mode, accessibles via import.meta.env
    - .env              pour version web / PWA
@@ -108,25 +110,51 @@ Sur l'iphone, se déconnecter de son Apple Id et se connecter sur le Sandbox Id
 # Android
 
 ## Test en développement
-Exécuter `npm run build:androiddev` pour mettre à jour le projet.
+Exécuter `npm run build:androiddev` pour mettre à jour le projet. Voir .env.androiddev
 On peut directement tester en simulation depuis Android Studio, ou sur un device simplement en le branchant et en le sélectionnant dans la barre du haut.
 
-## Distribution
+## Construction des App Bundle
+Suivre exactement les instructions (complexes) de https://developer.android.com/studio/publish/app-signing?hl=fr
+
 Obligatoire maintenant de construire des "App bundles" = archive contenant le code compilé + fichiers de configuration.
-Ces "App  bundle" doivent être signés avant d'être uploadés sur Google Play Console (Build -> Generate Signed Bundle/APK)
 
-### Keystore et clés d'importation
-Il est nécessaire pour signer les "App bundle". Situé dans ~chris/Documents/keystore.jks, mdp : M**e
-Clé d'importation 'infirmier' dans ce keystore pour l'importation des "App Bundle", mdp M**e
-Fichier créé dans backend/android/app/debug
+Ces "App  bundle" doivent être signés avant d'être uploadés sur Google Play Console.
+Situé dans frontend/android-keystore/keystore.jks, mdp : M**e
+Clé d'importation 'upload' dans ce keystore pour l'importation des "App Bundle", mdp M**e
 
-Dans Android Studio, aller dans "File -> Project structure" et choisir "modules" puis l'onglet "Signing configs".
-Saisir le chemin vers le keystore et la clé d'importation et leurs mots de passe
+Choix du numéro de verion : build.gradle (:app)
 
-(Aller dans "Google Play Console", puis dans "Publier -> Configuration -> signature d'application")
+Build du App Bundle : Build -> Generate Signed Bundle/APK
+CHOISIR "BUILD VARIANT" RELEASE
+App Bundle (.aab) créé dans frontend/android/app/release
+
+## Upload du build dans Google Play Console : Explorateur d'App Bundle
+https://play.google.com/console/u/1/developers/?%3Bhl=fr&hl=fr
+Choisir l'application -> "Publier" (colonne gauche) -> "Explorateur d'app Bundle" -> "Importer une nouvelle version" (en haut à droite, peu visible)
+
+Les App Bundle seront alors dans une "bibliothèque". Pour les tests internes, fermés, ouverts, distribution, on pourra prendre
+les différentes versions dans cette bibliothèque
+
+## Partage pour tests
+https://play.google.com/console/u/0/internal-app-sharing?hl=fr
+
+## Tests internes
+Dans Google Play Console, sélectionner l'application, puis aller dans "Publier" -> "Tests" -> "Tests internes"
+Laisser Google créer une clé de signature ; cliquer sur "Importer un App Bundle"
 
 ## inApp purchase - Android
-Voir : https://bugfender.com/blog/android-in-app-purchases
+Voir : https://developer.android.com/google/play/billing/getting-ready?authuser=1&hl=fr
+Depuis aout 2024, nouvelle version du billing system.
+
+Ajouter dans build.gradle:
+```
+dependencies {
+   ...
+   def billing_version = "7.0.0"
+   implementation "com.android.billingclient:billing:$billing_version"
+}
+```
+
 
 ## Authentification Google
 Difficile de tester avec le serveur de dev car le code Android considère que localhost ou 127.0.0.1 est le device Android et non la machine locale

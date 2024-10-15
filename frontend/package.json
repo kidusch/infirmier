@@ -28,7 +28,7 @@
     "@vueuse/integrations": "^10.11.0",
     "date-fns": "^3.6.0",
     "idb-keyval": "^6.2.1",
-    "jcb-capacitor-inapp": "^0.0.4",
+    "jcb-capacitor-inapp": "file:../../../NPM/jcb-capacitor-inapp",
     "jcb-radial": "^1.0.6",
     "socket.io-client": "^4.7.5",
     "string-hash": "^1.1.3",
