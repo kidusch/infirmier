@@ -78,7 +78,7 @@ import { ref, computed, onMounted } from 'vue'
 import { loadStripe } from '@stripe/stripe-js'
 
 import { userOfId, updateUser, buyStoreProduct, subscriptionOfUser, hasSubscription, SUBSCRIPTIONS, updateSubscriptionInfo,
-   getOrCreateStripeCustomer, createStripeSubscription, cancelStripeCustomerSubscriptions, testSubscription } from '/src/use/useUser'
+   getOrCreateStripeCustomer, createStripeSubscription, cancelStripeCustomerSubscriptions } from '/src/use/useUser'
 
 
 const props = defineProps({
@@ -105,6 +105,10 @@ const buySubscription = async (subscriptionType) => {
          stripeSubscriptionChoice.value = subscriptionType
       }
    }
+}
+
+const testSubscription = async () => {
+   await buyStoreProduct(props.userid, 'standard_monthly')
 }
 
 const stripe = ref(null)

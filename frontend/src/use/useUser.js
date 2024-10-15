@@ -223,6 +223,8 @@ export const hasStandardSubscription = computed(() => (id) => {
 })
 
 
+//////////////////////     STRIPE      //////////////////////
+
 export const getOrCreateStripeCustomer = async (id, paymentMethodId, customerEmail) => {
    const user = await getUser(id)
    let customerId = user.stripe_customer_id
@@ -256,8 +258,3 @@ export const cancelStripeCustomerSubscriptions = async (id, customerId) => {
    }
    return { error }
 }
-
-export const testSubscription = async () => {
-   await InAppPurchase.echo()
-}
-
