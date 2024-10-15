@@ -113,16 +113,21 @@ Sur l'iphone, se déconnecter de son Apple Id et se connecter sur le Sandbox Id
 Exécuter `npm run build:androiddev` pour mettre à jour le projet. Voir .env.androiddev
 On peut directement tester en simulation depuis Android Studio, ou sur un device simplement en le branchant et en le sélectionnant dans la barre du haut.
 
+## Logs
+Pour voir les logs, c'est l'icone en forme de chat dans la barre vertical en bas à gauche. Filtrer les lignes "Capacitor"
+
+## Numéro de version
+Dans build.gradle (:app)
+
 ## Construction des App Bundle
+"App bundles" = archive contenant le code compilé + fichiers de configuration. Obligatoire maintenant à la place des fichiers .apk
+C'est Google Play qui construit les .apk en fonction du device et du contexte
+
 Suivre exactement les instructions (complexes) de https://developer.android.com/studio/publish/app-signing?hl=fr
 
-Obligatoire maintenant de construire des "App bundles" = archive contenant le code compilé + fichiers de configuration.
-
 Ces "App  bundle" doivent être signés avant d'être uploadés sur Google Play Console.
-Situé dans frontend/android-keystore/keystore.jks, mdp : M**e
+Les clés sont situées dans un 'keystore': frontend/android-keystore/keystore.jks, mdp : M**e
 Clé d'importation 'upload' dans ce keystore pour l'importation des "App Bundle", mdp M**e
-
-Choix du numéro de verion : build.gradle (:app)
 
 Build du App Bundle : Build -> Generate Signed Bundle/APK
 CHOISIR "BUILD VARIANT" RELEASE
