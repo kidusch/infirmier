@@ -106,7 +106,6 @@ export const listOfUser = computed(() => {
 
 //////////////////           SUBSCRIPTION           //////////////////
 
-
 export const SUBSCRIPTIONS = {
    standard_monthly: {
       productId: import.meta.env.VITE_STRIPE_STANDARD_MONTHLY_SUBSCRIPTION_ID,
@@ -139,7 +138,7 @@ function productId2subscriptionType(productId) {
 
 
 export const buyStoreProduct = async (id, subscriptionType) => {
-   const { status: subscriptionStatus } = await InAppPurchase.buyProduct({ productId: subscriptionType })
+   const { status: subscriptionStatus } = await InAppPurchase.buySubscription({ productId: subscriptionType })
    await updateUser(id, {
       subscription_type: subscriptionType,
       subscription_status: subscriptionStatus,

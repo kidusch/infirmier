@@ -63,8 +63,8 @@
          </div>
 
          <div>
-            <button class="link my-2" @click="testSubscription">
-               Test subscription
+            <button class="link my-2" @click="updateSubscriptionInfo(userid)">
+               UpdateSubscriptionInfo
             </button>
          </div>
 
@@ -79,6 +79,7 @@ import { loadStripe } from '@stripe/stripe-js'
 
 import { userOfId, updateUser, buyStoreProduct, subscriptionOfUser, hasSubscription, SUBSCRIPTIONS, updateSubscriptionInfo,
    getOrCreateStripeCustomer, createStripeSubscription, cancelStripeCustomerSubscriptions } from '/src/use/useUser'
+import { appState } from '/src/use/useAppState'
 
 
 const props = defineProps({
@@ -102,12 +103,13 @@ const buySubscription = async (subscriptionType) => {
          // buy on AppStore or GooglePlay
          await buyStoreProduct(props.userid, subscriptionType)
       } else {
+         // buy with Stripe
          stripeSubscriptionChoice.value = subscriptionType
       }
    }
 }
 
-const testSubscription = async () => {
+const checkSubscription = async () => {
    await buyStoreProduct(props.userid, 'standard_monthly')
 }
 
@@ -192,7 +194,6 @@ const processStripeSubscription = async (subscriptionType, paymentMethodId, pric
          // Confirm the subscription payment
          console.log('clientSecret', clientSecret)
          const { error } = await stripe.value.confirmCardPayment(clientSecret)
-         console.log('clientSecret error', error)
          if (error) {
             errorMessage.value = error.message
          } else {
@@ -227,6 +228,7 @@ const cancelCustomerSubscriptions = async () => {
             // cancel on Stripe
             try {
                // cancel all subscriptions of assciated customer (there should be only one)
+               appState.value.spinnerWaitingText = ["En cours de traitement..."]
                const { subscriptions, error } = await cancelStripeCustomerSubscriptions(props.userid, user.value.stripe_customer_id)
                if (error) {
                   errorMessage.value = error
@@ -235,6 +237,8 @@ const cancelCustomerSubscriptions = async () => {
                }
             } catch (error) {
                errorMessage.value = 'Erreur inconnue...'
+            } finally {
+               appState.value.spinnerWaitingText = null
             }
          } else {
             // subscription must have been made on mobile

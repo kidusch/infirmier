@@ -48,6 +48,9 @@ npm run dev
 # Version web
 
 ## Achat abonnements : Stripe
+- doc : https://docs.stripe.com/
+- doc : https://docs.stripe.com/payments/payment-element ?
+- dashboard : https://dashboard.stripe.com/login
 - voir README.secret pour les identifiants
 - utiliser le dashboard Stripe pour créer les abonnements ("Catalogue de produits")
 - carte de test : 4242 4242 4242 4242, expiration 09/28, CVC: 123
@@ -151,7 +154,7 @@ Laisser Google créer une clé de signature ; cliquer sur "Importer un App Bundl
 Voir : https://developer.android.com/google/play/billing/getting-ready?authuser=1&hl=fr
 Depuis aout 2024, nouvelle version du billing system.
 
-Ajouter dans build.gradle:
+- Ajouter dans build.gradle:
 ```
 dependencies {
    ...
@@ -160,6 +163,11 @@ dependencies {
 }
 ```
 
+- Ajouter dans AndroidManifest.xml:
+```
+   <uses-permission android:name="com.android.vending.BILLING" />
+```
+- Nécessaire d'ajouter un test de license dans Google Play Console : Paramètres -> test de license
 
 ## Authentification Google
 Difficile de tester avec le serveur de dev car le code Android considère que localhost ou 127.0.0.1 est le device Android et non la machine locale
