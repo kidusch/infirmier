@@ -137,7 +137,7 @@ function productId2subscriptionType(productId) {
 }
 
 
-export const buyStoreProduct = async (id, subscriptionType) => {
+export const buyStoreSubscription = async (id, subscriptionType) => {
    const { status: subscriptionStatus } = await InAppPurchase.buySubscription({ productId: subscriptionType })
    await updateUser(id, {
       subscription_type: subscriptionType,

@@ -77,7 +77,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { loadStripe } from '@stripe/stripe-js'
 
-import { userOfId, updateUser, buyStoreProduct, subscriptionOfUser, hasSubscription, SUBSCRIPTIONS, updateSubscriptionInfo,
+import { userOfId, updateUser, buyStoreSubscription, subscriptionOfUser, hasSubscription, SUBSCRIPTIONS, updateSubscriptionInfo,
    getOrCreateStripeCustomer, createStripeSubscription, cancelStripeCustomerSubscriptions } from '/src/use/useUser'
 import { appState } from '/src/use/useAppState'
 
@@ -101,7 +101,7 @@ const buySubscription = async (subscriptionType) => {
    } else {
       if (platform.value === 'ios' || platform.value === 'android') {
          // buy on AppStore or GooglePlay
-         await buyStoreProduct(props.userid, subscriptionType)
+         await buyStoreSubscription(props.userid, subscriptionType)
       } else {
          // buy with Stripe
          stripeSubscriptionChoice.value = subscriptionType
@@ -110,7 +110,7 @@ const buySubscription = async (subscriptionType) => {
 }
 
 const checkSubscription = async () => {
-   await buyStoreProduct(props.userid, 'standard_monthly')
+   await buyStoreSubscription(props.userid, 'standard_monthly')
 }
 
 const stripe = ref(null)
@@ -248,11 +248,6 @@ const cancelCustomerSubscriptions = async () => {
    } else {
       alert("Il n'y a pas d'abonnement actif en cours")
    }
-}
-
-const update = async () => {
-   const {subscriptionType, subscriptionStatus } = await updateSubscriptionInfo(props.userid)
-   console.log('subscriptionType', subscriptionType, 'subscriptionStatus', subscriptionStatus)
 }
 </script>
 

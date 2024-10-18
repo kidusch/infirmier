@@ -150,6 +150,9 @@ https://play.google.com/console/u/0/internal-app-sharing?hl=fr
 Dans Google Play Console, sélectionner l'application, puis aller dans "Publier" -> "Tests" -> "Tests internes"
 Laisser Google créer une clé de signature ; cliquer sur "Importer un App Bundle"
 
+## Tests fermés
+NÉCESSAIRE DE LES FAIRES AVEC 20+ TESTEURS POUR POUVOIR SOUMETTRE À PUBLICATION !
+
 ## inApp purchase - Android
 Voir : https://developer.android.com/google/play/billing/getting-ready?authuser=1&hl=fr
 Depuis aout 2024, nouvelle version du billing system.
@@ -167,7 +170,9 @@ dependencies {
 ```
    <uses-permission android:name="com.android.vending.BILLING" />
 ```
-- Nécessaire d'ajouter un test de license dans Google Play Console : Paramètres -> test de license
+- Nécessaire d'ajouter un test de license dans Google Play Console : Paramètres -> Test de license
+- on peut tester les abonnements en dev avec exécution sur un device et avec un compte Google normal comme buisson.jc7@gmail.com
+
 
 ## Authentification Google
 Difficile de tester avec le serveur de dev car le code Android considère que localhost ou 127.0.0.1 est le device Android et non la machine locale
