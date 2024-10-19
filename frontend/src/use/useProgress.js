@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { theUserCourse } from '/src/use/useUserCourse'
+import { theUserCourse, listOfUserCourse } from '/src/use/useUserCourse'
 import { theUserCard } from '/src/use/useUserCard'
 import { theUserQuiz } from '/src/use/useUserQuiz'
 import { theUserCaseStudy } from '/src/use/useUserCaseStudy'
@@ -20,14 +20,22 @@ export const courseStudyProgress = computed(() => (user_id, course_id) => {
 export const topicStudyProgress = computed(() => (user_id, topic_id) => {
    let count = 0
    let sum = 0
-   const courseList = listOfCourse.value(topic_id)
-   for (const course of courseList) {
-      if (course.hidden) continue
-      const progress = courseStudyProgress.value(user_id, course.id)
+   const userCourseList = listOfUserCourse.value(user_id)
+   for (const userCourse of userCourseList) {
+      // if (course.hidden) continue
+      const progress = courseStudyProgress.value(user_id, userCourse.course_id)
       if (progress === -1) return -1
       sum += progress
       count += 1
    }
+   // const courseList = listOfCourse.value(topic_id)
+   // for (const course of courseList) {
+   //    if (course.hidden) continue
+   //    const progress = courseStudyProgress.value(user_id, course.id)
+   //    if (progress === -1) return -1
+   //    sum += progress
+   //    count += 1
+   // }
    return count === 0 ? 0 : Math.round(sum / count)
 })
 
@@ -123,30 +131,30 @@ export const ueReviseProgress = computed(() => (user_id, ue_id) => {
 
 
 
-export const courseLoadingProgress = computed(() => (course_id) => {
-   return courseState.value.courseStatus(course_id) === 'ready' ? 1. : 0.
-})
+// export const courseLoadingProgress = computed(() => (course_id) => {
+//    return courseState.value.courseStatus(course_id) === 'ready' ? 1. : 0.
+// })
 
-export const topicLoadingProgress = computed(() => (topic_id) => {
-   const courseList = listOfCourse.value(topic_id)
-   if (courseList.length === 0) return 0
-   console.log('courseList', topic_id, courseList)
-   const sum = courseList.reduce((accu, course) => accu + courseLoadingProgress.value(course.id), 0)
-   return sum / courseList.length
-})
+// export const topicLoadingProgress = computed(() => (topic_id) => {
+//    const courseList = listOfCourse.value(topic_id)
+//    if (courseList.length === 0) return 0
+//    console.log('courseList', topic_id, courseList)
+//    const sum = courseList.reduce((accu, course) => accu + courseLoadingProgress.value(course.id), 0)
+//    return sum / courseList.length
+// })
 
-export const subUELoadingProgress = computed(() => (sub_ue_id) => {
-   const topicList = listOfTopic.value(sub_ue_id)
-   if (topicList.length === 0) return 0
-   console.log('topicList', sub_ue_id, topicList)
-   const sum = topicList.reduce((accu, topic) => accu + topicLoadingProgress.value(topic.id), 0)
-   return sum / topicList.length
-})
+// export const subUELoadingProgress = computed(() => (sub_ue_id) => {
+//    const topicList = listOfTopic.value(sub_ue_id)
+//    if (topicList.length === 0) return 0
+//    console.log('topicList', sub_ue_id, topicList)
+//    const sum = topicList.reduce((accu, topic) => accu + topicLoadingProgress.value(topic.id), 0)
+//    return sum / topicList.length
+// })
 
-export const ueLoadingProgress = computed(() => (ue_id) => {
-   const subUEList = listOfSubUE.value(ue_id)
-   if (subUEList.length === 0) return 0
-   console.log('subUEList', ue_id, subUEList)
-   const sum = subUEList.reduce((accu, subUE) => accu + subUELoadingProgress.value(subUE.id), 0)
-   return sum / subUEList.length
-})
+// export const ueLoadingProgress = computed(() => (ue_id) => {
+//    const subUEList = listOfSubUE.value(ue_id)
+//    if (subUEList.length === 0) return 0
+//    console.log('subUEList', ue_id, subUEList)
+//    const sum = subUEList.reduce((accu, subUE) => accu + subUELoadingProgress.value(subUE.id), 0)
+//    return sum / subUEList.length
+// })

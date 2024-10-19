@@ -9,6 +9,7 @@ import { app } from '/src/client-app.js'
 const initialState = () => ({
    theUserCourseCache: {},
    theUserCourseStatus: {},
+   userCourseListStatus: {},
 })
 
 // const userCourseState = useSessionStorage('user-course-state', initialState(), { mergeDefaults: true })
@@ -109,3 +110,24 @@ export const updateUserCourse = async (id, data) => {
    userCourseState.value.theUserCourseCache[key] = userCourse
    return userCourse
 }
+
+export const listOfUserCourse = computed(() => (user_id) => {
+   if (!userCourseState.value) return []
+   if (userCourseState.value.userCourseListStatus[user_id] === 'ready') {
+      return Object.values(userCourseState.value.theUserCourseCache).filter(userCourse => userCourse && userCourse.user_id === user_id)
+   }
+   if (userCourseState.value.userCourseListStatus[user_id] !== 'ongoing') {
+      userCourseState.value.userCourseListStatus[user_id] = 'ongoing'
+      app.service('user_course').findMany({
+         where: { user_id }
+      }).then((list) => {
+         for (const userCourse of list) {
+            const key = user_id + ':' + userCourse.course_id
+            userCourseState.value.theUserCourseCache[key] = userCourse
+            userCourseState.value.theUserCourseStatus[key] = 'ready'
+         }
+         userCourseState.value.userCourseListStatus[user_id] = 'ready'
+      })
+   }
+   return []
+})

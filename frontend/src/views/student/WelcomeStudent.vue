@@ -98,35 +98,35 @@ onMounted(async () => {
       // collect all topics
       const topicList = Object.values(topicState.value.topicCache)
 
-      // read course by batches
-      let hasMoreCourse = true
-      let courseCursor = null
-      while (hasMoreCourse) {
-         const courseList = await app.service('course').findMany({
-            take: BATCHSIZE,
-            skip: courseCursor ? 1 : 0,
-            cursor: courseCursor ? { id: courseCursor } : undefined,
-            orderBy: { id: 'asc' },
-         })
-         console.log('PRELOAD COURSE', courseList)
-         for (const course of courseList) {
-            courseState.value.courseCache[course.id] = course
-            courseState.value.courseStatus[course.id] = 'ready'
-         }
-         if (courseList.length < BATCHSIZE) {
-            hasMoreCourse = false
-         } else {
-            courseCursor = courseList[courseList.length - 1].id
-         }
-      }
+      // // read course by batches
+      // let hasMoreCourse = true
+      // let courseCursor = null
+      // while (hasMoreCourse) {
+      //    const courseList = await app.service('course').findMany({
+      //       take: BATCHSIZE,
+      //       skip: courseCursor ? 1 : 0,
+      //       cursor: courseCursor ? { id: courseCursor } : undefined,
+      //       orderBy: { id: 'asc' },
+      //    })
+      //    console.log('PRELOAD COURSE', courseList)
+      //    for (const course of courseList) {
+      //       courseState.value.courseCache[course.id] = course
+      //       courseState.value.courseStatus[course.id] = 'ready'
+      //    }
+      //    if (courseList.length < BATCHSIZE) {
+      //       hasMoreCourse = false
+      //    } else {
+      //       courseCursor = courseList[courseList.length - 1].id
+      //    }
+      // }
       // update list status for topics
-      for (const topic of topicList) {
-         courseState.value.courseListStatus[topic.id] = 'ready'
-      }
-      appState.value.spinnerWaitingText = [ "Chargement...", "40%" ]
+      // for (const topic of topicList) {
+      //    courseState.value.courseListStatus[topic.id] = 'ready'
+      // }
+      // appState.value.spinnerWaitingText = [ "Chargement...", "40%" ]
 
-      // collect all courses
-      const courseList = Object.values(courseState.value.courseCache)
+      // // collect all courses
+      // const courseList = Object.values(courseState.value.courseCache)
 
       // read card by batches
       let hasMoreCard = true
@@ -238,7 +238,10 @@ onMounted(async () => {
          }
       }
       // set to null in cache (= no user_course for userid,courseid in database) all other user_course for userid
-      for (const course of courseList) {
+      const courseIdList = await app.service('course').findMany({
+         select: { id: true },
+      })
+      for (const course of courseIdList) {
          const key = props.userid + ':' + course.id
          if (userCourseState.value.theUserCourseCache[key] === undefined) {
             userCourseState.value.theUserCourseCache[key] = null

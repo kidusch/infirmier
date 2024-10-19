@@ -109,10 +109,6 @@ const buySubscription = async (subscriptionType) => {
    }
 }
 
-const checkSubscription = async () => {
-   await buyStoreSubscription(props.userid, 'standard_monthly')
-}
-
 const stripe = ref(null)
 const cardElement = ref(null)
 
