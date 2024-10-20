@@ -58,7 +58,7 @@
             </div>
 
             <div class="standard-input-container">
-               <textarea placeholder="Contenu..." type="text"
+               <textarea placeholder="Contenu..." type="text" class="h-96"
                   :value="content"
                   @input="onContentInputDebounced"
                   v-position="contentPosition"
@@ -79,6 +79,7 @@ import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
 import { courseOfId, updateCourse } from '/src/use/useCourse'
+import { courseContentOfCourseId, updateCourseContent } from '/src/use/useCourseContent'
 
 import { app } from '/src/client-app.js'
 
@@ -137,15 +138,15 @@ const toggleFree = async (ev) => {
 
 // handle content editing
 const localContent = ref()
-const content = computed(() => localContent.value || course.value.content)
-app.service('course').on('update', course => {
-   localContent.value = course.content
+const content = computed(() => localContent.value || courseContent?.value?.content || '')
+app.service('courseContent').on('update', courseContent => {
+   localContent.value = courseContent.content
 })
 const contentPosition = ref({}) // cursor position is stored before a database update, and restored after DOM change by directive vPosition
 const onContentInput = async (ev) => {
    localContent.value = ev.target.value
    contentPosition.value = { start: ev.target.selectionStart, end: ev.target.selectionEnd }
-   await updateCourse(props.course_id, {
+   await updateCourseContent(courseContent.value.id, {
       content: ev.target.value,
       last_modified_at: new Date(),
    })

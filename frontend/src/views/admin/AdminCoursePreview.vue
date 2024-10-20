@@ -1,5 +1,5 @@
 <template>
-    <main class="container max-w-7xl mt-14">
+   <main class="container max-w-7xl mt-14">
 
       <!-- Settings -->
       <section class="w-full flex justify-end">
@@ -10,7 +10,7 @@
 
       <!-- Course content -->
       <main class="mt-4">
-         <div v-html="course?.content"></div>
+         <div v-html="courseContent?.content"></div>
       </main>
 
    </main>
@@ -48,6 +48,9 @@ const props = defineProps({
 })
 
 const course = computed(() => courseOfId.value(props.course_id))
+import { courseContentOfCourseId } from '/src/use/useCourseContent'
+
+const courseContent = computed(() => courseContentOfCourseId.value(props.course_id))
 
 const back = () => {
    router.back()

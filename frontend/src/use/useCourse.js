@@ -42,8 +42,6 @@ app.service('course').on('delete', course => {
 })
 
 
-// export const courseStatus = (course_id) => courseState.value.courseStatus[course_id]
-
 export const getCourse = async (id) => {
    if (!courseState.value) return
    let course = courseState.value.courseCache[id]
@@ -79,13 +77,12 @@ export const createCourse = async (topic_id, title = '', content = '') => {
    })
    const highestRank = result._max.rank
    const rank = highestRank ? highestRank + 1 : 1
-   // create course with this rank
+   // create course with this rank, and with the 1:1 related course_content
    const course = await app.service('course').create({
       data: {
          rank,
          topic_id,
          title,
-         content,
       }
    })
    // update cache

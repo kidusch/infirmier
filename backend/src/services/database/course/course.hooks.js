@@ -1,5 +1,5 @@
 
-import { isAuthenticated, isNotExpired, extendExpiration, protect } from '#root/src/common-server.mjs'
+import { isAuthenticated, isNotExpired, extendExpiration } from '#root/src/common-server.mjs'
 import config from '#config'
 
 
@@ -8,6 +8,6 @@ export default {
       all: [isAuthenticated, isNotExpired],
    },
    after: {
-      all: [protect('password'), extendExpiration(config.SESSION_EXPIRE_DELAY)],
+      all: [extendExpiration(config.SESSION_EXPIRE_DELAY)],
    }
 }

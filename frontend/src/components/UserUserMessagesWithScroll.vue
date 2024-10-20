@@ -8,7 +8,7 @@
 
    <div class="mt-2">
       <div class="flex">
-         <textarea class="bg-gray-100" v-model="messageText" placeholder="Tapez votre message..."></textarea>
+         <textarea class="bg-gray-100 max-h-14 min-h-14" v-model="messageText" placeholder="Tapez votre message..."></textarea>
          <button class="px-6 md:px-20 py-2.5 bg-primary text-white flex items-center justify-center gap-4 font-medium max-h-14 rounded-3xl rounded-l-none"
             :disabled="!messageText" @click="sendMessage">
             Envoyer

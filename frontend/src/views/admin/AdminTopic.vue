@@ -134,6 +134,7 @@ import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
 import { listOfCourse, createCourse, updateCourse, removeCourse } from '/src/use/useCourse'
+import { createCourseContent } from '/src/use/useCourseContent'
 import { listOfCard, createCard, updateCard, removeCard } from '/src/use/useCard'
 import { listOfQuiz, createQuiz, updateQuiz, removeQuiz } from '/src/use/useQuiz'
 import { listOfCaseStudy, createCaseStudy, updateCaseStudy, removeCaseStudy } from '/src/use/useCaseStudy'
@@ -180,7 +181,8 @@ const selectCourse = (course_id) => {
 }
 
 const addCourse = async () => {
-   await createCourse(props.topic_id, newCourseTitle.value)
+   const course = await createCourse(props.topic_id, newCourseTitle.value)
+   await createCourseContent(course.id)
    newCourseTitle.value = ''
 }
 

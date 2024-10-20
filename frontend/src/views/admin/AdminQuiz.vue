@@ -43,7 +43,7 @@
                </div>
             </div>
             <div class="standard-input-container">
-               <textarea placeholder="Question..." type="text"
+               <textarea placeholder="Question..." type="text" class="h-32"
                   :value="question"
                   @input="onQuestionInputDebounced"
                   v-position="questionPosition"

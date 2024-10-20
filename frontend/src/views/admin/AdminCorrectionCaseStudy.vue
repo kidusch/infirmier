@@ -23,7 +23,7 @@
             </div>
 
             <div class="standard-input-container">
-               <textarea type="text" disabled
+               <textarea type="text" disabled class="h-96"
                   :value="userCaseStudy?.answer"
                ></textarea>
             </div>

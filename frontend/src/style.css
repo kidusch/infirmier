@@ -87,8 +87,11 @@
     @apply max-h-7 w-6;
   }
 
-  .standard-input {
+  /* .standard-input {
     @apply max-h-14 border border-black/15 rounded-md p-2.5 placeholder:text-zinc-400 font-normal outline-none;
+  } */
+  .standard-input {
+    @apply border border-black/15 rounded-md p-2.5 placeholder:text-zinc-400 font-normal outline-none;
   }
 
   .progress-item {
@@ -119,6 +122,6 @@
     @apply standard-input border-0 flex-1 w-full;
   }
   .standard-input-container textarea {
-    @apply h-64 max-h-max overflow-auto;
+    @apply overflow-auto;
   }
 }

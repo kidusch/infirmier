@@ -7,7 +7,7 @@ import { app } from '/src/client-app.js'
 // state backed in SessionStorage
 const initialState = () => ({
    courseContentCache: {},
-   courseContentContentStatus: {},
+   courseContentStatus: {},
 })
 
 export const { data: courseContentState } = useIDBKeyval('course-content-state', initialState(), { mergeDefaults: true })
@@ -38,8 +38,6 @@ app.service('course_content').on('delete', courseContent => {
    delete courseContentState.value.courseContentStatus[courseContent.id]
 })
 
-
-// export const courseContentStatus = (courseContent_id) => courseContentState.value.courseContentStatus[courseContent_id]
 
 export const getCourseContent = async (id) => {
    if (!courseContentState.value) return
@@ -91,7 +89,16 @@ export const updateCourseContent = async (id, data) => {
    return courseContent
 }
 
-// export const removeCourseContent = async (id) => {
-//    await app.service('course_content').delete({ where: { id }})
-//    delete courseContentState.value.courseContentCache[id]
-// }
+export const courseContentOfCourseId = computed(() => (course_id) => {
+   if (!courseContentState.value) return
+   const courseContent = Object.values(courseContentState.value.courseContentCache).find(courseContent => courseContent.course_id === course_id)
+   if (!courseContent) {
+      // it necessarily exists since a course_content is created at the same time as its associated 1:1 course
+      app.service('course_content').findUnique({ where: { course_id }})
+      .then(courseContent => {
+         courseContentState.value.courseContentCache[courseContent.id] = courseContent
+         courseContentState.value.courseContentStatus[courseContent.id] = 'ready'
+      })
+   }
+   return courseContent
+})

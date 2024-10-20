@@ -12,7 +12,7 @@
                </div>
             </div>
             <div class="standard-input-container">
-               <textarea placeholder="Texte..." type="text"
+               <textarea placeholder="Texte..." type="text" class="h-32"
                   :value="email"
                   @input="onEmailInputDebounced"
                   v-position="emailPosition"
@@ -30,7 +30,7 @@
                </div>
             </div>
             <div class="standard-input-container">
-               <textarea placeholder="Texte..." type="text"
+               <textarea placeholder="Texte..." type="text" class="h-32"
                   :value="cgu"
                   @input="onCGUInputDebounced"
                   v-position="cguPosition"
@@ -48,7 +48,7 @@
                </div>
             </div>
             <div class="standard-input-container">
-               <textarea placeholder="Texte..." type="text"
+               <textarea placeholder="Texte..." type="text" class="h-32"
                   :value="welcomeText"
                   @input="onWelcomeTextInputDebounced"
                   v-position="welcomeTextPosition"

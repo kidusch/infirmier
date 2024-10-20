@@ -58,7 +58,7 @@
             </div>
 
             <div class="standard-input-container">
-               <textarea placeholder="Écrivez votre réponse ici..." type="text"
+               <textarea placeholder="Écrivez votre réponse ici..." type="text" class="h-96"
                   :value="answer"
                   @input="onAnswerInputDebounced"
                   v-position="answerPosition"

@@ -36,7 +36,7 @@
                         <jcb-radial class="w-14" :value="courseStudyProgress(userid, course.id)"></jcb-radial>
                      </div>
                      <p>
-                        {{ course?.title }}
+                        {{ course?.title }} <span v-if="!course?.free">🔒</span>
                      </p>
                   </div>
                </template>

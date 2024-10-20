@@ -6,6 +6,7 @@ import ueService from './database/ue/ue.service.js'
 import subUEService from './database/sub_ue/sub_ue.service.js'
 import topicService from './database/topic/topic.service.js'
 import courseService from './database/course/course.service.js'
+import courseContentService from './database/course_content/course_content.service.js'
 import cardService from './database/card/card.service.js'
 import caseStudyService from './database/case_study/case_study.service.js'
 import quizService from './database/quiz/quiz.service.js'
@@ -43,6 +44,7 @@ export default function (app) {
    app.configure(subUEService)
    app.configure(topicService)
    app.configure(courseService)
+   app.configure(courseContentService)
    app.configure(cardService)
    app.configure(caseStudyService)
    app.configure(quizService)

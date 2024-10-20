@@ -39,7 +39,7 @@
                </div>
             </div>
             <div class="standard-input-container">
-               <textarea placeholder="Contenu..." type="text"
+               <textarea placeholder="Contenu..." type="text" class="h-96"
                   :value="content"
                   @input="onContentInputDebounced"
                   v-position="contentPosition"

@@ -37,7 +37,7 @@
 
       <!-- Course content -->
       <main class="mt-4">
-         <div v-html="courseContent" ref="doc" @click="onClick"></div>
+         <div v-html="contentOfCourse" ref="doc" @click="onClick"></div>
       </main>
 
       <!-- Highlight pens -->
@@ -104,6 +104,7 @@ import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
 import { courseOfId } from '/src/use/useCourse'
+import { courseContentOfCourseId } from '/src/use/useCourseContent'
 import { theUserCourse, createUserCourse, updateUserCourse } from '/src/use/useUserCourse'
 
 import { app } from '/src/client-app.js'
@@ -140,6 +141,7 @@ const ue = computed(() => ueOfId.value(props.ue_id))
 const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
 const topic = computed(() => topicOfId.value(props.topic_id))
 const course = computed(() => courseOfId.value(props.course_id))
+const courseContent = computed(() => courseContentOfCourseId.value(props.course_id))
 
 const userCourse = computed(() => {
    let userCourse = theUserCourse.value(props.userid, props.course_id)
@@ -152,10 +154,10 @@ const userCourse = computed(() => {
 })
 
 // annotations are lost when more recent course content is available
-const courseContent = computed(() => {
-   if (!course.value?.content) return undefined
-   if (!userCourse.value?.highlighted_content || !userCourse.value?.highlighted_content_time) return course.value.content
-   if (userCourse.value.highlighted_content_time <= course.value.last_modified_at) return course.value.content
+const contentOfCourse = computed(() => {
+   if (!courseContent.value?.content) return undefined
+   if (!userCourse.value?.highlighted_content || !userCourse.value?.highlighted_content_time) return courseContent.value.content
+   if (userCourse.value.highlighted_content_time <= course.value.last_modified_at) return courseContent.value.content
    return userCourse.value.highlighted_content
 })
 
