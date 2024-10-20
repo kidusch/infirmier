@@ -112,6 +112,7 @@ const ue = computed(() => ueOfId.value(props.ue_id))
 const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
 const topic = computed(() => topicOfId.value(props.topic_id))
 const course = computed(() => courseOfId.value(props.course_id))
+const courseContent = computed(() => courseContentOfCourseId.value(props.course_id))
 
 // handle title editing
 const localTitle = ref()
