@@ -12,7 +12,7 @@ const initialState = () => ({
 
 export const { data: courseContentState } = useIDBKeyval('course-content-state', initialState(), { mergeDefaults: true })
 
-export const resetUseCourse = () => {
+export const resetUseCourseContent = () => {
    courseContentState.value = initialState()
 }
 

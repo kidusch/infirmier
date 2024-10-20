@@ -8,6 +8,7 @@ import { resetUseUE } from '/src/use/useUE'
 import { resetUseSubUE } from '/src/use/useSubUE'
 import { resetUseTopic } from '/src/use/useTopic'
 import { resetUseCourse } from '/src/use/useCourse'
+import { resetUseCourseContent } from '/src/use/useCourseContent'
 import { resetUseCard } from '/src/use/useCard'
 import { resetUseCaseStudy } from '/src/use/useCaseStudy'
 import { resetUseQuiz } from '/src/use/useQuiz'
@@ -40,6 +41,7 @@ export function clearCaches() {
    resetUseSubUE()
    resetUseTopic()
    resetUseCourse()
+   resetUseCourseContent()
    resetUseCard()
    resetUseQuiz()
    resetUseCaseStudy()
