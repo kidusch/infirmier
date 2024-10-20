@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { theUserCourse, listOfUserCourse } from '/src/use/useUserCourse'
+import { theUserCourse } from '/src/use/useUserCourse'
 import { theUserCard } from '/src/use/useUserCard'
 import { theUserQuiz } from '/src/use/useUserQuiz'
 import { theUserCaseStudy } from '/src/use/useUserCaseStudy'
@@ -20,22 +20,14 @@ export const courseStudyProgress = computed(() => (user_id, course_id) => {
 export const topicStudyProgress = computed(() => (user_id, topic_id) => {
    let count = 0
    let sum = 0
-   const userCourseList = listOfUserCourse.value(user_id)
-   for (const userCourse of userCourseList) {
-      // if (course.hidden) continue
-      const progress = courseStudyProgress.value(user_id, userCourse.course_id)
+   const courseList = listOfCourse.value(topic_id)
+   for (const course of courseList) {
+      if (course.hidden) continue
+      const progress = courseStudyProgress.value(user_id, course.id)
       if (progress === -1) return -1
       sum += progress
       count += 1
    }
-   // const courseList = listOfCourse.value(topic_id)
-   // for (const course of courseList) {
-   //    if (course.hidden) continue
-   //    const progress = courseStudyProgress.value(user_id, course.id)
-   //    if (progress === -1) return -1
-   //    sum += progress
-   //    count += 1
-   // }
    return count === 0 ? 0 : Math.round(sum / count)
 })
 

@@ -123,6 +123,12 @@ model course {
   user_courses user_course[] // actually a 1:1 relationship
 }
 
+model course_content {
+  id                Int      @id @default(autoincrement())
+  course_id         Int
+  content           String // contenu du cours
+}
+
 // Fiche de révision au sein d'une matière
 model card {
   id         Int      @id @default(autoincrement())
