@@ -10,31 +10,15 @@
       <main class="mt-4 max-w-xl">
 
          <section class="grid grid-cols-2 grid-flow-rows gap-4">
-            <div class="rounded-lg border-2 text-center p-6 hover:bg-gray-200" :class="{ 'box': subscriptionOfUser(userid) === 'standard_monthly' }"
-               @click="buySubscription('standard_monthly')">
-               <div class="cursor-pointer text-lg text-gray-600">Standard</div>
-               <div class="cursor-pointer text-xl text-gray-600 font-semibold">2,49 €</div>
-               <div class="cursor-pointer text-lg text-gray-400">/ mois</div>
-            </div>
-            <div class="rounded-lg border-2 text-center p-6 hover:bg-gray-200" :class="{ 'box': subscriptionOfUser(userid) === 'standard_yearly' }"
-               @click="buySubscription('standard_yearly')">
-               <div class="cursor-pointer text-lg text-gray-600">Standard</div>
-               <div class="cursor-pointer text-xl text-gray-600 font-semibold">24,99 €</div>
-               <div class="cursor-pointer text-lg text-gray-400">/ an</div>
-            </div>
-
-            <div class="rounded-lg border-2 text-center p-6 hover:bg-gray-200" :class="{ 'box': subscriptionOfUser(userid) === 'premium_monthly' }"
-               @click="buySubscription('premium_monthly')">
-               <div class="cursor-pointer text-lg text-gray-600">Premium</div>
-               <div class="cursor-pointer text-xl text-gray-600 font-semibold">4,99 €</div>
-               <div class="cursor-pointer text-lg text-gray-400">/ mois</div>
-            </div>
-            <div class="rounded-lg border-2 text-center p-6 hover:bg-gray-200" :class="{ 'box': subscriptionOfUser(userid) === 'premium_yearly' }"
-               @click="buySubscription('premium_yearly')">
-               <div class="cursor-pointer text-lg text-gray-600">Premium</div>
-               <div class="cursor-pointer text-xl text-gray-600 font-semibold">49,99 €</div>
-               <div class="cursor-pointer text-lg text-gray-400">/ an</div>
-            </div>
+            <template v-for="productId of ['standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly']">
+               <div class="rounded-lg border-2 text-center p-6 hover:bg-gray-200" :class="{ 'box': subscriptionOfUser(userid) === productId }"
+                  @click="buySubscription(productId)">
+                  <div class="cursor-pointer text-lg text-gray-600">{{ SUBSCRIPTIONS[productId].title }}</div>
+                  <div class="cursor-pointer text-sm text-gray-400">{{ SUBSCRIPTIONS[productId].features }}</div>
+                  <div class="cursor-pointer text-xl text-gray-600 font-semibold">{{ priceDict[productId] }}</div>
+                  <div class="cursor-pointer text-lg text-gray-400">/ mois</div>
+               </div>
+            </template>
          </section>
          
          <div class="my-8" v-show="stripeSubscriptionChoice">
@@ -61,10 +45,16 @@
                Résilier l'abonnement en cours...
             </button>
          </div>
+         
+         <div>
+            <button class="link my-2" @click="onUpdateSubscriptionInfo">
+               UpdateSubscriptionInfo
+            </button>
+         </div>
 
          <div>
-            <button class="link my-2" @click="updateSubscriptionInfo(userid)">
-               UpdateSubscriptionInfo
+            <button class="link my-2" @click="onGetPrices">
+               onGetPrices
             </button>
          </div>
 
@@ -77,9 +67,12 @@
 import { ref, computed, onMounted } from 'vue'
 import { loadStripe } from '@stripe/stripe-js'
 
-import { userOfId, updateUser, buyStoreSubscription, subscriptionOfUser, hasSubscription, SUBSCRIPTIONS, updateSubscriptionInfo,
+import { userOfId, updateUser, buyStoreSubscription, subscriptionOfUser, hasSubscription, updateSubscriptionInfo,
    getOrCreateStripeCustomer, createStripeSubscription, cancelStripeCustomerSubscriptions } from '/src/use/useUser'
 import { appState } from '/src/use/useAppState'
+
+// import { InAppPurchase } from 'jcb-capacitor-inapp'
+import { SUBSCRIPTIONS, getSubscriptionPrices } from '/src/use/useSubscription'
 
 
 const props = defineProps({
@@ -109,6 +102,8 @@ const buySubscription = async (subscriptionType) => {
    }
 }
 
+const priceDict = ref({})
+
 const stripe = ref(null)
 const cardElement = ref(null)
 
@@ -118,37 +113,41 @@ const stripeSubscriptionChoice = ref()
 
 
 onMounted(async () => {
-   // Load Stripe.js
-   stripe.value = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
-   // Create an instance of Elements
-   const elements = stripe.value.elements()
+   priceDict.value = await getSubscriptionPrices()
 
-   // Create and mount the Card Element
-   cardElement.value = elements.create('card', {
-      hidePostalCode: true,
-      // see: https://docs.stripe.com/payments/payment-element#affichage
-      style: {
-         base: {
-            color: '#32325d',
-            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-            fontSize: '16px',
-            fontWeight: '500',
-            letterSpacing: '0.025em',
-            lineHeight: '24px',
-            padding: '10px',
-            '::placeholder': {
-               color: '#aab7c4',
+   if (Capacitor.getPlatform() === 'web') {
+      // Load Stripe.js
+      stripe.value = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
+      // Create an instance of Elements
+      const elements = stripe.value.elements()
+
+      // Create and mount the Card Element
+      cardElement.value = elements.create('card', {
+         hidePostalCode: true,
+         // see: https://docs.stripe.com/payments/payment-element#affichage
+         style: {
+            base: {
+               color: '#32325d',
+               fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+               fontSize: '16px',
+               fontWeight: '500',
+               letterSpacing: '0.025em',
+               lineHeight: '24px',
+               padding: '10px',
+               '::placeholder': {
+                  color: '#aab7c4',
+               },
+               border: '1px solid #ccc',
+               borderRadius: '4px',
             },
-            border: '1px solid #ccc',
-            borderRadius: '4px',
-         },
-         invalid: {
-            iconColor: '#FFC7EE',
-            color: '#FFC7EE',
-         },
-      }
-   })
-   cardElement.value.mount('#card-element')
+            invalid: {
+               iconColor: '#FFC7EE',
+               color: '#FFC7EE',
+            },
+         }
+      })
+      cardElement.value.mount('#card-element')
+   }
 })
 
 // Handle the form submission
@@ -238,12 +237,22 @@ const cancelCustomerSubscriptions = async () => {
             }
          } else {
             // subscription must have been made on mobile
-            alert(`Votre abonnement a dû être souscrit sur un mobile ou une tablette. C'est cet appareil que vous devez utiliser pour l'annulation`)
+            alert(`Votre abonnement a dû être souscrit sur un mobile ou une tablette. C'est cet appareil que vous devez utiliser pour la résiliation`)
          }
       }
    } else {
       alert("Il n'y a pas d'abonnement actif en cours")
    }
+}
+
+const onUpdateSubscriptionInfo = async () => {
+   // update subscription info
+   const { subscriptionType, subscriptionStatus } = await updateSubscriptionInfo(props.userid)
+   console.log('subscriptionType', subscriptionType, 'subscriptionStatus', subscriptionStatus)
+}
+
+const onGetPrices = async () => {
+   getSubscriptionPrices()
 }
 </script>
 

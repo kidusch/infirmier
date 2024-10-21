@@ -119,8 +119,6 @@ onMounted(async () => {
    // update subscription info
    const { subscriptionType, subscriptionStatus } = await updateSubscriptionInfo(props.userid)
    console.log('subscriptionType', subscriptionType, 'subscriptionStatus', subscriptionStatus)
-   // const user = await getUser(props.userid)
-   // alert(user.id + ", " + user.subscriptionType + ", " + user.subscriptionStatus)
 })
 
 const user = computed(() => userOfId.value(props.userid))
