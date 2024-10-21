@@ -36,7 +36,7 @@
                         <jcb-radial class="w-14" :value="courseStudyProgress(userid, course.id)"></jcb-radial>
                      </div>
                      <p>
-                        {{ course?.title }} <span v-if="!course?.free">🔒</span>
+                        {{ course?.title }} <span v-if="courseIsLocked(course)">🔒</span>
                      </p>
                   </div>
                </template>
@@ -53,7 +53,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-import { userOfId, hasSubscription } from '/src/use/useUser'
+import { hasSubscription } from '/src/use/useUser'
 import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'
@@ -84,14 +84,17 @@ const props = defineProps({
    },
 })
 
-const user = computed(() => userOfId.value(props.userid))
 const ue = computed(() => ueOfId.value(props.ue_id))
 const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
 const topic = computed(() => topicOfId.value(props.topic_id))
 const courseList = computed(() => listOfCourse.value(props.topic_id))
 
+const courseIsLocked = computed(() => (course) => {
+   return (!course.free && !hasSubscription.value(props.userid))
+})
+
 const selectCourse = (course) => {
-   if (!course.free && !hasSubscription.value(props.userid)) {
+   if (courseIsLocked.value(course)) {
       subscribeModal.value.showModal()
    } else {
       router.push(`/student/study-course/${props.ue_id}/${props.sub_ue_id}/${props.topic_id}/${course.id}`)
