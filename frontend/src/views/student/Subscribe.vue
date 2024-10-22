@@ -13,17 +13,18 @@
             <template v-for="productId of ['standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly']">
                <div class="rounded-lg border-2 text-center p-6 hover:bg-gray-200" :class="{ 'box': subscriptionOfUser(userid) === productId }"
                   @click="buySubscription(productId)">
-                  <div class="cursor-pointer text-lg text-gray-600">{{ SUBSCRIPTIONS[productId].title }}</div>
-                  <div class="cursor-pointer text-sm text-gray-400">{{ SUBSCRIPTIONS[productId].features }}</div>
-                  <div class="cursor-pointer text-xl text-gray-600 font-semibold">{{ priceDict[productId] }}</div>
-                  <div class="cursor-pointer text-lg text-gray-400">/ mois</div>
+                  <div class="cursor-pointer text-lg text-gray-600">{{ subscriptionInfoDict[productId]?.name }}</div>
+                  <div class="cursor-pointer text-sm text-gray-400">{{ subscriptionInfoDict[productId]?.description }}</div>
+                  <div class="cursor-pointer text-xl text-gray-600 font-semibold">{{ subscriptionInfoDict[productId]?.price }}
+                     <span class="text-lg font-normal text-gray-400"> / {{ subscriptionInfoDict[productId]?.period }}</span>
+                  </div>
                </div>
             </template>
          </section>
          
          <div class="my-8" v-show="stripeSubscriptionChoice">
 
-            <div class="text-lg">{{ SUBSCRIPTIONS[stripeSubscriptionChoice]?.title }}</div>
+            <div class="text-lg">{{ subscriptionInfoDict[stripeSubscriptionChoice]?.title }}</div>
             <div class="text-sm">Le montant sera prélevé immédiatement, puis à chaque échéance.</div>
             <div class="text-sm">Vous pourrez à tout moment arrêter l'abonnement en cours.</div>
 
@@ -53,8 +54,8 @@
          </div>
 
          <div>
-            <button class="link my-2" @click="onGetPrices">
-               onGetPrices
+            <button class="link my-2" @click="getPriceInfo">
+               getPriceInfo
             </button>
          </div>
 
@@ -72,7 +73,8 @@ import { userOfId, updateUser, buyStoreSubscription, subscriptionOfUser, hasSubs
 import { appState } from '/src/use/useAppState'
 
 // import { InAppPurchase } from 'jcb-capacitor-inapp'
-import { SUBSCRIPTIONS, getSubscriptionPrices } from '/src/use/useSubscription'
+import { getSubscriptionInfo } from '/src/use/useSubscription'
+import { app } from '/src/client-app.js'
 
 
 const props = defineProps({
@@ -102,7 +104,7 @@ const buySubscription = async (subscriptionType) => {
    }
 }
 
-const priceDict = ref({})
+const subscriptionInfoDict = ref({})
 
 const stripe = ref(null)
 const cardElement = ref(null)
@@ -113,7 +115,7 @@ const stripeSubscriptionChoice = ref()
 
 
 onMounted(async () => {
-   priceDict.value = await getSubscriptionPrices()
+   subscriptionInfoDict.value = await getSubscriptionInfo()
 
    if (Capacitor.getPlatform() === 'web') {
       // Load Stripe.js
@@ -170,7 +172,7 @@ const handleStripeSubmit = async () => {
       // Payment method created successfully
       console.log('Payment method created:', paymentMethod)
       const subscriptionType = stripeSubscriptionChoice.value
-      const priceId = SUBSCRIPTIONS[subscriptionType].priceId
+      const priceId = subscriptionInfoDict[subscriptionType].priceId
       await processStripeSubscription(subscriptionType, paymentMethod.id, priceId)
    }
 }
@@ -251,8 +253,11 @@ const onUpdateSubscriptionInfo = async () => {
    console.log('subscriptionType', subscriptionType, 'subscriptionStatus', subscriptionStatus)
 }
 
-const onGetPrices = async () => {
-   getSubscriptionPrices()
+const getPriceInfo = async () => {
+   const priceId = subscriptionInfoDict.value['standard_monthly']?.priceId
+   console.log('priceId', priceId)
+   const priceInfo = await app.service('stripe').getPriceInfo(priceId)
+   console.log('priceInfo', priceInfo)
 }
 </script>
 

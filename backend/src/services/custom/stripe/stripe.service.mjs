@@ -84,5 +84,9 @@ export default function(app) {
          }
       },
 
+      getPriceInfo: async (priceId) => {
+         return await stripe.prices.retrieve(priceId)
+      },
+
    })
 }

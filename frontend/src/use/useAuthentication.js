@@ -4,7 +4,6 @@ import { app } from '/src/client-app.js'
 
 import { resetUseAppState } from '/src/use/useAppState'
 import { resetUseUser } from '/src/use/useUser'
-import { resetUseSubscription } from '/src/use/useSubscription'
 import { resetUseUE } from '/src/use/useUE'
 import { resetUseSubUE } from '/src/use/useSubUE'
 import { resetUseTopic } from '/src/use/useTopic'
@@ -38,7 +37,6 @@ export function clearCaches() {
    // resetUseAuthentication()
    resetUseAppState()
    resetUseUser()
-   resetUseSubscription()
    resetUseUE()
    resetUseSubUE()
    resetUseTopic()

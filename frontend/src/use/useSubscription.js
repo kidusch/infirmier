@@ -1,66 +1,66 @@
-import { computed } from 'vue'
-import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 import { InAppPurchase } from 'jcb-capacitor-inapp'
 
 import { app } from '/src/client-app.js'
 
 
-const initialState = () => ({
-   priceCache: {}
-})
-
-// TO-DELETE ?
-const { data: subscriptionState } = useIDBKeyval('subscription-state', initialState(), { mergeDefaults: true })
-
-export const resetUseSubscription = () => {
-   subscriptionState.value = initialState()
-}
+const SUBSCRIPTION_TYPES = ['standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly']
 
 
-export const SUBSCRIPTIONS = {
-   standard_monthly: {
-      title: "Abonnement standard mensuel",
-      features: "Accès à tout le contenu",
-      stripeProductId: import.meta.env.VITE_STRIPE_STANDARD_MONTHLY_SUBSCRIPTION_ID,
-      // priceId: import.meta.env.VITE_STRIPE_STANDARD_MONTHLY_PRICE_ID,
-   },
-   standard_yearly: {
-      title: "Abonnement standard annuel",
-      features: "Accès à tout le contenu",
-      stripeProductId: import.meta.env.VITE_STRIPE_STANDARD_YEARLY_SUBSCRIPTION_ID,
-      // priceId: import.meta.env.VITE_STRIPE_STANDARD_YEARLY_PRICE_ID,
-   },
-   premium_monthly: {
-      title: "Abonnement premium mensuel",
-      features: "Accès à tout le contenu et coaching personnalisé",
-      stripeProductId: import.meta.env.VITE_STRIPE_PREMIUM_MONTHLY_SUBSCRIPTION_ID,
-      // priceId: import.meta.env.VITE_STRIPE_PREMIUM_MONTHLY_PRICE_ID,
-   },
-   premium_yearly: {
-      title: "Abonnement premium annuel",
-      features: "Accès à tout le contenu et coaching personnalisé",
-      stripeProductId: import.meta.env.VITE_STRIPE_PREMIUM_YEARLY_SUBSCRIPTION_ID,
-      // priceId: import.meta.env.VITE_STRIPE_PREMIUM_YEARLY_PRICE_ID,
-   },
-}
-
-export const getSubscriptionPrices = async () => {
+export const getSubscriptionInfo = async () => {
    const platform = Capacitor.getPlatform()
    const result = {}
-   if (platform === 'ios' || platform === 'android') {
-      for (const productId in SUBSCRIPTIONS) {
-         const { price } = await InAppPurchase.getSubscriptionInfo({ productId })
-         console.log('productId', productId, 'price', price)
-         result[productId] = price
+   for (const subscriptionType of SUBSCRIPTION_TYPES) {
+      if (platform === 'ios' || platform === 'android') {
+         const subscriptionInfo = await InAppPurchase.getSubscriptionInfo({ productId: subscriptionType })
+         result[subscriptionType] = subscriptionInfo
+      } else {
+         const stripeInfo = STRIPE_SUBSCRIPTIONS[subscriptionType]
+         const priceInfo = await app.service('stripe').getPriceInfo(stripeInfo.priceId)
+         const price = (priceInfo.unit_amount / 100).toFixed(2) + " " + priceInfo.currency.toUpperCase()
+         const period = { 'month': 'mois', 'year': 'an' }[priceInfo?.recurring?.interval]
+         result[subscriptionType] = {
+            price,
+            period,
+            ...stripeInfo
+         }
       }
-   } else {
-      console.log("TODO FOR STRIPE")
    }
    return result
 }
 
 
 //////////////////////     STRIPE      //////////////////////
+
+export const STRIPE_SUBSCRIPTIONS = {
+   standard_monthly: {
+      name: "Abonnement standard mensuel",
+      description: "Accès à tout le contenu",
+      period: "mois",
+      productId: import.meta.env.VITE_STRIPE_STANDARD_MONTHLY_SUBSCRIPTION_ID,
+      priceId: import.meta.env.VITE_STRIPE_STANDARD_MONTHLY_PRICE_ID,
+   },
+   standard_yearly: {
+      name: "Abonnement standard annuel",
+      description: "Accès à tout le contenu",
+      period: "an",
+      productId: import.meta.env.VITE_STRIPE_STANDARD_YEARLY_SUBSCRIPTION_ID,
+      priceId: import.meta.env.VITE_STRIPE_STANDARD_YEARLY_PRICE_ID,
+   },
+   premium_monthly: {
+      name: "Abonnement premium mensuel",
+      description: "Accès à tout le contenu et coaching personnalisé",
+      period: "mois",
+      productId: import.meta.env.VITE_STRIPE_PREMIUM_MONTHLY_SUBSCRIPTION_ID,
+      priceId: import.meta.env.VITE_STRIPE_PREMIUM_MONTHLY_PRICE_ID,
+   },
+   premium_yearly: {
+      name: "Abonnement premium annuel",
+      description: "Accès à tout le contenu et coaching personnalisé",
+      period: "an",
+      productId: import.meta.env.VITE_STRIPE_PREMIUM_YEARLY_SUBSCRIPTION_ID,
+      priceId: import.meta.env.VITE_STRIPE_PREMIUM_YEARLY_PRICE_ID,
+   },
+}
 
 export const getOrCreateStripeCustomer = async (id, paymentMethodId, customerEmail) => {
    const user = await getUser(id)

@@ -21,9 +21,9 @@ model user {
   name      String?
   picture   String?
 
-
+  // TO-DELETE
   subscription_type       String?     // null, 'standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly'
-  subscription_status     String?    // null, 'active', +
+  subscription_status     String?     // null, 'active', etc.
   
   stripe_customer_id      String?
   stripe_subscription_id  String?

@@ -152,6 +152,7 @@ Laisser Google créer une clé de signature ; cliquer sur "Importer un App Bundl
 
 ## Tests fermés
 NÉCESSAIRE DE LES FAIRES AVEC 20+ TESTEURS POUR POUVOIR SOUMETTRE À PUBLICATION !
+Voir : https://support.google.com/googleplay/android-developer/answer/14151465
 
 ## inApp purchase - Android
 Voir : https://developer.android.com/google/play/billing/getting-ready?authuser=1&hl=fr
