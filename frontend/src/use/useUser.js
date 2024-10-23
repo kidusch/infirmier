@@ -169,7 +169,7 @@ export const updateSubscriptionInfo = async (id) => {
       // ask stripe the subscriptions for stripe_customer_id
       if (user.stripe_customer_id) {
          const subscriptions = await app.service('stripe').customerActiveSubscriptions(user.stripe_customer_id)
-         // console.log('subscriptions', subscriptions)
+         console.log('subscriptions', subscriptions)
          if (subscriptions.length > 0) {
             // replace cache info by Stripe info
             const subscription = subscriptions[0]

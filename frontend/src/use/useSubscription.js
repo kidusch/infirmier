@@ -5,7 +5,12 @@ import { app } from '/src/client-app.js'
 
 const SUBSCRIPTION_TYPES = ['standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly']
 
-
+// return {
+//    price : formatted price (ex: "2,99 EUR")
+//    name: subscription name (ex: "Abonnement standard")
+//    description: subscription features (ex: "Accès à tout le contenu + coaching personnalisé")
+//    period: formatted subscription period (ex: "mois")
+// }
 export const getSubscriptionInfo = async () => {
    const platform = Capacitor.getPlatform()
    const result = {}

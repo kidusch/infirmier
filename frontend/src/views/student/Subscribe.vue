@@ -46,18 +46,6 @@
                Résilier l'abonnement en cours...
             </button>
          </div>
-         
-         <div>
-            <button class="link my-2" @click="onUpdateSubscriptionInfo">
-               UpdateSubscriptionInfo
-            </button>
-         </div>
-
-         <div>
-            <button class="link my-2" @click="getPriceInfo">
-               getPriceInfo
-            </button>
-         </div>
 
       </main>
 
@@ -68,13 +56,13 @@
 import { ref, computed, onMounted } from 'vue'
 import { loadStripe } from '@stripe/stripe-js'
 
-import { userOfId, updateUser, buyStoreSubscription, subscriptionOfUser, hasSubscription, updateSubscriptionInfo,
+import { userOfId, updateUser, buyStoreSubscription, subscriptionOfUser, hasSubscription,
    getOrCreateStripeCustomer, createStripeSubscription, cancelStripeCustomerSubscriptions } from '/src/use/useUser'
 import { appState } from '/src/use/useAppState'
 
 // import { InAppPurchase } from 'jcb-capacitor-inapp'
 import { getSubscriptionInfo } from '/src/use/useSubscription'
-import { app } from '/src/client-app.js'
+// import { app } from '/src/client-app.js'
 
 
 const props = defineProps({
@@ -115,6 +103,7 @@ const stripeSubscriptionChoice = ref()
 
 
 onMounted(async () => {
+   // get subscriptions name, description, price, period
    subscriptionInfoDict.value = await getSubscriptionInfo()
 
    if (Capacitor.getPlatform() === 'web') {
@@ -152,7 +141,7 @@ onMounted(async () => {
    }
 })
 
-// Handle the form submission
+// Handle the Stripe form submission
 const handleStripeSubmit = async () => {
    loading.value = true
    errorMessage.value = ''
@@ -172,12 +161,12 @@ const handleStripeSubmit = async () => {
       // Payment method created successfully
       console.log('Payment method created:', paymentMethod)
       const subscriptionType = stripeSubscriptionChoice.value
-      const priceId = subscriptionInfoDict[subscriptionType].priceId
+      const priceId = subscriptionInfoDict.value[subscriptionType].priceId
       await processStripeSubscription(subscriptionType, paymentMethod.id, priceId)
    }
 }
 
-// Process the subscription on the backend
+// Process the Stripe subscription on the backend
 const processStripeSubscription = async (subscriptionType, paymentMethodId, priceId) => {
    console.log('processStripeSubscription', subscriptionType, paymentMethodId, priceId)
    try {
@@ -211,8 +200,6 @@ const processStripeSubscription = async (subscriptionType, paymentMethodId, pric
 
 
 const cancelCustomerSubscriptions = async () => {
-   console.log('cancelCustomerSubscriptions, subscription_type', user.value.subscription_type, 'stripe_customer_id', user.value.stripe_customer_id, 'subscription_status', user.value.subscription_status)
-
    if (user.value.subscription_status === 'active') {
       if (platform.value === 'ios') {
          alert(`Pour résilier l'abonnement, il faut que vous alliez dans les réglages de l'iPhone, rubrique Apple Id -> Abonnements`)
@@ -245,19 +232,6 @@ const cancelCustomerSubscriptions = async () => {
    } else {
       alert("Il n'y a pas d'abonnement actif en cours")
    }
-}
-
-const onUpdateSubscriptionInfo = async () => {
-   // update subscription info
-   const { subscriptionType, subscriptionStatus } = await updateSubscriptionInfo(props.userid)
-   console.log('subscriptionType', subscriptionType, 'subscriptionStatus', subscriptionStatus)
-}
-
-const getPriceInfo = async () => {
-   const priceId = subscriptionInfoDict.value['standard_monthly']?.priceId
-   console.log('priceId', priceId)
-   const priceInfo = await app.service('stripe').getPriceInfo(priceId)
-   console.log('priceInfo', priceInfo)
 }
 </script>
 
