@@ -56,13 +56,10 @@
 import { ref, computed, onMounted } from 'vue'
 import { loadStripe } from '@stripe/stripe-js'
 
-import { userOfId, updateUser, buyStoreSubscription, subscriptionOfUser, hasSubscription,
+import { userOfId, updateUser } from '/src/use/useUser'
+import { getSubscriptionInfo, buyStoreSubscription, subscriptionOfUser, hasSubscription,
    getOrCreateStripeCustomer, createStripeSubscription, cancelStripeCustomerSubscriptions } from '/src/use/useUser'
 import { appState } from '/src/use/useAppState'
-
-// import { InAppPurchase } from 'jcb-capacitor-inapp'
-import { getSubscriptionInfo } from '/src/use/useSubscription'
-// import { app } from '/src/client-app.js'
 
 
 const props = defineProps({
