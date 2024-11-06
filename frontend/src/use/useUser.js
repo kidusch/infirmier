@@ -104,153 +104,24 @@ export const listOfUser = computed(() => {
 
 //////////////////           SUBSCRIPTION           //////////////////
 
-// export const SUBSCRIPTIONS = {
-//    standard_monthly: {
-//       productId: import.meta.env.VITE_STRIPE_STANDARD_MONTHLY_SUBSCRIPTION_ID,
-//       priceId: import.meta.env.VITE_STRIPE_STANDARD_MONTHLY_PRICE_ID,
-//       title: "Souscription à un abonnement standard mensuel",
-//    },
-//    standard_yearly: {
-//       productId: import.meta.env.VITE_STRIPE_STANDARD_YEARLY_SUBSCRIPTION_ID,
-//       priceId: import.meta.env.VITE_STRIPE_STANDARD_YEARLY_PRICE_ID,
-//       title: "Souscription à un abonnement standard annuel",
-//    },
-//    premium_monthly: {
-//       productId: import.meta.env.VITE_STRIPE_PREMIUM_MONTHLY_SUBSCRIPTION_ID,
-//       priceId: import.meta.env.VITE_STRIPE_PREMIUM_MONTHLY_PRICE_ID,
-//       title: "Souscription à un abonnement premium mensuel",
-//    },
-//    premium_yearly: {
-//       productId: import.meta.env.VITE_STRIPE_PREMIUM_YEARLY_SUBSCRIPTION_ID,
-//       priceId: import.meta.env.VITE_STRIPE_PREMIUM_YEARLY_PRICE_ID,
-//       title: "Souscription à un abonnement premium annuel",
-//    },
-// }
-
-// function productId2subscriptionType(productId) {
-//    let subscriptionType
-//    for (subscriptionType in SUBSCRIPTIONS) {
-//       if (SUBSCRIPTIONS[subscriptionType].productId === productId) return subscriptionType
-//    }
-// }
-
-
-// export const buyStoreSubscription = async (id, subscriptionType) => {
-//    const { status: subscriptionStatus } = await InAppPurchase.buySubscription({ productId: subscriptionType })
-//    await updateUser(id, {
-//       subscription_type: subscriptionType,
-//       subscription_status: subscriptionStatus,
-//    })
-//    return { subscriptionType, subscriptionStatus }
-// }
-
-// export const getSubscriptionStatus = async (id) => {
-//    let user = await getUser(id)
-//    // ask info to stores
-//    const platform = Capacitor.getPlatform()
-//    if (platform === 'ios' || platform === 'android') {
-//       console.log("checking...")
-//       const { productId, status: subscriptionStatus } = await InAppPurchase.checkSubscription()
-//       console.log("info", productId, subscriptionStatus)
-//       if (productId) {
-//          // replace cache info by Store info
-//          user = await updateUser(id, {
-//             subscription_type: productId,
-//             subscription_status: subscriptionStatus,
-//          })
-//       } else {
-//          if (user.subscription_type) {
-//             console.log("shouldn't happen: keeping cache info")
-//          }
-//       }
-//    } else {
-//       // ask stripe the subscriptions for stripe_customer_id
-//       if (user.stripe_customer_id) {
-//          const subscriptions = await app.service('stripe').customerActiveSubscriptions(user.stripe_customer_id)
-//          console.log('subscriptions', subscriptions)
-//          if (subscriptions.length > 0) {
-//             // replace cache info by Stripe info
-//             const subscription = subscriptions[0]
-//             const productId = subscription.plan.product
-//             const subscriptionType = productId2subscriptionType(productId)
-//             user = await updateUser(id, {
-//                subscription_type: subscriptionType,
-//                subscription_status: subscription.status,
-//                stripe_subscription_id: subscription.id,
-//             })
-//          }
-//       }
-//    }
-
-//    // return cache info
-//    return {
-//       subscriptionType: user.subscription_type,
-//       subscriptionStatus: user.subscription_status,
-//    }
-// }
-
-// // return active (= existing, not expired) subscription
-// // undefined,  null, 'standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly'
-// export const subscriptionOfUser = computed(() => (id) => {
-//    const user = userOfId.value(id)
-//    if (!user) return undefined
-//    if (!user.subscription_status) return null // no subscription (null), or a subscription has been made, but is no longer active (false)
-//    if (user.subscription_status !== 'active') return null // a subscription has been made, but is no longer active (false)
-//    return user.subscription_type
-// })
-
-// // has an active subscription
-// export const hasSubscription = computed(() => (id) => {
-//    const subscriptionType = subscriptionOfUser.value(id)
-//    return !!subscriptionType
-// })
-
-// // has an active, premium subscription
-// export const hasPremiumSubscription = computed(() => (id) => {
-//    const subscriptionType = subscriptionOfUser.value(id)
-//    if (!subscriptionType) return false
-//    return subscriptionType.startsWith('premium')
-// })
-
-// // has an active, standard subscription
-// export const hasStandardSubscription = computed(() => (id) => {
-//    const subscriptionType = subscriptionOfUser.value(id)
-//    if (!subscriptionType) return false
-//    return subscriptionType.startsWith('standard')
-// })
-
-
-
 const SUBSCRIPTION_TYPES = ['standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly']
 
 export const STRIPE_SUBSCRIPTIONS = {
    standard_monthly: {
-      name: "Abonnement standard mensuel",
-      description: "Accès à tout le contenu",
-      period: "mois",
+      // period: "mois",
       productId: import.meta.env.VITE_STRIPE_STANDARD_MONTHLY_SUBSCRIPTION_ID,
-      priceId: import.meta.env.VITE_STRIPE_STANDARD_MONTHLY_PRICE_ID,
    },
    standard_yearly: {
-      name: "Abonnement standard annuel",
-      description: "Accès à tout le contenu",
-      period: "an",
+      // period: "an",
       productId: import.meta.env.VITE_STRIPE_STANDARD_YEARLY_SUBSCRIPTION_ID,
-      priceId: import.meta.env.VITE_STRIPE_STANDARD_YEARLY_PRICE_ID,
    },
    premium_monthly: {
-      name: "Abonnement premium mensuel",
-      description: "Accès à tout le contenu et coaching personnalisé",
-      period: "mois",
+      // period: "mois",
       productId: import.meta.env.VITE_STRIPE_PREMIUM_MONTHLY_SUBSCRIPTION_ID,
-      priceId: import.meta.env.VITE_STRIPE_PREMIUM_MONTHLY_PRICE_ID,
    },
    premium_yearly: {
-      name: "Abonnement premium annuel",
-      description: "Accès à tout le contenu et coaching personnalisé",
-      period: "an",
+      // period: "an",
       productId: import.meta.env.VITE_STRIPE_PREMIUM_YEARLY_SUBSCRIPTION_ID,
-      priceId: import.meta.env.VITE_STRIPE_PREMIUM_YEARLY_PRICE_ID,
    },
 }
 
@@ -269,13 +140,23 @@ export const getSubscriptionInfo = async () => {
          result[subscriptionType] = subscriptionInfo
       } else {
          const stripeInfo = STRIPE_SUBSCRIPTIONS[subscriptionType]
-         const priceInfo = await app.service('stripe').getPriceInfo(stripeInfo.priceId)
+
+         const subscriptionInfo = await app.service('stripe').getProductInfo(stripeInfo.productId)
+         console.log('subscriptionInfo', subscriptionInfo)
+
+         // const priceInfo = await app.service('stripe').getPriceInfo(stripeInfo.priceId)
+         const priceInfo = await app.service('stripe').getPriceInfo(subscriptionInfo.default_price)
+         console.log('priceInfo', priceInfo)
+
          const price = (priceInfo.unit_amount / 100).toFixed(2) + " " + priceInfo.currency.toUpperCase()
          const period = { 'month': 'mois', 'year': 'an' }[priceInfo?.recurring?.interval]
          result[subscriptionType] = {
+            name: subscriptionInfo.name,
+            description: subscriptionInfo.description,
+            priceId: priceInfo.id,
             price,
             period,
-            ...stripeInfo
+            // ...stripeInfo
          }
       }
    }

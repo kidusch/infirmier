@@ -88,5 +88,9 @@ export default function(app) {
          return await stripe.prices.retrieve(priceId)
       },
 
+      getProductInfo: async (subscriptionId) => {
+         return await stripe.products.retrieve(subscriptionId)
+      },
+
    })
 }

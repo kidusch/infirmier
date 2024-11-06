@@ -48,12 +48,16 @@ npm run dev
 # Version web
 
 ## Achat abonnements : Stripe
+
+- utiliser le dashboard Stripe pour créer les 4 types d'abonnements ("Catalogue de produits") : https://dashboard.stripe.com/login
+(voir README.secret pour les identifiants et utiliser Google Authenticator avec l'adresse admin@journaldebordide.com)
 - doc : https://docs.stripe.com/
-- doc : https://docs.stripe.com/payments/payment-element ?
-- dashboard : https://dashboard.stripe.com/login
-- voir README.secret pour les identifiants
-- utiliser le dashboard Stripe pour créer les abonnements ("Catalogue de produits")
 - carte de test : 4242 4242 4242 4242, expiration 09/28, CVC: 123
+
+Il faut créer un customer id pour le user connecté (voir stripe_customer_id dans le schéma Prisma), puis créer
+un paiement récurrent lors de la prise de l'abonnement
+
+Essayer ? https://docs.stripe.com/payments/payment-element
 
 
 # iOS
@@ -87,9 +91,10 @@ On peut exécuter sur simulateur ou sur device
 - les télécharger et double-cliquer pour qu'ils s'installent dans XCode
 - à la demande d'un mot de passe pour les cerificats, entrer le mdp de "session" (= M**e) et cliquer sur "Toujours autoriser"
 
-## inApp purchase
+## inApp purchase des abonnements
 iOS : >iOS15 (utilise StoreKit2, les transactions, async/await)
 Voir : https://medium.com/@aisultanios/implement-inn-app-subscriptions-using-swift-and-storekit2-serverless-and-share-active-purchases-7d50f9ecdc09
+AppStore Connect (https://appstoreconnect.apple.com) : définir les 4 abonnements avec leur nom, description, prix, périodicité
 
 On peut tester en simulation sur iOS, en utilisant un 'StoreKit configuration file' :
 -> le créer dans XCode avec File -> new -> File -> StoreKit Configuration
@@ -105,9 +110,9 @@ au rythme défini dans le 'StoreKit configuration file')
 OUVRIR L'APPLICATION TESTFLIGHT SUR L'IPHONE (téléchargeable sur l'AppStore) : les builds seront accessible si je fais partie de l'équipe de test
 
 ## Utilisateur de test
-Identifiant Apple Sandbox (AppstoreConnect / Utilisateurs et accès / Sandbox) : jean-christophe.buisson@n7.fr / apM**e
+(Identifiant Apple Sandbox (AppstoreConnect / Utilisateurs et accès / Sandbox) : jean-christophe.buisson@n7.fr / apM**e
 Nécessaire pour tester les abonnements inapp
-Sur l'iphone, se déconnecter de son Apple Id et se connecter sur le Sandbox Id
+Sur l'iphone, se déconnecter de son Apple Id et se connecter sur le Sandbox Id)
 
 
 # Android
@@ -154,9 +159,10 @@ Laisser Google créer une clé de signature ; cliquer sur "Importer un App Bundl
 NÉCESSAIRE DE LES FAIRES AVEC 20+ TESTEURS POUR POUVOIR SOUMETTRE À PUBLICATION !
 Voir : https://support.google.com/googleplay/android-developer/answer/14151465
 
-## inApp purchase - Android
+## inApp purchase des abonnements
 Voir : https://developer.android.com/google/play/billing/getting-ready?authuser=1&hl=fr
 Depuis aout 2024, nouvelle version du billing system.
+Comme dans l'AppStore, on définit dans Google Play Console les 4 abonnements avec leur nom, description, prix, périodicité
 
 - Ajouter dans build.gradle:
 ```

@@ -101,7 +101,9 @@ const stripeSubscriptionChoice = ref()
 
 onMounted(async () => {
    // get subscriptions name, description, price, period
+   appState.value.spinnerWaitingText = [ "Chargement..." ]
    subscriptionInfoDict.value = await getSubscriptionInfo()
+   appState.value.spinnerWaitingText = null
 
    if (Capacitor.getPlatform() === 'web') {
       // Load Stripe.js
@@ -208,7 +210,7 @@ const cancelCustomerSubscriptions = async () => {
          if (user.value.stripe_customer_id) {
             // cancel on Stripe
             try {
-               // cancel all subscriptions of assciated customer (there should be only one)
+               // cancel all subscriptions of associated customer (there should be only one)
                appState.value.spinnerWaitingText = ["En cours de traitement..."]
                const { subscriptions, error } = await cancelStripeCustomerSubscriptions(props.userid, user.value.stripe_customer_id)
                if (error) {
