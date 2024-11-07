@@ -108,19 +108,15 @@ const SUBSCRIPTION_TYPES = ['standard_monthly', 'standard_yearly', 'premium_mont
 
 export const STRIPE_SUBSCRIPTIONS = {
    standard_monthly: {
-      // period: "mois",
       productId: import.meta.env.VITE_STRIPE_STANDARD_MONTHLY_SUBSCRIPTION_ID,
    },
    standard_yearly: {
-      // period: "an",
       productId: import.meta.env.VITE_STRIPE_STANDARD_YEARLY_SUBSCRIPTION_ID,
    },
    premium_monthly: {
-      // period: "mois",
       productId: import.meta.env.VITE_STRIPE_PREMIUM_MONTHLY_SUBSCRIPTION_ID,
    },
    premium_yearly: {
-      // period: "an",
       productId: import.meta.env.VITE_STRIPE_PREMIUM_YEARLY_SUBSCRIPTION_ID,
    },
 }
@@ -136,6 +132,7 @@ export const getSubscriptionInfo = async () => {
    const result = {}
    for (const subscriptionType of SUBSCRIPTION_TYPES) {
       if (platform === 'ios' || platform === 'android') {
+         console.log('********************* getSubscriptionInfo')
          const subscriptionInfo = await InAppPurchase.getSubscriptionInfo({ productId: subscriptionType })
          result[subscriptionType] = subscriptionInfo
       } else {
@@ -144,7 +141,6 @@ export const getSubscriptionInfo = async () => {
          const subscriptionInfo = await app.service('stripe').getProductInfo(stripeInfo.productId)
          console.log('subscriptionInfo', subscriptionInfo)
 
-         // const priceInfo = await app.service('stripe').getPriceInfo(stripeInfo.priceId)
          const priceInfo = await app.service('stripe').getPriceInfo(subscriptionInfo.default_price)
          console.log('priceInfo', priceInfo)
 
@@ -156,7 +152,6 @@ export const getSubscriptionInfo = async () => {
             priceId: priceInfo.id,
             price,
             period,
-            // ...stripeInfo
          }
       }
    }

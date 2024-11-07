@@ -161,7 +161,9 @@ const handleStripeSubmit = async () => {
       console.log('Payment method created:', paymentMethod)
       const subscriptionType = stripeSubscriptionChoice.value
       const priceId = subscriptionInfoDict.value[subscriptionType].priceId
+      appState.value.spinnerWaitingText = [ "Traitement..." ]
       await processStripeSubscription(subscriptionType, paymentMethod.id, priceId)
+      appState.value.spinnerWaitingText = null
    }
 }
 

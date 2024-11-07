@@ -51,16 +51,17 @@ npm run dev
 
 - utiliser le dashboard Stripe pour créer les 4 types d'abonnements ("Catalogue de produits") : https://dashboard.stripe.com/login
 (voir README.secret pour les identifiants et utiliser Google Authenticator avec l'adresse admin@journaldebordide.com)
+- reporter les codes des 'produits' correspondants dans frontend/.env
 - doc : https://docs.stripe.com/
 - carte de test : 4242 4242 4242 4242, expiration 09/28, CVC: 123
 
-Il faut créer un customer id pour le user connecté (voir stripe_customer_id dans le schéma Prisma), puis créer
-un paiement récurrent lors de la prise de l'abonnement
+Pour qu'un utilisateur s'abonne, il faut lui créer un customer id s'il n'en a pas déjà un (voir stripe_customer_id dans le schéma Prisma),
+puis créer un paiement récurrent lors de la prise de l'abonnement
 
-Essayer ? https://docs.stripe.com/payments/payment-element
+--> pour faire un formulaire de paiement plus joli et plus complet, peut-être essayer https://docs.stripe.com/payments/payment-element
 
 
-# iOS
+# Version iOS
 App enregistrée sur le compte de Charlène (voir README.secret)
 Bundle id : com.journaldebordide.app
 Identifiant Apple : 6673904628
@@ -94,10 +95,12 @@ On peut exécuter sur simulateur ou sur device
 ## inApp purchase des abonnements
 iOS : >iOS15 (utilise StoreKit2, les transactions, async/await)
 Voir : https://medium.com/@aisultanios/implement-inn-app-subscriptions-using-swift-and-storekit2-serverless-and-share-active-purchases-7d50f9ecdc09
+Voir : https://developer.apple.com/documentation/storekit/in-app_purchase
 AppStore Connect (https://appstoreconnect.apple.com) : définir les 4 abonnements avec leur nom, description, prix, périodicité
 
 On peut tester en simulation sur iOS, en utilisant un 'StoreKit configuration file' :
 -> le créer dans XCode avec File -> new -> File -> StoreKit Configuration
+Le fichier est ensuite visible dans la vue 'fichiers' de XCode
 -> l'utiliser dans le Run avec Product -> Scheme -> Edit Scheme... -> choisir le fichier dans la rubrique "StoreKit configuration"
 
 Gestion des abonnements depuis XCode : Debug -> StoreKit. On voit les expirations / renouvellements se dérouler en temps réel (accéléré
@@ -115,7 +118,7 @@ Nécessaire pour tester les abonnements inapp
 Sur l'iphone, se déconnecter de son Apple Id et se connecter sur le Sandbox Id)
 
 
-# Android
+# Version Android
 
 ## Test en développement
 Exécuter `npm run build:androiddev` pour mettre à jour le projet. Voir .env.androiddev
