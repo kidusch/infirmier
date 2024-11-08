@@ -66,10 +66,11 @@ export const courseContentOfId = computed(() => (id) => {
    })
 })
 
-export const createCourseContent = async (content) => {
+export const createCourseContent = async (course_id) => {
    const courseContent = await app.service('course_content').create({
       data: {
-         content,
+         course_id,
+         content: '',
       }
    })
    // update cache
