@@ -57,7 +57,7 @@ import { ref, computed, onMounted } from 'vue'
 import { loadStripe } from '@stripe/stripe-js'
 
 import { userOfId, updateUser } from '/src/use/useUser'
-import { getSubscriptionInfo, buyStoreSubscription, subscriptionOfUser, hasSubscription,
+import { getStripePublicKey, getSubscriptionInfo, buyStoreSubscription, subscriptionOfUser, hasSubscription,
    getOrCreateStripeCustomer, createStripeSubscription, cancelStripeCustomerSubscriptions } from '/src/use/useUser'
 import { appState } from '/src/use/useAppState'
 
@@ -112,7 +112,9 @@ onMounted(async () => {
 
    if (Capacitor.getPlatform() === 'web') {
       // Load Stripe.js
-      stripe.value = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
+      const stripePublicKey = await getStripePublicKey()
+      console.log('stripePublicKey', stripePublicKey)
+      stripe.value = await loadStripe(stripePublicKey)
       // Create an instance of Elements
       const elements = stripe.value.elements()
 

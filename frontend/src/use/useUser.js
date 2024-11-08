@@ -104,22 +104,11 @@ export const listOfUser = computed(() => {
 
 //////////////////           SUBSCRIPTION           //////////////////
 
-const SUBSCRIPTION_TYPES = ['standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly']
-
-export const STRIPE_SUBSCRIPTIONS = {
-   standard_monthly: {
-      productId: import.meta.env.VITE_STRIPE_STANDARD_MONTHLY_SUBSCRIPTION_ID,
-   },
-   standard_yearly: {
-      productId: import.meta.env.VITE_STRIPE_STANDARD_YEARLY_SUBSCRIPTION_ID,
-   },
-   premium_monthly: {
-      productId: import.meta.env.VITE_STRIPE_PREMIUM_MONTHLY_SUBSCRIPTION_ID,
-   },
-   premium_yearly: {
-      productId: import.meta.env.VITE_STRIPE_PREMIUM_YEARLY_SUBSCRIPTION_ID,
-   },
+export const getStripePublicKey = async () => {
+   return await app.service('stripe').getStripePublicKey()
 }
+
+const SUBSCRIPTION_TYPES = ['standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly']
 
 // return {
 //    price : formatted price (ex: "2,99 EUR")
@@ -133,23 +122,22 @@ export const getSubscriptionInfo = async () => {
    for (const subscriptionType of SUBSCRIPTION_TYPES) {
 
       if (platform === 'ios' || platform === 'android') {
-         const subscriptionInfo = await InAppPurchase.getSubscriptionInfo({ productId: subscriptionType })
-         result[subscriptionType] = subscriptionInfo
+         const productInfo = await InAppPurchase.getSubscriptionProductInfo({ productId: subscriptionType })
+         result[subscriptionType] = productInfo
 
       } else {
-         const stripeInfo = STRIPE_SUBSCRIPTIONS[subscriptionType]
+         const productId = await app.service('stripe').getProductIdFromSubscriptionType(subscriptionType)
+         const productInfo = await app.service('stripe').getSubscriptionProductInfo(productId)
+         console.log('productInfo', productInfo)
 
-         const subscriptionInfo = await app.service('stripe').getProductInfo(stripeInfo.productId)
-         console.log('subscriptionInfo', subscriptionInfo)
-
-         const priceInfo = await app.service('stripe').getPriceInfo(subscriptionInfo.default_price)
+         const priceInfo = await app.service('stripe').getPriceInfo(productInfo.default_price)
          console.log('priceInfo', priceInfo)
 
          const price = (priceInfo.unit_amount / 100).toFixed(2) + " " + priceInfo.currency.toUpperCase()
          const period = { 'month': 'mois', 'year': 'an' }[priceInfo?.recurring?.interval]
          result[subscriptionType] = {
-            name: subscriptionInfo.name,
-            description: subscriptionInfo.description,
+            name: productInfo.name,
+            description: productInfo.description,
             priceId: priceInfo.id, // only for Stripe
             price,
             period,
@@ -198,12 +186,6 @@ export const buyStoreSubscription = async (id, subscriptionType) => {
    return { subscriptionType, subscriptionStatus }
 }
 
-function productId2subscriptionType(productId) {
-   for (let subscriptionType in STRIPE_SUBSCRIPTIONS) {
-      if (STRIPE_SUBSCRIPTIONS[subscriptionType].productId === productId) return subscriptionType
-   }
-}
-
 export const getSubscriptionStatus = async (id) => {
    let user = await getUser(id)
    // ask info to stores
@@ -232,7 +214,8 @@ export const getSubscriptionStatus = async (id) => {
             // replace cache info by Stripe info
             const subscription = subscriptions[0]
             const productId = subscription.plan.product
-            const subscriptionType = productId2subscriptionType(productId)
+            // const subscriptionType = productId2subscriptionType(productId)
+            const subscriptionType = await app.service('stripe').getSubscriptionTypeFromProductId(productId)
             user = await updateUser(id, {
                subscription_type: subscriptionType,
                subscription_status: subscription.status,

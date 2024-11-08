@@ -88,8 +88,26 @@ export default function(app) {
          return await stripe.prices.retrieve(priceId)
       },
 
-      getProductInfo: async (subscriptionId) => {
-         return await stripe.products.retrieve(subscriptionId)
+      getSubscriptionProductInfo: async (productId) => {
+         return await stripe.products.retrieve(productId)
+      },
+
+      getStripePublicKey: async () => {
+         return process.env.STRIPE_INFIRMIER_PUBLIC_KEY
+      },
+
+      getProductIdFromSubscriptionType: async (subscriptionType) => {
+         if (subscriptionType === 'standard_monthly') return process.env.STRIPE_STANDARD_MONTHLY_SUBSCRIPTION_ID
+         if (subscriptionType === 'standard_yearly') return process.env.STRIPE_STANDARD_YEARLY_SUBSCRIPTION_ID
+         if (subscriptionType === 'premium_monthly') return process.env.STRIPE_PREMIUM_MONTHLY_SUBSCRIPTION_ID
+         if (subscriptionType === 'premium_yearly') return process.env.STRIPE_PREMIUM_YEARLY_SUBSCRIPTION_ID
+      },
+
+      getSubscriptionTypeFromProductId: async (productId) => {
+         if (productId === process.env.STRIPE_STANDARD_MONTHLY_SUBSCRIPTION_ID) return 'standard_monthly'
+         if (productId === process.env.STRIPE_STANDARD_YEARLY_SUBSCRIPTION_ID) return 'standard_yearly'
+         if (productId === process.env.STRIPE_PREMIUM_MONTHLY_SUBSCRIPTION_ID) return 'premium_monthly'
+         if (productId === process.env.STRIPE_PREMIUM_YEARLY_SUBSCRIPTION_ID) return 'premium_yearly'
       },
 
    })
