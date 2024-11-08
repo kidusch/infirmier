@@ -107,10 +107,11 @@ Gestion des abonnements depuis XCode : Debug -> StoreKit. On voit les expiration
 au rythme défini dans le 'StoreKit configuration file')
 
 ## TestFlight & distribution
+- builder l'appli en mode production : npm run build:ios
 - choisir le provisioning profile de prod et faire "Archive"
-- uploader le build sur AppStore Connect
-
-OUVRIR L'APPLICATION TESTFLIGHT SUR L'IPHONE (téléchargeable sur l'AppStore) : les builds seront accessible si je fais partie de l'équipe de test
+- uploader le build sur AppStore Connect (cliquer sur "Distribute App", puis "TestFlight & AppStore", se connecter à AppStore Connect d'abord ? et redémarrer XCode ?)
+- dans AppStore Connect, repérer le build et lui ajouter un groupe de testeurs
+- sur l'iPhone, installer l'application "TestFlight" : les builds seront accessibles si je fais partie de l'équipe de test
 
 ## Utilisateur de test
 (Identifiant Apple Sandbox (AppstoreConnect / Utilisateurs et accès / Sandbox) : jean-christophe.buisson@n7.fr / apM**e
