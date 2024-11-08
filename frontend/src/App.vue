@@ -28,6 +28,14 @@ import { restartApp } from '/src/use/useAuthentication'
 import Spinner from '/src/components/Spinner.vue'
 
 
+// Register the event listener for app state changes. Provided by @capacitor/app
+App.addListener('appStateChange', ({ isActive }) => {
+   if (isActive) {
+      // App has been opened or awakened
+      appState.value.spinnerWaitingText = null
+   }
+})
+
 // test, works for iOS, see: https://capacitorjs.com/docs/guides/deep-links
 App.addListener('appUrlOpen', (data) => {
    alert(`Deep link! ${data?.url}`)
