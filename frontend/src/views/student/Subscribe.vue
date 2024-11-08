@@ -101,9 +101,14 @@ const stripeSubscriptionChoice = ref()
 
 onMounted(async () => {
    // get subscriptions name, description, price, period
-   appState.value.spinnerWaitingText = [ "Chargement..." ]
-   subscriptionInfoDict.value = await getSubscriptionInfo()
-   appState.value.spinnerWaitingText = null
+   try {
+      appState.value.spinnerWaitingText = [ "Chargement..." ]
+      subscriptionInfoDict.value = await getSubscriptionInfo()
+   } catch(err) {
+      console.log(err)
+   } finally {
+      appState.value.spinnerWaitingText = null
+   }
 
    if (Capacitor.getPlatform() === 'web') {
       // Load Stripe.js

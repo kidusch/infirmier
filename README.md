@@ -49,6 +49,8 @@ npm run dev
 
 ## Achat abonnements : Stripe
 
+- les modes 'test' et 'live' sont indépendants, chacun a ses clés d'api et ses codes produits
+- accès aux clés d'api : sur la page d'accueil du dashboard Stripe, sur la droite
 - utiliser le dashboard Stripe pour créer les 4 types d'abonnements ("Catalogue de produits") : https://dashboard.stripe.com/login
 (voir README.secret pour les identifiants et utiliser Google Authenticator avec l'adresse admin@journaldebordide.com)
 - reporter les codes des 'produits' correspondants dans frontend/.env
