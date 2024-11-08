@@ -131,10 +131,11 @@ export const getSubscriptionInfo = async () => {
    const platform = Capacitor.getPlatform()
    const result = {}
    for (const subscriptionType of SUBSCRIPTION_TYPES) {
+
       if (platform === 'ios' || platform === 'android') {
-         console.log('********************* getSubscriptionInfo')
          const subscriptionInfo = await InAppPurchase.getSubscriptionInfo({ productId: subscriptionType })
          result[subscriptionType] = subscriptionInfo
+
       } else {
          const stripeInfo = STRIPE_SUBSCRIPTIONS[subscriptionType]
 
@@ -149,7 +150,7 @@ export const getSubscriptionInfo = async () => {
          result[subscriptionType] = {
             name: subscriptionInfo.name,
             description: subscriptionInfo.description,
-            priceId: priceInfo.id,
+            priceId: priceInfo.id, // only for Stripe
             price,
             period,
          }
