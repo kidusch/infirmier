@@ -32,6 +32,7 @@ import Spinner from '/src/components/Spinner.vue'
 App.addListener('appStateChange', ({ isActive }) => {
    if (isActive) {
       // App has been opened or awakened
+      console.log('waking up!!')
       appState.value.spinnerWaitingText = null
    }
 })
