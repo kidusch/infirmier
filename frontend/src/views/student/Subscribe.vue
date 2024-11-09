@@ -211,6 +211,7 @@ const processStripeSubscription = async (subscriptionType, paymentMethodId, pric
 const cancelCustomerSubscriptions = async () => {
    if (user.value.subscription_status === 'active') {
 
+      console.log(platform.value, user.value.subscription_platform)
       if (platform.value === user.value.subscription_platform) {
          // there is an active subscription and it has been made on this platform
          if (platform.value === 'ios') {
@@ -246,7 +247,7 @@ const cancelCustomerSubscriptions = async () => {
             alert("Votre abonnement a été souscrit sur le web. Pour le résilier, il faut ouvrir l'application web")
          }
       }
-      
+
    } else {
       alert("Il n'y a pas d'abonnement actif en cours")
    }
