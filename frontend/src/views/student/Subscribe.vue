@@ -42,7 +42,7 @@
          </div>
 
          <div class="my-2">
-            <button v-if="platform !== 'ios' && platform !== 'android' && hasSubscription(user.id)" class="link" @click="cancelCustomerSubscriptions">
+            <button v-if="hasSubscription(user.id)" class="link" @click="cancelCustomerSubscriptions">
                Résilier l'abonnement en cours...
             </button>
          </div>
@@ -81,7 +81,7 @@ const buySubscription = async (subscriptionType) => {
    } else {
       if (platform.value === 'ios' || platform.value === 'android') {
          // buy on AppStore or GooglePlay
-         await buyStoreSubscription(props.userid, subscriptionType)
+         await buyStoreSubscription(props.userid, subscriptionType, platform.value)
       } else {
          // buy with Stripe
          stripeSubscriptionChoice.value = subscriptionType
@@ -194,6 +194,7 @@ const processStripeSubscription = async (subscriptionType, paymentMethodId, pric
             await updateUser(props.userid, {
                subscription_type: subscriptionType,
                subscription_status: 'active',
+               subscription_platform: 'web',
             })
             alert("L'abonnement a été souscrit avec succès !")
          }
@@ -209,14 +210,16 @@ const processStripeSubscription = async (subscriptionType, paymentMethodId, pric
 
 const cancelCustomerSubscriptions = async () => {
    if (user.value.subscription_status === 'active') {
-      if (platform.value === 'ios') {
-         alert(`Pour résilier l'abonnement, il faut que vous alliez dans les réglages de l'iPhone, rubrique Apple Id -> Abonnements`)
-               
-      } else if (platform.value === 'android') {
-         alert(`Pour résilier l'abonnement, il faut que vous alliez dans l'application Google Play Store, rubrique Paiements et abonnements`)
 
-      } else {
-         if (user.value.stripe_customer_id) {
+      if (platform.value === user.value.subscription_platform) {
+         // there is an active subscription and it has been made on this platform
+         if (platform.value === 'ios') {
+            alert(`Pour résilier l'abonnement, il faut que vous alliez dans les réglages de l'iPhone, rubrique Apple Id -> Abonnements`)
+                  
+         } else if (platform.value === 'android') {
+            alert(`Pour résilier l'abonnement, il faut que vous alliez dans l'application Google Play Store, rubrique Paiements et abonnements`)
+
+         } else {
             // cancel on Stripe
             try {
                // cancel all subscriptions of associated customer (there should be only one)
@@ -232,11 +235,18 @@ const cancelCustomerSubscriptions = async () => {
             } finally {
                appState.value.spinnerWaitingText = null
             }
+         }
+      } else {
+         // there is an active subscription and it has been made on another platform
+         if (user.value.subscription_platform === 'ios') {
+            alert("Votre abonnement a été souscrit sur iOS. Pour le résilier, il faut que vous alliez dans les réglages de l'iPhone, rubrique Apple Id -> Abonnements")
+         } else if (user.value.subscription_platform === 'android') {
+            alert("Votre abonnement a été souscrit sur Android. Pour le résilier, il faut que vous alliez dans l'application Google Play Store, rubrique Paiements et abonnements")
          } else {
-            // subscription must have been made on mobile
-            alert(`Votre abonnement a dû être souscrit sur un mobile ou une tablette. C'est cet appareil que vous devez utiliser pour la résiliation`)
+            alert("Votre abonnement a été souscrit sur le web. Pour le résilier, il faut ouvrir l'application web")
          }
       }
+      
    } else {
       alert("Il n'y a pas d'abonnement actif en cours")
    }

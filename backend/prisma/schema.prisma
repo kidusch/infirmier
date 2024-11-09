@@ -24,6 +24,7 @@ model user {
   // updated at each connection, used as cache and mandatory for admin dashboard
   subscription_type       String?     // null, 'standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly'
   subscription_status     String?     // null, 'active', 'canceled'
+  subscription_platform   String?     // 'web', 'ios', 'android'
   
   stripe_customer_id      String?
   stripe_subscription_id  String?

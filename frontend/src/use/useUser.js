@@ -177,11 +177,12 @@ export const hasStandardSubscription = computed(() => (id) => {
    return subscriptionType.startsWith('standard')
 })
 
-export const buyStoreSubscription = async (id, subscriptionType) => {
+export const buyStoreSubscription = async (id, subscriptionType, platform) => {
    const { status: subscriptionStatus } = await InAppPurchase.buySubscription({ productId: subscriptionType })
    await updateUser(id, {
       subscription_type: subscriptionType,
       subscription_status: subscriptionStatus,
+      subscription_platform: platform,
    })
    return { subscriptionType, subscriptionStatus }
 }

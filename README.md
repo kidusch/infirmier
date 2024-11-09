@@ -113,12 +113,12 @@ au rythme défini dans le 'StoreKit configuration file')
 - choisir le provisioning profile de prod et faire "Archive"
 - uploader le build sur AppStore Connect (cliquer sur "Distribute App", puis "TestFlight & AppStore", se connecter à AppStore Connect d'abord ? et redémarrer XCode ?)
 - dans AppStore Connect, repérer le build et lui ajouter un groupe de testeurs
-- sur l'iPhone, installer l'application "TestFlight" : les builds seront accessibles si je fais partie de l'équipe de test
+- sur l'iPhone, installer l'application "TestFlight" : les builds seront accessibles si on fait partie de l'équipe de test
 
-## Utilisateur de test
-(Identifiant Apple Sandbox (AppstoreConnect / Utilisateurs et accès / Sandbox) : jean-christophe.buisson@n7.fr / apM**e
-Nécessaire pour tester les abonnements inapp
-Sur l'iphone, se déconnecter de son Apple Id et se connecter sur le Sandbox Id)
+## Compte "sandbox" pour les tests d'inapp purchase
+- création d'un compte Sandbox (AppstoreConnect / Utilisateurs et accès / Sandbox) : jean-christophe.buisson@n7.fr / apM**e
+- TestFlight voit tous les produits inapp, et se met automatiquement en mode simulé
+- Sur l'iphone, ouvrir Paramètres > App Store, descendre jusqu'à la section Sandbox et se connecter avec le compte Sandbox
 
 
 # Version Android

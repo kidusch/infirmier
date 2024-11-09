@@ -29,12 +29,9 @@ import Spinner from '/src/components/Spinner.vue'
 
 
 // Register the event listener for app state changes. Provided by @capacitor/app
-App.addListener('appStateChange', ({ isActive }) => {
-   if (isActive) {
-      // App has been opened or awakened
-      console.log('waking up!!')
-      appState.value.spinnerWaitingText = null
-   }
+App.addListener('appStateChange', (state) => {
+   console.log('appStateChange', state)
+   appState.value.spinnerWaitingText = null
 })
 
 // test, works for iOS, see: https://capacitorjs.com/docs/guides/deep-links
