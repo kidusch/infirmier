@@ -57,7 +57,7 @@ import { ref, computed, onMounted } from 'vue'
 import { loadStripe } from '@stripe/stripe-js'
 
 import { userOfId, updateUser } from '/src/use/useUser'
-import { getStripePublicKey, getSubscriptionInfo, buyStoreSubscription, subscriptionOfUser, hasSubscription,
+import { isBillingReady, getStripePublicKey, getSubscriptionInfo, buyStoreSubscription, subscriptionOfUser, hasSubscription,
    getOrCreateStripeCustomer, createStripeSubscription, cancelStripeCustomerSubscriptions } from '/src/use/useUser'
 import { appState } from '/src/use/useAppState'
 
@@ -100,6 +100,8 @@ const stripeSubscriptionChoice = ref()
 
 
 onMounted(async () => {
+   const isBillingReady_ = await isBillingReady()
+   console.log('isBillingReady_', isBillingReady_.value)
    // get subscriptions name, description, price, period
    try {
       appState.value.spinnerWaitingText = [ "Chargement..." ]
@@ -215,7 +217,7 @@ const cancelCustomerSubscriptions = async () => {
       if (platform.value === user.value.subscription_platform) {
          // there is an active subscription and it has been made on this platform
          if (platform.value === 'ios') {
-            alert(`Pour résilier l'abonnement, il faut que vous alliez dans les réglages de l'iPhone, rubrique Apple Id -> Abonnements`)
+            alert(`Pour résilier l'abonnement, il faut que vous alliez dans les réglages de l'iPhone / Apple Id - iCloud / COntenu multimédia et achats / Abonnements`)
                   
          } else if (platform.value === 'android') {
             alert(`Pour résilier l'abonnement, il faut que vous alliez dans l'application Google Play Store, rubrique Paiements et abonnements`)
@@ -240,11 +242,11 @@ const cancelCustomerSubscriptions = async () => {
       } else {
          // there is an active subscription and it has been made on another platform
          if (user.value.subscription_platform === 'ios') {
-            alert("Votre abonnement a été souscrit sur iOS. Pour le résilier, il faut que vous alliez dans les réglages de l'iPhone, rubrique Apple Id -> Abonnements")
+            alert("Votre abonnement a été souscrit sur iOS. Pour le résilier, il faut utiliser l'application depuis iOS")
          } else if (user.value.subscription_platform === 'android') {
-            alert("Votre abonnement a été souscrit sur Android. Pour le résilier, il faut que vous alliez dans l'application Google Play Store, rubrique Paiements et abonnements")
+            alert("Votre abonnement a été souscrit sur Android. Pour le résilier, il faut utiliser l'application Android")
          } else {
-            alert("Votre abonnement a été souscrit sur le web. Pour le résilier, il faut ouvrir l'application web")
+            alert("Votre abonnement a été souscrit sur le web. Pour le résilier, il faut utiliser l'application web")
          }
       }
 

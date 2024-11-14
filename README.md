@@ -100,13 +100,15 @@ Voir : https://medium.com/@aisultanios/implement-inn-app-subscriptions-using-swi
 Voir : https://developer.apple.com/documentation/storekit/in-app_purchase
 AppStore Connect (https://appstoreconnect.apple.com) : définir les 4 abonnements avec leur nom, description, prix, périodicité
 
-On peut tester en simulation sur iOS, en utilisant un 'StoreKit configuration file' :
+Test, voir https://developer.apple.com/videos/play/wwdc2023/10142
+1- test en simulation totalement offline, sans utiliser AppStore Connect, en utilisant un 'StoreKit configuration file' :
 -> le créer dans XCode avec File -> new -> File -> StoreKit Configuration
 Le fichier est ensuite visible dans la vue 'fichiers' de XCode
 -> l'utiliser dans le Run avec Product -> Scheme -> Edit Scheme... -> choisir le fichier dans la rubrique "StoreKit configuration"
-
 Gestion des abonnements depuis XCode : Debug -> StoreKit. On voit les expirations / renouvellements se dérouler en temps réel (accéléré
 au rythme défini dans le 'StoreKit configuration file')
+2- test avec Sandbox
+3- test quasi-réel avec TestFlight
 
 ## TestFlight & distribution
 - builder l'appli en mode production : npm run build:ios
@@ -115,13 +117,16 @@ au rythme défini dans le 'StoreKit configuration file')
 - dans AppStore Connect, repérer le build et lui ajouter un groupe de testeurs
 - sur l'iPhone, installer l'application "TestFlight" : les builds seront accessibles si on fait partie de l'équipe de test
 
-## Compte "sandbox" pour les tests d'inapp purchase
+## Compte "Sandbox" pour les tests d'inapp purchase
 - création d'un compte Sandbox (AppstoreConnect / Utilisateurs et accès / Sandbox) : jean-christophe.buisson@n7.fr / apM**e
 - TestFlight voit tous les produits inapp, et se met automatiquement en mode simulé
-- Sur l'iphone, ouvrir Paramètres > App Store, descendre jusqu'à la section Sandbox et se connecter avec le compte Sandbox
+- (Sur l'iphone, ouvrir Paramètres > App Store, descendre jusqu'à la section Sandbox et se connecter avec le compte Sandbox ?)
 
 
 # Version Android
+
+A tout moment une version installée sur une tablette connectée en USB peut être débuggée avec AndroidStudio,
+en sélectionnant la tablette dans la barre du haut, et les logs en forme de chat en bas à gauche. Filtrer avec "Capacitor".
 
 ## Test en développement
 Exécuter `npm run build:androiddev` pour mettre à jour le projet. Voir .env.androiddev
@@ -154,21 +159,25 @@ Choisir l'application -> "Publier" (colonne gauche) -> "Explorateur d'app Bundle
 Les App Bundle seront alors dans une "bibliothèque". Pour les tests internes, fermés, ouverts, distribution, on pourra prendre
 les différentes versions dans cette bibliothèque
 
-## Partage pour tests
-https://play.google.com/console/u/0/internal-app-sharing?hl=fr
-
 ## Tests internes
-Dans Google Play Console, sélectionner l'application, puis aller dans "Publier" -> "Tests" -> "Tests internes"
-Laisser Google créer une clé de signature ; cliquer sur "Importer un App Bundle"
+- dans Google Play Console, sélectionner l'application, puis aller dans "Publier" -> "Tests" -> "Tests internes"
+- dans l'onglet 'version', cliquer sur 'Créer une version' ; importer l'AppBundle depuis la bibliothèque ou un fichier
+- dans l'onglet 'testeurs' cocher la liste des testeurs ; en bas de la page il y a le lien de test
 
 ## Tests fermés
 NÉCESSAIRE DE LES FAIRES AVEC 20+ TESTEURS POUR POUVOIR SOUMETTRE À PUBLICATION !
 Voir : https://support.google.com/googleplay/android-developer/answer/14151465
 
+## Partage pour tests (?)
+https://play.google.com/console/u/0/internal-app-sharing?hl=fr
+
 ## inApp purchase des abonnements
-Voir : https://developer.android.com/google/play/billing/getting-ready?authuser=1&hl=fr
+Voir : https://developer.android.com/google/play/billing
 Depuis aout 2024, nouvelle version du billing system.
-Comme dans l'AppStore, on définit dans Google Play Console les 4 abonnements avec leur nom, description, prix, périodicité
+- définir dans Google Play Console les 4 abonnements avec leur nom, description, prix, périodicité
+Leurs product id doivent être 'standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly'
+- Ne marche pas en simulation, utiliser un device réel
+- utiliser une release de test uploadées dans Google Play Console, pas une exécution immédiate sur un device
 
 - Ajouter dans build.gradle:
 ```
@@ -184,7 +193,7 @@ dependencies {
    <uses-permission android:name="com.android.vending.BILLING" />
 ```
 - Nécessaire d'ajouter un test de license dans Google Play Console : Paramètres -> Test de license
-- on peut tester les abonnements en dev avec exécution sur un device et avec un compte Google normal comme buisson.jc7@gmail.com
+- on peut tester les inapp en dev avec exécution sur un device et avec un compte Google normal comme buisson.jc7@gmail.com
 
 
 ## Authentification Google
@@ -205,7 +214,7 @@ Initialement l'authentification Google était implémentée avec le flow recomma
 (voir google-auth2.middleware.js), mais je n'ai pas réussi à l'adapter à iOS et Android.
 Finalement on utilise Google OAuth Capacitor plugin : https://github.com/CodetrixStudio/CapacitorGoogleAuth,
 qui utilise le flow 'Implcit Flow' normalement déconseillé, qui ne nécessite pas de secret, seulement un clientId,
-et ne fait aucune intéraction avec le backend.
+et ne fait aucune interaction avec le backend.
 Renvoie directement le user Google, qu'il faut ensuite lier au user de l'application.
 Fonctionne sur iOS et Android, mais aussi pour le web.
 

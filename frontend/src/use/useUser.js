@@ -110,10 +110,17 @@ export const getStripePublicKey = async () => {
 
 const SUBSCRIPTION_TYPES = ['standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly']
 
+InAppPurchase.addListener('billingReady', () => {
+   console.log("BILLING READY!!!")
+})
+
+export const isBillingReady = async () => await InAppPurchase.isBillingReady()
+
 // return {
-//    price : formatted price (ex: "2,99 EUR")
 //    name: subscription name (ex: "Abonnement standard")
 //    description: subscription features (ex: "Accès à tout le contenu + coaching personnalisé")
+//    price : formatted price (ex: "2,99 EUR")
+//    priceId (only for Stripe)
 //    period: formatted subscription period (ex: "mois")
 // }
 export const getSubscriptionInfo = async () => {

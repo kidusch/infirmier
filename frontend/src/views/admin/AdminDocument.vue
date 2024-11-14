@@ -29,7 +29,7 @@
 
             <div>
                <div class="flex gap-3 items-center">
-                  <input v-model="title" class="standard-input flex-1" placeholder="Titre nouveau soin" type="text">
+                  <input v-model="title" class="standard-input flex-1" placeholder="Titre nouveau document" type="text">
                   <div class="flex gap-1.5" @click="addDocument">
                      <img class="h-4 cursor-pointer" src="/src/assets/add.svg" alt="delete">
                   </div>

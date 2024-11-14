@@ -27,6 +27,11 @@ import { restartApp } from '/src/use/useAuthentication'
 
 import Spinner from '/src/components/Spinner.vue'
 
+import { InAppPurchase } from 'jcb-capacitor-inapp'
+InAppPurchase.addListener('billingReady', () => {
+   console.log("billingReady BILLING READY!!!")
+})
+
 
 // Register the event listener for app state changes. Provided by @capacitor/app
 App.addListener('appStateChange', (state) => {
