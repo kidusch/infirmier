@@ -217,7 +217,7 @@ const cancelCustomerSubscriptions = async () => {
       if (platform.value === user.value.subscription_platform) {
          // there is an active subscription and it has been made on this platform
          if (platform.value === 'ios') {
-            alert(`Pour résilier l'abonnement, il faut que vous alliez dans les réglages de l'iPhone / Apple Id - iCloud / COntenu multimédia et achats / Abonnements`)
+            alert(`Pour résilier l'abonnement, il faut que vous alliez dans les réglages de l'iPhone / Apple Id - iCloud / Contenu multimédia et achats / Abonnements`)
                   
          } else if (platform.value === 'android') {
             alert(`Pour résilier l'abonnement, il faut que vous alliez dans l'application Google Play Store, rubrique Paiements et abonnements`)

@@ -94,28 +94,30 @@ On peut exécuter sur simulateur ou sur device
 - les télécharger et double-cliquer pour qu'ils s'installent dans XCode
 - à la demande d'un mot de passe pour les cerificats, entrer le mdp de "session" (= M**e) et cliquer sur "Toujours autoriser"
 
+## TestFlight & distribution
+- builder l'appli en mode production : npm run build:ios
+- choisir le provisioning profile de prod et faire "Archive"
+- uploader le build sur AppStore Connect (cliquer sur "Distribute App", puis "TestFlight & AppStore" ou "TestFlight interne", se connecter à AppStore Connect d'abord ? et redémarrer XCode ?)
+- dans AppStore Connect, repérer le build et lui ajouter un groupe de testeurs
+- sur l'iPhone, installer l'application "TestFlight" : les builds seront accessibles si on fait partie de l'équipe de test
+
 ## inApp purchase des abonnements
 iOS : >iOS15 (utilise StoreKit2, les transactions, async/await)
 Voir : https://medium.com/@aisultanios/implement-inn-app-subscriptions-using-swift-and-storekit2-serverless-and-share-active-purchases-7d50f9ecdc09
 Voir : https://developer.apple.com/documentation/storekit/in-app_purchase
-AppStore Connect (https://appstoreconnect.apple.com) : définir les 4 abonnements avec leur nom, description, prix, périodicité
+AppStore Connect (https://appstoreconnect.apple.com)
 
 Test, voir https://developer.apple.com/videos/play/wwdc2023/10142
-1- test en simulation totalement offline, sans utiliser AppStore Connect, en utilisant un 'StoreKit configuration file' :
+- dans AppStore Connect, définir les 4 abonnements avec leur nom, description, prix, périodicité
+- test en simulation totalement offline, sans utiliser AppStore Connect, en utilisant un 'StoreKit configuration file' :
 -> le créer dans XCode avec File -> new -> File -> StoreKit Configuration
 Le fichier est ensuite visible dans la vue 'fichiers' de XCode
 -> l'utiliser dans le Run avec Product -> Scheme -> Edit Scheme... -> choisir le fichier dans la rubrique "StoreKit configuration"
 Gestion des abonnements depuis XCode : Debug -> StoreKit. On voit les expirations / renouvellements se dérouler en temps réel (accéléré
 au rythme défini dans le 'StoreKit configuration file')
-2- test avec Sandbox
-3- test quasi-réel avec TestFlight
-
-## TestFlight & distribution
-- builder l'appli en mode production : npm run build:ios
-- choisir le provisioning profile de prod et faire "Archive"
-- uploader le build sur AppStore Connect (cliquer sur "Distribute App", puis "TestFlight & AppStore", se connecter à AppStore Connect d'abord ? et redémarrer XCode ?)
-- dans AppStore Connect, repérer le build et lui ajouter un groupe de testeurs
-- sur l'iPhone, installer l'application "TestFlight" : les builds seront accessibles si on fait partie de l'équipe de test
+- test des inapps marche pas en exécution directe avec un device
+- test des inapps marche avec TestFlight, et les achats sont fictifs
+- test avec Sandbox ? Pas réussi
 
 ## Compte "Sandbox" pour les tests d'inapp purchase
 - création d'un compte Sandbox (AppstoreConnect / Utilisateurs et accès / Sandbox) : jean-christophe.buisson@n7.fr / apM**e
@@ -176,8 +178,9 @@ Voir : https://developer.android.com/google/play/billing
 Depuis aout 2024, nouvelle version du billing system.
 - définir dans Google Play Console les 4 abonnements avec leur nom, description, prix, périodicité
 Leurs product id doivent être 'standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly'
-- Ne marche pas en simulation, utiliser un device réel
-- utiliser une release de test uploadées dans Google Play Console, pas une exécution immédiate sur un device
+- Ne marche pas en simulation, ne marche pas avec un device réel en exécution immédiate
+- utiliser une release de test uploadée dans Google Play Console.
+Attention, les achats sont réels, y a-t-il un moyen d'avoir des achats fictifs ?
 
 - Ajouter dans build.gradle:
 ```
