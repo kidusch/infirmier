@@ -114,8 +114,6 @@ InAppPurchase.addListener('billingReady', () => {
    console.log("BILLING READY!!!")
 })
 
-export const isBillingReady = async () => await InAppPurchase.isBillingReady()
-
 // return {
 //    name: subscription name (ex: "Abonnement standard")
 //    description: subscription features (ex: "Accès à tout le contenu + coaching personnalisé")

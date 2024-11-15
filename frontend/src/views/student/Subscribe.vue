@@ -57,7 +57,7 @@ import { ref, computed, onMounted } from 'vue'
 import { loadStripe } from '@stripe/stripe-js'
 
 import { userOfId, updateUser } from '/src/use/useUser'
-import { isBillingReady, getStripePublicKey, getSubscriptionInfo, buyStoreSubscription, subscriptionOfUser, hasSubscription,
+import { getStripePublicKey, getSubscriptionInfo, buyStoreSubscription, subscriptionOfUser, hasSubscription,
    getOrCreateStripeCustomer, createStripeSubscription, cancelStripeCustomerSubscriptions } from '/src/use/useUser'
 import { appState } from '/src/use/useAppState'
 
@@ -100,8 +100,6 @@ const stripeSubscriptionChoice = ref()
 
 
 onMounted(async () => {
-   const isBillingReady_ = await isBillingReady()
-   console.log('isBillingReady_', isBillingReady_.value)
    // get subscriptions name, description, price, period
    try {
       appState.value.spinnerWaitingText = [ "Chargement..." ]
