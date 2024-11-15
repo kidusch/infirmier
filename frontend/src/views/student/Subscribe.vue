@@ -13,10 +13,10 @@
             <template v-for="productId of ['standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly']">
                <div class="rounded-lg border-2 text-center p-6 hover:bg-gray-200" :class="{ 'box': subscriptionOfUser(userid) === productId }"
                   @click="buySubscription(productId)">
-                  <div class="cursor-pointer text-lg text-gray-600">{{ subscriptionInfoDict[productId]?.name }}</div>
-                  <div class="cursor-pointer text-sm text-gray-400">{{ subscriptionInfoDict[productId]?.description }}</div>
-                  <div class="cursor-pointer text-xl text-gray-600 font-semibold">{{ subscriptionInfoDict[productId]?.price }}
-                     <span class="text-lg font-normal text-gray-400"> / {{ subscriptionInfoDict[productId]?.period }}</span>
+                  <div class="cursor-pointer text-lg text-gray-600">{{ infoOfSubscriptionProduct(productId)?.name }}</div>
+                  <div class="cursor-pointer text-sm text-gray-400">{{ infoOfSubscriptionProduct(productId)?.description }}</div>
+                  <div class="cursor-pointer text-xl text-gray-600 font-semibold">{{ infoOfSubscriptionProduct(productId)?.price }}
+                     <span class="text-lg font-normal text-gray-400"> / {{ infoOfSubscriptionProduct(productId)?.period }}</span>
                   </div>
                </div>
             </template>
@@ -24,7 +24,7 @@
          
          <div class="my-8" v-show="stripeSubscriptionChoice">
 
-            <div class="text-lg">{{ subscriptionInfoDict[stripeSubscriptionChoice]?.title }}</div>
+            <div class="text-lg">{{ infoOfSubscriptionProduct(stripeSubscriptionChoice)?.title }}</div>
             <div class="text-sm">Le montant sera prélevé immédiatement, puis à chaque échéance.</div>
             <div class="text-sm">Vous pourrez à tout moment arrêter l'abonnement en cours.</div>
 
@@ -57,7 +57,7 @@ import { ref, computed, onMounted } from 'vue'
 import { loadStripe } from '@stripe/stripe-js'
 
 import { userOfId, updateUser } from '/src/use/useUser'
-import { getStripePublicKey, getSubscriptionInfo, buyStoreSubscription, subscriptionOfUser, hasSubscription,
+import { getStripePublicKey, infoOfSubscriptionProduct, buyStoreSubscription, subscriptionOfUser, hasSubscription,
    getOrCreateStripeCustomer, createStripeSubscription, cancelStripeCustomerSubscriptions } from '/src/use/useUser'
 import { appState } from '/src/use/useAppState'
 
@@ -89,8 +89,6 @@ const buySubscription = async (subscriptionType) => {
    }
 }
 
-const subscriptionInfoDict = ref({})
-
 const stripe = ref(null)
 const cardElement = ref(null)
 
@@ -103,7 +101,6 @@ onMounted(async () => {
    // get subscriptions name, description, price, period
    try {
       appState.value.spinnerWaitingText = [ "Chargement..." ]
-      subscriptionInfoDict.value = await getSubscriptionInfo()
    } catch(err) {
       console.log(err)
    } finally {
@@ -167,7 +164,7 @@ const handleStripeSubmit = async () => {
       // Payment method created successfully
       console.log('Payment method created:', paymentMethod)
       const subscriptionType = stripeSubscriptionChoice.value
-      const priceId = subscriptionInfoDict.value[subscriptionType].priceId
+      const priceId = infoOfSubscriptionProduct.value(subscriptionType).priceId
       appState.value.spinnerWaitingText = [ "Traitement..." ]
       await processStripeSubscription(subscriptionType, paymentMethod.id, priceId)
       appState.value.spinnerWaitingText = null

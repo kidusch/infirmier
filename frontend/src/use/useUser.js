@@ -9,9 +9,10 @@ const initialState = () => ({
    userCache: {},
    userStatus: {},
    userListStatus: undefined,
+   subscriptionTypeInfo: {},
+   subscriptionTypeInfoStatus: {},
 })
 
-// const userState = useSessionStorage('user-state', initialState(), { mergeDefaults: true })
 const { data: userState } = useIDBKeyval('user-state', initialState(), { mergeDefaults: true })
 
 export const resetUseUser = () => {
@@ -42,7 +43,6 @@ app.service('user').on('delete', user => {
 
 
 export const getUser = async (id) => {
-   if (!userState.value) return
    if (!userState.value) return undefined
    let user = userState.value.userCache[id]
    if (user) return user
@@ -108,8 +108,6 @@ export const getStripePublicKey = async () => {
    return await app.service('stripe').getStripePublicKey()
 }
 
-const SUBSCRIPTION_TYPES = ['standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly']
-
 InAppPurchase.addListener('billingReady', () => {
    console.log("BILLING READY!!!")
 })
@@ -121,36 +119,52 @@ InAppPurchase.addListener('billingReady', () => {
 //    priceId (only for Stripe)
 //    period: formatted subscription period (ex: "mois")
 // }
-export const getSubscriptionInfo = async () => {
+export const infoOfSubscriptionProduct = computed(() => (subscriptionType) => {
+   if (!userState.value) return {}
+   const status = userState.value.subscriptionTypeInfoStatus[subscriptionType]
+   if (status === 'ready') return userState.value.subscriptionTypeInfo[subscriptionType]
+   if (status === 'ongoing') return undefined
+   userState.value.subscriptionTypeInfoStatus[subscriptionType] = 'ongoing'
    const platform = Capacitor.getPlatform()
-   const result = {}
-   for (const subscriptionType of SUBSCRIPTION_TYPES) {
-
-      if (platform === 'ios' || platform === 'android') {
-         const productInfo = await InAppPurchase.getSubscriptionProductInfo({ productId: subscriptionType })
-         result[subscriptionType] = productInfo
-
-      } else {
-         const productId = await app.service('stripe').getProductIdFromSubscriptionType(subscriptionType)
-         const productInfo = await app.service('stripe').getSubscriptionProductInfo(productId)
+   if (platform === 'ios' || platform === 'android') {
+      InAppPurchase.getSubscriptionProductInfo({ productId: subscriptionType }).then(productInfo => {
          console.log('productInfo', productInfo)
+         userState.value.subscriptionTypeInfo[subscriptionType] = productInfo
+         userState.value.subscriptionTypeInfoStatus[subscriptionType] = 'ready'
+      })
 
-         const priceInfo = await app.service('stripe').getPriceInfo(productInfo.default_price)
+   } else {
+      // const productId = await app.service('stripe').getProductIdFromSubscriptionType(subscriptionType)
+      // const productInfo = await app.service('stripe').getSubscriptionProductInfo(productId)
+      // console.log('productInfo', productInfo)
+      // const priceInfo = await app.service('stripe').getPriceInfo(productInfo.default_price)
+      // console.log('priceInfo', priceInfo)
+      let productInfo_
+      app.service('stripe').getProductIdFromSubscriptionType(subscriptionType)
+      .then(productId => {
+         console.log('productId', productId)
+         return app.service('stripe').getSubscriptionProductInfo(productId)
+      })
+      .then(productInfo => {
+         productInfo_ = productInfo
+         console.log('productInfo', productInfo)
+         return app.service('stripe').getPriceInfo(productInfo.default_price)
+      })
+      .then(priceInfo => {
          console.log('priceInfo', priceInfo)
-
          const price = (priceInfo.unit_amount / 100).toFixed(2) + " " + priceInfo.currency.toUpperCase()
          const period = { 'month': 'mois', 'year': 'an' }[priceInfo?.recurring?.interval]
-         result[subscriptionType] = {
-            name: productInfo.name,
-            description: productInfo.description,
+         userState.value.subscriptionTypeInfo[subscriptionType] = {
+            name: productInfo_.name,
+            description: productInfo_.description,
             priceId: priceInfo.id, // only for Stripe
             price,
             period,
          }
-      }
+         userState.value.subscriptionTypeInfoStatus[subscriptionType] = 'ready'
+      })
    }
-   return result
-}
+})
 
 // return active (= existing, not expired) subscription
 // undefined,  null, 'standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly'
