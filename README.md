@@ -77,7 +77,7 @@ npm run build:iosdev   # vite build --mode iosdev && npx cap sync)
 ou : npm run build:ios
 npx cap open ios
 ```
-Sur XCode, enlever le "automatic signing" et choisir le provisionning profile de dev ou de prod, puis builder/exécuter
+Exécution en dev sur XCode : cocher "automatic signing"
 Choisir la team : "CHARLENE FANTONE"
 On peut exécuter sur simulateur ou sur device
 
@@ -98,7 +98,7 @@ On peut exécuter sur simulateur ou sur device
 - builder l'appli en mode production : npm run build:ios
 - choisir le provisioning profile de prod et faire "Archive"
 - uploader le build sur AppStore Connect (cliquer sur "Distribute App", puis "TestFlight & AppStore" ou "TestFlight interne", se connecter à AppStore Connect d'abord ? et redémarrer XCode ?)
-- dans AppStore Connect, repérer le build et lui ajouter un groupe de testeurs
+- dans AppStore Connect, repérer le build, compléter l'info manquante, lui ajouter un groupe de testeurs
 - sur l'iPhone, installer l'application "TestFlight" : les builds seront accessibles si on fait partie de l'équipe de test
 
 ## inApp purchase des abonnements
@@ -120,10 +120,9 @@ au rythme défini dans le 'StoreKit configuration file')
 - test avec Sandbox ? Pas réussi
 
 ## Compte "Sandbox" pour les tests d'inapp purchase
+- voir : https://developer.apple.com/documentation/storekit/in-app_purchase/testing_in-app_purchases_with_sandbox
 - création d'un compte Sandbox (AppstoreConnect / Utilisateurs et accès / Sandbox) : jean-christophe.buisson@n7.fr / apM**e
-- TestFlight voit tous les produits inapp, et se met automatiquement en mode simulé
-- (Sur l'iphone, ouvrir Paramètres > App Store, descendre jusqu'à la section Sandbox et se connecter avec le compte Sandbox ?)
-
+- exécuter depuis XCode en mode développement sur un device
 
 # Version Android
 

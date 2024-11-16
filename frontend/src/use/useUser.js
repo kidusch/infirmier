@@ -132,13 +132,7 @@ export const infoOfSubscriptionProduct = computed(() => (subscriptionType) => {
          userState.value.subscriptionTypeInfo[subscriptionType] = productInfo
          userState.value.subscriptionTypeInfoStatus[subscriptionType] = 'ready'
       })
-
    } else {
-      // const productId = await app.service('stripe').getProductIdFromSubscriptionType(subscriptionType)
-      // const productInfo = await app.service('stripe').getSubscriptionProductInfo(productId)
-      // console.log('productInfo', productInfo)
-      // const priceInfo = await app.service('stripe').getPriceInfo(productInfo.default_price)
-      // console.log('priceInfo', priceInfo)
       let productInfo_
       app.service('stripe').getProductIdFromSubscriptionType(subscriptionType)
       .then(productId => {
