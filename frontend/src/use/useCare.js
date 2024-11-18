@@ -1,18 +1,17 @@
 import { computed } from 'vue'
-// import { useSessionStorage } from '@vueuse/core'
 import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 
 import { app } from '/src/client-app.js'
-
+import { fetchAndCache, fetchAndCacheList } from '/src/lib/fetchAndCache.mjs'
 
 // state backed in SessionStorage
 const initialState = () => ({
    careCache: {},
    careStatus: {},
-   careListStatus: undefined,
+   // careListStatus: undefined,
+   careListStatus: {},
 })
 
-// const careState = useSessionStorage('care-state', initialState(), { mergeDefaults: true })
 const { data: careState } = useIDBKeyval('care-state', initialState(), { mergeDefaults: true })
 
 export const resetUseCare = () => {
@@ -42,31 +41,41 @@ app.service('care').on('delete', care => {
 })
 
 
+// export const getCare = async (id) => {
+//    if (!careState.value) return
+//    let care = careState.value.careCache[id]
+//    if (care) return care
+//    care = await app.service('care').findUnique({ where: { id }})
+//    careState.value.careCache[id] = care
+//    careState.value.careStatus[id] = 'ready'
+//    return care
+// }
+
+// export const careOfId = computed(() => (id) => {
+//    if (!careState.value) return
+//    const status = careState.value.careStatus[id]
+//    if (status === 'ready') return careState.value.careCache[id]
+//    if (status === 'ongoing') return undefined // ongoing request
+//    careState.value.careStatus[id] = 'ongoing'
+//    app.service('care').findUnique({ where: { id }})
+//    .then(care => {
+//       careState.value.careCache[id] = care
+//       careState.value.careStatus[id] = 'ready'
+//    })
+//    .catch(err => {
+//       console.log('careOfId err', id, err)
+//       delete careState.value.careStatus[id]
+//    })
+// })
+
 export const getCare = async (id) => {
-   if (!careState.value) return
-   let care = careState.value.careCache[id]
-   if (care) return care
-   care = await app.service('care').findUnique({ where: { id }})
-   careState.value.careCache[id] = care
-   careState.value.careStatus[id] = 'ready'
-   return care
+   const { value, promise } = fetchAndCache(id, app.service('care'), careState?.value.careStatus, careState?.value.careCache)
+   return value || await promise
 }
 
-export const careOfId = computed(() => id => {
-   if (!careState.value) return
-   const status = careState.value.careStatus[id]
-   if (status === 'ready') return careState.value.careCache[id]
-   if (status === 'ongoing') return undefined // ongoing request
-   careState.value.careStatus[id] = 'ongoing'
-   app.service('care').findUnique({ where: { id }})
-   .then(care => {
-      careState.value.careCache[id] = care
-      careState.value.careStatus[id] = 'ready'
-   })
-   .catch(err => {
-      console.log('careOfId err', id, err)
-      delete careState.value.careStatus[id]
-   })
+export const careOfId = computed(() => (id) => {
+   const { value } = fetchAndCache(id, app.service('care'), careState?.value.careStatus, careState?.value.careCache)
+   return value
 })
 
 export const createCare = async (title) => {
@@ -118,26 +127,31 @@ export const removeCare = async (id) => {
 //    return Object.values(careState.value.careCache).sort((e1, e2) => e1.rank - e2.rank)
 // }
 
+// export const listOfCare = computed(() => {
+//    if (!careState.value) return []
+//    if (careState.value.careListStatus === 'ready') {
+//       return Object.values(careState.value.careCache).sort((e1, e2) => e1.rank - e2.rank)
+//    }
+//    if (careState.value.careListStatus !== 'ongoing') {
+//       careState.value.careListStatus = 'ongoing'
+//       app.service('care').findMany({})
+//       .then(list => {
+//          for (const care of list) {
+//             careState.value.careCache[care.id] = care
+//             careState.value.careStatus[care.id] = 'ready'
+//          }
+//          careState.value.careListStatus = 'ready'
+//       }).catch(err => {
+//          console.log('listOfCare err', err)
+//          delete careState.value.careListStatus
+//       })
+//    }
+//    return []
+// })
+
 export const listOfCare = computed(() => {
-   if (!careState.value) return []
-   if (careState.value.careListStatus === 'ready') {
-      return Object.values(careState.value.careCache).sort((e1, e2) => e1.rank - e2.rank)
-   }
-   if (careState.value.careListStatus !== 'ongoing') {
-      careState.value.careListStatus = 'ongoing'
-      app.service('care').findMany({})
-      .then(list => {
-         for (const care of list) {
-            careState.value.careCache[care.id] = care
-            careState.value.careStatus[care.id] = 'ready'
-         }
-         careState.value.careListStatus = 'ready'
-      }).catch(err => {
-         console.log('listOfCare err', err)
-         delete careState.value.careListStatus
-      })
-   }
-   return []
+   const { value } = fetchAndCacheList(app.service('care'), {}, "{}", ()=>true, careState?.value.careStatus, careState?.value.careCache, careState?.value.careListStatus)
+   return value
 })
 
 export const isCareTabVisible = computed(() => listOfCare.value.some(care => !care.hidden))

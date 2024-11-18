@@ -8,6 +8,6 @@ export default {
       all: [isAuthenticated, isNotExpired],
    },
    after: {
-      all: [protect('password'), extendExpiration(config.SESSION_EXPIRE_DELAY)],
+      all: [extendExpiration(config.SESSION_EXPIRE_DELAY)],
    }
 }

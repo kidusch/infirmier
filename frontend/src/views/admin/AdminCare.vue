@@ -44,7 +44,7 @@
 <script setup>
 import { ref } from 'vue'
 
-import { createCare, updateCare, removeCare, listOfCare } from '/src/use/useCare'
+import { createCare, updateCare, removeCare, getCare, listOfCare } from '/src/use/useCare'
 import router from "/src/router"
 
 import EditableListItem from '/src/components/EditableListItem.vue'
@@ -77,6 +77,9 @@ const edit = async (care_id, title) => {
 }
 
 const remove = async (care) => {
+   // console.log('getCare')
+   // const x = await getCare(99)
+   // console.log('x', x)
    if (window.confirm(`Supprimer "${care.title}" ?`)) {
       await removeCare(care.id)
    }

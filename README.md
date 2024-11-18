@@ -122,7 +122,16 @@ au rythme défini dans le 'StoreKit configuration file')
 ## Compte "Sandbox" pour les tests d'inapp purchase
 - voir : https://developer.apple.com/documentation/storekit/in-app_purchase/testing_in-app_purchases_with_sandbox
 - création d'un compte Sandbox (AppstoreConnect / Utilisateurs et accès / Sandbox) : jean-christophe.buisson@n7.fr / apM**e
-- exécuter depuis XCode en mode développement sur un device
+- builder l'application avec iosdev ou ios
+- exécuter depuis XCode en mode DÉVELOPPEMENT sur un device (ou en simulation ?)
+- aller dans AppStore, cliquer en haut à droite et se déconnecter (tout en bas du menu); répondre que "vous n'êtes pas XXX" à la question
+relative au compte iCloud
+- se connecter (à l'AppStore) avec les identifiants Sandbox
+- lancer l'exécution depuis XCode, acheter des abonnements
+- les abonnements achetés devraient se voir, non pas dans l'AppStore, mais dans la partie réglages/iCloud (rubrique "abonnements"),
+l'email de sandbox est affiché.
+Mais même après un achat d'abonnement (en test) réussi, l'abonnement n'y figure pas. Il ne figure pas non plus dans AppStore Connect
+Peut-être que ça marche pour les produits, mais pas pour les abonnements ?
 
 # Version Android
 
