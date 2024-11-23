@@ -1,4 +1,5 @@
-import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
+// import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
+import { GoogleAuth } from 'jcb-capacitor-googleauth'
 
 import { app } from '/src/client-app.js'
 

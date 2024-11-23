@@ -1,9 +1,9 @@
 
 export function fetchAndCache(id, service, statusCache, valueCache) {
-   if (!statusCache || !valueCache) return { value: undefined, promise: null }
+   if (!statusCache || !valueCache) return { value: undefined, promise: undefined }
    const status = statusCache[id]
-   if (status === 'ready') return { value: valueCache[id], promise: null }
-   if (status === 'ongoing') return { value: undefined, promise: null } // ongoing request
+   if (status === 'ready') return { value: valueCache[id], promise: undefined }
+   if (status === 'ongoing') return { value: undefined, promise: undefined } // ongoing request
    statusCache[id] = 'ongoing'
    const promise = service.findUniqueOrThrow({ where: { id }})
    promise.then(value => {
@@ -19,8 +19,10 @@ export function fetchAndCache(id, service, statusCache, valueCache) {
    return { value: undefined, promise }
 }
 
-export function fetchAndCacheList(service, where, whereTag, predicate, statusCache, valueCache, listStatusCache) {
-   if (!statusCache || !valueCache || !listStatusCache) return { value: undefined, promise: null }
+
+export function fetchAndCacheList(service, where, predicate, statusCache, valueCache, listStatusCache) {
+   if (!statusCache || !valueCache || !listStatusCache) return { value: [], promise: null }
+   const whereTag = JSON.stringify(where)
    const status = listStatusCache[whereTag]
    if (status === 'ready') {
       return {
@@ -37,6 +39,7 @@ export function fetchAndCacheList(service, where, whereTag, predicate, statusCac
          statusCache[value.id] = 'ready'
       }
       listStatusCache[whereTag] = 'ready'
+      return list
    })
    .catch(err => {
       console.log('fetchAndCacheList err', service.name, where, err)

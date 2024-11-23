@@ -150,7 +150,7 @@ export const removeCare = async (id) => {
 // })
 
 export const listOfCare = computed(() => {
-   const { value } = fetchAndCacheList(app.service('care'), {}, "{}", ()=>true, careState?.value.careStatus, careState?.value.careCache, careState?.value.careListStatus)
+   const { value } = fetchAndCacheList(app.service('care'), {}, ()=>true, careState?.value.careStatus, careState?.value.careCache, careState?.value.careListStatus)
    return value
 })
 

@@ -62,9 +62,9 @@
 
 <script setup>
 import { onMounted } from 'vue'
-import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
+// import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
+import { GoogleAuth } from 'jcb-capacitor-googleauth'
 
-// import { appState } from '/src/use/useAppState'
 import { googleSignin } from '/src/use/useAuthentication'
 
 import router from "/src/router"

@@ -18,7 +18,21 @@ Génère les projets iOS et Android
 Essai de PWABuilder (Microsoft) Pb : rien prévu pour in-app purchase
 
 ## Authentification Google
-https://github.com/CodetrixStudio/CapacitorGoogleAuth
+- Initialement l'authentification Google était implémentée avec le flow recommandé (Authorization Code Grant)
+(voir google-auth2.middleware.js), mais je n'ai pas réussi à l'adapter à iOS et Android.
+Finalement j'ai créé jcb-capacitor-googleauth basé sur Google OAuth Capacitor plugin : https://github.com/CodetrixStudio/CapacitorGoogleAuth
+qui utilise le flow 'Implicit Flow' normalement déconseillé, qui ne nécessite pas de secret, seulement un clientId,
+et ne fait aucune interaction avec le backend.
+Renvoie directement le user Google, qu'il faut ensuite lier au user de l'application.
+Fonctionne sur iOS (et Android), mais aussi pour le web.
+
+- utiliser Google Developer Console pour créer les identifiants web/ios/android :
+https://console.cloud.google.com/apis/dashboard?project=infirmier-418706
+
+.env définit VITE_GOOGLE_APP_CLIENT_ID = clientId de "Client Web 1"
+.env.ios définit VITE_GOOGLE_APP_CLIENT_ID = clientId de "Client iOS 1"
+.env.android définit VITE_GOOGLE_APP_CLIENT_ID = clientId de "Client Android 1"
+
 
 ## Abonnements
 - Abonnements 'inapp' sur iOS et Android, abonnements Stripe sur le web
@@ -82,9 +96,11 @@ Choisir la team : "CHARLENE FANTONE"
 On peut exécuter sur simulateur ou sur device
 
 ## Authentification Google
+- Google Developer Console : https://console.cloud.google.com
 - utilise un "Client ID for iOS" (voir Google Developers Console, "Client iOS 1")
 - ajouter à Info.plist, "URL Types", identifier: REVERSED_CLIENT_ID, URL schemes: com.googleusercontent.apps.35236017874-2mus35pvufa8kfbojf5p7u1f0cmts4qa
 (Xcode: App - Targets/App - Info - URL Types, click '+')
+- marche en dev avec le simulateur
 
 ## Certificats de développement et de distribution, provisioning profiles
 - les créer sur Apple Developer, compte Charlène, types "iOS development" et "iOS distribution" (voir README.secret)
@@ -214,40 +230,7 @@ Le plus simple est de tester avec le serveur de production
 Voir : https://medium.com/codetrixstudio/authenticate-using-google-sign-in-in-capacitor-706e28703e69
 Voir : https://enappd.com/blog/google-login-in-ionic-capacitor-app-with-angular/178/
 
-
-
-## Authentification Google
-
-Voir [https://wiki.jcbuisson.dev/minimal/assets/images/auth-workflow.svg](schéma) : à adapter
-suite au changement d'authentification Google
-
-Initialement l'authentification Google était implémentée avec le flow recommandé (Authorization Code Grant)
-(voir google-auth2.middleware.js), mais je n'ai pas réussi à l'adapter à iOS et Android.
-Finalement on utilise Google OAuth Capacitor plugin : https://github.com/CodetrixStudio/CapacitorGoogleAuth,
-qui utilise le flow 'Implcit Flow' normalement déconseillé, qui ne nécessite pas de secret, seulement un clientId,
-et ne fait aucune interaction avec le backend.
-Renvoie directement le user Google, qu'il faut ensuite lier au user de l'application.
-Fonctionne sur iOS et Android, mais aussi pour le web.
-
-Google Developers Console : https://console.cloud.google.com/apis/dashboard?project=infirmier-418706
-
-.env définit VITE_GOOGLE_APP_CLIENT_ID = clientId de "Client Web 1"
-.env.ios définit VITE_GOOGLE_APP_CLIENT_ID = clientId de "Client iOS 1"
-.env.android définit VITE_GOOGLE_APP_CLIENT_ID = clientId de "Client Android 1"
-
-
-
-### Authentification Google - Android
-
-Le code Android considère que localhost ou 127.0.0.1 est le device Android et non la machine locale ;
-le plus simple est de tester avec un serveur de production
-
-Voir : https://medium.com/codetrixstudio/authenticate-using-google-sign-in-in-capacitor-706e28703e69
-Voir : https://enappd.com/blog/google-login-in-ionic-capacitor-app-with-angular/178/
-
-
-
-- utilise un "Client id for Android", voir Google Developers Console
+- utilise un "Client id for Android", voir Google Developers Console : https://console.cloud.google.com
 - ajouter dans app/src/main/values/strings.xml :
 ```
   <string name="server_client_id">Your Web Client Key</string>
@@ -370,7 +353,7 @@ Dans l'application, on profite du bouton "Continuer" de WelcomeStudent.vue
 
 iOS : après installation sur l'écran d'accueil (ou réinstallation), l'application n'apparait pas tout de suite dans la liste des applications.
 À l'appui sur "Continuer", à la création de la première subscription, iOS demande à l'utilisateur s'il autorise les notifications.
-Après accepttation et création de la première subscription, l'application apparait dans la liste.
+Après acceptation et création de la première subscription, l'application apparait dans la liste.
 
 - `app.service('notifications).addSubscription({userId, subscription})` permet au serveur de mémoriser une nouvelle
 subscription pour un utilisateur.

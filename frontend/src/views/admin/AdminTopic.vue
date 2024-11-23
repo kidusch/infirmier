@@ -29,9 +29,9 @@
             <label for="title">Cours</label>
 
             <div class="flex flex-col gap-3">
-               <div v-for="course, index in listOfCourse(topic_id)">
+               <div v-for="course, index in courseList">
                   <SortableListItem
-                     :index="index" :list="listOfCourse(topic_id)"
+                     :index="index" :list="courseList"
                      @update="(e1, e2) => updateCourses(e1, e2)"
                      @remove="deleteCourse(course)"
                      @select="selectCourse(course.id)"
@@ -164,6 +164,7 @@ const props = defineProps({
 const ue = computed(() => ueOfId.value(props.ue_id))
 const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
 const topic = computed(() => topicOfId.value(props.topic_id))
+const courseList = computed(() => listOfCourse.value(props.topic_id).sort((e1, e2) => e1.rank - e2.rank))
 
 const newCourseTitle = ref('')
 const newCardTitle = ref('')

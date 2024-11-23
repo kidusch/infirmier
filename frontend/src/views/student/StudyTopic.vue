@@ -87,7 +87,7 @@ const props = defineProps({
 const ue = computed(() => ueOfId.value(props.ue_id))
 const subUE = computed(() => subUEOfId.value(props.sub_ue_id))
 const topic = computed(() => topicOfId.value(props.topic_id))
-const courseList = computed(() => listOfCourse.value(props.topic_id))
+const courseList = computed(() => listOfCourse.value(props.topic_id).sort((e1, e2) => e1.rank - e2.rank))
 
 const courseIsLocked = computed(() => (course) => {
    return (!course.free && !hasSubscription.value(props.userid))

@@ -77,9 +77,6 @@ const edit = async (care_id, title) => {
 }
 
 const remove = async (care) => {
-   // console.log('getCare')
-   // const x = await getCare(99)
-   // console.log('x', x)
    if (window.confirm(`Supprimer "${care.title}" ?`)) {
       await removeCare(care.id)
    }

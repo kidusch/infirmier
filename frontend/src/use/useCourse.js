@@ -1,8 +1,8 @@
 import { computed } from 'vue'
-// import { useSessionStorage } from '@vueuse/core'
 import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 
 import { app } from '/src/client-app.js'
+import { fetchAndCache, fetchAndCacheList } from '/src/lib/fetchAndCache.mjs'
 
 
 // state backed in SessionStorage
@@ -12,7 +12,6 @@ const initialState = () => ({
    courseListStatus: {},
 })
 
-// export const courseState = useSessionStorage('course-state', initialState(), { mergeDefaults: true })
 export const { data: courseState } = useIDBKeyval('course-state', initialState(), { mergeDefaults: true })
 
 export const resetUseCourse = () => {
@@ -42,31 +41,41 @@ app.service('course').on('delete', course => {
 })
 
 
+// export const getCourse = async (id) => {
+//    if (!courseState.value) return
+//    let course = courseState.value.courseCache[id]
+//    if (course) return course
+//    course = await app.service('course').findUnique({ where: { id }})
+//    courseState.value.courseCache[id] = course
+//    courseState.value.courseStatus[id] = 'ready'
+//    return course
+// }
+
+// export const courseOfId = computed(() => (id) => {
+//    if (!courseState.value) return
+//    const status = courseState.value.courseStatus[id]
+//    if (status === 'ready') return courseState.value.courseCache[id]
+//    if (status === 'ongoing') return undefined // ongoing request
+//    courseState.value.courseStatus[id] = 'ongoing'
+//    app.service('course').findUnique({ where: { id }})
+//    .then(course => {
+//       courseState.value.courseCache[id] = course
+//       courseState.value.courseStatus[id] = 'ready'
+//    })
+//    .catch(err => {
+//       console.log('courseOfId err', id, err)
+//       delete courseState.value.courseStatus[id]
+//    })
+// })
+
 export const getCourse = async (id) => {
-   if (!courseState.value) return
-   let course = courseState.value.courseCache[id]
-   if (course) return course
-   course = await app.service('course').findUnique({ where: { id }})
-   courseState.value.courseCache[id] = course
-   courseState.value.courseStatus[id] = 'ready'
-   return course
+   const { value, promise } = fetchAndCache(id, app.service('course'), courseState?.value.courseStatus, courseState?.value.courseCache)
+   return value || await promise
 }
 
 export const courseOfId = computed(() => (id) => {
-   if (!courseState.value) return
-   const status = courseState.value.courseStatus[id]
-   if (status === 'ready') return courseState.value.courseCache[id]
-   if (status === 'ongoing') return undefined // ongoing request
-   courseState.value.courseStatus[id] = 'ongoing'
-   app.service('course').findUnique({ where: { id }})
-   .then(course => {
-      courseState.value.courseCache[id] = course
-      courseState.value.courseStatus[id] = 'ready'
-   })
-   .catch(err => {
-      console.log('courseOfId err', id, err)
-      delete courseState.value.courseStatus[id]
-   })
+   const { value } = fetchAndCache(id, app.service('course'), courseState?.value.courseStatus, courseState?.value.courseCache)
+   return value
 })
 
 export const createCourse = async (topic_id, title = '', content = '') => {
@@ -107,21 +116,21 @@ export const removeCourse = async (id) => {
    delete courseState.value.courseCache[id]
 }
 
-export const getCourseList = async (topic_id) => {
-   if (!courseState.value) return []
-   if (courseState.value.courseListStatus[topic_id] !== 'ready') {
-      courseState.value.courseListStatus[topic_id] = 'ongoing'
-      const list = await app.service('course').findMany({
-         where: { topic_id }
-      })
-      for (const course of list) {
-         courseState.value.courseCache[course.id] = course
-         courseState.value.courseStatus[course.id] = 'ready'
-      }
-      courseState.value.courseListStatus[topic_id] = 'ready'
-   }
-   return Object.values(courseState.value.courseCache).filter(course => course.topic_id === topic_id).sort((e1, e2) => e1.rank - e2.rank)
-}
+// export const getCourseList = async (topic_id) => {
+//    if (!courseState.value) return []
+//    if (courseState.value.courseListStatus[topic_id] !== 'ready') {
+//       courseState.value.courseListStatus[topic_id] = 'ongoing'
+//       const list = await app.service('course').findMany({
+//          where: { topic_id }
+//       })
+//       for (const course of list) {
+//          courseState.value.courseCache[course.id] = course
+//          courseState.value.courseStatus[course.id] = 'ready'
+//       }
+//       courseState.value.courseListStatus[topic_id] = 'ready'
+//    }
+//    return Object.values(courseState.value.courseCache).filter(course => course.topic_id === topic_id).sort((e1, e2) => e1.rank - e2.rank)
+// }
 
 export const listOfCourse = computed(() => (topic_id) => {
    if (!courseState.value) return []
@@ -142,3 +151,11 @@ export const listOfCourse = computed(() => (topic_id) => {
    }
    return []
 })
+
+// export const listOfCourse = computed(() => (topic_id) => {
+//    const where = { topic_id }
+//    const predicate = course => course.topic_id === topic_id
+//    const { value } = fetchAndCacheList(app.service('course'), where, predicate,
+//       courseState?.value.courseStatus, courseState?.value.courseCache, courseState?.value.courseListStatus)
+//    return value
+// })

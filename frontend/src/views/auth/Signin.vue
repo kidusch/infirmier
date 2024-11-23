@@ -72,10 +72,10 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
+// import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
+import { GoogleAuth } from 'jcb-capacitor-googleauth'
 
 import router from '/src/router'
-// import { appState } from '/src/use/useAppState'
 import { localSignin, googleSignin } from '/src/use/useAuthentication'
 
 
@@ -101,15 +101,9 @@ const goSignup = () => {
    router.push('/signup')
 }
 
-// const spinner = () => {
-//    appState.value.spinnerWaitingText = [ "Chargement..." ]
-// }
-
-
 onMounted(() => {
    try {
       console.log('VITE_GOOGLE_APP_CLIENT_ID', import.meta.env.VITE_GOOGLE_APP_CLIENT_ID)
-      // see: https://github.com/CodetrixStudio/CapacitorGoogleAuth
       GoogleAuth.initialize({
          clientId: import.meta.env.VITE_GOOGLE_APP_CLIENT_ID,
          scopes: ['profile', 'email'],
