@@ -149,6 +149,7 @@ l'email de sandbox est affiché.
 Mais même après un achat d'abonnement (en test) réussi, l'abonnement n'y figure pas. Il ne figure pas non plus dans AppStore Connect
 Peut-être que ça marche pour les produits, mais pas pour les abonnements ?
 
+
 # Version Android
 
 A tout moment une version installée sur une tablette connectée en USB peut être débuggée avec AndroidStudio,
@@ -174,7 +175,8 @@ Ces "App  bundle" doivent être signés avant d'être uploadés sur Google Play 
 Les clés sont situées dans un 'keystore': frontend/android-keystore/keystore.jks, mdp : M**e
 Clé d'importation 'upload' dans ce keystore pour l'importation des "App Bundle", mdp M**e
 
-Build du App Bundle : Build -> Generate Signed Bundle/APK
+- dans build.gradle, changer les numéros, par ex : versionCode 52  versionName "0.9.52"
+- Build du App Bundle : Build -> Generate Signed Bundle/APK
 CHOISIR "BUILD VARIANT" RELEASE
 App Bundle (.aab) créé dans frontend/android/app/release
 
@@ -230,26 +232,13 @@ Le plus simple est de tester avec le serveur de production
 Voir : https://medium.com/codetrixstudio/authenticate-using-google-sign-in-in-capacitor-706e28703e69
 Voir : https://enappd.com/blog/google-login-in-ionic-capacitor-app-with-angular/178/
 
-- utilise un "Client id for Android", voir Google Developers Console : https://console.cloud.google.com
-- ajouter dans app/src/main/values/strings.xml :
+- utilise un "Client id for Android", voir Google Cloud Console : https://console.cloud.google.com
+- dans android/app/src/main/AndroidManifest.xml, modifier la ligne du début :
 ```
-  <string name="server_client_id">Your Web Client Key</string>
-```
-- ajouter dans app/src/main/java/com/journaldebordide/app/MainActivity.java :
-```
-```
-- ajouter dans capacitor.config.json :
-```
-   "plugins": {
-      "GoogleAuth": {
-         "scopes": ["profile", "email"],
-         "serverClientId": "35236017874-f1cgk3t2eec06lqtj1satbabrgrn1aih.apps.googleusercontent.com"
-      }
-    }}
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.journaldebordide.app">
 ```
 
-(
-- modifier android/variables.gradle et passer minSdkVersion à 24
+(- modifier android/variables.gradle et passer minSdkVersion à 24
 
 - pour que ça marche en dev, il faut autoriser le non-https :
    - ajouter à android/app/src/main/AndroidManifest.xml :
@@ -262,7 +251,7 @@ Voir : https://enappd.com/blog/google-login-in-ionic-capacitor-app-with-angular/
       android:networkSecurityConfig="@xml/network_security_config"
       ...
 ```
-   - créer un fichier android/app/src/main/res/xml/network_security_config.xml :
+- créer un fichier android/app/src/main/res/xml/network_security_config.xml :
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>

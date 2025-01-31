@@ -6,6 +6,7 @@
          <div class="link hover:text-red-600 text-blue-600" @click="back">
             Retour
          </div>
+         <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"></div>
       </section>
 
       <!-- Course content -->

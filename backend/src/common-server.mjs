@@ -1,5 +1,5 @@
 
-// reverse commented lines to alternate from npm version to debug version of ExpressX
+// reverse commented lines to alternate between npm and debug versions of ExpressX
 
 // import { expressX as expressX_, isAuthenticated as isAuthenticated_, isNotExpired as isNotExpired_, extendExpiration as extendExpiration_, protect as protect_ } from '@jcbuisson/express-x'
 import { expressX as expressX_, isAuthenticated as isAuthenticated_, isNotExpired as isNotExpired_, extendExpiration as extendExpiration_, protect as protect_ } from '#root/src/server.mjs'
