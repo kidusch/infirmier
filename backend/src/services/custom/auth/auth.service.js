@@ -65,6 +65,7 @@ export default function (app) {
                google_id: googleUser.id,
             }
          })
+         return user
       },
 
       // see hooks

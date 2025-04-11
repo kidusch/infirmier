@@ -17,8 +17,6 @@ async function afterAuthentication(context) {
    console.log('socket.data.expiresAt set by afterAuthentication', context.socket.data.expiresAt)
    // add socket to "authenticated" channel
    context.app.joinChannel('authenticated', context.socket)
-   // remove password field from result
-   delete context.result.password
 }
 
 function afterSignout(context) {
