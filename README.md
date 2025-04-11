@@ -95,6 +95,12 @@ Exécution en dev sur XCode : cocher "automatic signing"
 Choisir la team : "CHARLENE FANTONE"
 On peut exécuter sur simulateur ou sur device
 
+À TESTER :
+Project / App / deployment target : 15.0
+Target / App / minimal deployment target : 15.0
+Project format (barre droite) : XCode 15
+
+
 ## Authentification Google
 - Google Developer Console : https://console.cloud.google.com
 - utilise un "Client ID for iOS" (voir Google Developers Console, "Client iOS 1")
