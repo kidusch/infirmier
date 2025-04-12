@@ -77,7 +77,8 @@ puis créer un paiement récurrent lors de la prise de l'abonnement
 --> pour faire un formulaire de paiement plus joli et plus complet, peut-être essayer https://docs.stripe.com/payments/payment-element
 
 
-# Version iOS
+# VERSION IOS
+
 App enregistrée sur le compte de Charlène (voir README.secret)
 Bundle id : com.journaldebordide.app
 Identifiant Apple : 6673904628
@@ -107,6 +108,10 @@ Project format (barre droite) : XCode 15
 - ajouter à Info.plist, "URL Types", identifier: REVERSED_CLIENT_ID, URL schemes: com.googleusercontent.apps.35236017874-2mus35pvufa8kfbojf5p7u1f0cmts4qa
 (Xcode: App - Targets/App - Info - URL Types, click '+')
 - marche en dev avec le simulateur
+
+ios & android : ajouter à capacitor.config.json :
+   "clientId": "35236017874-cdtgpjkhkpkrrp6f6p4l5ku60e6ipmv6.apps.googleusercontent.com"
+METTRE LE WEB CLIENT ID
 
 ## Certificats de développement et de distribution, provisioning profiles
 - les créer sur Apple Developer, compte Charlène, types "iOS development" et "iOS distribution" (voir README.secret)
@@ -156,7 +161,8 @@ Mais même après un achat d'abonnement (en test) réussi, l'abonnement n'y figu
 Peut-être que ça marche pour les produits, mais pas pour les abonnements ?
 
 
-# Version Android
+
+# VERSION ANDROID
 
 A tout moment une version installée sur une tablette connectée en USB peut être débuggée avec AndroidStudio,
 en sélectionnant la tablette dans la barre du haut, et les logs en forme de chat en bas à gauche. Filtrer avec "Capacitor".
@@ -239,6 +245,18 @@ Voir : https://medium.com/codetrixstudio/authenticate-using-google-sign-in-in-ca
 Voir : https://enappd.com/blog/google-login-in-ionic-capacitor-app-with-angular/178/
 
 - utilise un "Client id for Android", voir Google Cloud Console : https://console.cloud.google.com
+- SHA fingerprint : exécuter `keytool -keystore frontend/android-keystore/keystore.jks -list -v` (mdp: M**e) et copier le SHA-1
+dans le champ 'Empreinte numérique du certificat SHA-1' de la configuration du client android
+(OU : keytool -list -v \
+  -keystore ~/.android/debug.keystore \
+  -alias androiddebugkey \
+  -storepass android \
+  -keypass android
+) ??
+`keytool -keystore android-keystore/keystore.jks -list -v` -> SHA-1 = 1E:18:0A:96:11:5D:64:81:9B:B3:9D:80:B9:73:61:B1:22:D4:4F:69
+
+(? - dans src/main/res/strings.xml, ajouter <string name="server_client_id">35236017874-cdtgpjkhkpkrrp6f6p4l5ku60e6ipmv6.apps.googleusercontent.com</string> )
+
 - dans android/app/src/main/AndroidManifest.xml, modifier la ligne du début :
 ```
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.journaldebordide.app">
