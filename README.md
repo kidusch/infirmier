@@ -105,7 +105,7 @@ Project format (barre droite) : XCode 15
 ## Authentification Google
 - Google Developer Console : https://console.cloud.google.com
 - utilise un "Client ID for iOS" (voir Google Developers Console, "Client iOS 1")
-- ajouter à Info.plist, "URL Types", identifier: REVERSED_CLIENT_ID, URL schemes: com.googleusercontent.apps.35236017874-2mus35pvufa8kfbojf5p7u1f0cmts4qa
+- ajouter à Info.plist, "URL Types", identifier: REVERSED_CLIENT_ID (ou 'Google' ?), URL schemes: com.googleusercontent.apps.35236017874-2mus35pvufa8kfbojf5p7u1f0cmts4qa
 (Xcode: App - Targets/App - Info - URL Types, click '+')
 - marche en dev avec le simulateur
 
@@ -254,6 +254,8 @@ dans le champ 'Empreinte numérique du certificat SHA-1' de la configuration du 
   -keypass android
 ) ??
 `keytool -keystore android-keystore/keystore.jks -list -v` -> SHA-1 = 1E:18:0A:96:11:5D:64:81:9B:B3:9D:80:B9:73:61:B1:22:D4:4F:69
+(ou : cd android; ./gradlew signingReport)
+??? SHA1 SEULEMENT NÉCESSAIRE SI ON UTILISE UNE VÉRIFICATION BACKEND COMME AVEC FIREBASE ???
 
 (? - dans src/main/res/strings.xml, ajouter <string name="server_client_id">35236017874-cdtgpjkhkpkrrp6f6p4l5ku60e6ipmv6.apps.googleusercontent.com</string> )
 
