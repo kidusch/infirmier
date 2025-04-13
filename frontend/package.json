@@ -13,10 +13,11 @@
     "build:androiddev": "vite build --mode androiddev && npx cap sync"
   },
   "dependencies": {
-    "@capacitor/android": "^6.1.2",
-    "@capacitor/app": "^6.0.1",
-    "@capacitor/core": "^6.1.2",
-    "@capacitor/ios": "^6.1.2",
+    "@capacitor/android": "^7",
+    "@capacitor/app": "^7",
+    "@capacitor/core": "^7",
+    "@capacitor/ios": "^7",
+    "@capgo/capacitor-social-login": "^7.4.9",
     "@fullcalendar/core": "^6.1.15",
     "@fullcalendar/daygrid": "^6.1.15",
     "@fullcalendar/interaction": "^6.1.15",
@@ -27,7 +28,6 @@
     "@vueuse/integrations": "^10.11.0",
     "date-fns": "^3.6.0",
     "idb-keyval": "^6.2.1",
-    "jcb-capacitor-googleauth": "file:../../../NPM/jcb-capacitor-googleauth",
     "jcb-capacitor-inapp": "file:../../../NPM/jcb-capacitor-inapp",
     "jcb-radial": "^1.0.6",
     "socket.io-client": "^4.7.5",

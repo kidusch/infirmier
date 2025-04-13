@@ -1,5 +1,6 @@
 // import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
-import { GoogleAuth } from 'jcb-capacitor-googleauth'
+// import { GoogleAuth } from 'jcb-capacitor-googleauth'
+import { SocialLogin } from '@capgo/capacitor-social-login'
 
 import { app } from '/src/client-app.js'
 
@@ -88,7 +89,8 @@ export async function googleSignin(googleUser) {
 
 export async function logout(user) {
    if (user.google_id) {
-      GoogleAuth.signOut()
+      // GoogleAuth.signOut()
+      SocialLogin.signOut()
    }
 
    await addUserAction(user.id, 'logout')

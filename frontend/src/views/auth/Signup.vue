@@ -63,7 +63,8 @@
 <script setup>
 import { onMounted } from 'vue'
 // import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
-import { GoogleAuth } from 'jcb-capacitor-googleauth'
+// import { GoogleAuth } from 'jcb-capacitor-googleauth'
+import { SocialLogin } from '@capgo/capacitor-social-login'
 
 import { googleSignin } from '/src/use/useAuthentication'
 
@@ -78,29 +79,53 @@ const login = () => {
    router.push('/login')
 }
 
-onMounted(() => {
+onMounted(async () => {
    try {
-      // see: https://github.com/CodetrixStudio/CapacitorGoogleAuth
-      GoogleAuth.initialize({
-         clientId: import.meta.env.VITE_GOOGLE_APP_CLIENT_ID,
-         scopes: ['profile', 'email'],
-         grantOfflineAccess: true,
+      // // see: https://github.com/CodetrixStudio/CapacitorGoogleAuth
+      // GoogleAuth.initialize({
+      //    clientId: import.meta.env.VITE_GOOGLE_APP_CLIENT_ID,
+      //    scopes: ['profile', 'email'],
+      //    grantOfflineAccess: true,
+      // })
+      await SocialLogin.initialize({
+         google: {
+            webClientId: import.meta.env.VITE_GOOGLE_APP_CLIENT_ID, // Use Web Client ID for all platforms
+            iOSClientId: import.meta.env.VITE_IOS_CLIENT_ID, // for iOS
+            mode: 'offline' // replaces grantOfflineAccess
+         }
       })
    } catch(err) {
       console.log('init err', err)
    }
 })
 
+// const googleLogin = async () => {
+//    let googleUser
+//    try {
+//       googleUser = await GoogleAuth.signIn()
+//       console.log('gSignin', googleUser)
+//       const user = await googleSignin(googleUser)
+//       // go home
+//       router.push(`/home/${user.id}`)
+//    } catch(err) {
+//       console.log('googleSignin err', err)
+//    }
+// }
 const googleLogin = async () => {
-   let googleUser
    try {
-      googleUser = await GoogleAuth.signIn()
-      console.log('gSignin', googleUser)
-      const user = await googleSignin(googleUser)
+      const res = await SocialLogin.login({
+         provider: 'google',
+         options: {
+            scopes: ['email', 'profile'],
+            forceRefreshToken: true // if you need refresh token
+         }
+      });
+      console.log('res', res)
+      const user = await googleSignin(res.profile)
       // go home
       router.push(`/home/${user.id}`)
    } catch(err) {
-      console.log('googleSignin err', err)
+      console.log('googleLogin err', err)
    }
 }
 
