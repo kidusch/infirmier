@@ -111,6 +111,7 @@ onMounted(async () => {
       // })
       await SocialLogin.initialize({
          google: {
+            clientId: import.meta.env.VITE_GOOGLE_APP_CLIENT_ID, // Use Web Client ID for all platforms
             webClientId: import.meta.env.VITE_GOOGLE_APP_CLIENT_ID, // Use Web Client ID for all platforms
             iOSClientId: import.meta.env.VITE_IOS_CLIENT_ID, // for iOS
             mode: 'offline' // replaces grantOfflineAccess
@@ -125,10 +126,6 @@ const googleLogin = async () => {
    try {
       const res = await SocialLogin.login({
          provider: 'google',
-         options: {
-            scopes: ['email', 'profile'],
-            forceRefreshToken: true, // if you need refresh token
-         }
       })
       console.log('res', res)
       const user = await googleSignin(res.profile)
