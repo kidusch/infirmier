@@ -13,10 +13,10 @@
     "build:androiddev": "vite build --mode androiddev && npx cap sync"
   },
   "dependencies": {
-    "@capacitor/android": "^7",
-    "@capacitor/app": "^7",
-    "@capacitor/core": "^7",
-    "@capacitor/ios": "^7",
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/app": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/ios": "^7.0.0",
     "@capgo/capacitor-social-login": "^7.4.9",
     "@fullcalendar/core": "^6.1.15",
     "@fullcalendar/daygrid": "^6.1.15",
@@ -40,7 +40,7 @@
     "xregexp": "^5.1.1"
   },
   "devDependencies": {
-    "@capacitor/cli": "^6.1.2",
+    "@capacitor/cli": "^7.0.0",
     "@stripe/stripe-js": "^4.5.0",
     "@vitejs/plugin-vue": "^5.0.4",
     "autoprefixer": "^10.4.19",

@@ -81,17 +81,9 @@ const login = () => {
 
 onMounted(async () => {
    try {
-      // // see: https://github.com/CodetrixStudio/CapacitorGoogleAuth
-      // GoogleAuth.initialize({
-      //    clientId: import.meta.env.VITE_GOOGLE_APP_CLIENT_ID,
-      //    scopes: ['profile', 'email'],
-      //    grantOfflineAccess: true,
-      // })
       await SocialLogin.initialize({
          google: {
-            webClientId: import.meta.env.VITE_GOOGLE_APP_CLIENT_ID, // Use Web Client ID for all platforms
-            iOSClientId: import.meta.env.VITE_IOS_CLIENT_ID, // for iOS
-            mode: 'offline' // replaces grantOfflineAccess
+            iOSClientId: "35236017874-2mus35pvufa8kfbojf5p7u1f0cmts4qa.apps.googleusercontent.com", // Use Web Client ID for all platforms
          }
       })
    } catch(err) {
@@ -99,31 +91,18 @@ onMounted(async () => {
    }
 })
 
-// const googleLogin = async () => {
-//    let googleUser
-//    try {
-//       googleUser = await GoogleAuth.signIn()
-//       console.log('gSignin', googleUser)
-//       const user = await googleSignin(googleUser)
-//       // go home
-//       router.push(`/home/${user.id}`)
-//    } catch(err) {
-//       console.log('googleSignin err', err)
-//    }
-// }
 const googleLogin = async () => {
    try {
       const res = await SocialLogin.login({
          provider: 'google',
          options: {
             scopes: ['email', 'profile'],
-            forceRefreshToken: true // if you need refresh token
          }
-      });
+      })
       console.log('res', res)
-      const user = await googleSignin(res.profile)
-      // go home
-      router.push(`/home/${user.id}`)
+      // const user = await googleSignin(res.profile)
+      // // go home
+      // router.push(`/home/${user.id}`)
    } catch(err) {
       console.log('googleLogin err', err)
    }
