@@ -4,6 +4,23 @@
 - avec un réseau lent, le préchargement ne se finit pas, et l'appli redémarre lorsque on commence à l'utiliser
 
 
+
+
+
+
+
+
+
+!!!! IL FAUT BUILDER LE PROJET JS POUR QU'IL FONCTIONNE SUR IOS & ANDROID !!!!
+UTILISER `npm run build:ios` et `npm run uild:android`
+
+
+
+
+
+
+
+
 # Modes d'utilisation
 
 - 'free' : accès gratuit à l'application, mais seuls quelques cours marqués 'free' et les éléments associés sont accessibles
