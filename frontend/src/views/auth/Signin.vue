@@ -106,6 +106,7 @@ onMounted(async () => {
    try {
       await SocialLogin.initialize({
          google: {
+            webClientId: "35236017874-cdtgpjkhkpkrrp6f6p4l5ku60e6ipmv6.apps.googleusercontent.com",
             iOSClientId: "35236017874-2mus35pvufa8kfbojf5p7u1f0cmts4qa.apps.googleusercontent.com", // Use Web Client ID for all platforms
          }
       })
@@ -123,10 +124,10 @@ const googleLogin = async () => {
             scopes: ['email', 'profile'],
          }
       })
-      console.log('res', res)
-      // const user = await googleSignin(res.profile)
-      // // go home
-      // router.push(`/home/${user.id}`)
+      // console.log('res', res)
+      const user = await googleSignin(res.result.profile)
+      // go home
+      router.push(`/home/${user.id}`)
    } catch(err) {
       console.log('googleLogin err', err)
    }

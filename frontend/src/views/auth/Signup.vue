@@ -99,10 +99,10 @@ const googleLogin = async () => {
             scopes: ['email', 'profile'],
          }
       })
-      console.log('res', res)
-      // const user = await googleSignin(res.profile)
-      // // go home
-      // router.push(`/home/${user.id}`)
+      // console.log('res', res)
+      const user = await googleSignin(res.result.profile)
+      // go home
+      router.push(`/home/${user.id}`)
    } catch(err) {
       console.log('googleLogin err', err)
    }

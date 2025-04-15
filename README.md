@@ -248,6 +248,18 @@ dependencies {
 
 
 ## Authentification Google
+
+
+SocialLogin instructions: https://github.com/Cap-go/capacitor-social-login/blob/main/docs/setup_google.md#ios
+- `cd android; ./gradlew singInReport`
+- recopier SHA-1 dans la Google Console pour la configuration du client OAuth2 Android
+- cliquer sur "Vérifier la propriété"
+
+
+
+
+
+
 Difficile de tester avec le serveur de dev car le code Android considère que localhost ou 127.0.0.1 est le device Android et non la machine locale
 Le plus simple est de tester avec le serveur de production
 
