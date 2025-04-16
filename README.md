@@ -48,13 +48,15 @@ Pour le web, j'utilise en plus jcb-capacitor-googleauth, fork de https://github.
 - Google Developer Console / Audience : peu importe que le type d'utilisateur soit interne ou externe
 - Google Developer Console / Accès aux données : ajouter les 3 premiers champs d'application (email, profile, openid)
 - a-priori pas besoin de faire valider l'application
-- `npm install @capgo/capacitor-social-login; npx cap sync`
+- `npm install @capgo/capacitor-social-login; npm install jcb-capacitor-googleauth; npx cap sync`
 
 ### Web
 
-- https://github.com/Cap-go/capacitor-social-login/blob/main/docs/setup_google.md#using-google-login-on-the-web
+- utilisation de jcb-capacitor-googleauth car arrive pas à faire marcher capacitor-social-login
 - Google Developer Console / Clients : créer un client pour web "Client Web 1"
-- ?? MARCHE PAS
+- 
+
+
 
 ### iOS
 
