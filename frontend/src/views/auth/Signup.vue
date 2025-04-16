@@ -83,6 +83,7 @@ onMounted(async () => {
    try {
       await SocialLogin.initialize({
          google: {
+            // the android client id is not necessary - android uses the web client id
             webClientId: "35236017874-cdtgpjkhkpkrrp6f6p4l5ku60e6ipmv6.apps.googleusercontent.com",
             iOSClientId: "35236017874-2mus35pvufa8kfbojf5p7u1f0cmts4qa.apps.googleusercontent.com", // Use Web Client ID for all platforms
          }

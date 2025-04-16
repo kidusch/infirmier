@@ -1,17 +1,13 @@
 
+# IMPORTANT
+
+!!!! IL FAUT BUILDER LE PROJET JS POUR QU'IL FONCTIONNE SUR IOS & ANDROID !!!!
+UTILISER `npm run build:ios` et `npm run build:android`
+
+
 # Bugs
 
 - avec un réseau lent, le préchargement ne se finit pas, et l'appli redémarre lorsque on commence à l'utiliser
-
-
-
-
-
-
-!!!! IL FAUT BUILDER LE PROJET JS POUR QU'IL FONCTIONNE SUR IOS & ANDROID !!!!
-UTILISER `npm run build:ios` et `npm run uild:android`
-
-
 
 
 # Modes d'utilisation
@@ -39,37 +35,82 @@ qui marche bien pour iOS et Android.
 
 - SocialLogin instructions: https://github.com/Cap-go/capacitor-social-login/blob/main/docs/setup_google.md
 
-- utiliser Google Developer Console pour créer les identifiants web/ios/android :
-https://console.cloud.google.com/apis/dashboard?project=infirmier-418706
+### Configuration générale
 
-.env définit VITE_GOOGLE_APP_CLIENT_ID = clientId de "Client Web 1"
-.env.ios définit VITE_GOOGLE_APP_CLIENT_ID = clientId de "Client iOS 1"
-.env.android définit VITE_GOOGLE_APP_CLIENT_ID = clientId de "Client Android 1"
+- utiliser Google Developer Console pour créer le projet : https://console.cloud.google.com/apis/dashboard?project=infirmier-418706
+- Google Developer Console / Audience : peu importe que le type d'utilisateur soit interne ou externe
+- Google Developer Console / Accès aux données : ajouter les 3 premiers champs d'application (email, profile, openid)
+- a-priori pas besoin de faire valider l'application
+- `npm install @capgo/capacitor-social-login; npx cap sync`
 
 ### Web
+
 - Google Developer Console / Clients : créer un client pour web "Client Web 1"
 
 
 ### iOS
+
+- https://github.com/Cap-go/capacitor-social-login/blob/main/docs/setup_google.md#ios
 - marche pas avec le simulateur
 - Google Developer Console / Clients : créer un client pour iOS "Client iOS 1"
-- Google Developer Console / Audience : peu importe que le type d'utilisateur soit interne ou externe
-- Google Developer Console / Accès aux données : ajouter les 3 premiers champs d'application (email, profile, openid)
-- a-priori pas besoin de faire valider l'application
 - XCode : App - Targets/App, Info, clic droit : "open as... source code". Ajouter à la fin :
    <key>CFBundleURLTypes</key>
    <array>
       <dict>
          <key>CFBundleURLSchemes</key>
          <array>
-               <string>com.googleusercontent.apps.35236017874-2mus35pvufa8kfbojf5p7u1f0cmts4qa</string>
+            <string>com.googleusercontent.apps.35236017874-2mus35pvufa8kfbojf5p7u1f0cmts4qa</string>
          </array>
       </dict>
    </array>
 - a-priori pas besoin de modifier AppDelegate
+- toujours re-builder pour tester : `npm run build:ios`
 
 ### Android
 
+- https://github.com/Cap-go/capacitor-social-login/blob/main/docs/setup_google.md#android
+- Google Developer Console / Clients : créer un client pour Android "Client Android 1"
+- android.defaultConfig.applicationId est déjà configuré par Capacitor
+- exécuter `cd android; ./gradlew signInReport` et recopier SHA-1 dans "Client Android 1", champ "Empreinte numérique du certificat SHA1"
+- cliquer sur "Valider la propriété"
+- modifier 'MainActivity' (app/java/com.journaldebordide/app) :
+
+package com.journaldebordide.app;
+import ee.forgr.capacitor.social.login.GoogleProvider;
+import ee.forgr.capacitor.social.login.SocialLoginPlugin;
+import ee.forgr.capacitor.social.login.ModifiedMainActivityForSocialLoginPlugin;
+import com.getcapacitor.PluginHandle;
+import com.getcapacitor.Plugin;
+import android.content.Intent;
+import android.util.Log;
+import com.getcapacitor.BridgeActivity;
+
+// ModifiedMainActivityForSocialLoginPlugin is VERY VERY important !!!!!!    
+public class MainActivity extends BridgeActivity implements ModifiedMainActivityForSocialLoginPlugin {
+
+      @Override
+      public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode >= GoogleProvider.REQUEST_AUTHORIZE_GOOGLE_MIN && requestCode < GoogleProvider.REQUEST_AUTHORIZE_GOOGLE_MAX) {
+          PluginHandle pluginHandle = getBridge().getPlugin("SocialLogin");
+          if (pluginHandle == null) {
+            Log.i("Google Activity Result", "SocialLogin login handle is null");
+            return;
+          }
+          Plugin plugin = pluginHandle.getInstance();
+          if (!(plugin instanceof SocialLoginPlugin)) {
+            Log.i("Google Activity Result", "SocialLogin plugin instance is not SocialLoginPlugin");
+            return;
+          }
+          ((SocialLoginPlugin) plugin).handleGoogleLoginIntent(requestCode, data);
+        }
+      }
+
+      // This function will never be called, leave it empty
+      @Override
+      public void IHaveModifiedTheMainActivityForTheUseWithSocialLoginPlugin() {}
+}
 
 
 ## Abonnements
