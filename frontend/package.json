@@ -28,6 +28,7 @@
     "@vueuse/integrations": "^10.11.0",
     "date-fns": "^3.6.0",
     "idb-keyval": "^6.2.1",
+    "jcb-capacitor-googleauth": "file:../../../NPM/jcb-capacitor-googleauth",
     "jcb-capacitor-inapp": "file:../../../NPM/jcb-capacitor-inapp",
     "jcb-radial": "^1.0.6",
     "socket.io-client": "^4.7.5",

@@ -23,6 +23,12 @@ UTILISER `npm run build:ios` et `npm run build:android`
 Génère les projets iOS et Android
 Essai de PWABuilder (Microsoft) Pb : rien prévu pour in-app purchase
 
+## Abonnements
+- Abonnements 'inapp' sur iOS et Android, abonnements Stripe sur le web
+- Développement d'un plugin Capacitor 'jcb-capacitor-inapp' accessible sur npm (le plugin Cordova 'cordova-plugin-purchase' est vieux et non fonctionnel)
+pour iOS et Android
+
+
 ## Authentification Google
 
 - Initialement l'authentification Google était implémentée avec le flow recommandé (Authorization Code Grant)
@@ -32,7 +38,7 @@ qui utilise le flow 'Implicit Flow' normalement déconseillé, qui ne nécessite
 et ne fait aucune interaction avec le backend. Il marche bien pour le web, pour iOS, mais impossible de le faire marcher pour Android.
 Finalement j'utilise @capgo/capacitor-social-login qui est le successeur de CodetrixStudio/CapacitorGoogleAuth,
 qui marche bien pour iOS et Android. Impossible de le faire marcher pour le web.
-J'utilise en plus https://github.com/CodetrixStudio/CapacitorGoogleAuth uniquement pour le web
+Pour le web, j'utilise en plus jcb-capacitor-googleauth, fork de https://github.com/CodetrixStudio/CapacitorGoogleAuth
 
 - SocialLogin instructions: https://github.com/Cap-go/capacitor-social-login/blob/main/docs/setup_google.md
 
@@ -71,11 +77,12 @@ J'utilise en plus https://github.com/CodetrixStudio/CapacitorGoogleAuth uniqueme
 ### Android
 
 - https://github.com/Cap-go/capacitor-social-login/blob/main/docs/setup_google.md#android
-- Google Developer Console / Clients : créer un client pour Android "Client Android 1"
 - android.defaultConfig.applicationId est déjà configuré par Capacitor
+- Google Developer Console / Clients : créer un client pour Android "Client Android 1"
 - exécuter `cd android; ./gradlew signInReport` et recopier SHA-1 dans "Client Android 1", champ "Empreinte numérique du certificat SHA1"
 - cliquer sur "Valider la propriété"
-- modifier 'MainActivity' (app/java/com.journaldebordide/app) :
+- le client web 'Client Web 1' est nécessaire pour Android. Le client Android est également nécessaire, ainsi que la bonne valeur de SHA1
+- modifier 'MainActivity' (app/java/com.journaldebordide.app) :
 
 package com.journaldebordide.app;
 import ee.forgr.capacitor.social.login.GoogleProvider;
@@ -115,15 +122,9 @@ public class MainActivity extends BridgeActivity implements ModifiedMainActivity
 }
 
 
-## Abonnements
-- Abonnements 'inapp' sur iOS et Android, abonnements Stripe sur le web
-- Développement d'un plugin Capacitor 'jcb-capacitor-inapp' accessible sur npm (le plugin Cordova 'cordova-plugin-purchase' est vieux et non fonctionnel)
-pour iOS et Android
-
 
 # Configurations
 
-- Google Developer Console pour l'authentification
 - Apple Developer pour les certificats: https://developer.apple.com/
 - Appstore Connect pour la création de l'application et ses abonnements et le suivi de TestFlight, des achats etc. https://appstoreconnect.apple.com
 
@@ -140,7 +141,8 @@ cd backend
 npm run dev
 ```
 
-# Version web
+
+# VERSION WEB
 
 ## Achat abonnements : Stripe
 
@@ -306,69 +308,6 @@ dependencies {
 - Nécessaire d'ajouter un test de license dans Google Play Console : Paramètres -> Test de license
 - on peut tester les inapp en dev avec exécution sur un device et avec un compte Google normal comme buisson.jc7@gmail.com
 
-
-## Authentification Google
-
-
-SocialLogin instructions: https://github.com/Cap-go/capacitor-social-login/blob/main/docs/setup_google.md#android
-- `cd android; ./gradlew singInReport`
-- recopier SHA-1 dans la Google Console pour la configuration du client OAuth2 Android
-- cliquer sur "Vérifier la propriété"
-
-- ENLEVER TOUS LES AUTHORIZED REDIRECT URI DE LA CONSOLE GOOGLE
-- ENLEVER LES SCOPES
-
-
-
-
-Difficile de tester avec le serveur de dev car le code Android considère que localhost ou 127.0.0.1 est le device Android et non la machine locale
-Le plus simple est de tester avec le serveur de production
-
-Voir : https://medium.com/codetrixstudio/authenticate-using-google-sign-in-in-capacitor-706e28703e69
-Voir : https://enappd.com/blog/google-login-in-ionic-capacitor-app-with-angular/178/
-
-- utilise un "Client id for Android", voir Google Cloud Console : https://console.cloud.google.com
-- SHA fingerprint : exécuter `keytool -keystore frontend/android-keystore/keystore.jks -list -v` (mdp: M**e) et copier le SHA-1
-dans le champ 'Empreinte numérique du certificat SHA-1' de la configuration du client android
-(OU : keytool -list -v \
-  -keystore ~/.android/debug.keystore \
-  -alias androiddebugkey \
-  -storepass android \
-  -keypass android
-) ??
-`keytool -keystore android-keystore/keystore.jks -list -v` -> SHA-1 = 1E:18:0A:96:11:5D:64:81:9B:B3:9D:80:B9:73:61:B1:22:D4:4F:69
-
-(? - dans src/main/res/strings.xml, ajouter <string name="server_client_id">35236017874-cdtgpjkhkpkrrp6f6p4l5ku60e6ipmv6.apps.googleusercontent.com</string> )
-
-- dans android/app/src/main/AndroidManifest.xml, modifier la ligne du début :
-```
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.journaldebordide.app">
-```
-
-(- modifier android/variables.gradle et passer minSdkVersion à 24
-
-- pour que ça marche en dev, il faut autoriser le non-https :
-   - ajouter à android/app/src/main/AndroidManifest.xml :
-```
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-   <application
-
-      android:usesCleartextTraffic="true"
-      android:networkSecurityConfig="@xml/network_security_config"
-      ...
-```
-- créer un fichier android/app/src/main/res/xml/network_security_config.xml :
-```
-<?xml version="1.0" encoding="utf-8"?>
-<network-security-config>
-    <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">localhost</domain>
-        <domain includeSubdomains="true">infirmier.jcbuisson.dev</domain>
-    </domain-config>
-</network-security-config>
-```
-)
 
 
 # Génération des icons / splash screens pour la distribution dans les stores
