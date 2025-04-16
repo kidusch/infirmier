@@ -31,7 +31,8 @@ J'ai ensuite utilisé Google OAuth Capacitor plugin : https://github.com/Codetri
 qui utilise le flow 'Implicit Flow' normalement déconseillé, qui ne nécessite pas de secret, seulement un clientId,
 et ne fait aucune interaction avec le backend. Il marche bien pour le web, pour iOS, mais impossible de le faire marcher pour Android.
 Finalement j'utilise @capgo/capacitor-social-login qui est le successeur de CodetrixStudio/CapacitorGoogleAuth,
-qui marche bien pour iOS et Android.
+qui marche bien pour iOS et Android. Impossible de le faire marcher pour le web.
+J'utilise en plus https://github.com/CodetrixStudio/CapacitorGoogleAuth uniquement pour le web
 
 - SocialLogin instructions: https://github.com/Cap-go/capacitor-social-login/blob/main/docs/setup_google.md
 
@@ -45,8 +46,9 @@ qui marche bien pour iOS et Android.
 
 ### Web
 
+- https://github.com/Cap-go/capacitor-social-login/blob/main/docs/setup_google.md#using-google-login-on-the-web
 - Google Developer Console / Clients : créer un client pour web "Client Web 1"
-
+- ?? MARCHE PAS
 
 ### iOS
 
