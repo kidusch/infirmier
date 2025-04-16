@@ -28,13 +28,16 @@ Génère les projets iOS et Android
 Essai de PWABuilder (Microsoft) Pb : rien prévu pour in-app purchase
 
 ## Authentification Google
+
 - Initialement l'authentification Google était implémentée avec le flow recommandé (Authorization Code Grant)
 (voir google-auth2.middleware.js), mais je n'ai pas réussi à l'adapter à iOS et Android.
-Finalement j'ai créé jcb-capacitor-googleauth basé sur Google OAuth Capacitor plugin : https://github.com/CodetrixStudio/CapacitorGoogleAuth
+J'ai ensuite utilisé Google OAuth Capacitor plugin : https://github.com/CodetrixStudio/CapacitorGoogleAuth
 qui utilise le flow 'Implicit Flow' normalement déconseillé, qui ne nécessite pas de secret, seulement un clientId,
-et ne fait aucune interaction avec le backend.
-Renvoie directement le user Google, qu'il faut ensuite lier au user de l'application.
-Fonctionne sur iOS (et Android), mais aussi pour le web.
+et ne fait aucune interaction avec le backend. Il marche bien pour le web, pour iOS, mais impossible de le faire marcher pour Android.
+Finalement j'utilise @capgo/capacitor-social-login qui est le successeur de CodetrixStudio/CapacitorGoogleAuth,
+qui marche bien pour iOS et Android.
+
+- SocialLogin instructions: https://github.com/Cap-go/capacitor-social-login/blob/main/docs/setup_google.md
 
 - utiliser Google Developer Console pour créer les identifiants web/ios/android :
 https://console.cloud.google.com/apis/dashboard?project=infirmier-418706
@@ -42,6 +45,31 @@ https://console.cloud.google.com/apis/dashboard?project=infirmier-418706
 .env définit VITE_GOOGLE_APP_CLIENT_ID = clientId de "Client Web 1"
 .env.ios définit VITE_GOOGLE_APP_CLIENT_ID = clientId de "Client iOS 1"
 .env.android définit VITE_GOOGLE_APP_CLIENT_ID = clientId de "Client Android 1"
+
+### Web
+- Google Developer Console / Clients : créer un client pour web "Client Web 1"
+
+
+### iOS
+- marche pas avec le simulateur
+- Google Developer Console / Clients : créer un client pour iOS "Client iOS 1"
+- Google Developer Console / Audience : peu importe que le type d'utilisateur soit interne ou externe
+- Google Developer Console / Accès aux données : ajouter les 3 premiers champs d'application (email, profile, openid)
+- a-priori pas besoin de faire valider l'application
+- XCode : App - Targets/App, Info, clic droit : "open as... source code". Ajouter à la fin :
+   <key>CFBundleURLTypes</key>
+   <array>
+      <dict>
+         <key>CFBundleURLSchemes</key>
+         <array>
+               <string>com.googleusercontent.apps.35236017874-2mus35pvufa8kfbojf5p7u1f0cmts4qa</string>
+         </array>
+      </dict>
+   </array>
+- a-priori pas besoin de modifier AppDelegate
+
+### Android
+
 
 
 ## Abonnements
@@ -111,17 +139,6 @@ Project / App / deployment target : 15.0
 Target / App / minimal deployment target : 15.0
 Project format (barre droite) : XCode 15
 
-
-## Authentification Google
-- Google Developer Console : https://console.cloud.google.com
-- utilise un "Client ID for iOS" (voir Google Developers Console, "Client iOS 1")
-- ajouter à Info.plist, "URL Types", identifier: REVERSED_CLIENT_ID, URL schemes: com.googleusercontent.apps.35236017874-2mus35pvufa8kfbojf5p7u1f0cmts4qa
-(Xcode: App - Targets/App - Info - URL Types, click '+')
-- marche en dev avec le simulateur
-
-ios & android : ajouter à capacitor.config.json :
-   "clientId": "35236017874-cdtgpjkhkpkrrp6f6p4l5ku60e6ipmv6.apps.googleusercontent.com"
-METTRE LE WEB CLIENT ID
 
 ## Certificats de développement et de distribution, provisioning profiles
 - les créer sur Apple Developer, compte Charlène, types "iOS development" et "iOS distribution" (voir README.secret)
@@ -250,12 +267,13 @@ dependencies {
 ## Authentification Google
 
 
-SocialLogin instructions: https://github.com/Cap-go/capacitor-social-login/blob/main/docs/setup_google.md#ios
+SocialLogin instructions: https://github.com/Cap-go/capacitor-social-login/blob/main/docs/setup_google.md#android
 - `cd android; ./gradlew singInReport`
 - recopier SHA-1 dans la Google Console pour la configuration du client OAuth2 Android
 - cliquer sur "Vérifier la propriété"
 
-
+- ENLEVER TOUS LES AUTHORIZED REDIRECT URI DE LA CONSOLE GOOGLE
+- ENLEVER LES SCOPES
 
 
 
