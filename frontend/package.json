@@ -7,10 +7,10 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "build:ios": "vite build --mode ios && npx cap sync",
-    "build:iosdev": "vite build --mode iosdev && npx cap sync",
-    "build:android": "vite build --mode android && npx cap sync",
-    "build:androiddev": "vite build --mode androiddev && npx cap sync"
+    "build:ios": "vite build --mode ios && npx cap sync ios",
+    "build:iosdev": "vite build --mode iosdev && npx cap sync ios",
+    "build:android": "vite build --mode android && npx cap sync android",
+    "build:androiddev": "vite build --mode androiddev && npx cap sync android"
   },
   "dependencies": {
     "@capacitor/android": "^7.0.0",

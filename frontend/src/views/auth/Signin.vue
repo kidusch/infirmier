@@ -127,7 +127,9 @@ const googleLogin = async () => {
    try {
       let user
       if (Capacitor.getPlatform() === 'web') {
-         
+         const googleUser = await GoogleAuth.signIn()
+         console.log('gSignin', googleUser)
+         user = await googleSignin(googleUser)
       } else {
          const res = await SocialLogin.login({
             provider: 'google',
