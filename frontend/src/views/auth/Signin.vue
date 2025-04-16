@@ -104,6 +104,11 @@ const goSignup = () => {
 onMounted(async () => {
    try {
       if (Capacitor.getPlatform() === 'web') {
+         GoogleAuth.initialize({
+            clientId: import.meta.env.VITE_GOOGLE_APP_CLIENT_ID,
+            scopes: ['profile', 'email'],
+            grantOfflineAccess: true,
+         })
       } else {
          await SocialLogin.initialize({
             google: {
