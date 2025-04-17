@@ -2,13 +2,6 @@
    "appId": "com.journaldebordide.app",
    "appName": "JDB Infirmier",
    "webDir": "dist",
-   "clientId": "35236017874-cdtgpjkhkpkrrp6f6p4l5ku60e6ipmv6.apps.googleusercontent.com",
    "plugins": {
-      "GoogleAuth": {
-         "scopes": ["profile", "email"],
-         "clientId": "35236017874-cdtgpjkhkpkrrp6f6p4l5ku60e6ipmv6.apps.googleusercontent.com",
-         "serverClientId": "35236017874-cdtgpjkhkpkrrp6f6p4l5ku60e6ipmv6.apps.googleusercontent.com",
-         "forceCodeForRefreshToken": true
-      }
    }
 }

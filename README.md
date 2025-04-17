@@ -1,24 +1,13 @@
 
+# IMPORTANT
+
+!!!! IL FAUT BUILDER LE PROJET JS POUR QU'IL FONCTIONNE SUR IOS & ANDROID !!!!
+UTILISER `npm run build:ios` et `npm run build:android`
+
+
 # Bugs
 
 - avec un réseau lent, le préchargement ne se finit pas, et l'appli redémarre lorsque on commence à l'utiliser
-
-
-
-
-
-
-
-
-
-!!!! IL FAUT BUILDER LE PROJET JS POUR QU'IL FONCTIONNE SUR IOS & ANDROID !!!!
-UTILISER `npm run build:ios` et `npm run uild:android`
-
-
-
-
-
-
 
 
 # Modes d'utilisation
@@ -34,32 +23,107 @@ UTILISER `npm run build:ios` et `npm run uild:android`
 Génère les projets iOS et Android
 Essai de PWABuilder (Microsoft) Pb : rien prévu pour in-app purchase
 
-## Authentification Google
-- Initialement l'authentification Google était implémentée avec le flow recommandé (Authorization Code Grant)
-(voir google-auth2.middleware.js), mais je n'ai pas réussi à l'adapter à iOS et Android.
-Finalement j'ai créé jcb-capacitor-googleauth basé sur Google OAuth Capacitor plugin : https://github.com/CodetrixStudio/CapacitorGoogleAuth
-qui utilise le flow 'Implicit Flow' normalement déconseillé, qui ne nécessite pas de secret, seulement un clientId,
-et ne fait aucune interaction avec le backend.
-Renvoie directement le user Google, qu'il faut ensuite lier au user de l'application.
-Fonctionne sur iOS (et Android), mais aussi pour le web.
-
-- utiliser Google Developer Console pour créer les identifiants web/ios/android :
-https://console.cloud.google.com/apis/dashboard?project=infirmier-418706
-
-.env définit VITE_GOOGLE_APP_CLIENT_ID = clientId de "Client Web 1"
-.env.ios définit VITE_GOOGLE_APP_CLIENT_ID = clientId de "Client iOS 1"
-.env.android définit VITE_GOOGLE_APP_CLIENT_ID = clientId de "Client Android 1"
-
-
 ## Abonnements
 - Abonnements 'inapp' sur iOS et Android, abonnements Stripe sur le web
 - Développement d'un plugin Capacitor 'jcb-capacitor-inapp' accessible sur npm (le plugin Cordova 'cordova-plugin-purchase' est vieux et non fonctionnel)
 pour iOS et Android
 
 
+## Authentification Google
+
+- Initialement l'authentification Google était implémentée avec le flow recommandé (Authorization Code Grant)
+(voir google-auth2.middleware.js), mais je n'ai pas réussi à l'adapter à iOS et Android.
+J'ai ensuite utilisé Google OAuth Capacitor plugin : https://github.com/CodetrixStudio/CapacitorGoogleAuth
+qui utilise le flow 'Implicit Flow' normalement déconseillé, qui ne nécessite pas de secret, seulement un clientId,
+et ne fait aucune interaction avec le backend. Il marche bien pour le web, pour iOS, mais impossible de le faire marcher pour Android.
+Finalement j'utilise @capgo/capacitor-social-login qui est le successeur de CodetrixStudio/CapacitorGoogleAuth,
+qui marche bien pour iOS et Android. Impossible de le faire marcher pour le web.
+Pour le web, j'utilise en plus jcb-capacitor-googleauth, fork de https://github.com/CodetrixStudio/CapacitorGoogleAuth
+
+- SocialLogin instructions: https://github.com/Cap-go/capacitor-social-login/blob/main/docs/setup_google.md
+
+### Configuration générale
+
+- utiliser Google Developer Console pour créer le projet : https://console.cloud.google.com/apis/dashboard?project=infirmier-418706
+- Google Developer Console / Audience : peu importe que le type d'utilisateur soit interne ou externe
+- Google Developer Console / Accès aux données : ajouter les 3 premiers champs d'application (email, profile, openid)
+- a-priori pas besoin de faire valider l'application
+- `npm install @capgo/capacitor-social-login; npm install jcb-capacitor-googleauth; npx cap sync`
+
+### Web
+
+- utilisation de jcb-capacitor-googleauth car arrive pas à faire marcher capacitor-social-login
+- Google Developer Console / Clients : créer un client pour web "Client Web 1"
+
+### iOS
+
+- https://github.com/Cap-go/capacitor-social-login/blob/main/docs/setup_google.md#ios
+- marche pas avec le simulateur
+- Google Developer Console / Clients : créer un client pour iOS "Client iOS 1"
+- XCode : App - Targets/App, Info, clic droit : "open as... source code". Ajouter à la fin :
+   <key>CFBundleURLTypes</key>
+   <array>
+      <dict>
+         <key>CFBundleURLSchemes</key>
+         <array>
+            <string>com.googleusercontent.apps.35236017874-2mus35pvufa8kfbojf5p7u1f0cmts4qa</string>
+         </array>
+      </dict>
+   </array>
+- a-priori pas besoin de modifier AppDelegate
+- toujours re-builder pour tester : `npm run build:ios`
+
+### Android
+
+- https://github.com/Cap-go/capacitor-social-login/blob/main/docs/setup_google.md#android
+- android.defaultConfig.applicationId est déjà configuré par Capacitor
+- Google Developer Console / Clients : créer un client pour Android "Client Android 1"
+- exécuter `cd android; ./gradlew signInReport` et recopier SHA-1 dans "Client Android 1", champ "Empreinte numérique du certificat SHA1"
+- cliquer sur "Valider la propriété"
+- le client web 'Client Web 1' est nécessaire pour Android. Le client Android est également nécessaire, ainsi que la bonne valeur de SHA1
+- modifier 'MainActivity' (app/java/com.journaldebordide.app) :
+
+package com.journaldebordide.app;
+import ee.forgr.capacitor.social.login.GoogleProvider;
+import ee.forgr.capacitor.social.login.SocialLoginPlugin;
+import ee.forgr.capacitor.social.login.ModifiedMainActivityForSocialLoginPlugin;
+import com.getcapacitor.PluginHandle;
+import com.getcapacitor.Plugin;
+import android.content.Intent;
+import android.util.Log;
+import com.getcapacitor.BridgeActivity;
+
+// ModifiedMainActivityForSocialLoginPlugin is VERY VERY important !!!!!!    
+public class MainActivity extends BridgeActivity implements ModifiedMainActivityForSocialLoginPlugin {
+
+      @Override
+      public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode >= GoogleProvider.REQUEST_AUTHORIZE_GOOGLE_MIN && requestCode < GoogleProvider.REQUEST_AUTHORIZE_GOOGLE_MAX) {
+          PluginHandle pluginHandle = getBridge().getPlugin("SocialLogin");
+          if (pluginHandle == null) {
+            Log.i("Google Activity Result", "SocialLogin login handle is null");
+            return;
+          }
+          Plugin plugin = pluginHandle.getInstance();
+          if (!(plugin instanceof SocialLoginPlugin)) {
+            Log.i("Google Activity Result", "SocialLogin plugin instance is not SocialLoginPlugin");
+            return;
+          }
+          ((SocialLoginPlugin) plugin).handleGoogleLoginIntent(requestCode, data);
+        }
+      }
+
+      // This function will never be called, leave it empty
+      @Override
+      public void IHaveModifiedTheMainActivityForTheUseWithSocialLoginPlugin() {}
+}
+
+
+
 # Configurations
 
-- Google Developer Console pour l'authentification
 - Apple Developer pour les certificats: https://developer.apple.com/
 - Appstore Connect pour la création de l'application et ses abonnements et le suivi de TestFlight, des achats etc. https://appstoreconnect.apple.com
 
@@ -76,7 +140,8 @@ cd backend
 npm run dev
 ```
 
-# Version web
+
+# VERSION WEB
 
 ## Achat abonnements : Stripe
 
@@ -118,17 +183,6 @@ Project / App / deployment target : 15.0
 Target / App / minimal deployment target : 15.0
 Project format (barre droite) : XCode 15
 
-
-## Authentification Google
-- Google Developer Console : https://console.cloud.google.com
-- utilise un "Client ID for iOS" (voir Google Developers Console, "Client iOS 1")
-- ajouter à Info.plist, "URL Types", identifier: REVERSED_CLIENT_ID (ou 'Google' ?), URL schemes: com.googleusercontent.apps.35236017874-2mus35pvufa8kfbojf5p7u1f0cmts4qa
-(Xcode: App - Targets/App - Info - URL Types, click '+')
-- marche en dev avec le simulateur
-
-ios & android : ajouter à capacitor.config.json :
-   "clientId": "35236017874-cdtgpjkhkpkrrp6f6p4l5ku60e6ipmv6.apps.googleusercontent.com"
-METTRE LE WEB CLIENT ID
 
 ## Certificats de développement et de distribution, provisioning profiles
 - les créer sur Apple Developer, compte Charlène, types "iOS development" et "iOS distribution" (voir README.secret)
@@ -253,58 +307,6 @@ dependencies {
 - Nécessaire d'ajouter un test de license dans Google Play Console : Paramètres -> Test de license
 - on peut tester les inapp en dev avec exécution sur un device et avec un compte Google normal comme buisson.jc7@gmail.com
 
-
-## Authentification Google
-Difficile de tester avec le serveur de dev car le code Android considère que localhost ou 127.0.0.1 est le device Android et non la machine locale
-Le plus simple est de tester avec le serveur de production
-
-Voir : https://medium.com/codetrixstudio/authenticate-using-google-sign-in-in-capacitor-706e28703e69
-Voir : https://enappd.com/blog/google-login-in-ionic-capacitor-app-with-angular/178/
-
-- utilise un "Client id for Android", voir Google Cloud Console : https://console.cloud.google.com
-- SHA fingerprint : exécuter `keytool -keystore frontend/android-keystore/keystore.jks -list -v` (mdp: M**e) et copier le SHA-1
-dans le champ 'Empreinte numérique du certificat SHA-1' de la configuration du client android
-(OU : keytool -list -v \
-  -keystore ~/.android/debug.keystore \
-  -alias androiddebugkey \
-  -storepass android \
-  -keypass android
-) ??
-`keytool -keystore android-keystore/keystore.jks -list -v` -> SHA-1 = 1E:18:0A:96:11:5D:64:81:9B:B3:9D:80:B9:73:61:B1:22:D4:4F:69
-(ou : cd android; ./gradlew signingReport)
-??? SHA1 SEULEMENT NÉCESSAIRE SI ON UTILISE UNE VÉRIFICATION BACKEND COMME AVEC FIREBASE ???
-
-(? - dans src/main/res/strings.xml, ajouter <string name="server_client_id">35236017874-cdtgpjkhkpkrrp6f6p4l5ku60e6ipmv6.apps.googleusercontent.com</string> )
-
-- dans android/app/src/main/AndroidManifest.xml, modifier la ligne du début :
-```
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.journaldebordide.app">
-```
-
-(- modifier android/variables.gradle et passer minSdkVersion à 24
-
-- pour que ça marche en dev, il faut autoriser le non-https :
-   - ajouter à android/app/src/main/AndroidManifest.xml :
-```
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-   <application
-
-      android:usesCleartextTraffic="true"
-      android:networkSecurityConfig="@xml/network_security_config"
-      ...
-```
-- créer un fichier android/app/src/main/res/xml/network_security_config.xml :
-```
-<?xml version="1.0" encoding="utf-8"?>
-<network-security-config>
-    <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">localhost</domain>
-        <domain includeSubdomains="true">infirmier.jcbuisson.dev</domain>
-    </domain-config>
-</network-security-config>
-```
-)
 
 
 # Génération des icons / splash screens pour la distribution dans les stores
