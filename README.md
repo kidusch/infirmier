@@ -166,22 +166,29 @@ Bundle id : com.journaldebordide.app
 Identifiant Apple : 6673904628
 Apple Id prefix : T8P24LJSUB (Team ID)
 UGS : infirmier
+Project / App / deployment target : 15.0
+Target / App / minimal deployment target : 15.0
+n° version + n° build : Target / App / General / Identity
+
+## Checklist : déploiement d'une nouvelle version
+- `npm run build:ios`
+- `npx cap open ios`
+- ...
+
 
 ## Build
 ```
 cd frontend
-npm run build:iosdev   # vite build --mode iosdev && npx cap sync)
+npm run build:iosdev   # vite build --mode iosdev && npx cap sync ios)
 ou : npm run build:ios
 npx cap open ios
 ```
-Exécution en dev sur XCode : cocher "automatic signing"
-Choisir la team : "CHARLENE FANTONE"
-On peut exécuter sur simulateur ou sur device
-
-À TESTER :
-Project / App / deployment target : 15.0
-Target / App / minimal deployment target : 15.0
-Project format (barre droite) : XCode 15
+- exécution en dev sur XCode : cocher "automatic signing", choisir la team : "CHARLENE FANTONE". ? Il faut aussi changer un truc
+dans Project / Targets / App / Build settings / signing
+- on peut exécuter sur simulateur ou sur device
+- dans Project / Targets / App / onglet Release, cliquer sur '+ Capabilities' (en haut) et ajouter
+   - 'inApp Purchase' ?
+   - "Push notifications", on ne s'en sert pas mais sinon ça provoque une erreur à la validation Apple
 
 
 ## Certificats de développement et de distribution, provisioning profiles
@@ -192,32 +199,44 @@ Project format (barre droite) : XCode 15
 - les télécharger et double-cliquer pour qu'ils s'installent dans XCode
 - à la demande d'un mot de passe pour les cerificats, entrer le mdp de "session" (= M**e) et cliquer sur "Toujours autoriser"
 
+
 ## TestFlight & distribution
 - builder l'appli en mode production : npm run build:ios
-- choisir le provisioning profile de prod et faire "Archive"
-- uploader le build sur AppStore Connect (cliquer sur "Distribute App", puis "TestFlight & AppStore" ou "TestFlight interne", se connecter à AppStore Connect d'abord ? et redémarrer XCode ?)
-- dans AppStore Connect, repérer le build, compléter l'info manquante, lui ajouter un groupe de testeurs
+- dans Target / App / Signing & capabilities, choisir le provisioning profile de 'prov-distrib' et faire "Product / Archive"
+- uploader le build sur AppStore Connect (cliquer sur "Distribute App", puis "AppStore Connect" ou "TestFlight internal onlmy",
+- dans AppStore Connect (se connecter avec buisson.jc7@gmail.com), repérer le build, compléter l'info manquante, lui ajouter un groupe de testeurs
 - sur l'iPhone, installer l'application "TestFlight" : les builds seront accessibles si on fait partie de l'équipe de test
 
+
 ## inApp purchase des abonnements
+- AppStore Connect (https://appstoreconnect.apple.com) (se connecter avec buisson.jc7@gmail.com et choisir Charlène Fantone)
+- choisir l'application, puis Distribution / Monétisation / Abonnements et définir le groupe 'abonnements'
+avec les 4 abonnements avec leur nom, description, prix, périodicité
+   - 'Abonnement standard mensuel' / 'standard_monthly', 1 month, renewable automatically
+   - 'Abonnement standard annuel' / 'standard_yearly', 1 year, renewable automatically
+   - 'Abonnement premium mensuel' / 'premium_monthly', 1 month, renewable automatically
+   - 'Abonnement premium annuel' / 'premium_yearly', 1 year, renewable automatically
+
+### Test offline (sans lien avec AppStore Connect) avec un 'StoreKit configuration file'
+Voir https://developer.apple.com/videos/play/wwdc2023/10142
+Test en simulation totalement offline, sans connexion à AppStore Connect, en utilisant un 'StoreKit configuration file'
 iOS : >iOS15 (utilise StoreKit2, les transactions, async/await)
 Voir : https://medium.com/@aisultanios/implement-inn-app-subscriptions-using-swift-and-storekit2-serverless-and-share-active-purchases-7d50f9ecdc09
 Voir : https://developer.apple.com/documentation/storekit/in-app_purchase
-AppStore Connect (https://appstoreconnect.apple.com)
 
-Test, voir https://developer.apple.com/videos/play/wwdc2023/10142
-- dans AppStore Connect, définir les 4 abonnements avec leur nom, description, prix, périodicité
-- test en simulation totalement offline, sans utiliser AppStore Connect, en utilisant un 'StoreKit configuration file' :
--> le créer dans XCode avec File -> new -> File -> StoreKit Configuration
-Le fichier est ensuite visible dans la vue 'fichiers' de XCode
--> l'utiliser dans le Run avec Product -> Scheme -> Edit Scheme... -> choisir le fichier dans la rubrique "StoreKit configuration"
+- créer un 'StoreKit configuration file' dans XCode avec File -> new -> File from template... -> StoreKit Configuration
+- cliquer sur 'synchronize with an Appstore Connec t app' et choisir l'application
+- le stocker n'importe où dans le projet, il est ensuite visible dans la vue 'fichiers' de XCode
+- l'utiliser dans le Run avec Product -> Scheme -> Edit Scheme... -> choisir le fichier dans la rubrique "StoreKit configuration"
 Gestion des abonnements depuis XCode : Debug -> StoreKit. On voit les expirations / renouvellements se dérouler en temps réel (accéléré
 au rythme défini dans le 'StoreKit configuration file')
-- test des inapps marche pas en exécution directe avec un device
+
+- `npm run build:ios` puis exécution depuis XCode sur un device : fonctionne avec les inApp du StoreKit configuration file
 - test des inapps marche avec TestFlight, et les achats sont fictifs
 - test avec Sandbox ? Pas réussi
 
-## Compte "Sandbox" pour les tests d'inapp purchase
+### Compte "Sandbox" pour les tests d'inapp purchase end-to-end
+- voir https://developer.apple.com/videos/play/wwdc2023/10142
 - voir : https://developer.apple.com/documentation/storekit/in-app_purchase/testing_in-app_purchases_with_sandbox
 - création d'un compte Sandbox (AppstoreConnect / Utilisateurs et accès / Sandbox) : jean-christophe.buisson@n7.fr / apM**e
 - builder l'application avec iosdev ou ios
@@ -288,6 +307,7 @@ Depuis aout 2024, nouvelle version du billing system.
 - définir dans Google Play Console les 4 abonnements avec leur nom, description, prix, périodicité
 Leurs product id doivent être 'standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly'
 - Ne marche pas en simulation, ne marche pas avec un device réel en exécution immédiate
+- on peut tester les inapp en dev avec exécution sur un device et avec un compte Google normal comme buisson.jc7@gmail.com
 - utiliser une release de test uploadée dans Google Play Console.
 Attention, les achats sont réels, y a-t-il un moyen d'avoir des achats fictifs ?
 
@@ -305,7 +325,6 @@ dependencies {
    <uses-permission android:name="com.android.vending.BILLING" />
 ```
 - Nécessaire d'ajouter un test de license dans Google Play Console : Paramètres -> Test de license
-- on peut tester les inapp en dev avec exécution sur un device et avec un compte Google normal comme buisson.jc7@gmail.com
 
 
 
