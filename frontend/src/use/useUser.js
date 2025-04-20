@@ -128,7 +128,6 @@ export const infoOfSubscriptionProduct = computed(() => (subscriptionType) => {
    const platform = Capacitor.getPlatform()
    if (platform === 'ios' || platform === 'android') {
       InAppPurchase.getSubscriptionProductInfo({ productId: subscriptionType }).then(productInfo => {
-         alert(JSON.stringify(productInfo))
          console.log('productInfo', productInfo)
          userState.value.subscriptionTypeInfo[subscriptionType] = productInfo
          userState.value.subscriptionTypeInfoStatus[subscriptionType] = 'ready'

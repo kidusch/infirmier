@@ -202,14 +202,21 @@ dans Project / Targets / App / Build settings / signing
 
 ## TestFlight & distribution
 - builder l'appli en mode production : npm run build:ios
-- dans Target / App / Signing & capabilities, choisir le provisioning profile de 'prov-distrib' et faire "Product / Archive"
-- uploader le build sur AppStore Connect (cliquer sur "Distribute App", puis "AppStore Connect" ou "TestFlight internal onlmy",
-- dans AppStore Connect (se connecter avec buisson.jc7@gmail.com), repérer le build, compléter l'info manquante, lui ajouter un groupe de testeurs
+- dans Target / App / Signing & capabilities, choisir le provisioning profile de 'prov-distrib'
+- choisir "Any iOS device (arm64)" et faire "Product / Archive"
+- uploader le build sur AppStore Connect : "Distribute App", puis "TestFlight internal only",
+- dans AppStore Connect / TestFlight (se connecter avec buisson.jc7@gmail.com? ou charlene ?), repérer le build, compléter l'info manquante, lui ajouter un groupe de testeurs
 - sur l'iPhone, installer l'application "TestFlight" : les builds seront accessibles si on fait partie de l'équipe de test
+
+## Distribution
+- builder et archiver l'application comme pour TestFlight
+- uploader le build sur AppStore Connect : "Distribute App", puis "AppStore Connect"
+- dans AppStore Connect / Distribution, supprimer le build en cours, ajouter le nouveau, compléter l'info manquante, cliquer sur "Enregistrer"
+- dans le menu de gauche, cliquer sur "Vérification de l'app"
 
 
 ## inApp purchase des abonnements
-- AppStore Connect (https://appstoreconnect.apple.com) (se connecter avec buisson.jc7@gmail.com et choisir Charlène Fantone)
+- AppStore Connect (https://appstoreconnect.apple.com) (se connecter avec buisson.jc7@gmail.com et choisir Charlène Fantone ?)
 - choisir l'application, puis Distribution / Monétisation / Abonnements et définir le groupe 'abonnements'
 avec les 4 abonnements avec leur nom, description, prix, périodicité
    - 'Abonnement standard mensuel' / 'standard_monthly', 1 month, renewable automatically
@@ -225,10 +232,11 @@ Voir : https://medium.com/@aisultanios/implement-inn-app-subscriptions-using-swi
 Voir : https://developer.apple.com/documentation/storekit/in-app_purchase
 
 - créer un 'StoreKit configuration file' dans XCode avec File -> new -> File from template... -> StoreKit Configuration
-- cliquer sur 'synchronize with an Appstore Connec t app' et choisir l'application
-- le stocker n'importe où dans le projet, il est ensuite visible dans la vue 'fichiers' de XCode
+- cliquer sur 'synchronize with an Appstore Connect app' et choisir l'application
+- stocker le fichier n'importe où dans le projet, il est ensuite visible dans la vue 'fichiers' de XCode
 - l'utiliser dans le Run avec Product -> Scheme -> Edit Scheme... -> choisir le fichier dans la rubrique "StoreKit configuration"
-Gestion des abonnements depuis XCode : Debug -> StoreKit. On voit les expirations / renouvellements se dérouler en temps réel (accéléré
+(ne marchait pas au début, puis s'est mis à marcher sans changement apparent)
+- gestion des abonnements depuis XCode : Debug -> StoreKit. On voit les expirations / renouvellements se dérouler en temps réel (accéléré
 au rythme défini dans le 'StoreKit configuration file')
 
 - `npm run build:ios` puis exécution depuis XCode sur un device : fonctionne avec les inApp du StoreKit configuration file

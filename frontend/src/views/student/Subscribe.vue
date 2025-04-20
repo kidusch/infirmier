@@ -9,6 +9,10 @@
 
       <main class="mt-4 max-w-xl">
 
+         <div>{{ product }}</div>
+
+         <div>{{ subscription }}</div>
+
          <section class="grid grid-cols-2 grid-flow-rows gap-4">
             <template v-for="productId of ['standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly']">
                <div class="rounded-lg border-2 text-center p-6 hover:bg-gray-200" :class="{ 'box': subscriptionOfUser(userid) === productId }"
@@ -55,6 +59,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { loadStripe } from '@stripe/stripe-js'
+import { InAppPurchase } from 'jcb-capacitor-inapp'
 
 import { userOfId, updateUser } from '/src/use/useUser'
 import { getStripePublicKey, infoOfSubscriptionProduct, buyStoreSubscription, subscriptionOfUser, hasSubscription,
@@ -97,7 +102,18 @@ const loading = ref(false)
 const stripeSubscriptionChoice = ref()
 
 
+const product = ref()
+const subscription = ref()
+
 onMounted(async () => {
+   try {
+      product.value = await InAppPurchase.getSubscriptionProductInfo({ productId: 'premium_monthly' })
+      subscription.value = await InAppPurchase.checkSubscription()
+   } catch(err) {
+      product.value = err.toString()
+   }
+   return
+
    // get subscriptions name, description, price, period
    try {
       appState.value.spinnerWaitingText = [ "Chargement..." ]
