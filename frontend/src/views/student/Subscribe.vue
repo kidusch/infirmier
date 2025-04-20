@@ -9,9 +9,8 @@
 
       <main class="mt-4 max-w-xl">
 
-         <div>{{ product }}</div>
-
-         <div>{{ subscription }}</div>
+         <div>Product: {{ product }}</div>
+         <div>Subscription: {{ subscription }}</div>
 
          <section class="grid grid-cols-2 grid-flow-rows gap-4">
             <template v-for="productId of ['standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly']">
@@ -107,57 +106,53 @@ const subscription = ref()
 
 onMounted(async () => {
    try {
-      product.value = await InAppPurchase.getSubscriptionProductInfo({ productId: 'premium_monthly' })
-      subscription.value = await InAppPurchase.checkSubscription()
-   } catch(err) {
-      product.value = err.toString()
-   }
-   return
-
-   // get subscriptions name, description, price, period
-   try {
       appState.value.spinnerWaitingText = [ "Chargement..." ]
+
+      product.value = await InAppPurchase.getSubscriptionProductInfo({ productId: 'premium_yearly' })
+      subscription.value = await InAppPurchase.checkSubscription()
+
+      if (Capacitor.getPlatform() === 'web') {
+         // Load Stripe.js
+         const stripePublicKey = await getStripePublicKey()
+         console.log('stripePublicKey', stripePublicKey)
+         stripe.value = await loadStripe(stripePublicKey)
+         // Create an instance of Elements
+         const elements = stripe.value.elements()
+
+         // Create and mount the Card Element
+         cardElement.value = elements.create('card', {
+            hidePostalCode: true,
+            // see: https://docs.stripe.com/payments/payment-element#affichage
+            style: {
+               base: {
+                  color: '#32325d',
+                  fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                  fontSize: '16px',
+                  fontWeight: '500',
+                  letterSpacing: '0.025em',
+                  lineHeight: '24px',
+                  padding: '10px',
+                  '::placeholder': {
+                     color: '#aab7c4',
+                  },
+                  border: '1px solid #ccc',
+                  borderRadius: '4px',
+               },
+               invalid: {
+                  iconColor: '#FFC7EE',
+                  color: '#FFC7EE',
+               },
+            }
+         })
+         cardElement.value.mount('#card-element')
+      }
+
    } catch(err) {
-      console.log(err)
+      errorMessage.value = err.toString()
    } finally {
       appState.value.spinnerWaitingText = null
    }
 
-   if (Capacitor.getPlatform() === 'web') {
-      // Load Stripe.js
-      const stripePublicKey = await getStripePublicKey()
-      console.log('stripePublicKey', stripePublicKey)
-      stripe.value = await loadStripe(stripePublicKey)
-      // Create an instance of Elements
-      const elements = stripe.value.elements()
-
-      // Create and mount the Card Element
-      cardElement.value = elements.create('card', {
-         hidePostalCode: true,
-         // see: https://docs.stripe.com/payments/payment-element#affichage
-         style: {
-            base: {
-               color: '#32325d',
-               fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-               fontSize: '16px',
-               fontWeight: '500',
-               letterSpacing: '0.025em',
-               lineHeight: '24px',
-               padding: '10px',
-               '::placeholder': {
-                  color: '#aab7c4',
-               },
-               border: '1px solid #ccc',
-               borderRadius: '4px',
-            },
-            invalid: {
-               iconColor: '#FFC7EE',
-               color: '#FFC7EE',
-            },
-         }
-      })
-      cardElement.value.mount('#card-element')
-   }
 })
 
 // Handle the Stripe form submission

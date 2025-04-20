@@ -319,7 +319,7 @@ Leurs product id doivent être 'standard_monthly', 'standard_yearly', 'premium_m
 - utiliser une release de test uploadée dans Google Play Console.
 Attention, les achats sont réels, y a-t-il un moyen d'avoir des achats fictifs ?
 
-- Ajouter dans build.gradle:
+- Ajouter dans build.gradle (chevron "Gradle scripts" dans la liste de gauche):
 ```
 dependencies {
    ...
