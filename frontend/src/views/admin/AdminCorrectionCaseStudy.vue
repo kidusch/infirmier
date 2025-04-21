@@ -62,7 +62,7 @@
 import { computed, ref } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
-import { userOfId } from '/src/use/useUser'
+import { userOfId } from '/src/use/useUser.ts'
 import { caseStudyOfId } from '/src/use/useCaseStudy'
 import { theUserCaseStudy, updateUserCaseStudy } from '/src/use/useUserCaseStudy'
 

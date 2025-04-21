@@ -80,7 +80,7 @@
 import { computed, ref } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
-import { userOfId } from '/src/use/useUser'
+import { userOfId } from '/src/use/useUser.ts'
 import { quizOfId } from '/src/use/useQuiz'
 import { theUserQuiz, updateUserQuiz } from '/src/use/useUserQuiz'
 import { listOfQuizChoices } from '/src/use/useQuizChoice'

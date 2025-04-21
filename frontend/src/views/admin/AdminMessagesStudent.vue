@@ -21,7 +21,7 @@
 <script setup>
 import { computed } from 'vue'
 
-import { userOfId } from '/src/use/useUser'
+import { userOfId } from '/src/use/useUser.ts'
 import UserUserMessagesWithScroll from '/src/components/UserUserMessagesWithScroll.vue'
 
 

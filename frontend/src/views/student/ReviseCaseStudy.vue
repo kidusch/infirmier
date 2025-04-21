@@ -92,7 +92,7 @@
 import { ref, computed } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
-import { userOfId, hasPremiumSubscription } from '/src/use/useUser'
+import { userOfId, hasPremiumSubscription } from '/src/use/useUser.ts'
 import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'

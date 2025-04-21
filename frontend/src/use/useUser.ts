@@ -1,7 +1,7 @@
 import { computed } from 'vue'
 import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 import { InAppPurchase } from 'jcb-capacitor-inapp'
-import { fromEvent, from, of, concat, skip } from 'rxjs'
+import { fromEvent, from, of, switchMap } from 'rxjs'
 
 import { app } from '/src/client-app.js'
 
@@ -109,28 +109,41 @@ export const listOfUser = computed(() => {
 //    console.log("BILLING READY!!!")
 // })
 
-// observable emiting a value when billing system is ready
-const billingReady$ = Capacitor.getPlatform() === 'android' ? fromEvent(InAppPurchase, 'billingReady') : of('ready')
+interface ProductInfo {
+   name: string;          // subscription name (ex: "Abonnement standard")
+   description: string;   // subscription features (ex: "Accès à tout le contenu + coaching personnalisé")
+   price: string;         // formatted price (ex: "2,99 EUR")
+   priceId: string;       // priceId (only for Stripe)
+   period: string;        // formatted subscription period (ex: "mois")
+}
 
-billingReady$.subscribe(x => console.log("BILLING READY!!!", x))
-
-// `subscriptionType` = 'standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly'
-// Emit one single value, the product info, when billing system is ready and promise is resolved
+// `subscriptionType`: 'standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly'
 export async function productInfo$(subscriptionType) {
-   let productInfoPromise
    const platform = Capacitor.getPlatform()
-   if (platform === 'ios' || platform === 'android') {
-      // on iOS and Android, `productId` is `subscriptionType`
-      productInfoPromise = InAppPurchase.getSubscriptionProductInfo({ productId: subscriptionType })
+   if (platform === 'ios') {
+      const productInfoPromise = InAppPurchase.getSubscriptionProductInfo({ productId: subscriptionType })
+      return from(productInfoPromise)
+   } else if (platform === 'android') {
+      const productInfoPromise = InAppPurchase.getSubscriptionProductInfo({ productId: subscriptionType })
+      // wait for 'billingReady' event (specific to Android), then switch to promise
+      return fromEvent(InAppPurchase, 'billingReady').pipe(
+         switchMap(_ => from(productInfoPromise))
+      )
    } else {
       // on Stripe, the product id must be obtained from `subscriptionType`
       const productId = await app.service('stripe').getProductIdFromSubscriptionType(subscriptionType)
-      productInfoPromise = app.service('stripe').getSubscriptionProductInfo(productId)
+      const stripeProductInfo = await app.service('stripe').getSubscriptionProductInfo(productId)
+      const priceInfo = await app.service('stripe').getPriceInfo(stripeProductInfo.default_price)
+      const price = (priceInfo.unit_amount / 100).toFixed(2) + " " + priceInfo.currency.toUpperCase()
+      const period = { 'month': 'mois', 'year': 'an' }[priceInfo?.recurring?.interval]
+      return of({
+         name: stripeProductInfo.name,
+         description: stripeProductInfo.description,
+         priceId: priceInfo.id,
+         price,
+         period,
+      })
    }
-   // wait for 'billingReady', then for promise resolution and then emit product info
-   return concat(billingReady$, from(productInfoPromise)).pipe(
-      skip(1)
-   )
 }
 
 

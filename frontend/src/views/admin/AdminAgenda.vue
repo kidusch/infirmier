@@ -29,7 +29,7 @@
 <script setup>
 import { computed } from 'vue'
 
-import { listOfUser } from '/src/use/useUser'
+import { listOfUser } from '/src/use/useUser.ts'
 
 import router from "/src/router"
 

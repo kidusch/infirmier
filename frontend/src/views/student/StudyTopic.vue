@@ -53,7 +53,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-import { hasSubscription } from '/src/use/useUser'
+import { hasSubscription } from '/src/use/useUser.ts'
 import { ueOfId } from '/src/use/useUE'
 import { subUEOfId } from '/src/use/useSubUE'
 import { topicOfId } from '/src/use/useTopic'

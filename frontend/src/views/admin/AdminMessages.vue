@@ -58,7 +58,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 
-import { listOfUser, hasSubscription } from '/src/use/useUser'
+import { listOfUser, hasSubscription } from '/src/use/useUser.ts'
 import { unreadMessagesCountOfUser2ByUser1 } from '/src/use/useMessage'
 import router from "/src/router"
 

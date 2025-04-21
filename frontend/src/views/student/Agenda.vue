@@ -36,7 +36,7 @@ import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 
-import { userOfId, updateUser } from '/src/use/useUser'
+import { userOfId, updateUser } from '/src/use/useUser.ts'
 import { createAgenda, updateAgenda, deleteAgenda, userListOfAgenda } from '/src/use/useAgenda'
 
 

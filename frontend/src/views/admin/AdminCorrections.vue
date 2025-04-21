@@ -51,7 +51,7 @@
 <script setup>
 // import { computed, ref } from 'vue'
 
-import { userOfId, hasSubscription } from '/src/use/useUser'
+import { userOfId, hasSubscription } from '/src/use/useUser.ts'
 import { listOfUncorrectedUserCaseStudy } from '/src/use/useUserCaseStudy'
 import { listOfUncorrectedUserQuiz } from '/src/use/useUserQuiz'
 

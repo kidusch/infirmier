@@ -4,7 +4,7 @@ import { SocialLogin } from '@capgo/capacitor-social-login'
 import { app } from '/src/client-app.js'
 
 import { resetUseAppState } from '/src/use/useAppState'
-import { resetUseUser } from '/src/use/useUser'
+import { resetUseUser } from '/src/use/useUser.ts'
 import { resetUseUE } from '/src/use/useUE'
 import { resetUseSubUE } from '/src/use/useSubUE'
 import { resetUseTopic } from '/src/use/useTopic'

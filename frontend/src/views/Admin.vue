@@ -100,7 +100,7 @@
 import { onMounted, ref, computed } from 'vue'
 
 import { logout, clearCaches } from '/src/use/useAuthentication'
-import { userOfId, listOfUser } from '/src/use/useUser'
+import { userOfId, listOfUser } from '/src/use/useUser.ts'
 import { unreadMessagesCountOfUser2ByUser1 } from '/src/use/useMessage'
 import { listOfUncorrectedUserCaseStudy } from '/src/use/useUserCaseStudy'
 import { listOfUncorrectedUserQuiz } from '/src/use/useUserQuiz'

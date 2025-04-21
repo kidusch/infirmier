@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import { app } from '/src/client-app.js'
 import { appState } from '/src/use/useAppState'
-import { getUser } from '/src/use/useUser'
+import { getUser } from '/src/use/useUser.ts'
 
 import FrontPage from '/src/views/FrontPage.vue'
 import { restartApp } from '/src/use/useAuthentication'

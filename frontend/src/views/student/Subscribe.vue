@@ -31,8 +31,8 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { loadStripe } from '@stripe/stripe-js'
 
-import { userOfId, updateUser } from '/src/use/useUser'
-import { productInfo$ } from '/src/use/useUser'
+import { userOfId, updateUser } from '/src/use/useUser.ts'
+import { productInfo$ } from '/src/use/useUser.ts'
 import { appState } from '/src/use/useAppState'
 
 
