@@ -1,6 +1,7 @@
 import { computed } from 'vue'
 import { useIDBKeyval } from '@vueuse/integrations/useIDBKeyval'
 import { InAppPurchase } from 'jcb-capacitor-inapp'
+import { fromEvent, from, of, concat, skip } from 'rxjs'
 
 import { app } from '/src/client-app.js'
 
@@ -104,13 +105,37 @@ export const listOfUser = computed(() => {
 
 //////////////////           SUBSCRIPTION           //////////////////
 
-export const getStripePublicKey = async () => {
-   return await app.service('stripe').getStripePublicKey()
+// InAppPurchase.addListener('billingReady', () => {
+//    console.log("BILLING READY!!!")
+// })
+
+// observable emiting a value when billing system is ready
+const billingReady$ = Capacitor.getPlatform() === 'android' ? fromEvent(InAppPurchase, 'billingReady') : of('ready')
+
+billingReady$.subscribe(x => console.log("BILLING READY!!!", x))
+
+// `subscriptionType` = 'standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly'
+// Emit one single value, the product info, when billing system is ready and promise is resolved
+export async function productInfo$(subscriptionType) {
+   let productInfoPromise
+   const platform = Capacitor.getPlatform()
+   if (platform === 'ios' || platform === 'android') {
+      // on iOS and Android, `productId` is `subscriptionType`
+      productInfoPromise = InAppPurchase.getSubscriptionProductInfo({ productId: subscriptionType })
+   } else {
+      // on Stripe, the product id must be obtained from `subscriptionType`
+      const productId = await app.service('stripe').getProductIdFromSubscriptionType(subscriptionType)
+      productInfoPromise = app.service('stripe').getSubscriptionProductInfo(productId)
+   }
+   // wait for 'billingReady', then for promise resolution and then emit product info
+   return concat(billingReady$, from(productInfoPromise)).pipe(
+      skip(1)
+   )
 }
 
-InAppPurchase.addListener('billingReady', () => {
-   console.log("BILLING READY!!!")
-})
+
+
+
 
 // return {
 //    name: subscription name (ex: "Abonnement standard")
@@ -207,7 +232,7 @@ export const getSubscriptionStatus = async (id) => {
    if (platform === 'ios' || platform === 'android') {
       console.log("checking...")
       const { productId, status: subscriptionStatus } = await InAppPurchase.checkSubscription()
-      console.log("info", productId, subscriptionStatus)
+      console.log("subscriptionStatus", productId, subscriptionStatus)
       if (productId) {
          // replace cache info by Store info
          user = await updateUser(id, {
@@ -246,6 +271,10 @@ export const getSubscriptionStatus = async (id) => {
    }
 }
 
+
+export const getStripePublicKey = async () => {
+   return await app.service('stripe').getStripePublicKey()
+}
 
 export const getOrCreateStripeCustomer = async (id, paymentMethodId, customerEmail) => {
    const user = await getUser(id)

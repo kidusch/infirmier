@@ -24,7 +24,7 @@ const socketOptions = {
 console.log('VITE_SERVER', import.meta.env.VITE_SERVER)
 const socket = import.meta.env.VITE_SERVER ? io(import.meta.env.VITE_SERVER, socketOptions) : io(socketOptions)
 
-export const app = expressXClient(socket, { debug: true })
+export const app = expressXClient(socket, { debug: false })
 
 export const cnxid = useSessionStorage('cnxid', '')
 

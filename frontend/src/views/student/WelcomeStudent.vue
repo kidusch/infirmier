@@ -108,7 +108,7 @@ onMounted(async () => {
             cursor: courseCursor ? { id: courseCursor } : undefined,
             orderBy: { id: 'asc' },
          })
-         console.log('PRELOAD COURSE', courseList)
+         // console.log('PRELOAD COURSE', courseList)
          for (const course of courseList) {
             courseState.value.courseCache[course.id] = course
             courseState.value.courseStatus[course.id] = 'ready'
