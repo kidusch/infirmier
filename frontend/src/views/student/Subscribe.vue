@@ -55,7 +55,8 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { loadStripe } from '@stripe/stripe-js'
 
-import { getStripePublicKey, buyStoreSubscription, getOrCreateStripeCustomer, createStripeSubscription, cancelStripeCustomerSubscriptions } from '/src/use/useUser.ts'
+import { getUser, updateUser,
+   getStripePublicKey, buyStoreSubscription, getOrCreateStripeCustomer, createStripeSubscription, cancelStripeCustomerSubscriptions } from '/src/use/useUser.ts'
 import { productInfo$, userSubscriptionStatus$ } from '/src/use/useUser.ts'
 import { appState } from '/src/use/useAppState'
 
@@ -197,7 +198,8 @@ const handleStripeSubmit = async () => {
 const processStripeSubscription = async (subscriptionType, paymentMethodId, priceId) => {
    console.log('processStripeSubscription', subscriptionType, paymentMethodId, priceId)
    try {
-      const customerId = await getOrCreateStripeCustomer(props.userid, paymentMethodId, user.value.email)
+      const user = await getUser(props.userid)
+      const customerId = await getOrCreateStripeCustomer(props.userid, paymentMethodId, user.email)
       console.log('customerId', customerId)
       const { clientSecret, error } = await createStripeSubscription(props.userid, customerId, priceId)
       

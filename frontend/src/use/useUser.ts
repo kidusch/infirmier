@@ -185,8 +185,8 @@ export async function userSubscriptionStatus$(userId) {
          }
       }
    } else if (platform === 'web') {
-      if (!user?.subscription_platform || user.stripe_customer_id) {
-         // user record has no subscription, or has a Stripe subscription: try and update it
+      if (user.stripe_customer_id) {
+         // user record has a Stripe subscription: try and update it
          const subscriptions = await app.service('stripe').customerActiveSubscriptions(user.stripe_customer_id)
          console.log('subscriptions', subscriptions)
          if (subscriptions.length > 0) {
