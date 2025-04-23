@@ -40,11 +40,11 @@
             </form>
          </div>
 
-         <!-- <div class="my-2">
-            <button v-if="hasSubscription(user.id)" class="link" @click="cancelCustomerSubscriptions">
+         <div class="my-2">
+            <button v-if="userSubscriptionStatus" class="link" @click="cancelCustomerSubscriptions">
                Résilier l'abonnement en cours...
             </button>
-         </div> -->
+         </div>
 
       </main>
 
@@ -78,6 +78,7 @@ const userSubscriptionStatus = ref()
 const stripe = ref(null)
 const cardElement = ref(null)
 const stripeSubscriptionChoice = ref()
+const loading = ref(false)
 
 let subscriptions = []
 
@@ -162,6 +163,112 @@ const buySubscription = async (subscriptionType) => {
          // buy with Stripe
          stripeSubscriptionChoice.value = subscriptionType
       }
+   }
+}
+
+// Handle the Stripe form submission
+const handleStripeSubmit = async () => {
+   loading.value = true
+   errorMessage.value = ''
+
+   // Send card details to Stripe
+   const { error, paymentMethod } = await stripe.value.createPaymentMethod({
+      type: 'card',
+      card: cardElement.value,
+   })
+
+   if (error) {
+      // Display error in payment form
+      errorMessage.value = error.message
+      loading.value = false
+      return
+   } else {
+      // Payment method created successfully
+      console.log('Payment method created:', paymentMethod)
+      const subscriptionType = stripeSubscriptionChoice.value
+      const priceId = productInfoDict.value[subscriptionType].priceId
+      appState.value.spinnerWaitingText = [ "Traitement..." ]
+      await processStripeSubscription(subscriptionType, paymentMethod.id, priceId)
+      appState.value.spinnerWaitingText = null
+   }
+}
+
+// Process the Stripe subscription on the backend
+const processStripeSubscription = async (subscriptionType, paymentMethodId, priceId) => {
+   console.log('processStripeSubscription', subscriptionType, paymentMethodId, priceId)
+   try {
+      const customerId = await getOrCreateStripeCustomer(props.userid, paymentMethodId, user.value.email)
+      console.log('customerId', customerId)
+      const { clientSecret, error } = await createStripeSubscription(props.userid, customerId, priceId)
+      
+      if (error) {
+         errorMessage.value = error
+      } else {
+         // Confirm the subscription payment
+         console.log('clientSecret', clientSecret)
+         const { error } = await stripe.value.confirmCardPayment(clientSecret)
+         if (error) {
+            errorMessage.value = error.message
+         } else {
+            await updateUser(props.userid, {
+               subscription_type: subscriptionType,
+               subscription_status: 'active',
+               subscription_platform: 'web',
+            })
+            alert("L'abonnement a été souscrit avec succès !")
+         }
+      }
+   } catch (error) {
+      errorMessage.value = 'Erreur inconnue...'
+   } finally {
+      loading.value = false
+      stripeSubscriptionChoice.value = null
+   }
+}
+
+
+const cancelCustomerSubscriptions = async () => {
+   if (user.value.subscription_status === 'active') {
+
+      console.log(platform.value, user.value.subscription_platform)
+      if (platform.value === user.value.subscription_platform) {
+         // there is an active subscription and it has been made on this platform
+         if (platform.value === 'ios') {
+            alert(`Pour résilier l'abonnement, il faut que vous alliez dans les réglages de l'iPhone / Apple Id - iCloud / Contenu multimédia et achats / Abonnements`)
+                  
+         } else if (platform.value === 'android') {
+            alert(`Pour résilier l'abonnement, il faut que vous alliez dans l'application Google Play Store, rubrique Paiements et abonnements`)
+
+         } else {
+            // cancel on Stripe
+            try {
+               // cancel all subscriptions of associated customer (there should be only one)
+               appState.value.spinnerWaitingText = ["En cours de traitement..."]
+               const { subscriptions, error } = await cancelStripeCustomerSubscriptions(props.userid, user.value.stripe_customer_id)
+               if (error) {
+                  errorMessage.value = error
+               } else {
+                  alert("L'abonnement a été annulé avec succès !")
+               }
+            } catch (error) {
+               errorMessage.value = 'Erreur inconnue...'
+            } finally {
+               appState.value.spinnerWaitingText = null
+            }
+         }
+      } else {
+         // there is an active subscription and it has been made on another platform
+         if (user.value.subscription_platform === 'ios') {
+            alert("Votre abonnement a été souscrit sur iOS. Pour le résilier, il faut utiliser l'application depuis iOS")
+         } else if (user.value.subscription_platform === 'android') {
+            alert("Votre abonnement a été souscrit sur Android. Pour le résilier, il faut utiliser l'application Android")
+         } else {
+            alert("Votre abonnement a été souscrit sur le web. Pour le résilier, il faut utiliser l'application web")
+         }
+      }
+
+   } else {
+      alert("Il n'y a pas d'abonnement actif en cours")
    }
 }
 </script>
