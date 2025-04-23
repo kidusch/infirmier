@@ -153,47 +153,22 @@ interface SubscriptionStatus {
 }
 
 export async function userSubscriptionStatus$(userId) {
-   const stream = new Subject()
-   const platform = Capacitor.getPlatform()
-   let user = await getUser(userId)
-   // first emit status stored in user record (if present)
-   if (user?.subscription_status) {
-      stream.next({
-         subscription_type: user.subscription_type,
-         subscription_platform: user.subscription_platform,
-         subscription_status: user.subscription_status,
-      })
-   }
-   // then try to update this status
-   if (platform === 'ios' || platform === 'android') {
-      if (!user?.subscription_platform || (platform === user?.subscription_platform)) {
-         // user record has no subscription, or has a subscription from this platform: try and update it
-         const { productId: subscription_type, status: subscription_status } = await InAppPurchase.checkSubscription()
-
-         if (user?.subscription_type !== subscription_type || user?.subscription_status !== subscription_status) {
-            // subscription status has changed: update user record
-            user = await updateUser(userId, {
-               subscription_type,
-               subscription_status,
-            })
-            // then emit a new value
-            stream.next({
-               subscription_type,
-               subscription_platform: platform,
-               subscription_status,
-            })
-         }
+   const observable = new Observable(async observer => {
+      const platform = Capacitor.getPlatform()
+      let user = await getUser(userId)
+      // first emit status stored in user record (if present)
+      if (user?.subscription_status) {
+         observer.next({
+            subscription_type: user.subscription_type,
+            subscription_platform: user.subscription_platform,
+            subscription_status: user.subscription_status,
+         })
       }
-   } else if (platform === 'web') {
-      if (user.stripe_customer_id) {
-         // user record has a Stripe subscription: try and update it
-         const subscriptions = await app.service('stripe').customerActiveSubscriptions(user.stripe_customer_id)
-         console.log('subscriptions', subscriptions)
-         if (subscriptions.length > 0) {
-            const subscription = subscriptions[0]
-            const productId = subscription.plan.product
-            const subscription_type = await app.service('stripe').getSubscriptionTypeFromProductId(productId)
-            const subscription_status = subscription.status
+      // then try to update this status
+      if (platform === 'ios' || platform === 'android') {
+         if (!user?.subscription_platform || (platform === user?.subscription_platform)) {
+            // user record has no subscription, or has a subscription from this platform: try and update it
+            const { productId: subscription_type, status: subscription_status } = await InAppPurchase.checkSubscription()
 
             if (user?.subscription_type !== subscription_type || user?.subscription_status !== subscription_status) {
                // subscription status has changed: update user record
@@ -202,16 +177,42 @@ export async function userSubscriptionStatus$(userId) {
                   subscription_status,
                })
                // then emit a new value
-               stream.next({
+               observer.next({
                   subscription_type,
-                  subscription_platform: 'web',
+                  subscription_platform: platform,
                   subscription_status,
                })
             }
          }
+      } else if (platform === 'web') {
+         if (user.stripe_customer_id) {
+            // user record has a Stripe subscription: try and update it
+            const subscriptions = await app.service('stripe').customerActiveSubscriptions(user.stripe_customer_id)
+            console.log('subscriptions', subscriptions)
+            if (subscriptions.length > 0) {
+               const subscription = subscriptions[0]
+               const productId = subscription.plan.product
+               const subscription_type = await app.service('stripe').getSubscriptionTypeFromProductId(productId)
+               const subscription_status = subscription.status
+
+               if (user?.subscription_type !== subscription_type || user?.subscription_status !== subscription_status) {
+                  // subscription status has changed: update user record
+                  user = await updateUser(userId, {
+                     subscription_type,
+                     subscription_status,
+                  })
+                  // then emit a new value
+                  observer.next({
+                     subscription_type,
+                     subscription_platform: 'web',
+                     subscription_status,
+                  })
+               }
+            }
+         }
       }
-   }
-   return stream
+   })
+   return observable
 }
 
 

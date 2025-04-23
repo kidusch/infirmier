@@ -8,10 +8,10 @@
       </header>
 
       <main class="mt-4 max-w-xl">
-
+{{ userSubscriptionStatus }}
          <section class="grid grid-cols-2 grid-flow-rows gap-4">
             <template v-for="productId of PRODUCT_ID_LIST">
-               <div class="rounded-lg border-2 text-center p-6 hover:bg-gray-200" :class="{ 'box': userSubscriptionStatus === productId }"
+               <div class="rounded-lg border-2 text-center p-6 hover:bg-gray-200" :class="{ 'box': userSubscriptionStatus?.subscription_type === productId }"
                   @click="buySubscription(productId)">
                   <div class="cursor-pointer text-lg text-gray-600">{{ productInfoDict[productId]?.name }}</div>
                   <div class="cursor-pointer text-sm text-gray-400">{{ productInfoDict[productId]?.description }}</div>
@@ -54,6 +54,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { loadStripe } from '@stripe/stripe-js'
+import { Observable } from 'rxjs'
 
 import { getUser, updateUser,
    getStripePublicKey, buyStoreSubscription, getOrCreateStripeCustomer, createStripeSubscription, cancelStripeCustomerSubscriptions } from '/src/use/useUser.ts'
@@ -96,8 +97,8 @@ onMounted(async () => {
          subscriptions.push(subscription)
       }
       // get user subscription status
-      const observable = await userSubscriptionStatus$(props.userid)
-      const subscription = observable.subscribe(status => {
+      const subject = await userSubscriptionStatus$(props.userid)
+      const subscription = subject.subscribe(status => {
          console.log('userSubscriptionStatus$', status)
          userSubscriptionStatus.value = status
       })
@@ -140,6 +141,7 @@ onMounted(async () => {
       }
 
    } catch(err) {
+      console.log('err', err)
       errorMessage.value = err.toString()
    } finally {
       appState.value.spinnerWaitingText = null
