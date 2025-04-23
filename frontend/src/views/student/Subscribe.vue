@@ -32,7 +32,7 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { loadStripe } from '@stripe/stripe-js'
 
 import { userOfId, updateUser } from '/src/use/useUser.ts'
-import { productInfo$ } from '/src/use/useUser.ts'
+import { productInfo$, userSubscriptionStatus$ } from '/src/use/useUser.ts'
 import { appState } from '/src/use/useAppState'
 
 
@@ -59,6 +59,7 @@ let subscriptions = []
 onMounted(async () => {
    try {
       appState.value.spinnerWaitingText = [ "Chargement..." ]
+
       for (const subscriptionType of PRODUCT_ID_LIST) {
          const observable = await productInfo$(subscriptionType)
          const subscription = observable.subscribe(info => {
@@ -67,6 +68,12 @@ onMounted(async () => {
          })
          subscriptions.push(subscription)
       }
+
+      const observable = await userSubscriptionStatus$(props.userid)
+      const subscription = observable.subscribe(status => {
+         console.log('userSubscriptionStatus$', status)
+      })
+      subscriptions.push(subscription)
 
    } catch(err) {
       errorMessage.value = err.toString()

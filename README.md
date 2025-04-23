@@ -2,7 +2,7 @@
 # IMPORTANT
 
 !!!! IL FAUT BUILDER LE PROJET JS POUR QU'IL FONCTIONNE SUR IOS & ANDROID !!!!
-UTILISER `npm run build:ios` et `npm run build:android`
+UTILISER `npm run build:ios` et `npm run build:android` (ou iosdev)
 
 
 # Bugs
@@ -25,8 +25,9 @@ Essai de PWABuilder (Microsoft) Pb : rien prévu pour in-app purchase
 
 ## Abonnements
 - Abonnements 'inapp' sur iOS et Android, abonnements Stripe sur le web
-- Développement d'un plugin Capacitor 'jcb-capacitor-inapp' accessible sur npm (le plugin Cordova 'cordova-plugin-purchase' est vieux et non fonctionnel)
-pour iOS et Android
+- Développement d'un plugin Capacitor 'jcb-capacitor-inapp' pour iOS et Android accessible sur npm
+(le plugin Cordova 'cordova-plugin-purchase' est vieux et non fonctionnel)
+
 
 
 ## Authentification Google
@@ -58,7 +59,6 @@ Pour le web, j'utilise en plus jcb-capacitor-googleauth, fork de https://github.
 ### iOS
 
 - https://github.com/Cap-go/capacitor-social-login/blob/main/docs/setup_google.md#ios
-- marche pas avec le simulateur
 - Google Developer Console / Clients : créer un client pour iOS "Client iOS 1"
 - XCode : App - Targets/App, Info, clic droit : "open as... source code". Ajouter à la fin :
    <key>CFBundleURLTypes</key>
@@ -71,6 +71,8 @@ Pour le web, j'utilise en plus jcb-capacitor-googleauth, fork de https://github.
       </dict>
    </array>
 - a-priori pas besoin de modifier AppDelegate
+- marche pas en dev, ni sur un device ni avec le simulateur
+- marche avec TestFlight
 - toujours re-builder pour tester : `npm run build:ios`
 
 ### Android
@@ -176,12 +178,10 @@ n° version + n° build : Target / App / General / Identity
 - ...
 
 
-## Build
+## Build et exécution en dev
 ```
 cd frontend
 npm run build:iosdev   # vite build --mode iosdev && npx cap sync ios)
-ou : npm run build:ios
-npx cap open ios
 ```
 - exécution en dev sur XCode : cocher "automatic signing", choisir la team : "CHARLENE FANTONE". ? Il faut aussi changer un truc
 dans Project / Targets / App / Build settings / signing
@@ -239,8 +239,8 @@ Voir : https://developer.apple.com/documentation/storekit/in-app_purchase
 - gestion des abonnements depuis XCode : Debug -> StoreKit. On voit les expirations / renouvellements se dérouler en temps réel (accéléré
 au rythme défini dans le 'StoreKit configuration file')
 
-- `npm run build:ios` puis exécution depuis XCode sur un device : fonctionne avec les inApp du StoreKit configuration file
-- test des inapps marche avec TestFlight, et les achats sont fictifs
+- `npm run build:iosdev` puis exécution depuis XCode sur un device ou le simulateur : fonctionne avec les inApp du StoreKit configuration file
+- test des inapps marche (plus ?) avec TestFlight, et les achats sont fictifs
 - test avec Sandbox ? Pas réussi
 
 ### Compte "Sandbox" pour les tests d'inapp purchase end-to-end
