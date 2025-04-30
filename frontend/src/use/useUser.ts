@@ -105,9 +105,9 @@ export const listOfUser = computed(() => {
 
 //////////////////           SUBSCRIPTION           //////////////////
 
-// InAppPurchase.addListener('billingReady', () => {
-//    console.log("BILLING READY!!!")
-// })
+InAppPurchase.addListener('billingReady', () => {
+   console.log("BILLING READY!!!")
+})
 
 interface ProductInfo {
    name: string;          // subscription name (ex: "Abonnement standard")
@@ -152,122 +152,46 @@ interface SubscriptionStatus {
    subscription_platform: string;   // 'web', 'ios', 'android'
 }
 
-export async function userSubscriptionStatus$(userId) {
-   const observable = new Observable(async observer => {
-      const platform = Capacitor.getPlatform()
-      let user = await getUser(userId)
-      // first emit status stored in user record (if present)
-      if (user?.subscription_status) {
-         observer.next({
-            subscription_type: user.subscription_type,
-            subscription_platform: user.subscription_platform,
-            subscription_status: user.subscription_status,
-         })
-      }
-      // then try to update this status
-      if (platform === 'ios' || platform === 'android') {
-         if (!user?.subscription_platform || (platform === user?.subscription_platform)) {
-            // user record has no subscription, or has a subscription from this platform: try and update it
-            const { productId: subscription_type, status: subscription_status } = await InAppPurchase.checkSubscription()
-
-            if (user?.subscription_type !== subscription_type || user?.subscription_status !== subscription_status) {
-               // subscription status has changed: update user record
-               user = await updateUser(userId, {
-                  subscription_type,
-                  subscription_status,
-               })
-               // then emit a new value
-               observer.next({
-                  subscription_type,
-                  subscription_platform: platform,
-                  subscription_status,
-               })
-            }
-         }
-      } else if (platform === 'web') {
-         if (user.stripe_customer_id) {
-            // user record has a Stripe subscription: try and update it
-            const subscriptions = await app.service('stripe').customerActiveSubscriptions(user.stripe_customer_id)
-            console.log('subscriptions', subscriptions)
-            if (subscriptions.length > 0) {
-               const subscription = subscriptions[0]
-               const productId = subscription.plan.product
-               const subscription_type = await app.service('stripe').getSubscriptionTypeFromProductId(productId)
-               const subscription_status = subscription.status
-
-               if (user?.subscription_type !== subscription_type || user?.subscription_status !== subscription_status) {
-                  // subscription status has changed: update user record
-                  user = await updateUser(userId, {
-                     subscription_type,
-                     subscription_status,
-                  })
-                  // then emit a new value
-                  observer.next({
-                     subscription_type,
-                     subscription_platform: 'web',
-                     subscription_status,
-                  })
-               }
-            }
-         }
-      }
-   })
-   return observable
-}
-
-
-
-
-
-
-
-// return {
-//    name: subscription name (ex: "Abonnement standard")
-//    description: subscription features (ex: "Accès à tout le contenu + coaching personnalisé")
-//    price : formatted price (ex: "2,99 EUR")
-//    priceId (only for Stripe)
-//    period: formatted subscription period (ex: "mois")
-// }
-export const infoOfSubscriptionProduct = computed(() => (subscriptionType) => {
-   if (!userState.value) return {}
-   const status = userState.value.subscriptionTypeInfoStatus[subscriptionType]
-   if (status === 'ready') return userState.value.subscriptionTypeInfo[subscriptionType]
-   if (status === 'ongoing') return undefined
-   userState.value.subscriptionTypeInfoStatus[subscriptionType] = 'ongoing'
+export const updateUserSubscriptionStatus = async (id) => {
+   const { value: echo } = await InAppPurchase.echo({ value: "azerty" })
+   console.log('echo', echo)
+   let user = await getUser(id)
+   // ask info to stores
    const platform = Capacitor.getPlatform()
    if (platform === 'ios' || platform === 'android') {
-      InAppPurchase.getSubscriptionProductInfo({ productId: subscriptionType }).then(productInfo => {
-         console.log('productInfo', productInfo)
-         userState.value.subscriptionTypeInfo[subscriptionType] = productInfo
-         userState.value.subscriptionTypeInfoStatus[subscriptionType] = 'ready'
-      })
-   } else {
-      let productInfo_
-      app.service('stripe').getProductIdFromSubscriptionType(subscriptionType)
-      .then(productId => {
-         console.log('productId', productId)
-         return app.service('stripe').getSubscriptionProductInfo(productId)
-      })
-      .then(productInfo => {
-         productInfo_ = productInfo
-         console.log('productInfo', productInfo)
-         return app.service('stripe').getPriceInfo(productInfo.default_price)
-      })
-      .then(priceInfo => {
-         console.log('priceInfo', priceInfo)
-         const price = (priceInfo.unit_amount / 100).toFixed(2) + " " + priceInfo.currency.toUpperCase()
-         const period = { 'month': 'mois', 'year': 'an' }[priceInfo?.recurring?.interval]
-         userState.value.subscriptionTypeInfo[subscriptionType] = {
-            name: productInfo_.name,
-            description: productInfo_.description,
-            priceId: priceInfo.id, // only for Stripe
-            price,
-            period,
+      console.log("checking...")
+      const { productId, status: subscriptionStatus } = await InAppPurchase.checkSubscription()
+      console.log("subscriptionStatus", productId, subscriptionStatus)
+      if (productId) {
+         // replace cache info by Store info
+         user = await updateUser(id, {
+            subscription_type: productId,
+            subscription_status: subscriptionStatus,
+         })
+      } else {
+         if (user.subscription_type) {
+            console.log("shouldn't happen: keeping cache info")
          }
-         userState.value.subscriptionTypeInfoStatus[subscriptionType] = 'ready'
-      })
+      }
+   } else {
+      // ask stripe the subscriptions for stripe_customer_id
+      if (user.stripe_customer_id) {
+         const subscriptions = await app.service('stripe').customerActiveSubscriptions(user.stripe_customer_id)
+         console.log('subscriptions', subscriptions)
+         if (subscriptions.length > 0) {
+            // replace cache info by Stripe info
+            const subscription = subscriptions[0]
+            const productId = subscription.plan.product
+            const subscriptionType = await app.service('stripe').getSubscriptionTypeFromProductId(productId)
+            user = await updateUser(id, {
+               subscription_type: subscriptionType,
+               subscription_status: subscription.status,
+               stripe_subscription_id: subscription.id,
+            })
+         }
+      }
    }
-})
+}
 
 // return active (= existing, not expired) subscription
 // undefined,  null, 'standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly'
@@ -307,52 +231,6 @@ export const buyStoreSubscription = async (id, subscriptionType, platform) => {
       subscription_platform: platform,
    })
    return { subscriptionType, subscriptionStatus }
-}
-
-export const getSubscriptionStatus = async (id) => {
-   let user = await getUser(id)
-   // ask info to stores
-   const platform = Capacitor.getPlatform()
-   if (platform === 'ios' || platform === 'android') {
-      console.log("checking...")
-      const { productId, status: subscriptionStatus } = await InAppPurchase.checkSubscription()
-      console.log("subscriptionStatus", productId, subscriptionStatus)
-      if (productId) {
-         // replace cache info by Store info
-         user = await updateUser(id, {
-            subscription_type: productId,
-            subscription_status: subscriptionStatus,
-         })
-      } else {
-         if (user.subscription_type) {
-            console.log("shouldn't happen: keeping cache info")
-         }
-      }
-   } else {
-      // ask stripe the subscriptions for stripe_customer_id
-      if (user.stripe_customer_id) {
-         const subscriptions = await app.service('stripe').customerActiveSubscriptions(user.stripe_customer_id)
-         console.log('subscriptions', subscriptions)
-         if (subscriptions.length > 0) {
-            // replace cache info by Stripe info
-            const subscription = subscriptions[0]
-            const productId = subscription.plan.product
-            // const subscriptionType = productId2subscriptionType(productId)
-            const subscriptionType = await app.service('stripe').getSubscriptionTypeFromProductId(productId)
-            user = await updateUser(id, {
-               subscription_type: subscriptionType,
-               subscription_status: subscription.status,
-               stripe_subscription_id: subscription.id,
-            })
-         }
-      }
-   }
-
-   // return cache info
-   return {
-      subscriptionType: user.subscription_type,
-      subscriptionStatus: user.subscription_status,
-   }
 }
 
 

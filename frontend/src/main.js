@@ -8,6 +8,7 @@ import router from './router'
 
 // once imported here, can be used in any view without importing again
 import 'jcb-radial'
+import { InAppPurchase } from 'jcb-capacitor-inapp'
 
 
 createApp(App)

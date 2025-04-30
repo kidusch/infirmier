@@ -8,10 +8,10 @@
       </header>
 
       <main class="mt-4 max-w-xl">
-{{ userSubscriptionStatus }}
+
          <section class="grid grid-cols-2 grid-flow-rows gap-4">
             <template v-for="productId of PRODUCT_ID_LIST">
-               <div class="rounded-lg border-2 text-center p-6 hover:bg-gray-200" :class="{ 'box': userSubscriptionStatus?.subscription_type === productId }"
+               <div class="rounded-lg border-2 text-center p-6 hover:bg-gray-200" :class="{ 'box': user?.subscription_type === productId }"
                   @click="buySubscription(productId)">
                   <div class="cursor-pointer text-lg text-gray-600">{{ productInfoDict[productId]?.name }}</div>
                   <div class="cursor-pointer text-sm text-gray-400">{{ productInfoDict[productId]?.description }}</div>
@@ -41,7 +41,7 @@
          </div>
 
          <div class="my-2">
-            <button v-if="userSubscriptionStatus" class="link" @click="cancelCustomerSubscriptions">
+            <button v-if="user?.subscription_status === 'active'" class="link" @click="cancelCustomerSubscriptions">
                Résilier l'abonnement en cours...
             </button>
          </div>
@@ -54,11 +54,10 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { loadStripe } from '@stripe/stripe-js'
-import { Observable } from 'rxjs'
 
-import { getUser, updateUser,
+import { getUser, userOfId, updateUser,
    getStripePublicKey, buyStoreSubscription, getOrCreateStripeCustomer, createStripeSubscription, cancelStripeCustomerSubscriptions } from '/src/use/useUser.ts'
-import { productInfo$, userSubscriptionStatus$ } from '/src/use/useUser.ts'
+import { productInfo$, updateUserSubscriptionStatus } from '/src/use/useUser.ts'
 import { appState } from '/src/use/useAppState'
 
 
@@ -71,11 +70,10 @@ const props = defineProps({
 
 const PRODUCT_ID_LIST = ['standard_monthly', 'standard_yearly', 'premium_monthly', 'premium_yearly']
 
-// const user = computed(() => userOfId.value(props.userid))
+const user = computed(() => userOfId.value(props.userid))
 
 const errorMessage = ref('')
 const productInfoDict = ref({})
-const userSubscriptionStatus = ref()
 
 const stripe = ref(null)
 const cardElement = ref(null)
@@ -87,22 +85,20 @@ let subscriptions = []
 onMounted(async () => {
    try {
       appState.value.spinnerWaitingText = [ "Chargement..." ]
+
+      user.value = await getUser(props.userid)
+
       // get subscription product info
       for (const subscriptionType of PRODUCT_ID_LIST) {
          const observable = await productInfo$(subscriptionType)
          const subscription = observable.subscribe(info => {
-            // console.log('productInfo$', subscriptionType, info)
+            console.log('productInfo$', subscriptionType, info)
             productInfoDict.value[subscriptionType] = info
          })
          subscriptions.push(subscription)
       }
-      // get user subscription status
-      const subject = await userSubscriptionStatus$(props.userid)
-      const subscription = subject.subscribe(status => {
-         console.log('userSubscriptionStatus$', status)
-         userSubscriptionStatus.value = status
-      })
-      subscriptions.push(subscription)
+
+      updateUserSubscriptionStatus(props.userid)
 
       if (Capacitor.getPlatform() === 'web') {
          // Load Stripe.js
@@ -149,13 +145,13 @@ onMounted(async () => {
 })
 
 onUnmounted(() => {
-   subscriptions.forEach(s => s.unsubscribe())
+   subscriptions.forEach(s => s && s.unsubscribe())
 })
 
 const buySubscription = async (subscriptionType) => {
-   if (userSubscriptionStatus.value?.subscription_type === subscriptionType) {
+   if (user.value?.subscription_type === subscriptionType) {
       alert("Vous avez déjà souscrit à cet abonnement")
-   } else if (userSubscriptionStatus.value) {
+   } else if (user?.value?.subscription_status === 'active') {
       alert("Pour souscrire un abonnement différent, vous devez d'abord résilier l'abonnement en cours")
    } else {
       const platform = Capacitor.getPlatform()
@@ -230,17 +226,17 @@ const processStripeSubscription = async (subscriptionType, paymentMethodId, pric
    }
 }
 
-
 const cancelCustomerSubscriptions = async () => {
-   if (user.value.subscription_status === 'active') {
+   const user = await getUser(props.userid)
+   if (user.subscription_status === 'active') {
 
-      console.log(platform.value, user.value.subscription_platform)
-      if (platform.value === user.value.subscription_platform) {
+      const platform = Capacitor.getPlatform()
+      if (platform === user.subscription_platform) {
          // there is an active subscription and it has been made on this platform
-         if (platform.value === 'ios') {
+         if (platform === 'ios') {
             alert(`Pour résilier l'abonnement, il faut que vous alliez dans les réglages de l'iPhone / Apple Id - iCloud / Contenu multimédia et achats / Abonnements`)
                   
-         } else if (platform.value === 'android') {
+         } else if (platform === 'android') {
             alert(`Pour résilier l'abonnement, il faut que vous alliez dans l'application Google Play Store, rubrique Paiements et abonnements`)
 
          } else {
@@ -248,7 +244,7 @@ const cancelCustomerSubscriptions = async () => {
             try {
                // cancel all subscriptions of associated customer (there should be only one)
                appState.value.spinnerWaitingText = ["En cours de traitement..."]
-               const { subscriptions, error } = await cancelStripeCustomerSubscriptions(props.userid, user.value.stripe_customer_id)
+               const { subscriptions, error } = await cancelStripeCustomerSubscriptions(props.userid, user.stripe_customer_id)
                if (error) {
                   errorMessage.value = error
                } else {
@@ -262,9 +258,9 @@ const cancelCustomerSubscriptions = async () => {
          }
       } else {
          // there is an active subscription and it has been made on another platform
-         if (user.value.subscription_platform === 'ios') {
+         if (user.subscription_platform === 'ios') {
             alert("Votre abonnement a été souscrit sur iOS. Pour le résilier, il faut utiliser l'application depuis iOS")
-         } else if (user.value.subscription_platform === 'android') {
+         } else if (user.subscription_platform === 'android') {
             alert("Votre abonnement a été souscrit sur Android. Pour le résilier, il faut utiliser l'application Android")
          } else {
             alert("Votre abonnement a été souscrit sur le web. Pour le résilier, il faut utiliser l'application web")
